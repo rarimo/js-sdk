@@ -1,4 +1,3 @@
-export * from './demo.helpers'
 export * from './dex.helpers'
 export * from './errors.helpers'
 export * from './ethereum.helpers'
