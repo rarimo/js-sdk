@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
+    "lib": ["esnext", "dom"],
     "moduleResolution": "node",
     "declaration": true,
     "strict": true,
@@ -18,6 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "sourceMap": true
   }
 }
