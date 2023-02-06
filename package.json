@@ -20,8 +20,7 @@
   },
   "homepage": "https://github.com/rarimo/js-sdk",
   "gitHooks": {
-    "pre-commit": "yarn lint && lerna run type-check",
-    "pre-push": "yarn test"
+    "pre-commit": "yarn lint && lerna run type-check"
   },
   "scripts": {
     "lint": "eslint packages/* --ext .ts,.tsx --fix",
