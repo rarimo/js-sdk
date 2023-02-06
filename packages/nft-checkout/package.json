@@ -8,8 +8,8 @@
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
-  "browser": "./lib/nft-checkout.min.js",
-  "unpkg": "./lib/nft-checkout.min.js",
+  "browser": "./lib/rarimo-nft-checkout.min.js",
+  "unpkg": "./lib/rarimo-nft-checkout.min.js",
   "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
