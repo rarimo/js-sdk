@@ -19,6 +19,7 @@
       }
     ],
     "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-private-methods",
     [
       "babel-plugin-root-import",
       {
@@ -27,9 +28,5 @@
       }
     ]
   ],
-  "ignore": [
-    "**/*.test.ts",
-    "src/test",
-    "src/browser.ts"
-  ]
+  "ignore": ["**/*.test.ts", "src/test", "src/browser.ts"]
 }

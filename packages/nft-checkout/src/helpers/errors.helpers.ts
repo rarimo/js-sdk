@@ -14,6 +14,7 @@ const handleError = (error: any, tokenToSwap: TokenInfo) => {
   if (isInsufficientLiquidity(error)) {
     return `Insufficient liquidity for ${tokenToSwap.symbol} (${tokenToSwap.name})`
   }
+  return
 }
 
 export { handleError }

@@ -1,14 +1,17 @@
-import { ChainName } from '@/enums'
+import { TChainName } from '@/types'
 
-export interface TokenBalance {
+export interface EthereumTokenBalance {
+  address: string
+  contractAddress: string
+  decimals: number
+  symbol: string
+  name: string
   balance: string
-  chain: string
-  chainId: number
 }
 
 export interface NFTDetails {
   price: string
-  chainName: ChainName // make it enum?
+  chainName: TChainName
   id: string
   symbol: string
 }

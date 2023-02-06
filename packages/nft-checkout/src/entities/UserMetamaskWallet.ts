@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { connectEthAccounts, getEthTokenBalances } from '@/helpers'
 import { Provider, WalletInfo } from '@/types'
 
-export class useEthereum {
+export class UserMetamaskWallet {
   walletInfo: WalletInfo = {
     currentAddress: '',
     currentNetwork: { chainId: 0 },
@@ -70,9 +70,7 @@ export class useEthereum {
     })
   }
 
-  connectEthAccounts = connectEthAccounts
-
-  init = async () => {
+  #init = async () => {
     this.#addWalletListeners()
     await this.#updateWalletInfo()
   }
@@ -83,4 +81,10 @@ export class useEthereum {
       this.walletInfo.currentAddress,
       this.walletInfo.currentNetwork.chainId,
     )
+
+  async connect() {
+    await this.#init()
+
+    await connectEthAccounts(this.currentProvider)
+  }
 }

@@ -1,7 +1,7 @@
 import { TokenInfo } from '@uniswap/token-lists'
 
-import { ChainName } from '@/enums'
-import { JsonRPCUrlMap } from '@/types'
+import { JsonRPCUrlMap, TChainIds, TChainName } from '@/types'
+import { Percent } from '@uniswap/sdk-core'
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string
@@ -13,12 +13,23 @@ export interface SwapPriceInput {
   inputAmount: string
   inputToken: TokenInfo | TokenInfoWithBalance
   outputToken: TokenInfo | TokenInfoWithBalance
-  paymentChainName: ChainName
+  paymentChainName: TChainName
   userWalletAddress: string
 }
 
 export interface SelectedChainInfo {
-  shouldFetch: boolean
-  chainId: number
-  chainName: ChainName
+  chainId: TChainIds
+  chainName: TChainName
+  userWalletAddress: string
+}
+
+export type EstimatedPrice = {
+  gasPriceInUsd: string | null
+  estimatedPriceInToken: string
+  selectedTokenSymbol: string
+  impact: {
+    percent: Percent
+  }
+  gasLimit?: number
+  notEnoughTokens?: boolean
 }
