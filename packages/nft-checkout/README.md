@@ -1,5 +1,5 @@
 # @rarimo/nft-checkout
-The @rarimo/nft-checkout TypeScript package with cross-chain NFT purchases functionality, based on Rarimo Protocol.
+Features of the Rarimo SDK that create cross-chain transactions, based on the Rarimo protocol.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/nft-checkout)
 ![types](https://badgen.net/npm/types/@rarimo/nft-checkout)
