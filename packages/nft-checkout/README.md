@@ -8,6 +8,12 @@ Features of the Rarimo SDK that create cross-chain transactions, based on the Ra
 
 ## Example
 
+To connect to a wallet, create an instance of the `Web3` object, which provides access to the wallets in the customer's browser.
+Then, create an object to represent the wallet to access.
+These objects implement the `Provider` interface so you can access different wallets in a consistent way.
+
+Here is an example of creating a `MetamaskProvider` object for a MetaMask wallet:
+
 ```js
 import { Web3, Provider, Providers } from '@rarimo/core'
 import { MetamaskProvider } from '@rarimo/metamask-provider'
