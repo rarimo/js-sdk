@@ -6,6 +6,26 @@ Features of the Rarimo SDK that create cross-chain transactions, based on the Ra
 ![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@rarimo/nft-checkout)
 ![checks](https://badgen.net/github/checks/distributed-lab/web-kit/main)
 
+## Example
+
+```js
+import { Web3, Provider, Providers } from '@rarimo/core'
+import { MetamaskProvider } from '@rarimo/metamask-provider'
+
+const connectMetamask = async () => {
+  // Detect the wallets that are available in the browser
+  const web3 = await new Web3().init()
+
+  // Create a wallet provider with the MetamaskProvider implementation
+  const provider = await new Provider({
+    [Providers.Metamask]: MetamaskProvider,
+  }).init(web3.providers[Providers.Metamask])
+
+  // Connect to the MetaMask wallet
+  await provider.connect()
+}
+```
+
 ## Changelog
 All notable changes to this project will be documented in this file.
 
