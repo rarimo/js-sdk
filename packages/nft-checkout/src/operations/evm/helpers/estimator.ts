@@ -83,6 +83,6 @@ export class Estimator {
         [chains[ChainNames.Fuji]]: 'WAVAX',
       }[chainId] ?? ''
 
-    return this.#tokens.find(t => t.symbol === symbol ?? '')
+    return this.#tokens.find(t => t.symbol === symbol)
   }
 }

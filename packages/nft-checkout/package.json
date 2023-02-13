@@ -1,42 +1,34 @@
 {
   "name": "@rarimo/nft-checkout",
-  "description": "TypeScript-based source development script for Rarimo Protocol",
   "version": "1.0.0",
+  "description": "TypeScript-based source development script for Rarimo Protocol",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "browser": "./lib/rarimo-nft-checkout.min.js",
-  "unpkg": "./lib/rarimo-nft-checkout.min.js",
-  "types": "./lib/types/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
     }
   },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "@rarimo/nft-checkout"
-  },
-  "sideEffects": false,
+  "main": "./lib/cjs/index.js",
+  "unpkg": "./lib/rarimo-nft-checkout.min.js",
+  "module": "./lib/esm/index.js",
+  "browser": "./lib/rarimo-nft-checkout.min.js",
+  "types": "./lib/types/index.d.ts",
   "scripts": {
-    "lint": "eslint src/* --ext .js,.jsx,.ts,.tsx --fix",
-    "test": "yarn jest",
-    "type-check": "tsc --noEmit",
     "build": "yarn clean && yarn build:types && yarn build:cjs && yarn build:esm",
     "build:cjs": "babel src --out-dir lib/cjs --extensions \".ts,.tsx\" --config-file ./babel.config.node.json",
     "build:esm": "babel src --out-dir lib/esm --extensions \".ts,.tsx\" --config-file ./babel.config.json",
     "build:types": "tsc --emitDeclarationOnly && tsc-alias -p tsconfig.json",
-    "clean": "rm -rf lib"
+    "clean": "rm -rf lib",
+    "lint": "eslint src/* --ext .js,.jsx,.ts,.tsx --fix",
+    "test": "yarn jest",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@distributedlab/utils": "^3.1.0",
-    "@rarimo/provider": "*",
+    "@rarimo/provider": "workspace:*",
     "@traderjoe-xyz/sdk": "2.0.7",
     "@uniswap/sdk-core": "3.1.0",
     "@uniswap/smart-order-router": "2.10.0",
@@ -49,5 +41,13 @@
     "jsbi": "3.2.5",
     "jsona": "^1.11.0",
     "lodash": "^4.17.21"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "@rarimo/nft-checkout"
   }
 }
