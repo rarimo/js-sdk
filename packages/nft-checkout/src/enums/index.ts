@@ -1,1 +1,1 @@
-export * from './chains.enum'
+export * from './chain'

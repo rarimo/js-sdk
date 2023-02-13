@@ -1,0 +1,42 @@
+{
+  "name": "@rarimo/provider",
+  "description": "The Rarimo source development kit package with provider functionality.",
+  "version": "0.1.0-rc.0",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "browser": "./lib/rarimo-provider.min.js",
+  "unpkg": "./lib/rarimo-core.min.js",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "@rarimo/provider"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "build": "yarn clean && yarn build:types && yarn build:cjs && yarn build:esm && yarn build:browser",
+    "build:cjs": "babel src --out-dir lib/cjs --extensions \".ts,.tsx\" --config-file ./babel.config.node.json",
+    "build:esm": "babel src --out-dir lib/esm --extensions \".ts,.tsx\" --config-file ./babel.config.json",
+    "build:types": "tsc --emitDeclarationOnly && tsc-alias -p tsconfig.json",
+    "build:browser": "node ./esbuild.js",
+    "clean": "rm -rf lib"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.19.0"
+  },
+  "devDependencies": {
+    "@solana/web3.js": "^1.73.2",
+    "ethers": "^5.7.0"
+  }
+}

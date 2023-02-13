@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
+    "@distributedlab/utils": "^3.1.0",
+    "@rarimo/provider": "/Users/napalmpapalam/Projects/RARIMO/js-sdk/packages/provider",
     "@traderjoe-xyz/sdk": "2.0.7",
     "@uniswap/sdk-core": "3.1.0",
     "@uniswap/smart-order-router": "2.10.0",
