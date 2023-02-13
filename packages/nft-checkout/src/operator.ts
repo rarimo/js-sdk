@@ -10,10 +10,14 @@ type Operators = { [key in ChainTypes]?: INFTCheckoutOperationConstructor }
 
 export class NFTCheckoutFactory {
   readonly #operators: Operators
-  readonly #config: Config = CONFIG
+  readonly #config: Config
 
-  constructor(operators: Operators) {
+  constructor(operators: Operators, config?: Partial<Config>) {
     this.#operators = operators
+    this.#config = {
+      ...CONFIG,
+      ...(config ? { config } : {}),
+    }
   }
 
   create(networkType: ChainTypes, provider: IProvider): INFTCheckoutOperation {
