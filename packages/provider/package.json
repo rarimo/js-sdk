@@ -10,6 +10,10 @@
       "require": "./lib/cjs/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/provider"
+  },
   "main": "./lib/cjs/index.js",
   "unpkg": "./lib/rarimo-core.min.js",
   "module": "./lib/esm/index.js",
@@ -29,7 +33,8 @@
   },
   "devDependencies": {
     "@solana/web3.js": "^1.73.2",
-    "ethers": "^5.7.0"
+    "ethers": "^5.7.0",
+    "web3": "^1.7.4"
   },
   "publishConfig": {
     "access": "public"

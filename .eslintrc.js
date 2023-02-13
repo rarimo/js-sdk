@@ -6,13 +6,14 @@ module.exports = {
     jest: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'prettier',
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ["lib", "node_modules", "examples", "scripts"],
+  ignorePatterns: ['lib', 'node_modules', 'examples', 'scripts'],
   rules: {
     'prettier/prettier': [
       'warn',
@@ -43,6 +44,6 @@ module.exports = {
     'comma-dangle': [1, 'always-multiline'],
     'linebreak-style': ['error', 'unix'],
     '@typescript-eslint/no-var-requires': 0,
-    "@typescript-eslint/no-non-null-assertion": 0,
-  }
+    '@typescript-eslint/no-non-null-assertion': 0,
+  },
 }
