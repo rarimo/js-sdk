@@ -54,14 +54,6 @@ export class Provider implements IProvider {
     return this.#proxy?.chainId
   }
 
-  public get provider() {
-    return this.#proxy?.provider
-  }
-
-  public get signer() {
-    return this.#proxy?.signer
-  }
-
   public async init(provider: ProviderInstance) {
     const proxyConstructor = this.#proxies?.[provider.name]
     if (!proxyConstructor) throw new errors.ProviderConstructorNotExistError()
@@ -107,14 +99,14 @@ export class Provider implements IProvider {
     return this.#proxy?.getHashFromTx?.(txResponse) ?? ''
   }
 
-  public getTxUrl(explorerUrl: string, txHash: string) {
+  public getTxUrl(chain: Chain, txHash: string) {
     this.#ensureMethodImplemented('getTxUrl')
-    return this.#proxy?.getTxUrl?.(explorerUrl, txHash) ?? ''
+    return this.#proxy?.getTxUrl?.(chain, txHash) ?? ''
   }
 
-  public getAddressUrl(explorerUrl: string, address: string) {
+  public getAddressUrl(chain: Chain, address: string) {
     this.#ensureMethodImplemented('getAddressUrl')
-    return this.#proxy?.getAddressUrl?.(explorerUrl, address) ?? ''
+    return this.#proxy?.getAddressUrl?.(chain, address) ?? ''
   }
 
   public async signMessage(message: string) {

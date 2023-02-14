@@ -8,6 +8,7 @@ import { ethers } from 'ethers'
 
 import { ChainTypes, Providers } from '@/enums'
 import { EthereumProvider } from './ethereum'
+import { TransactionConfig } from 'web3-core'
 import { PhantomProvider } from './solana'
 import { Chain, ChainId } from '@/types/chain'
 
@@ -25,6 +26,8 @@ export type TxRequestBody =
 
 export type EthTransactionResponse = ethers.providers.TransactionReceipt
 
+export type EthereumTransaction = TransactionConfig
+
 export type SolanaTransactionResponse = TransactionSignature
 
 export type TransactionResponse =
@@ -36,9 +39,6 @@ export interface ProviderProxyConstructor {
 }
 
 interface ProviderBase {
-  provider?: ethers.providers.Web3Provider
-  signer?: ethers.providers.JsonRpcSigner
-
   chainId?: ChainId
   address?: string
   isConnected: boolean
@@ -52,9 +52,9 @@ interface ProviderBase {
   signAndSendTx: (txRequestBody: TxRequestBody) => Promise<TransactionResponse>
   signMessage?: (message: string) => Promise<string | undefined>
 
-  getHashFromTx: (txResponse: TransactionResponse) => string
-  getTxUrl: (explorerUrl: string, txHash: string) => string
-  getAddressUrl: (explorerUrl: string, address: string) => string
+  getHashFromTx?: (txResponse: TransactionResponse) => string
+  getTxUrl?: (chain: Chain, txHash: string) => string
+  getAddressUrl?: (chain: Chain, address: string) => string
 }
 
 export interface ProviderProxy extends ProviderBase {
@@ -64,5 +64,5 @@ export interface ProviderProxy extends ProviderBase {
 export interface IProvider extends ProviderBase {
   providerType?: Providers
   chainType: ChainTypes
-  init: (provider: ProviderInstance) => Promise<IProvider>
+  init: (provider: ProviderInstance) => Promise<this>
 }

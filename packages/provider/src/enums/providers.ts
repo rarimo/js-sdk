@@ -17,3 +17,10 @@ export enum ProviderChecks {
   // Solflare = 'isSolflare',
   // Near = 'isNear',
 }
+
+export enum ProviderEvents {
+  Connect = 'connect',
+  Disconnect = 'disconnect',
+  ChainChanged = 'chainChanged',
+  AccountsChanged = 'accountsChanged',
+}

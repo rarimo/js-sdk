@@ -20,7 +20,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --verbose run build",
+    "build": "yarn workspaces foreach --parallel --topological-dev --verbose run build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint packages/* --ext .ts,.tsx --fix && yarn workspaces foreach --verbose --no-private run type-check",
     "publish-latest": "yarn workspaces foreach --no-private exec yarn npm publish",
@@ -54,13 +54,13 @@
     "typescript": "^4.9.5",
     "yorkie": "^2.0.0"
   },
-  "packageManager": "yarn@3.2.4",
-  "gitHooks": {
-    "pre-commit": "yarn lint"
-  },
   "dependenciesMeta": {
     "eslint@8.33.0": {
       "unplugged": true
     }
+  },
+  "packageManager": "yarn@3.4.1",
+  "gitHooks": {
+    "pre-commit": "yarn lint"
   }
 }

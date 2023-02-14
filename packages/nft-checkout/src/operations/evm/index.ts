@@ -126,7 +126,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     ).estimate()
   }
 
-  public async checkout(e: EstimatedPrice) {
+  public async checkout(e: EstimatedPrice, bundle: string) {
     const isFuji =
       Number(e.from.chainId) ===
       Number(CHAIN_IDS[ChainTypes.EVM]![ChainNames.Fuji])
@@ -139,20 +139,6 @@ export class EVMOperation implements INFTCheckoutOperation {
 
     const contractInterface = new utils.Interface(
       isFuji ? BRIDGE_AVAX_ABI : BRIDGE_ABI,
-    )
-
-    const bundle = utils.defaultAbiCoder.encode(
-      ['address[]', 'uint256[]', 'bytes[]'],
-      [
-        // FIXME:  Does it should be in UINT?
-        [this.#target?.address],
-        [],
-        [
-          new utils.Interface([
-            'function buy(address receiver_) payable',
-          ]).encodeFunctionData('buy', [this.#provider.address]),
-        ],
-      ],
     )
 
     const estimatedPrice = e.price.find(

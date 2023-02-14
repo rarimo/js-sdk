@@ -1,16 +1,15 @@
-#!/usr/bin/env node
-
-const esbuild = require('esbuild')
 const plugin = require('node-stdlib-browser/helpers/esbuild/plugin')
 const stdLibBrowser = require('node-stdlib-browser')
 
+const esbuild = require('esbuild')
+
 ;(async () => {
   await esbuild.build({
-    entryPoints: ['src/browser.ts'],
+    entryPoints: ['lib/esm/browser.js'],
     bundle: true,
     minify: true,
     sourcemap: 'external',
-    outfile: 'lib/rarimo-provider.min.js',
+    outfile: 'lib/index.js',
     inject: [require.resolve('node-stdlib-browser/helpers/esbuild/shim')],
     define: {
       global: 'global',
@@ -20,3 +19,4 @@ const stdLibBrowser = require('node-stdlib-browser')
     plugins: [plugin(stdLibBrowser)],
   })
 })()
+
