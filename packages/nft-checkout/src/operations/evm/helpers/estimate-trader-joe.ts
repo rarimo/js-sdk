@@ -47,17 +47,15 @@ export const estimateTraderJoe = async (
   )
 
   return {
-    impact: trade.priceImpact.toFixed(2),
+    impact: trade.priceImpact.toSignificant(3),
     from,
     to,
-    price: [
-      {
-        value: trade
-          .maximumAmountIn(new Percent('5', '100'))
-          .numerator.toString(),
-        decimals: from.decimals,
-        symbol: from.symbol,
-      },
-    ],
+    price: {
+      value: trade
+        .maximumAmountIn(new Percent('5', '100'))
+        .numerator.toString(),
+      decimals: from.decimals,
+      symbol: from.symbol,
+    },
   }
 }

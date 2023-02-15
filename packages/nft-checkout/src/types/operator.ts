@@ -10,6 +10,7 @@ import {
   EstimatedPrice,
   PaymentToken,
   Target,
+  TxBundle,
 } from '@/types'
 
 export interface INFTCheckoutOperationConstructor {
@@ -29,5 +30,5 @@ export interface INFTCheckoutOperation {
 
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>
-  checkout(e: EstimatedPrice, bundle: string): Promise<TransactionResponse>
+  checkout(e: EstimatedPrice, bundle: TxBundle): Promise<TransactionResponse>
 }

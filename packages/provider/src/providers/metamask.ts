@@ -4,12 +4,13 @@ import {
   EthereumProvider,
   EthProviderRpcError,
   ProviderProxy,
+  RawProvider,
   TransactionResponse,
   TxRequestBody,
 } from '@/types'
 import { HttpProvider } from 'web3-core'
 import Web3 from 'web3/types'
-import { ProviderEvents } from '@/enums'
+import { ChainTypes, ProviderEvents } from '@/enums'
 import {
   connectEthProvider,
   detectCurrentEthChain,
@@ -34,10 +35,14 @@ export class MetamaskProvider implements ProviderProxy {
   #chainId?: ChainId
   #address?: string
 
-  constructor(provider: EthereumProvider) {
+  constructor(provider: RawProvider) {
     this.#web3 = new window.Web3(provider as unknown as HttpProvider)
     this.#provider = (<unknown>this.#web3?.currentProvider) as EthereumProvider
     this.#isConnected = false
+  }
+
+  get chainType(): ChainTypes {
+    return ChainTypes.EVM
   }
 
   get isConnected(): boolean {

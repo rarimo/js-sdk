@@ -38,6 +38,7 @@ export const requestAddEthChain = async (
         chainId: window.Web3.utils.toHex(chain.id),
         chainName: chain.name,
         rpcUrls: [chain.rpcUrl],
+        blockExplorerUrls: [chain.explorerUrl],
       },
     ],
   })

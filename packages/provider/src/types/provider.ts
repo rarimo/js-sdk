@@ -40,6 +40,7 @@ export interface ProviderProxyConstructor {
 
 interface ProviderBase {
   chainId?: ChainId
+  chainType?: ChainTypes
   address?: string
   isConnected: boolean
 
@@ -63,6 +64,5 @@ export interface ProviderProxy extends ProviderBase {
 
 export interface IProvider extends ProviderBase {
   providerType?: Providers
-  chainType: ChainTypes
   init: (provider: ProviderInstance) => Promise<this>
 }

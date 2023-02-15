@@ -5,7 +5,6 @@ import { Trade } from '@uniswap/router-sdk'
 
 export class InterfaceTrade extends Trade<Currency, Currency, TradeType> {}
 
-const ZERO_PERCENT = new Percent('0')
 const ONE_HUNDRED_PERCENT = new Percent('1')
 
 export const getFeeAmount = (pool: Pair | Pool): FeeAmount => {
@@ -14,38 +13,44 @@ export const getFeeAmount = (pool: Pair | Pool): FeeAmount => {
   return pool.fee
 }
 
-export const computeRealizedPriceImpact = (trade: InterfaceTrade): Percent => {
+export const computeRealizedPriceImpact = (trade: InterfaceTrade): string => {
   const realizedLpFeePercent = computeRealizedLPFeePercent(trade)
-  return trade.priceImpact.subtract(realizedLpFeePercent)
+  return trade.priceImpact
+    .subtract(realizedLpFeePercent)
+    .multiply(-1)
+    .toSignificant(3)
 }
 
-// computes realized lp fee as a percent
 const computeRealizedLPFeePercent = (trade: InterfaceTrade): Percent => {
-  let percent: Percent
-
-  percent = ZERO_PERCENT
-  for (const swap of trade.swaps) {
+  const percent = trade.swaps.reduce((perc, swap) => {
     const { numerator, denominator } = swap.inputAmount.divide(
       trade.inputAmount,
     )
-    const overallPercent = new Percent(numerator, denominator)
 
-    const routeRealizedLPFeePercent = overallPercent.multiply(
-      ONE_HUNDRED_PERCENT.subtract(
-        swap.route.pools.reduce<Percent>(
-          (currentFee: Percent, pool: Pair | Pool): Percent => {
-            const fee = getFeeAmount(pool)
-            return currentFee.multiply(
-              ONE_HUNDRED_PERCENT.subtract(new Fraction(fee, 1_000_000)),
-            )
-          },
-          ONE_HUNDRED_PERCENT,
-        ),
-      ),
+    const routeRealizedLPFeePercent = getRouteRealizedLPFeePercent(
+      new Percent(numerator, denominator),
+      swap.route.pools,
     )
 
-    percent = percent.add(routeRealizedLPFeePercent)
-  }
+    perc = perc.add(routeRealizedLPFeePercent)
+
+    return perc
+  }, new Percent('0'))
 
   return new Percent(percent.numerator, percent.denominator)
+}
+
+const getRouteRealizedLPFeePercent = (
+  overallPercent: Percent,
+  pools: Array<Pool | Pair>,
+) => {
+  const a = pools.reduce((currentFee, pool) => {
+    const fee = getFeeAmount(pool)
+
+    return currentFee.multiply(
+      ONE_HUNDRED_PERCENT.subtract(new Fraction(fee, 1_000_000)),
+    )
+  }, ONE_HUNDRED_PERCENT)
+
+  return overallPercent.multiply(ONE_HUNDRED_PERCENT.subtract(a))
 }
