@@ -1,15 +1,15 @@
 import axios from 'axios'
 
-import { Config, Token } from '@/types'
+import { BridgeChain, Config, Token } from '@/types'
 import { errors } from '@rarimo/provider'
 import { TokenInfo } from '@uniswap/token-lists'
-import { isAvalanche, isEthereum } from './chain'
+import { isV2 } from './chain'
 
 export const loadTokens = async (
   config: Config,
-  chainId: number,
+  chain: BridgeChain,
 ): Promise<Token[]> => {
-  const url = getUrl(config, chainId)
+  const url = isV2(chain) ? config.V2_TOKEN_LIST : config.V3_TOKEN_LIST
 
   if (!url) {
     throw new errors.OperationChainNotSupportedError()
@@ -23,30 +23,20 @@ export const loadTokens = async (
 
   return data.tokens
     .reduce((acc, token) => {
-      if (token.chainId === chainId) acc.push(tokenFromTokenInfo(token))
+      if (Number(token.chainId) === Number(chain.id)) {
+        acc.push(tokenFromTokenInfo(token, chain))
+      }
 
       return acc
     }, [] as Token[])
     .sort((a, b) => a.symbol.localeCompare(b.symbol))
 }
 
-const tokenFromTokenInfo = (token: TokenInfo): Token => ({
-  chainId: token.chainId,
+const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => ({
+  chain,
   address: token.address,
   name: token.name,
   symbol: token.symbol,
   decimals: token.decimals,
   logoURI: token.logoURI,
 })
-
-const getUrl = (config: Config, chainId: number) => {
-  if (isEthereum(chainId)) {
-    return config.UNISWAP_TOKEN_LIST
-  }
-
-  if (isAvalanche(chainId)) {
-    return config.TRADER_JOE_TOKEN_LIST
-  }
-
-  return ''
-}

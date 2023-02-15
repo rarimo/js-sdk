@@ -3,9 +3,9 @@ import { ChainTypes, errors } from '@rarimo/provider'
 import { CHAIN_IDS } from '@/const'
 import { ChainNames } from '@/enums'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { estimateUniswap } from './estimate-uniswap'
-import { estimateTraderJoe } from './estimate-trader-joe'
-import { isAvalanche, isEthereum } from './chain'
+import { estimateV3 } from './estimate-v3'
+import { estimateV2 } from './estimate-v2'
+import { isV2 } from './chain'
 
 export class Estimator {
   readonly #rpc: JsonRpcProvider
@@ -29,31 +29,19 @@ export class Estimator {
   }
 
   async estimate(): Promise<EstimatedPrice> {
-    const chainId = Number(this.#from.chain.id)
-    const targetToken = this.#getTargetToken()
+    const targetToken = this.#getTargetTokenSymbol()
 
     this.#checkTokens(this.#from.token.address, targetToken?.address)
 
-    if (isEthereum(chainId)) {
-      return estimateUniswap(
-        this.#rpc,
-        this.#from.token,
-        targetToken!,
-        this.#target,
-        this.#walletAddress,
-      )
-    }
-
-    if (isAvalanche(chainId)) {
-      return estimateTraderJoe(
-        this.#rpc,
-        this.#from.token,
-        targetToken!,
-        this.#target,
-      )
-    }
-
-    throw new errors.OperationInvalidChainPairError()
+    return isV2(this.#from.chain)
+      ? estimateV2(this.#rpc, this.#from.token, targetToken!, this.#target)
+      : estimateV3(
+          this.#rpc,
+          this.#from.token,
+          targetToken!,
+          this.#target,
+          this.#walletAddress,
+        )
   }
 
   #checkTokens(from?: string, to?: string) {
@@ -62,18 +50,19 @@ export class Estimator {
     }
   }
 
-  #getTargetToken() {
+  #getTargetTokenSymbol() {
     const chains = CHAIN_IDS[ChainTypes.EVM]
     let symbol = ''
 
-    const chainId = this.#from.chain.id
+    const fromChainId = Number(this.#from.chain.id)
+    const toChainId = Number(this.#target.chainId)
 
-    // FIXME: integrate with backend
+    // TODO: do something with this please
     // For the Avalanche Wrapped ethereum symbol is WETH.e.
     // WETH is a symbol for Wormhole ethereum which has low liquidity
     if (
-      chainId === chains[ChainNames.Avalanche] &&
-      chainId === chains[ChainNames.Ethereum]
+      fromChainId === chains[ChainNames.Avalanche] &&
+      toChainId === chains[ChainNames.Ethereum]
     ) {
       symbol = 'WETH.e'
     }
@@ -86,7 +75,7 @@ export class Estimator {
         [chains[ChainNames.Goerli]]: 'WETH',
         [chains[ChainNames.Sepolia]]: 'WETH',
         [chains[ChainNames.Fuji]]: 'WAVAX',
-      }[chainId] ?? ''
+      }[toChainId] ?? ''
 
     return this.#tokens.find(t => t.symbol === symbol)
   }

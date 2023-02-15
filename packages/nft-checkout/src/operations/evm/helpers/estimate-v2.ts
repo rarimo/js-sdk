@@ -12,14 +12,14 @@ import {
 } from '@traderjoe-xyz/sdk'
 import JSBI from 'jsbi'
 
-export const estimateTraderJoe = async (
+export const estimateV2 = async (
   rpc: JsonRpcProvider,
   from: Token,
   to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
   const tokenA = new TJToken(
-    Number(from.chainId),
+    Number(from.chain.id),
     from.address,
     from.decimals,
     from.symbol,
@@ -27,7 +27,7 @@ export const estimateTraderJoe = async (
   )
 
   const tokenB = new TJToken(
-    Number(from.chainId),
+    Number(from.chain.id),
     to.address,
     to.decimals,
     to.symbol,
@@ -43,7 +43,7 @@ export const estimateTraderJoe = async (
     route,
     amount,
     TradeType.EXACT_OUTPUT,
-    Number(from.chainId) as ChainId,
+    Number(from.chain.id) as ChainId,
   )
 
   return {

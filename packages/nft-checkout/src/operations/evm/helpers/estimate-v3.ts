@@ -50,7 +50,7 @@ const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
   return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
 }
 
-export const estimateUniswap = async (
+export const estimateV3 = async (
   rpc: JsonRpcProvider,
   from: Token,
   to: Token,
@@ -58,7 +58,7 @@ export const estimateUniswap = async (
   walletAddress: string,
 ): Promise<EstimatedPrice> => {
   const tokenA = new UNIToken(
-    Number(from.chainId),
+    Number(from.chain.id),
     from.address,
     from.decimals,
     from.symbol,
@@ -66,7 +66,7 @@ export const estimateUniswap = async (
   )
 
   const tokenB = new UNIToken(
-    Number(from.chainId),
+    Number(from.chain.id),
     to.address,
     to.decimals,
     to.symbol,
@@ -77,7 +77,7 @@ export const estimateUniswap = async (
   const swapAmount = getSwapCurrencyAmount(tokenB, target.price)
 
   const router = new AlphaRouter({
-    chainId: from.chainId as UNIChainId,
+    chainId: from.chain.id as UNIChainId,
     provider: rpc,
   })
 

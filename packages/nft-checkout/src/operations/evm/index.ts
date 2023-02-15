@@ -17,15 +17,9 @@ import {
   loadTokens,
   Estimator,
   getSwapAmount,
+  isV2,
 } from './helpers'
-import {
-  CHAIN_IDS,
-  CHAINS,
-  BRIDGE_ABI,
-  ERC20_ABI,
-  BRIDGE_AVAX_ABI,
-} from '@/const'
-import { ChainNames } from '@/enums'
+import { CHAINS, SWAP_V3, ERC20_ABI, SWAP_V2 } from '@/const'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
@@ -89,7 +83,7 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   public async supportedChains() {
-    // FIXME: add backend integration
+    // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!.map(chain => ({
       ...chain,
       rpcUrl: chain.rpcUrl + this.#config.INFURA_KEY,
@@ -130,18 +124,12 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   public async checkout(e: EstimatedPrice, bundle: TxBundle) {
-    const isFuji =
-      Number(e.from.chainId) ===
-      Number(CHAIN_IDS[ChainTypes.EVM]![ChainNames.Fuji])
+    const chain = e.from.chain
 
-    const routerAddress = isFuji
-      ? this.#config.ROUTER_ADDRESS_AVAX
-      : this.#config.ROUTER_ADDRESS_UNISWAP
-
-    await this.#sendApproveTxIfNeeded(String(routerAddress), e)
+    await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
     const contractInterface = new utils.Interface(
-      isFuji ? BRIDGE_AVAX_ABI : BRIDGE_ABI,
+      isV2(chain) ? SWAP_V2 : SWAP_V3,
     )
 
     const data = contractInterface.encodeFunctionData(
@@ -161,7 +149,7 @@ export class EVMOperation implements INFTCheckoutOperation {
 
     return this.#provider.signAndSendTx({
       from: this.#provider.address,
-      to: routerAddress,
+      to: chain.contractAddress,
       data,
     })
   }
@@ -206,10 +194,7 @@ export class EVMOperation implements INFTCheckoutOperation {
   async #loadTokens() {
     if (!this.initialized) return []
 
-    this.#tokens = await loadTokens(
-      this.#config,
-      Number(this.#chainFrom?.id ?? ''),
-    )
+    this.#tokens = await loadTokens(this.#config, this.#chainFrom)
 
     return this.#tokens
   }
