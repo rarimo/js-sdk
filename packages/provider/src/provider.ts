@@ -16,6 +16,30 @@ export type CreateProviderOpts = {
   web3Instance?: Web3
 }
 
+/**
+ * Interface that represents a browser-based wallet.
+ *
+ * To get access to a wallet, first create a `Web3` object to get access to the browser and then create an instance of the appropriate wallet provider object that implements this interface.
+ *
+ * @example
+ * ```js
+ * import { Web3, Provider, Providers } from '@rarimo/core'
+ * import { MetamaskProvider } from '@rarimo/metamask-provider'
+ *
+ * const connectMetamask = async () => {
+ *   // Detect the wallets that are available in the browser
+ *   const web3 = await new Web3().init()
+ *
+ *   // Create a wallet provider with the MetamaskProvider implementation
+ *   const provider = await new Provider({
+ *     [Providers.Metamask]: MetamaskProvider,
+ *   }).init(web3.providers[Providers.Metamask])
+ *
+ *   // Connect to the MetaMask wallet
+ *   await provider.connect()
+ * }
+ * ```
+ */
 export class Provider implements IProvider {
   readonly #proxyConstructor: ProviderProxyConstructor
   #selectedProvider?: Providers
@@ -47,6 +71,14 @@ export class Provider implements IProvider {
     return this.#proxy?.chainId
   }
 
+  /**
+   * Initialize the provider by passing the wallet to access.
+   *
+   * After you initialize the provider, you must use the {@link connect} method to connect to the wallet before you can interact with it.
+   *
+   * @param provider The object that represents the wallet in the user's browser
+   * @returns An promise that resolves to an instance of the Provider interface that you can use to interact with the wallet
+   */
   public async init(provider: ProviderInstance) {
     this.#proxy = new this.#proxyConstructor(provider.instance)
     this.#selectedProvider = provider.name
@@ -54,6 +86,11 @@ export class Provider implements IProvider {
     return this
   }
 
+  /**
+   * Connect to the wallet.
+   *
+   * Before you can connect, you must initialize the wallet provider with the {@link init} method.
+   */
   public async connect() {
     if (!this.#proxy) throw new errors.ProviderNotInitializedError()
     await this.#proxy.connect()
