@@ -1,5 +1,5 @@
 # @rarimo/provider
-The @rarimo/provider TypeScript package which wraps managing multiple (EVM and non EVM type) chains wallet extension providers to the one common interface.
+Features of the Rarimo SDK that provide access to users' wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/provider)
 ![types](https://badgen.net/npm/types/@rarimo/provider)

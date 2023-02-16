@@ -1,5 +1,5 @@
 # @rarimo/nft-checkout
-Features of the Rarimo SDK that create cross-chain transactions, based on the Rarimo protocol.
+Features of the Rarimo SDK that create cross-chain transactions based on the Rarimo protocol.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/nft-checkout)
 ![types](https://badgen.net/npm/types/@rarimo/nft-checkout)
