@@ -52,6 +52,7 @@ export const estimateV2 = async (
     to,
     price: {
       value: trade
+        // TODO: add ability to set slippage
         .maximumAmountIn(new Percent('5', '100'))
         .numerator.toString(),
       decimals: from.decimals,

@@ -96,6 +96,7 @@ export const estimateV3 = async (
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
     new Fraction(JSBI.BigInt(1))
+      // TODO: add ability to set slippage
       .add(V3_SWAP_DEFAULT_SLIPPAGE)
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
