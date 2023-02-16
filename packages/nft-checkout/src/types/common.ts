@@ -1,15 +1,15 @@
 import { Chain, ChainId } from '@rarimo/provider'
+import { SwapContractVersion } from '@/enums'
 
 export type Config = {
-  UNISWAP_TOKEN_LIST?: string
-  TRADER_JOE_TOKEN_LIST?: string
+  V3_TOKEN_LIST?: string
+  V2_TOKEN_LIST?: string
+  // Needed to query data from chain for EVM chains
   INFURA_KEY: string
-  ROUTER_ADDRESS_UNISWAP?: string
-  ROUTER_ADDRESS_AVAX?: string
 }
 
 export type Token = {
-  chainId: number | string
+  chain: BridgeChain
   address: string
   name: string
   symbol: string
@@ -19,7 +19,7 @@ export type Token = {
 
 export type PaymentToken = {
   token: Token
-  chain: Chain
+  chain: BridgeChain
   balance: string
   balanceRow: Amount
 }
@@ -45,6 +45,7 @@ export type EstimatedPrice = {
 
 export type BridgeChain = Chain & {
   contractAddress: string
+  contactVersion: SwapContractVersion
 }
 
 export type Target = {

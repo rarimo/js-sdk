@@ -1,21 +1,19 @@
+import { ChainNames, SwapContractVersion } from '@/enums'
+import { BridgeChain } from '@/types'
 import { CHAIN_IDS } from '@/const'
 import { ChainTypes } from '@rarimo/provider'
-import { ChainNames } from '@/enums'
 
-const chainsIDs = CHAIN_IDS[ChainTypes.EVM]
-
-export const isEthereum = (chainId: number): boolean => {
-  return {
-    [chainsIDs[ChainNames.Ethereum]]: true,
-    [chainsIDs[ChainNames.Goerli]]: true,
-    [chainsIDs[ChainNames.Polygon]]: true,
-    [chainsIDs[ChainNames.Mumbai]]: true,
-  }[chainId]
+export const isV2 = (chain: BridgeChain): boolean => {
+  return chain.contactVersion === SwapContractVersion.V2
 }
 
-export const isAvalanche = (chainId: number): boolean => {
-  return {
-    [chainsIDs[ChainNames.Fuji]]: true,
-    [chainsIDs[ChainNames.Avalanche]]: true,
-  }[chainId]
+const chains = CHAIN_IDS[ChainTypes.EVM]
+
+export const TARGET_TOKEN_SYMBOLS = {
+  [chains[ChainNames.Ethereum]]: 'WETH',
+  [chains[ChainNames.Polygon]]: 'WMATIC',
+  [chains[ChainNames.Avalanche]]: 'WAVAX',
+  [chains[ChainNames.Goerli]]: 'WETH',
+  [chains[ChainNames.Sepolia]]: 'WETH',
+  [chains[ChainNames.Fuji]]: 'WAVAX',
 }

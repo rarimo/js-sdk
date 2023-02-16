@@ -1,4 +1,4 @@
-export const BRIDGE_AVAX_ABI = [
+export const SWAP_V2 = [
   {
     inputs: [
       {

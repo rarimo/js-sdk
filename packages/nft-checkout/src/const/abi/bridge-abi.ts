@@ -1,4 +1,4 @@
-export const BRIDGE_ABI = [
+export const SWAP_V3 = [
   {
     inputs: [],
     name: 'bridge',
