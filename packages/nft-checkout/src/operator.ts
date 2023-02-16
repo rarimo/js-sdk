@@ -16,7 +16,7 @@ export class NFTCheckoutFactory {
     this.#operators = operators
     this.#config = {
       ...CONFIG,
-      ...(config ? { config } : {}),
+      ...(config || {}),
     }
   }
 

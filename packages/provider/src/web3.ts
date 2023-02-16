@@ -30,7 +30,12 @@ export class Web3 {
 
   public get providers(): Record<Providers, ProviderInstance> {
     return this.#providers.reduce((acc, el) => {
-      acc[el.name] = el
+      const name = el.name.toLowerCase() as Providers
+
+      acc[name] = {
+        ...el,
+        name,
+      }
       return acc
     }, {} as Record<Providers, ProviderInstance>)
   }

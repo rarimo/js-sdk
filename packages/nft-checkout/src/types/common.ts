@@ -1,7 +1,12 @@
 import { Chain, ChainId } from '@rarimo/provider'
-import { CONFIG } from '@/config'
 
-export type Config = typeof CONFIG
+export type Config = {
+  UNISWAP_TOKEN_LIST?: string
+  TRADER_JOE_TOKEN_LIST?: string
+  INFURA_KEY: string
+  ROUTER_ADDRESS_UNISWAP?: string
+  ROUTER_ADDRESS_AVAX?: string
+}
 
 export type Token = {
   chainId: number | string
@@ -16,6 +21,7 @@ export type PaymentToken = {
   token: Token
   chain: Chain
   balance: string
+  balanceRow: Amount
 }
 
 export type Price = Amount & {
@@ -30,9 +36,11 @@ export type Amount = {
 
 export type EstimatedPrice = {
   impact?: string
+  gasPrice?: string
+  gasPriceInUSD?: string
   from: Token
   to: Token
-  price: Price[]
+  price: Price
 }
 
 export type BridgeChain = Chain & {
@@ -44,4 +52,9 @@ export type Target = {
   address: string
   recipient: string
   price: Price
+}
+
+export type TxBundle = {
+  bundle: string
+  salt?: string
 }

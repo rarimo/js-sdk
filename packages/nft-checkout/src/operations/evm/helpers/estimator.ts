@@ -12,17 +12,20 @@ export class Estimator {
   readonly #target: Target
   readonly #tokens: Token[]
   readonly #from: PaymentToken
+  readonly #walletAddress: string
 
   constructor(
     rpc: JsonRpcProvider,
     tokens: Token[],
     from: PaymentToken,
     target: Target,
+    walletAddress: string,
   ) {
     this.#rpc = rpc
     this.#tokens = tokens
     this.#from = from
     this.#target = target
+    this.#walletAddress = walletAddress
   }
 
   async estimate(): Promise<EstimatedPrice> {
@@ -37,6 +40,7 @@ export class Estimator {
         this.#from.token,
         targetToken!,
         this.#target,
+        this.#walletAddress,
       )
     }
 
@@ -80,6 +84,7 @@ export class Estimator {
         [chains[ChainNames.Polygon]]: 'WMATIC',
         [chains[ChainNames.Avalanche]]: 'WAVAX',
         [chains[ChainNames.Goerli]]: 'WETH',
+        [chains[ChainNames.Sepolia]]: 'WETH',
         [chains[ChainNames.Fuji]]: 'WAVAX',
       }[chainId] ?? ''
 

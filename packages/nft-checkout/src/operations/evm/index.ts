@@ -7,6 +7,7 @@ import {
   PaymentToken,
   Target,
   Token,
+  TxBundle,
 } from '@/types'
 import { ChainId, ChainTypes, errors, IProvider } from '@rarimo/provider'
 import { JsonRpcProvider } from '@ethersproject/providers'
@@ -15,6 +16,7 @@ import {
   getPaymentTokens,
   loadTokens,
   Estimator,
+  getSwapAmount,
 } from './helpers'
 import {
   CHAIN_IDS,
@@ -123,59 +125,42 @@ export class EVMOperation implements INFTCheckoutOperation {
       this.#tokens,
       from,
       this.#target!,
+      this.#provider.address!,
     ).estimate()
   }
 
-  public async checkout(e: EstimatedPrice) {
+  public async checkout(e: EstimatedPrice, bundle: TxBundle) {
     const isFuji =
       Number(e.from.chainId) ===
       Number(CHAIN_IDS[ChainTypes.EVM]![ChainNames.Fuji])
 
     const routerAddress = isFuji
-      ? this.#config.RARIFY_ROUTER_ADDRESS_AVAX
-      : this.#config.RARIFY_ROUTER_ADDRESS_UNISWAP
+      ? this.#config.ROUTER_ADDRESS_AVAX
+      : this.#config.ROUTER_ADDRESS_UNISWAP
 
-    await this.#sendApproveTxIfNeeded(routerAddress, e)
+    await this.#sendApproveTxIfNeeded(String(routerAddress), e)
 
     const contractInterface = new utils.Interface(
       isFuji ? BRIDGE_AVAX_ABI : BRIDGE_ABI,
     )
 
-    const bundle = utils.defaultAbiCoder.encode(
-      ['address[]', 'uint256[]', 'bytes[]'],
-      [
-        // FIXME:  Does it should be in UINT?
-        [this.#target?.address],
-        [],
-        [
-          new utils.Interface([
-            'function buy(address receiver_) payable',
-          ]).encodeFunctionData('buy', [this.#provider.address]),
-        ],
-      ],
-    )
-
-    const estimatedPrice = e.price.find(
-      i => i.symbol.toLowerCase() === e.from.symbol.toLowerCase(),
-    )
-
     const data = contractInterface.encodeFunctionData(
       'swapExactOutputSingleThenBridge',
       [
-        // FIXME: does it should be in UINT?
-        this.#target?.price.value, // amount out
-        // FIXME: does it should be in UINT?
-        estimatedPrice?.value, // approval amount
+        getSwapAmount(this.#target!.price), // amount out
+        e.price.value, // approval amount
         e.from.address,
         e.to.address,
         this.#provider.address, // Receiver address
-        this.#target?.chainId, // NFT chain id
+        this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
+          ?.name ?? '', // NFT chain name
         true,
-        { salt: utils.hexlify(utils.randomBytes(32)), bundle },
+        [bundle.salt || utils.hexlify(utils.randomBytes(32)), bundle.bundle],
       ],
     )
 
     return this.#provider.signAndSendTx({
+      from: this.#provider.address,
       to: routerAddress,
       data,
     })
@@ -189,28 +174,27 @@ export class EVMOperation implements INFTCheckoutOperation {
       routerAddress,
     )
 
-    const estimationPriceRaw = e.price.find(
-      i => i.symbol.toLowerCase() === e.from.symbol.toLowerCase(),
-    )
-
-    if (!estimationPriceRaw) {
+    if (!e.price.value) {
       throw new errors.OperationEstimatedPriceNotExistError()
     }
 
-    const allowance = new BN(allowanceRaw).fromWei()
-    const estimationPrice = new BN(estimationPriceRaw.value)
+    const allowance = new BN(allowanceRaw.toString()).fromFraction(
+      e.from.decimals,
+    )
+    const estimationPrice = new BN(e.price.value).fromFraction(e.from.decimals)
 
     if (estimationPrice.compare(allowance) == -1) {
       return
     }
 
-    // TODO: recheck if it's correct
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
+      e.from.address,
       MAX_UINT_256,
     ])
 
     await this.#provider.signAndSendTx({
-      to: routerAddress,
+      from: this.#provider.address,
+      to: e.from.address,
       data,
     })
   }

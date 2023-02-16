@@ -1,4 +1,4 @@
-import { ChainTypes, Providers } from '@/enums'
+import { Providers } from '@/enums'
 import {
   ChainId,
   ProviderProxy,
@@ -25,17 +25,8 @@ export class Provider implements IProvider {
     this.#proxies = proxies
   }
 
-  #ensureMethodImplemented(methodName: string) {
-    if (!this.#proxy) {
-      throw new errors.ProviderNotInitializedError()
-    }
-    if (methodName in this.#proxy) {
-      throw new errors.ProviderWrapperMethodNotFoundError()
-    }
-  }
-
   public get chainType() {
-    return ChainTypes.EVM
+    return this.#proxy?.chainType
   }
 
   public get providerType() {
@@ -52,14 +43,6 @@ export class Provider implements IProvider {
 
   public get chainId() {
     return this.#proxy?.chainId
-  }
-
-  public get provider() {
-    return this.#proxy?.provider
-  }
-
-  public get signer() {
-    return this.#proxy?.signer
   }
 
   public async init(provider: ProviderInstance) {
@@ -86,39 +69,32 @@ export class Provider implements IProvider {
   }
 
   public async switchChain(chainId: ChainId) {
-    this.#ensureMethodImplemented('switchChain')
-    await this.#proxy?.switchChain(chainId)
+    await this.#proxy?.switchChain?.(chainId)
   }
 
   public async addChain(chain: Chain) {
-    this.#ensureMethodImplemented('addChain')
     await this.#proxy?.addChain?.(chain)
   }
 
   public async signAndSendTx(txRequestBody: TxRequestBody) {
-    this.#ensureMethodImplemented('signAndSendTx')
-    return this.#proxy?.signAndSendTx(
+    return this.#proxy?.signAndSendTx?.(
       txRequestBody,
     ) as Promise<TransactionResponse>
   }
 
   public getHashFromTx(txResponse: TransactionResponse) {
-    this.#ensureMethodImplemented('getHashFromTx')
     return this.#proxy?.getHashFromTx?.(txResponse) ?? ''
   }
 
-  public getTxUrl(explorerUrl: string, txHash: string) {
-    this.#ensureMethodImplemented('getTxUrl')
-    return this.#proxy?.getTxUrl?.(explorerUrl, txHash) ?? ''
+  public getTxUrl(chain: Chain, txHash: string) {
+    return this.#proxy?.getTxUrl?.(chain, txHash) ?? ''
   }
 
-  public getAddressUrl(explorerUrl: string, address: string) {
-    this.#ensureMethodImplemented('getAddressUrl')
-    return this.#proxy?.getAddressUrl?.(explorerUrl, address) ?? ''
+  public getAddressUrl(chain: Chain, address: string) {
+    return this.#proxy?.getAddressUrl?.(chain, address) ?? ''
   }
 
   public async signMessage(message: string) {
-    this.#ensureMethodImplemented('signMessage')
     return this.#proxy?.signMessage?.(message) ?? ''
   }
 }

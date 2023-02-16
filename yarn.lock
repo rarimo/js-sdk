@@ -3186,13 +3186,13 @@ __metadata:
     "@rarimo/provider": "workspace:*"
     "@traderjoe-xyz/sdk": 2.0.7
     "@uniswap/sdk-core": 3.1.0
-    "@uniswap/smart-order-router": 2.10.0
+    "@uniswap/smart-order-router": ^2.10.0
     "@uniswap/token-lists": 1.0.0-beta.30
     "@uniswap/v3-sdk": ^3.9.0
     axios: ^1.3.1
     ethereum-erc20-token-balances-multicall: ^1.0.2
     ethers: ^5.7.2
-    jsbi: 3.2.5
+    jsbi: ^3.2.5
     lodash: ^4.17.21
   languageName: unknown
   linkType: soft
@@ -4169,9 +4169,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/smart-order-router@npm:2.10.0":
-  version: 2.10.0
-  resolution: "@uniswap/smart-order-router@npm:2.10.0"
+"@uniswap/smart-order-router@npm:^2.10.0":
+  version: 2.10.2
+  resolution: "@uniswap/smart-order-router@npm:2.10.2"
   dependencies:
     "@uniswap/default-token-list": ^2.0.0
     "@uniswap/router-sdk": ^1.3.0
@@ -4191,7 +4191,9 @@ __metadata:
     mnemonist: ^0.38.3
     node-cache: ^5.1.2
     stats-lite: ^2.2.0
-  checksum: 93f61895c221f0cbabd5c71feb603c3b3adfa477d076c2709a2f0296acac5a6db11bec9f0f6c5569d7c12cce15e609e4c9b848b04895847e67b0fd43d9addb82
+  peerDependencies:
+    jsbi: ^3.2.0
+  checksum: be797e58094192919fb6bb2cc53464f570f737a5d8851cdbeddb1bf6a1eb8b21729cbf0d29c4b1247927710ae452924781f2df37b0c07b80b0ec92ee4766cb0c
   languageName: node
   linkType: hard
 
@@ -8494,7 +8496,7 @@ __metadata:
 
 "fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -10460,7 +10462,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsbi@npm:3.2.5, jsbi@npm:^3.1.1, jsbi@npm:^3.1.4":
+"jsbi@npm:^3.1.1, jsbi@npm:^3.1.4, jsbi@npm:^3.2.5":
   version: 3.2.5
   resolution: "jsbi@npm:3.2.5"
   checksum: 74d4725f76f169d7848f3f2f88a8dd252d995421c1fefdaed8116daf4a1897c514ce8336ebb68303a2cf8d659e4fbc16791a1d232420b52cec3cf1f12ad760ed
@@ -12944,7 +12946,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.8.1#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -14572,11 +14574,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=701156"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 897c8ac656e01b132fa82be6a8e34c4507b19be63dbf1ff1d8287d775519081a7c91dd0ca3ec62536c8137228141d65b238dfb2e8987a3f5182818f58f83e7d7
+  checksum: 10d31da0caa997927eab0167b7ddacb9ac8d3fd87e6584185b14da32b7f033e727309682fc0395021f4ac110860a3be6054e9b039a996a24d282a20bafc599f4
   languageName: node
   linkType: hard
 

@@ -40,12 +40,16 @@ const createPaymentToken = (
 
   if (!internalToken) return
 
-  const balance = new BN(token.balance).fromFraction(token.decimals)
+  const balance = new BN(token.balance)
 
   if (balance.compare(new BN(0)) == -1) return
 
   return {
     balance: balance.toString(),
+    balanceRow: {
+      value: new BN(token.balance).toFraction(token.decimals).toString(),
+      decimals: token.decimals,
+    },
     token: internalToken,
     chain,
   }
