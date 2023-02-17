@@ -46,11 +46,11 @@ export class NFTCheckoutFactory {
 export const createCheckoutOperation = (
   operator: INFTCheckoutOperationConstructor,
   provider: IProvider,
-  params: CreateCheckoutOperationParams,
+  params?: CreateCheckoutOperationParams,
 ): INFTCheckoutOperation => {
   const config = {
     ...DEFAULT_CONFIG,
-    ...(params.config || {}),
+    ...(params?.config || {}),
   }
 
   return new operator(config, provider)
