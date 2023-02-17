@@ -1,4 +1,3 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { EstimatedPrice, Price, Target, Token } from '@/types'
 import {
   Currency,
@@ -11,8 +10,9 @@ import {
 import JSBI from 'jsbi'
 import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
-import { errors } from '@rarimo/provider'
+import { errors, IProvider } from '@rarimo/provider'
 import { computeRealizedPriceImpact } from './uniswap-impact'
+import { providers } from 'ethers'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -51,11 +51,10 @@ const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
 }
 
 export const estimateV3 = async (
-  rpc: JsonRpcProvider,
+  provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
-  walletAddress: string,
 ): Promise<EstimatedPrice> => {
   const tokenA = new UNIToken(
     Number(from.chain.id),
@@ -78,11 +77,11 @@ export const estimateV3 = async (
 
   const router = new AlphaRouter({
     chainId: from.chain.id as UNIChainId,
-    provider: rpc,
+    provider: provider?.getWeb3Provider?.() as providers.Web3Provider,
   })
 
   const route = await router.route(swapAmount, tokenA, TradeType.EXACT_OUTPUT, {
-    recipient: walletAddress,
+    recipient: provider.address ?? '',
     slippageTolerance: new Percent(5, 100),
     deadline: Math.floor(Date.now() / 1000 + 1800),
   })

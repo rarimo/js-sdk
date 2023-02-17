@@ -4,8 +4,6 @@ import { SwapContractVersion } from '@/enums'
 export type Config = {
   V3_TOKEN_LIST?: string
   V2_TOKEN_LIST?: string
-  // Needed to query data from chain for EVM chains
-  INFURA_KEY: string
 }
 
 export type Token = {

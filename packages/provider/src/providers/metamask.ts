@@ -21,6 +21,7 @@ import {
   requestAddEthChain,
   requestSwitchEthChain,
 } from '@/helpers'
+import { providers } from 'ethers'
 
 declare global {
   interface Window {
@@ -59,6 +60,10 @@ export class MetamaskProvider implements ProviderProxy {
 
   get address(): string | undefined {
     return this.#address
+  }
+
+  getWeb3Provider(): providers.Web3Provider {
+    return new providers.Web3Provider(this.#provider)
   }
 
   async init(): Promise<void> {

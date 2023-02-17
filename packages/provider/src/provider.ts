@@ -96,6 +96,14 @@ export class Provider implements IProvider {
   public async signMessage(message: string) {
     return this.#proxy?.signMessage?.(message) ?? ''
   }
+
+  public getWeb3Provider() {
+    if (this.#proxy?.getWeb3Provider) {
+      return this.#proxy?.getWeb3Provider?.()
+    }
+
+    throw new errors.ProviderMethodNotSupported()
+  }
 }
 
 /**
