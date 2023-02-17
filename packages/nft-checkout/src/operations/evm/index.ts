@@ -136,7 +136,7 @@ export class EVMOperation implements INFTCheckoutOperation {
       'swapExactOutputSingleThenBridge',
       [
         getSwapAmount(this.#target!.price), // amount out
-        e.price.value, // approval amount
+        e.price.value, // amount in Maximum
         e.from.address,
         e.to.address,
         this.#provider.address, // Receiver address
