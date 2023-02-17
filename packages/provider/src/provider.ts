@@ -10,19 +10,17 @@ import {
   Chain,
 } from '@/types'
 import { errors } from '@/errors'
-
-type ProxyConstructorMap = { [key in Providers]?: ProviderProxyConstructor }
+import { Web3 } from '@/web3'
 
 export class Provider implements IProvider {
-  readonly #proxies?: ProxyConstructorMap
-
+  #proxyConstructor: ProviderProxyConstructor
   #selectedProvider?: Providers
   #proxy?: ProviderProxy
 
-  constructor(proxies: ProxyConstructorMap = {} as ProxyConstructorMap) {
+  constructor(proxyConstructor: ProviderProxyConstructor) {
     this.#selectedProvider = undefined
     this.#proxy = undefined
-    this.#proxies = proxies
+    this.#proxyConstructor = proxyConstructor
   }
 
   public get chainType() {
@@ -46,10 +44,7 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance) {
-    const proxyConstructor = this.#proxies?.[provider.name]
-    if (!proxyConstructor) throw new errors.ProviderConstructorNotExistError()
-
-    this.#proxy = new proxyConstructor(provider.instance)
+    this.#proxy = new this.#proxyConstructor(provider.instance)
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
     return this
@@ -97,4 +92,24 @@ export class Provider implements IProvider {
   public async signMessage(message: string) {
     return this.#proxy?.signMessage?.(message) ?? ''
   }
+}
+
+/**
+ * @description Creates a provider instance
+ *
+ * @example
+ * const provider = await createProvider(MetamaskProvider)
+ */
+export const createProvider = async (
+  proxy: ProviderProxyConstructor,
+  web3Instance?: Web3,
+): Promise<Provider> => {
+  const provider = new Provider(proxy)
+  const web3 = web3Instance?.initiated ? web3Instance : await new Web3().init()
+
+  const injected = web3.getProvider(proxy.providerType)
+
+  if (!injected) throw new errors.ProviderInjectedInstanceNotFoundError()
+
+  return provider.init(injected)
 }

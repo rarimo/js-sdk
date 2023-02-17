@@ -10,7 +10,7 @@ import {
 } from '@/types'
 import { HttpProvider } from 'web3-core'
 import Web3 from 'web3/types'
-import { ChainTypes, ProviderEvents } from '@/enums'
+import { ChainTypes, ProviderEvents, Providers } from '@/enums'
 import {
   connectEthProvider,
   detectCurrentEthChain,
@@ -39,6 +39,10 @@ export class MetamaskProvider implements ProviderProxy {
     this.#web3 = new window.Web3(provider as unknown as HttpProvider)
     this.#provider = (<unknown>this.#web3?.currentProvider) as EthereumProvider
     this.#isConnected = false
+  }
+
+  static get providerType(): Providers {
+    return Providers.Metamask
   }
 
   get chainType(): ChainTypes {

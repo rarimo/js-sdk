@@ -7,6 +7,13 @@ export class ProviderNotInitializedError extends RuntimeError {
   }
 }
 
+export class ProviderInjectedInstanceNotFoundError extends RuntimeError {
+  constructor(message?: string) {
+    super(message)
+    this.name = 'ProviderInjectedInstanceNotFoundError'
+  }
+}
+
 export class ProviderWrapperMethodNotFoundError extends RuntimeError {
   constructor(message?: string) {
     super(message)
@@ -25,13 +32,6 @@ export class ProviderNotSupportedError extends RuntimeError {
   constructor(message?: string) {
     super(message)
     this.name = 'ProviderNotSupportedError'
-  }
-}
-
-export class ProviderConstructorNotExistError extends RuntimeError {
-  constructor(message?: string) {
-    super(message)
-    this.name = 'ProviderConstructorNotExistError'
   }
 }
 

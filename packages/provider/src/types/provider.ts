@@ -36,6 +36,7 @@ export type TransactionResponse =
 
 export interface ProviderProxyConstructor {
   new (provider: RawProvider): ProviderProxy
+  providerType: Providers
 }
 
 interface ProviderBase {
