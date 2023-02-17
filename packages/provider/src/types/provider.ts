@@ -51,7 +51,7 @@ interface ProviderBase {
   switchChain: (chainId: ChainId) => Promise<void>
 
   signAndSendTx: (txRequestBody: TxRequestBody) => Promise<TransactionResponse>
-  signMessage?: (message: string) => Promise<string | undefined>
+  signMessage?: (message: string) => Promise<string>
 
   getHashFromTx?: (txResponse: TransactionResponse) => string
   getTxUrl?: (chain: Chain, txHash: string) => string

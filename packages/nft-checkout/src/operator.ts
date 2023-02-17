@@ -4,7 +4,7 @@ import {
   Config,
 } from '@/types'
 import { errors, ChainTypes, IProvider } from '@rarimo/provider'
-import { CONFIG } from '@/config'
+import { DEFAULT_CONFIG } from '@/config'
 
 type Operators = { [key in ChainTypes]?: INFTCheckoutOperationConstructor }
 
@@ -15,7 +15,7 @@ export class NFTCheckoutFactory {
   constructor(operators: Operators, config?: Partial<Config>) {
     this.#operators = operators
     this.#config = {
-      ...CONFIG,
+      ...DEFAULT_CONFIG,
       ...(config || {}),
     }
   }

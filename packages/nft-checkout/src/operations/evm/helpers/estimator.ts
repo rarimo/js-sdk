@@ -5,7 +5,7 @@ import { ChainNames } from '@/enums'
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { estimateV3 } from './estimate-v3'
 import { estimateV2 } from './estimate-v2'
-import { isV2 } from './chain'
+import { isV2, TARGET_TOKEN_SYMBOLS } from './chain'
 
 export class Estimator {
   readonly #rpc: JsonRpcProvider
@@ -67,15 +67,7 @@ export class Estimator {
       symbol = 'WETH.e'
     }
 
-    symbol =
-      {
-        [chains[ChainNames.Ethereum]]: 'WETH',
-        [chains[ChainNames.Polygon]]: 'WMATIC',
-        [chains[ChainNames.Avalanche]]: 'WAVAX',
-        [chains[ChainNames.Goerli]]: 'WETH',
-        [chains[ChainNames.Sepolia]]: 'WETH',
-        [chains[ChainNames.Fuji]]: 'WAVAX',
-      }[toChainId] ?? ''
+    symbol = TARGET_TOKEN_SYMBOLS[toChainId] ?? ''
 
     return this.#tokens.find(t => t.symbol === symbol)
   }
