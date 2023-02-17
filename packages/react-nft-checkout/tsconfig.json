@@ -7,7 +7,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "types": ["node", "@types/lodash-es"],
+    "types": ["node", "vite/client", "@types/lodash-es"],
     "outDir": "./lib/types",
     "paths": {
       "@/*": ["src/*"]
@@ -15,5 +15,6 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext", "scripthost"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
