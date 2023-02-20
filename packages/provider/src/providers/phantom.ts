@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-export class PhantomProvider implements ProviderProxy {
+export class PhantomProviderSolana implements ProviderProxy {
   readonly #provider: _PhantomProvider
   #isConnected = false
   #web3: Web3

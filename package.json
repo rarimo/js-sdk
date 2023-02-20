@@ -64,7 +64,7 @@
     "pre-commit": "yarn lint"
   },
   "resolutions": {
-    "test-sdk": "portal:/Users/napalmpapalam/Projects/RARIMO/test-sdk"
+    "test-sdk": "portal:/Users/nikitabelous/work/test-sdk"
   },
   "dependencies": {
     "bs58": "^5.0.0"
