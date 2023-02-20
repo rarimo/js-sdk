@@ -22,7 +22,7 @@
   "scripts": {
     "build": "yarn workspaces foreach --parallel --topological-dev --verbose run build",
     "docs": "typedoc --options typedoc.json",
-    "lint": "eslint packages/* --ext .ts,.tsx --fix && yarn workspaces foreach --verbose --no-private run type-check",
+    "lint": "eslint packages/* --ext .ts,.tsx --fix && yarn workspaces foreach --parallel --verbose --no-private run type-check",
     "publish-latest": "yarn workspaces foreach --no-private exec yarn npm publish",
     "test": "jest --verbose true",
     "test:watch": "jest --watch"

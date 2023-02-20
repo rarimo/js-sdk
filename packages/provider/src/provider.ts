@@ -10,19 +10,21 @@ import {
   Chain,
 } from '@/types'
 import { errors } from '@/errors'
+import { Web3 } from '@/web3'
 
-type ProxyConstructorMap = { [key in Providers]?: ProviderProxyConstructor }
+export type CreateProviderOpts = {
+  web3Instance?: Web3
+}
 
 export class Provider implements IProvider {
-  readonly #proxies?: ProxyConstructorMap
-
+  readonly #proxyConstructor: ProviderProxyConstructor
   #selectedProvider?: Providers
   #proxy?: ProviderProxy
 
-  constructor(proxies: ProxyConstructorMap = {} as ProxyConstructorMap) {
+  constructor(proxyConstructor: ProviderProxyConstructor) {
     this.#selectedProvider = undefined
     this.#proxy = undefined
-    this.#proxies = proxies
+    this.#proxyConstructor = proxyConstructor
   }
 
   public get chainType() {
@@ -46,10 +48,7 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance) {
-    const proxyConstructor = this.#proxies?.[provider.name]
-    if (!proxyConstructor) throw new errors.ProviderConstructorNotExistError()
-
-    this.#proxy = new proxyConstructor(provider.instance)
+    this.#proxy = new this.#proxyConstructor(provider.instance)
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
     return this
@@ -97,4 +96,42 @@ export class Provider implements IProvider {
   public async signMessage(message: string) {
     return this.#proxy?.signMessage?.(message) ?? ''
   }
+
+  public getWeb3Provider() {
+    if (this.#proxy?.getWeb3Provider) {
+      return this.#proxy?.getWeb3Provider?.()
+    }
+
+    throw new errors.ProviderMethodNotSupported()
+  }
+}
+
+/**
+ * @description Creates a provider instance
+ *
+ * @example
+ * const provider = await createProvider(MetamaskProvider)
+ * // or
+ * const web3Instance = await new Web3().init()
+ * const metamaskProvider = await createProvider(MetamaskProvider, { web3Instance })
+ * const phantomProvider = await createProvider(PhantomProvider, { web3Instance })
+ */
+export const createProvider = async (
+  proxy: ProviderProxyConstructor,
+  opts: CreateProviderOpts = {},
+): Promise<Provider> => {
+  const { web3Instance } = opts
+
+  const provider = new Provider(proxy)
+  const web3 = web3Instance || new Web3()
+
+  if (!web3.initiated) {
+    await web3.init()
+  }
+
+  const injected = web3.getProvider(proxy.providerType)
+
+  if (!injected) throw new errors.ProviderInjectedInstanceNotFoundError()
+
+  return provider.init(injected)
 }

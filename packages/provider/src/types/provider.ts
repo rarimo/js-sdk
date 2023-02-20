@@ -4,7 +4,7 @@ import {
   Transaction as SolTransaction,
   TransactionSignature,
 } from '@solana/web3.js'
-import { ethers } from 'ethers'
+import { ethers, providers } from 'ethers'
 
 import { ChainTypes, Providers } from '@/enums'
 import { EthereumProvider } from './ethereum'
@@ -36,6 +36,7 @@ export type TransactionResponse =
 
 export interface ProviderProxyConstructor {
   new (provider: RawProvider): ProviderProxy
+  providerType: Providers
 }
 
 interface ProviderBase {
@@ -56,6 +57,9 @@ interface ProviderBase {
   getHashFromTx?: (txResponse: TransactionResponse) => string
   getTxUrl?: (chain: Chain, txHash: string) => string
   getAddressUrl?: (chain: Chain, address: string) => string
+
+  // EVM specific methods
+  getWeb3Provider?: () => providers.Web3Provider
 }
 
 export interface ProviderProxy extends ProviderBase {

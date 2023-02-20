@@ -12,6 +12,9 @@ on:
     branches:
       - main
 
+env:
+  NPM_AUTH_TOKEN: auth_token
+
 jobs:
   deploy_pages:
     runs-on: ubuntu-latest
