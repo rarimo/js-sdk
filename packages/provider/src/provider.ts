@@ -19,6 +19,24 @@ export type CreateProviderOpts = {
   web3Instance?: Web3
 }
 
+/**
+ * @description Represents a browser-based wallet.
+ *
+ * To connect to a wallet, create an object to represent the wallet to access with the `createProvider()` method. These wallet objects implement the `Provider` interface so you can access different types of wallets in a consistent way.
+ *
+ * @example
+ * ```js
+ * import { createProvider, MetamaskProvider } from '@rarimo/provider'
+ *
+ * const getMetamaskBalances = async () => {
+ *   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+ *   const provider = await createProvider(MetamaskProvider)
+ *
+ *   // Get the address of the wallet
+ *   console.log(provider.address)
+ * }
+ * ```
+ */
 export class Provider implements IProvider {
   readonly #proxyConstructor: ProviderProxyConstructor
   #selectedProvider?: Providers
@@ -132,7 +150,7 @@ export class Provider implements IProvider {
 }
 
 /**
- * @description Creates a provider instance
+ * @description Creates an instance of a wallet provider
  *
  * @example
  * const provider = await createProvider(MetamaskProvider)
