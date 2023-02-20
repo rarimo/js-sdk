@@ -121,6 +121,7 @@ export class EVMOperation implements INFTCheckoutOperation {
       isV2(chain) ? SWAP_V2 : SWAP_V3,
     )
 
+    // TODO: fix for v2 native tokens
     const data = contractInterface.encodeFunctionData(
       'swapExactOutputMultiHopThenBridge',
       [
@@ -161,6 +162,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     const allowance = new BN(allowanceRaw.toString()).fromFraction(
       e.from.decimals,
     )
+
     const estimationPrice = new BN(e.price.value).fromFraction(e.from.decimals)
 
     if (estimationPrice.compare(allowance) == -1) {
@@ -168,7 +170,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     }
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
-      e.from.address,
+      routerAddress,
       MAX_UINT_256,
     ])
 

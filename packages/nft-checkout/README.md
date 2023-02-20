@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   <ul>
     <li>`createCheckoutOperation` function simplifies create NFT checkout operation.</li>
   </ul>
+  <h4>Fixed</h4>
+  <ul>
+    <li>Approving non swap contract address, which cause error "transfer amount exceeds spender allowance"</li>
+  </ul>
 </details>
 <details><summary>1.0.1</summary>
   <h4>Added</h4>
