@@ -30,7 +30,7 @@ const sendTransaction = async () => {
 
   // Set the parameters for the transaction, including the price and the tokens to accept payment in.
   const target = {
-    // Source chain id (Sepolia in this case)
+    // Destination chain id (Sepolia in this case)
     chainId: 11155111,
     // Address of the NFT sale contract
     address: "0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1",
