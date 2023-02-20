@@ -122,12 +122,11 @@ export class EVMOperation implements INFTCheckoutOperation {
     )
 
     const data = contractInterface.encodeFunctionData(
-      'swapExactOutputSingleThenBridge',
+      'swapExactOutputMultiHopThenBridge',
       [
         getSwapAmount(this.#target!.price), // amount out
         e.price.value, // amount in Maximum
-        e.from.address,
-        e.to.address,
+        e.path,
         this.#provider.address, // Receiver address
         this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
           ?.name ?? '', // NFT chain name

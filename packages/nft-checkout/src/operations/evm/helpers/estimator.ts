@@ -2,8 +2,8 @@ import { EstimatedPrice, PaymentToken, Target, Token } from '@/types'
 import { ChainTypes, errors, IProvider } from '@rarimo/provider'
 import { CHAIN_IDS } from '@/const'
 import { ChainNames } from '@/enums'
-import { estimateV3 } from './estimate-v3'
-import { estimateV2 } from './estimate-v2'
+import { estimateUniswapV3 } from './estimate-uniswap-v3'
+import { estimateAvalancheV2 } from './estimate-avalanche-v2'
 import { isV2, TARGET_TOKEN_SYMBOLS } from './chain'
 
 export class Estimator {
@@ -30,8 +30,18 @@ export class Estimator {
     this.#checkTokens(this.#from.token.address, targetToken?.address)
 
     return isV2(this.#from.chain)
-      ? estimateV2(this.#provider, this.#from.token, targetToken!, this.#target)
-      : estimateV3(this.#provider, this.#from.token, targetToken!, this.#target)
+      ? estimateAvalancheV2(
+          this.#provider,
+          this.#from.token,
+          targetToken!,
+          this.#target,
+        )
+      : estimateUniswapV3(
+          this.#provider,
+          this.#from.token,
+          targetToken!,
+          this.#target,
+        )
   }
 
   #checkTokens(from?: string, to?: string) {

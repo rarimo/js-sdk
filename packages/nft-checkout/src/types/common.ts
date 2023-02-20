@@ -33,6 +33,7 @@ export type Amount = {
 }
 
 export type EstimatedPrice = {
+  path?: string | string[]
   impact?: string
   gasPrice?: string
   gasPriceInUSD?: string

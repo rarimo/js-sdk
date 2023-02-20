@@ -7,8 +7,13 @@ import {
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
+import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import JSBI from 'jsbi'
-import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
+import {
+  AlphaRouter,
+  ChainId as UNIChainId,
+  RouteWithValidQuote,
+} from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
 import { errors, IProvider } from '@rarimo/provider'
 import { computeRealizedPriceImpact } from './uniswap-impact'
@@ -46,11 +51,20 @@ export const getSwapAmount = (price: Price) => {
   return amountBN.add(fee).toFraction(price.decimals).toString()
 }
 
+const getRoutePath = (route: RouteWithValidQuote[]) => {
+  return route.reduce((path, r) => {
+    const p = encodeRouteToPath(r.route as Route<Currency, Currency>, true)
+    path += path ? p.replace('0x', '') : p
+
+    return path
+  }, '')
+}
+
 const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
   return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
 }
 
-export const estimateV3 = async (
+export const estimateUniswapV3 = async (
   provider: IProvider,
   from: Token,
   to: Token,
@@ -90,8 +104,6 @@ export const estimateV3 = async (
 
   const { estimatedGasUsedUSD, gasPriceWei, trade } = route
 
-  const impact = trade ? computeRealizedPriceImpact(trade) : undefined
-
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
     new Fraction(JSBI.BigInt(1))
@@ -100,16 +112,15 @@ export const estimateV3 = async (
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
 
-  const price = getPrice(from, amount)
-
   return {
-    impact,
+    from,
+    to,
+    impact: trade ? computeRealizedPriceImpact(trade) : undefined,
+    price: getPrice(from, amount),
+    path: getRoutePath(route.route),
     gasPriceInUSD: new BN(estimatedGasUsedUSD.numerator.toString())
       .fromFraction(estimatedGasUsedUSD.currency.decimals)
       .toString(),
     gasPrice: new BN(gasPriceWei.toString()).fromWei().toString(),
-    from,
-    to,
-    price,
   }
 }

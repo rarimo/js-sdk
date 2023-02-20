@@ -22,7 +22,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_ethereum.jpg&w=32&q=75',
     contractAddress: '0x1840Bc40c28af54dF509A7e5dfC31723E5331d4D',
-    contactVersion: SwapContractVersion.V3,
+    contactVersion: SwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Polygon],
@@ -33,7 +33,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_polygon.jpg&w=32&q=75',
     contractAddress: '0x1840Bc40c28af54dF509A7e5dfC31723E5331d4D',
-    contactVersion: SwapContractVersion.V3,
+    contactVersion: SwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Avalanche],
@@ -44,7 +44,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=64&q=75',
     contractAddress: '0x6405b0cBaa17B8ACdc566d335e2D8bFe971FB26F',
-    contactVersion: SwapContractVersion.V2,
+    contactVersion: SwapContractVersion.AvalancheV2,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Goerli],
@@ -55,7 +55,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_ethereum.jpg&w=32&q=75',
     contractAddress: '0x1840Bc40c28af54dF509A7e5dfC31723E5331d4D',
-    contactVersion: SwapContractVersion.V3,
+    contactVersion: SwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Sepolia],
@@ -66,7 +66,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_ethereum.jpg&w=32&q=75',
     contractAddress: '0x1840Bc40c28af54dF509A7e5dfC31723E5331d4D',
-    contactVersion: SwapContractVersion.V3,
+    contactVersion: SwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Fuji],
@@ -77,7 +77,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=64&q=75',
     contractAddress: '0x6405b0cBaa17B8ACdc566d335e2D8bFe971FB26F',
-    contactVersion: SwapContractVersion.V2,
+    contactVersion: SwapContractVersion.AvalancheV2,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Mumbai],
@@ -88,7 +88,7 @@ const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://chainlist.org/_next/image?url=%2Funknown-logo.png&w=64&q=75',
     contractAddress: '0x1840Bc40c28af54dF509A7e5dfC31723E5331d4D',
-    contactVersion: SwapContractVersion.V3,
+    contactVersion: SwapContractVersion.UniswapV3,
   },
 ]
 
