@@ -65,5 +65,8 @@
   },
   "resolutions": {
     "test-sdk": "portal:/Users/napalmpapalam/Projects/RARIMO/test-sdk"
+  },
+  "dependencies": {
+    "bs58": "^5.0.0"
   }
 }

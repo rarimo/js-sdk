@@ -28,4 +28,5 @@ export enum ProviderEvents {
   Disconnect = 'disconnect',
   ChainChanged = 'chainChanged',
   AccountsChanged = 'accountsChanged',
+  AccountChanged = 'accountChanged',
 }
