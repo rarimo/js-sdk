@@ -1,31 +1,27 @@
 import { EstimatedPrice, PaymentToken, Target, Token } from '@/types'
-import { ChainTypes, errors } from '@rarimo/provider'
+import { ChainTypes, errors, IProvider } from '@rarimo/provider'
 import { CHAIN_IDS } from '@/const'
 import { ChainNames } from '@/enums'
-import { JsonRpcProvider } from '@ethersproject/providers'
-import { estimateV3 } from './estimate-v3'
-import { estimateV2 } from './estimate-v2'
+import { estimateUniswapV3 } from './estimate-uniswap-v3'
+import { estimateAvalancheV2 } from './estimate-avalanche-v2'
 import { isV2, TARGET_TOKEN_SYMBOLS } from './chain'
 
 export class Estimator {
-  readonly #rpc: JsonRpcProvider
   readonly #target: Target
   readonly #tokens: Token[]
   readonly #from: PaymentToken
-  readonly #walletAddress: string
+  readonly #provider: IProvider
 
   constructor(
-    rpc: JsonRpcProvider,
+    provider: IProvider,
     tokens: Token[],
     from: PaymentToken,
     target: Target,
-    walletAddress: string,
   ) {
-    this.#rpc = rpc
     this.#tokens = tokens
     this.#from = from
     this.#target = target
-    this.#walletAddress = walletAddress
+    this.#provider = provider
   }
 
   async estimate(): Promise<EstimatedPrice> {
@@ -34,13 +30,17 @@ export class Estimator {
     this.#checkTokens(this.#from.token.address, targetToken?.address)
 
     return isV2(this.#from.chain)
-      ? estimateV2(this.#rpc, this.#from.token, targetToken!, this.#target)
-      : estimateV3(
-          this.#rpc,
+      ? estimateAvalancheV2(
+          this.#provider,
           this.#from.token,
           targetToken!,
           this.#target,
-          this.#walletAddress,
+        )
+      : estimateUniswapV3(
+          this.#provider,
+          this.#from.token,
+          targetToken!,
+          this.#target,
         )
   }
 

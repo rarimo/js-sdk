@@ -12,9 +12,12 @@ declare global {
   }
 }
 
+type ProvidersReturnType = Record<Providers, ProviderInstance>
+
 export class Web3 {
   #providers: ProviderInstance[]
   #rawProviders: RawProvider[]
+  #initiated = false
 
   constructor() {
     this.#providers = []
@@ -25,10 +28,15 @@ export class Web3 {
     await sleep(500)
     this.#detectRawProviders()
     await this.#defineProviders()
+    this.#initiated = true
     return this
   }
 
-  public get providers(): Record<Providers, ProviderInstance> {
+  get initiated(): boolean {
+    return this.#initiated
+  }
+
+  public get providers(): ProvidersReturnType {
     return this.#providers.reduce((acc, el) => {
       const name = el.name.toLowerCase() as Providers
 
@@ -38,6 +46,10 @@ export class Web3 {
       }
       return acc
     }, {} as Record<Providers, ProviderInstance>)
+  }
+
+  public getProvider(provider: Providers): ProviderInstance | undefined {
+    return this.providers[provider]
   }
 
   public get isEnabled(): boolean {

@@ -1,5 +1,7 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
+import JSBI from 'jsbi'
+import { IProvider } from '@rarimo/provider'
 import { EstimatedPrice, Target, Token } from '@/types'
+
 import {
   ChainId,
   Fetcher,
@@ -10,10 +12,9 @@ import {
   Trade,
   TradeType,
 } from '@traderjoe-xyz/sdk'
-import JSBI from 'jsbi'
 
-export const estimateV2 = async (
-  rpc: JsonRpcProvider,
+export const estimateAvalancheV2 = async (
+  provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
@@ -36,7 +37,12 @@ export const estimateV2 = async (
 
   const amount = new TokenAmount(tokenB, JSBI.BigInt(target.price.value))
 
-  const pair = await Fetcher.fetchPairData(tokenA, tokenB, rpc)
+  const pair = await Fetcher.fetchPairData(
+    tokenA,
+    tokenB,
+    provider?.getWeb3Provider?.(),
+  )
+
   const route = new Route([pair], tokenA, tokenB)
 
   const trade = new Trade(
@@ -48,6 +54,7 @@ export const estimateV2 = async (
 
   return {
     impact: trade.priceImpact.toSignificant(3),
+    path: trade.route.path.map(token => token.address),
     from,
     to,
     price: {

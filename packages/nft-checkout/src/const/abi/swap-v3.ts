@@ -1,5 +1,21 @@
 export const SWAP_V3 = [
   {
+    inputs: [
+      {
+        internalType: 'contract ISwapRouter',
+        name: 'router_',
+        type: 'address',
+      },
+      {
+        internalType: 'contract IBridge',
+        name: 'bridge_',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
     inputs: [],
     name: 'bridge',
     outputs: [
@@ -25,14 +41,9 @@ export const SWAP_V3 = [
         type: 'uint256',
       },
       {
-        internalType: 'contract IERC20',
-        name: 'tokenIn',
-        type: 'address',
-      },
-      {
-        internalType: 'contract IERC20',
-        name: 'tokenOut',
-        type: 'address',
+        internalType: 'bytes',
+        name: 'path',
+        type: 'bytes',
       },
       {
         internalType: 'string',
@@ -67,7 +78,7 @@ export const SWAP_V3 = [
         type: 'tuple',
       },
     ],
-    name: 'swapExactInputSingleThenBridge',
+    name: 'swapExactInputMultiHopThenBridge',
     outputs: [
       {
         internalType: 'uint256',
@@ -75,7 +86,7 @@ export const SWAP_V3 = [
         type: 'uint256',
       },
     ],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -136,73 +147,7 @@ export const SWAP_V3 = [
         type: 'uint256',
       },
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amountOut',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amountInMaximum',
-        type: 'uint256',
-      },
-      {
-        internalType: 'contract IERC20',
-        name: 'tokenIn',
-        type: 'address',
-      },
-      {
-        internalType: 'contract IERC20',
-        name: 'tokenOut',
-        type: 'address',
-      },
-      {
-        internalType: 'string',
-        name: 'receiver',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'network',
-        type: 'string',
-      },
-      {
-        internalType: 'bool',
-        name: 'isWrapped',
-        type: 'bool',
-      },
-      {
-        components: [
-          {
-            internalType: 'bytes32',
-            name: 'salt',
-            type: 'bytes32',
-          },
-          {
-            internalType: 'bytes',
-            name: 'bundle',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct IBundler.Bundle',
-        name: 'bundle_',
-        type: 'tuple',
-      },
-    ],
-    name: 'swapExactOutputSingleThenBridge',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'amountIn',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -217,5 +162,9 @@ export const SWAP_V3 = [
     ],
     stateMutability: 'view',
     type: 'function',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
   },
 ]
