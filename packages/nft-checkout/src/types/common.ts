@@ -1,60 +1,12 @@
-import { Chain, ChainId } from '@rarimo/provider'
+import { Chain } from '@rarimo/provider'
 import { SwapContractVersion } from '@/enums'
 
-export type Config = {
-  V3_TOKEN_LIST?: string
-  V2_TOKEN_LIST?: string
-}
-
-export type Token = {
-  chain: BridgeChain
-  address: string
-  name: string
-  symbol: string
-  decimals: number
-  logoURI?: string
-}
-
-export type PaymentToken = {
-  token: Token
-  chain: BridgeChain
-  balance: string
-  balanceRow: Amount
-}
-
-export type Price = Amount & {
-  symbol: string
-}
-
-export type Amount = {
-  // UINT amount
-  value: string
-  decimals: number
-}
-
-export type EstimatedPrice = {
-  path?: string | string[]
-  impact?: string
-  gasPrice?: string
-  gasPriceInUSD?: string
-  from: Token
-  to: Token
-  price: Price
-}
+export type Decimals = number // Token decimals, e.g. 18 for ETH, 6 for USDT, etc
+export type HexString = string // Ethereum hex-string
+export type Address = HexString // Ethereum hex-string address
+export type TokenSymbol = string // Token symbol, e.g. ETH, USDT, etc
 
 export type BridgeChain = Chain & {
-  contractAddress: string
+  contractAddress: Address
   contactVersion: SwapContractVersion
-}
-
-export type Target = {
-  chainId: ChainId
-  address: string
-  recipient: string
-  price: Price
-}
-
-export type TxBundle = {
-  bundle: string
-  salt?: string
 }

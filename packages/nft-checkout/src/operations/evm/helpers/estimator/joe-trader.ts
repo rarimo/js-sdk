@@ -12,8 +12,20 @@ import {
   Trade,
   TradeType,
 } from '@traderjoe-xyz/sdk'
+import { Price } from '@/entities'
+import { validateSlippage } from './slippage'
 
-export const estimateAvalancheV2 = async (
+const getSlippage = (slippage?: number): Percent => {
+  if (!slippage) {
+    return new Percent('5', '100')
+  }
+
+  validateSlippage(slippage)
+
+  return new Percent(String(slippage), '1')
+}
+
+export const estimateJoeTrader = async (
   provider: IProvider,
   from: Token,
   to: Token,
@@ -57,13 +69,10 @@ export const estimateAvalancheV2 = async (
     path: trade.route.path.map(token => token.address),
     from,
     to,
-    price: {
-      value: trade
-        // TODO: add ability to set slippage
-        .maximumAmountIn(new Percent('5', '100'))
-        .numerator.toString(),
-      decimals: from.decimals,
-      symbol: from.symbol,
-    },
+    price: Price.fromFraction(
+      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
+      from.decimals,
+      from.symbol,
+    ),
   }
 }

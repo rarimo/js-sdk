@@ -12,7 +12,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<details><summary>Unreleased</summary>
+<details><summary>1.1.1</summary>
+  <h4>Changed</h4>
+  <ul>
+    <li>NFT checkout operator errors moved to `@rarimo/nft-checkout` package</li>
+  </ul>
+</details>
+<details><summary>1.1.0</summary>
   <h4>Added</h4>
   <ul>
     <li>`createProvider` function, to simplify interface, which will create provider instance, user need to pass provider proxy implementation for needed wallet and web3 instance optionally.</li>

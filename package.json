@@ -62,8 +62,5 @@
   "packageManager": "yarn@3.4.1",
   "gitHooks": {
     "pre-commit": "yarn lint"
-  },
-  "resolutions": {
-    "test-sdk": "portal:/Users/napalmpapalam/Projects/RARIMO/test-sdk"
   }
 }

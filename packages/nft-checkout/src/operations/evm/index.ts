@@ -9,21 +9,37 @@ import {
   Token,
   TxBundle,
 } from '@/types'
-import { ChainId, ChainTypes, errors, IProvider } from '@rarimo/provider'
 import {
-  getPaymentTokens,
-  loadTokens,
+  ChainId,
+  ChainTypes,
+  errors as providerErrors,
+  IProvider,
+  TransactionResponse,
+} from '@rarimo/provider'
+import {
   Estimator,
+  getPaymentTokens,
   getSwapAmount,
-  isV2,
+  loadTokens,
 } from './helpers'
-import { CHAINS, SWAP_V3, ERC20_ABI, SWAP_V2 } from '@/const'
+import {
+  CHAINS,
+  ERC20_ABI,
+  SOLIDITY_MAX_UINT_256,
+  SWAP_V2_ABI,
+  SWAP_V3_ABI,
+} from '@/const'
+import { errors } from '@/errors'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
+import { SwapContractVersion } from '@/enums'
 
-const MAX_UINT_256 =
-  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+const SWAP_CONTRACT_ABIS = {
+  [SwapContractVersion.TraderJoe]: SWAP_V2_ABI,
+  [SwapContractVersion.PancakeSwap]: SWAP_V2_ABI,
+  [SwapContractVersion.UniswapV3]: SWAP_V3_ABI,
+}
 
 export class EVMOperation implements INFTCheckoutOperation {
   readonly #provider: IProvider
@@ -42,19 +58,19 @@ export class EVMOperation implements INFTCheckoutOperation {
     this.#provider = provider
   }
 
-  public get chain() {
+  public get chain(): BridgeChain {
     return this.#chainFrom
   }
 
-  public get provider() {
+  public get provider(): IProvider {
     return this.#provider
   }
 
-  public get initialized() {
+  public get initialized(): boolean {
     return this.#initialized
   }
 
-  async init({ chainIdFrom, target }: OperationCreateParams) {
+  async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
     if (!this.#chains.length) {
       await this.supportedChains()
     }
@@ -76,14 +92,20 @@ export class EVMOperation implements INFTCheckoutOperation {
     this.#initialized = true
   }
 
-  public async supportedChains() {
+  public async supportedChains(): Promise<BridgeChain[]> {
     // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!
 
     return this.#chains
   }
 
-  public async loadPaymentTokens(chain: BridgeChain) {
+  public async supportedTokens(): Promise<Token[]> {
+    if (!this.initialized) throw new errors.OperatorNotInitializedError()
+
+    return this.#tokens
+  }
+
+  public async loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]> {
     if (!this.initialized) throw new errors.OperatorNotInitializedError()
 
     if (!this.#provider.isConnected) {
@@ -101,7 +123,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     )
   }
 
-  public async estimatePrice(from: PaymentToken) {
+  public async estimatePrice(from: PaymentToken): Promise<EstimatedPrice> {
     if (!this.initialized) throw new errors.OperatorNotInitializedError()
 
     return new Estimator(
@@ -112,13 +134,16 @@ export class EVMOperation implements INFTCheckoutOperation {
     ).estimate()
   }
 
-  public async checkout(e: EstimatedPrice, bundle: TxBundle) {
+  public async checkout(
+    e: EstimatedPrice,
+    bundle: TxBundle,
+  ): Promise<TransactionResponse> {
     const chain = e.from.chain
 
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
     const contractInterface = new utils.Interface(
-      isV2(chain) ? SWAP_V2 : SWAP_V3,
+      SWAP_CONTRACT_ABIS[chain.contactVersion],
     )
 
     const data = contractInterface.encodeFunctionData(
@@ -169,10 +194,10 @@ export class EVMOperation implements INFTCheckoutOperation {
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       e.from.address,
-      MAX_UINT_256,
+      SOLIDITY_MAX_UINT_256,
     ])
 
-    await this.#provider.signAndSendTx({
+    return this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: e.from.address,
       data,
@@ -197,7 +222,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     try {
       await this.#provider.switchChain(this.#chainFrom!.id)
     } catch (e) {
-      if (!(e instanceof errors.ProviderChainNotFoundError)) {
+      if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
         throw e
       }
       await this.#provider.addChain!(this.#chainFrom!)

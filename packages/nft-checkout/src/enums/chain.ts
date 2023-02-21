@@ -6,9 +6,12 @@ export enum ChainNames {
   Sepolia = 'Sepolia',
   Mumbai = 'Avalanche Fuji-Chain',
   Fuji = 'Polygon Mumbai',
+  BSC = 'Binance Smart Chain',
+  BSCTestnet = 'Binance Smart Chain Testnet',
 }
 
 export enum SwapContractVersion {
-  AvalancheV2 = 'AvalancheV2',
+  TraderJoe = 'TraderJoe',
+  PancakeSwap = 'PancakeSwap',
   UniswapV3 = 'UniswapV3',
 }

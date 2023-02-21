@@ -6,6 +6,7 @@ import {
 import { BridgeChain, PaymentToken, Token } from '@/types'
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
+import { Amount } from '@/entities'
 
 const mapTokenBalances = (
   supportedTokens: Token[],
@@ -32,7 +33,7 @@ const createPaymentToken = (
   supportedTokens: Token[],
   token: TokenInfo,
   chain: BridgeChain,
-) => {
+): PaymentToken | undefined => {
   const internalToken = getTokenByAddress(
     supportedTokens,
     token.contractAddress,
@@ -46,10 +47,7 @@ const createPaymentToken = (
 
   return {
     balance: balance.toString(),
-    balanceRow: {
-      value: new BN(token.balance).toFraction(token.decimals).toString(),
-      decimals: token.decimals,
-    },
+    balanceRaw: Amount.fromRaw(token.balance, token.decimals),
     token: internalToken,
     chain,
   }

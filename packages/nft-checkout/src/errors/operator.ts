@@ -1,4 +1,4 @@
-import { RuntimeError } from './runtime'
+import { RuntimeError } from '@rarimo/provider'
 
 export class OperatorNotExistsError extends RuntimeError {
   constructor(message?: string) {
@@ -60,5 +60,12 @@ export class OperationInvalidProviderChainTypeError extends RuntimeError {
   constructor(message?: string) {
     super(message)
     this.name = 'OperationInvalidProviderChainTypeError'
+  }
+}
+
+export class OperatorInvalidSlippageError extends RuntimeError {
+  constructor(message?: string) {
+    super(message)
+    this.name = 'OperatorInvalidSlippageError'
   }
 }

@@ -12,7 +12,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<details><summary>Unreleased</summary>
+<details><summary>1.2.0</summary>
+  <h4>Added</h4>
+  <ul>
+    <li>`supportedTokens` method to `INFTCheckoutOperation` interface to get supported tokens for swap on the selected chain</li>
+    <li>PancakeSwap integration</li>
+    <li>Ability to provide slippage in target object</li>
+  </ul>
+  <h4>Changed</h4>
+  <ul>
+    <li>Operator errors moved into from `@rarimo/provider`</li>
+    <li>Target object now has the required field `swapTargetTokenSymbol`, which need to determine output token for swap.</li>
+    <li>Price type refactored to class, which provides developer friendly interface to create price instance</li>
+  </ul>
+</details>
+<details><summary>1.1.0</summary>
   <h4>Added</h4>
   <ul>
     <li>`createCheckoutOperation` function simplifies create NFT checkout operation.</li>

@@ -1,4 +1,5 @@
-import { EstimatedPrice, Price, Target, Token } from '@/types'
+import { EstimatedPrice, Target, Token } from '@/types'
+import { Price } from '@/entities'
 import {
   Currency,
   CurrencyAmount,
@@ -15,9 +16,11 @@ import {
   RouteWithValidQuote,
 } from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
-import { errors, IProvider } from '@rarimo/provider'
+import { IProvider } from '@rarimo/provider'
+import { errors } from '@/errors'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 import { providers } from 'ethers'
+import { validateSlippage } from './slippage'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -25,19 +28,15 @@ const getPrice = (
   from: Token,
   amount: CurrencyAmount<Currency> | undefined,
 ) => {
-  const price = {
-    symbol: from.symbol,
-    value: '',
-    decimals: from.decimals,
-  }
-
   if (!amount || JSBI.equal(amount?.quotient, JSBI.BigInt(0))) {
-    return price
+    return Price.fromRaw('0', from.decimals, from.symbol)
   }
 
-  price.value = amount.numerator.toString()
-
-  return price
+  return Price.fromFraction(
+    amount.numerator.toString(),
+    from.decimals,
+    from.symbol,
+  )
 }
 
 export const getSwapAmount = (price: Price) => {
@@ -62,6 +61,16 @@ const getRoutePath = (route: RouteWithValidQuote[]) => {
 
 const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
   return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
+}
+
+const getSlippage = (slippage?: number): Percent => {
+  if (!slippage) {
+    return V3_SWAP_DEFAULT_SLIPPAGE
+  }
+
+  validateSlippage(slippage)
+
+  return new Percent(slippage, 1)
 }
 
 export const estimateUniswapV3 = async (
@@ -107,8 +116,7 @@ export const estimateUniswapV3 = async (
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
     new Fraction(JSBI.BigInt(1))
-      // TODO: add ability to set slippage
-      .add(V3_SWAP_DEFAULT_SLIPPAGE)
+      .add(getSlippage(target.slippage))
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
 

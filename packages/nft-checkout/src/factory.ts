@@ -3,8 +3,9 @@ import {
   INFTCheckoutOperation,
   Config,
 } from '@/types'
-import { errors, ChainTypes, IProvider } from '@rarimo/provider'
+import { ChainTypes, IProvider } from '@rarimo/provider'
 import { DEFAULT_CONFIG } from '@/config'
+import { errors } from '@/errors'
 
 export type Operators = {
   [key in ChainTypes]?: INFTCheckoutOperationConstructor
@@ -15,8 +16,8 @@ export type CreateCheckoutOperationParams = {
 }
 
 export class NFTCheckoutFactory {
-  #operators: Operators
-  #config: Config
+  readonly #operators: Operators
+  readonly #config: Config
 
   constructor(operators: Operators, config?: Partial<Config>) {
     this.#operators = operators
