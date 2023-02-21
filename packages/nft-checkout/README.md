@@ -60,7 +60,7 @@ const sendTransaction = async () => {
   // This example hard-codes UNI, but your application can ask the user which token to pay with.
   const paymentToken = tokens[0]
 
-  // Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the buyer accepts payment in.
+  // Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in.
   const estimatedPrice = await op.estimatePrice(paymentToken)
 
   // Create the transaction bundle, which includes custom logic that tells the Rarimo contract what to do after unlocking the transferred tokens on the destination chain, such as calling another contract to buy the NFT on the destination chain.
