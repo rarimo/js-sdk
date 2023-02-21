@@ -49,12 +49,12 @@ const sendTransaction = async () => {
 
   // Initialize the operation with the source chain and transaction parameters.
   await op.init({
-    chainIdFrom: selectedChain.id,
+    chainIdFrom: selectedChain!.id,
     target,
   })
 
   // Load the user's balance of payment tokens on the source chain.
-  const tokens = await op.loadPaymentTokens(selectedChain)
+  const tokens = await op.loadPaymentTokens(selectedChain!)
 
   // Select the token to accept payment in on the source chain.
   // This example hard-codes UNI, but your application can ask the user which token to pay with.
@@ -95,7 +95,7 @@ const sendTransaction = async () => {
   const txHash = await op.checkout(estimatedPrice, { bundle })
 
   // Print a link to the transaction.
-  console.log(provider.getTxUrl(selectedChain, String(txHash)))
+  console.log(provider.getTxUrl(selectedChain!, String(txHash)))
 }
 ```
 
