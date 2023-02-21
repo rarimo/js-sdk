@@ -7,6 +7,14 @@ The @rarimo/provider TypeScript package which wraps managing multiple (EVM and n
 ![checks](https://badgen.net/github/checks/rarimo/js-sdk/main)
 
 ## Changelog
+
+## Unreleased
+#### Added
+- Support of Phantom wallet
+- Support of Coinbase wallet
+- Support of Solfare wallet
+#### Fixed
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

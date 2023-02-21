@@ -25,12 +25,13 @@ declare global {
   }
 }
 
-export class PhantomProviderSolana implements ProviderProxy {
+export class SolfareProvider implements ProviderProxy {
   readonly #provider: _PhantomProvider
   #isConnected = false
   #web3: Web3
   #chainId?: ChainId
   #address?: string
+  #connection?: Connection
 
   constructor(provider: RawProvider) {
     this.#web3 = new window.Web3(provider as unknown as HttpProvider)
@@ -40,6 +41,9 @@ export class PhantomProviderSolana implements ProviderProxy {
 
   get chainType(): ChainTypes {
     return ChainTypes.Solana
+  }
+  get connection(): Connection | undefined {
+    return this.#connection
   }
 
   get isConnected(): boolean {
@@ -62,6 +66,7 @@ export class PhantomProviderSolana implements ProviderProxy {
   async switchChain(_chainId: ChainId) {
     try {
       this.#chainId = _chainId
+      this.#connection = new Connection(clusterApiUrl(this.#chainId as Cluster))
     } catch (error) {
       handleSolError(error as SolanaProviderRpcError)
     }
@@ -84,10 +89,14 @@ export class PhantomProviderSolana implements ProviderProxy {
           ? decodeSolanaTx(txRequestBody)
           : txRequestBody
 
+      const signedTx = await this.#provider.signTransaction(
+        txBody as SolTransaction,
+      )
+
       const connection = new Connection(clusterApiUrl(this.#chainId as Cluster))
 
-      const { signature } = await this.#provider.signAndSendTransaction(
-        txBody as SolTransaction,
+      const signature = await connection.sendRawTransaction(
+        signedTx.serialize(),
       )
       await connection.confirmTransaction(signature)
       return signature

@@ -32,7 +32,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/runtime": "^7.19.0"
+    "@babel/runtime": "^7.19.0",
+    "bs58": "^5.0.0"
   },
   "devDependencies": {
     "@solana/web3.js": "^1.73.2",

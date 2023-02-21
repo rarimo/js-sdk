@@ -62,11 +62,5 @@
   "packageManager": "yarn@3.4.1",
   "gitHooks": {
     "pre-commit": "yarn lint"
-  },
-  "resolutions": {
-    "test-sdk": "portal:/Users/nikitabelous/work/test-sdk"
-  },
-  "dependencies": {
-    "bs58": "^5.0.0"
   }
 }

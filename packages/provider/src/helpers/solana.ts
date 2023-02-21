@@ -1,7 +1,7 @@
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
-import { EIP1193, EIP1474, SOLANA_CHAINS } from '@/enums'
+import { EIP1193, EIP1474, SolanaChains } from '@/enums'
 import { errors } from '@/errors'
 import { SolanaProviderRpcError } from '@/types'
 
@@ -58,7 +58,7 @@ export function getSolExplorerTxUrl(
   explorerUrl: string,
   txHash: string,
 ) {
-  return chainId === SOLANA_CHAINS.mainet
+  return chainId === SolanaChains.mainnet
     ? `${explorerUrl}/tx/${txHash}`
     : `${explorerUrl}/tx/${txHash}?cluster=${chainId}`
 }
@@ -68,7 +68,7 @@ export function getSolExplorerAddressUrl(
   explorerUrl: string,
   address: string,
 ) {
-  return chainId === SOLANA_CHAINS.mainet
+  return chainId === SolanaChains.mainnet
     ? `${explorerUrl}/address/${address}`
     : `${explorerUrl}/address/${address}?cluster=${chainId}`
 }
