@@ -1,6 +1,6 @@
 import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
-import { EstimatedPrice, Target, Token } from '@/types'
+import { BridgeChain, EstimatedPrice, Target, Token } from '@/types'
 
 import {
   ChainId,
@@ -14,6 +14,7 @@ import {
 } from '@traderjoe-xyz/sdk'
 import { Price } from '@/entities'
 import { validateSlippage } from './slippage'
+import { getFromToken } from './check-native-token'
 
 const getSlippage = (slippage?: number): Percent => {
   if (!slippage) {
@@ -26,21 +27,25 @@ const getSlippage = (slippage?: number): Percent => {
 }
 
 export const estimateJoeTrader = async (
+  tokens: Token[],
+  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
+  const _from = getFromToken(chains, tokens, from, to.chain.id)
+
   const tokenA = new TJToken(
-    Number(from.chain.id),
-    from.address,
-    from.decimals,
-    from.symbol,
-    from.name,
+    Number(_from.chain.id),
+    _from.address,
+    _from.decimals,
+    _from.symbol,
+    _from.name,
   )
 
   const tokenB = new TJToken(
-    Number(from.chain.id),
+    Number(_from.chain.id),
     to.address,
     to.decimals,
     to.symbol,
@@ -61,7 +66,7 @@ export const estimateJoeTrader = async (
     route,
     amount,
     TradeType.EXACT_OUTPUT,
-    Number(from.chain.id) as ChainId,
+    Number(_from.chain.id) as ChainId,
   )
 
   return {
@@ -71,8 +76,8 @@ export const estimateJoeTrader = async (
     to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      from.decimals,
-      from.symbol,
+      _from.decimals,
+      _from.symbol,
     ),
   }
 }

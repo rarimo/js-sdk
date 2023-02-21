@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     <li>Target object now has the required field `swapTargetTokenSymbol`, which need to determine output token for swap.</li>
     <li>Price type refactored to class, which provides developer friendly interface to create price instance</li>
   </ul>
+  <h4>Fixed</h4>
+  <ul>
+    <li>Swap for input native token</li>
+  </ul>
 </details>
 <details><summary>1.1.0</summary>
   <h4>Added</h4>

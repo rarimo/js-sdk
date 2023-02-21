@@ -19,7 +19,10 @@ import {
 import {
   Estimator,
   getPaymentTokens,
+  isNativeToken,
   getSwapAmount,
+  isPancakeSwap,
+  isTraderJoe,
   loadTokens,
 } from './helpers'
 import {
@@ -129,6 +132,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     return new Estimator(
       this.#provider,
       this.#tokens,
+      this.#chains,
       from,
       this.#target!,
     ).estimate()
@@ -139,33 +143,37 @@ export class EVMOperation implements INFTCheckoutOperation {
     bundle: TxBundle,
   ): Promise<TransactionResponse> {
     const chain = e.from.chain
-
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
-
-    const contractInterface = new utils.Interface(
-      SWAP_CONTRACT_ABIS[chain.contactVersion],
-    )
-
-    // TODO: fix for v2 native tokens
-    const data = contractInterface.encodeFunctionData(
-      'swapExactOutputMultiHopThenBridge',
-      [
-        getSwapAmount(this.#target!.price), // amount out
-        e.price.value, // amount in Maximum
-        e.path,
-        this.#provider.address, // Receiver address
-        this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
-          ?.name ?? '', // NFT chain name
-        true,
-        [bundle.salt || utils.hexlify(utils.randomBytes(32)), bundle.bundle],
-      ],
-    )
 
     return this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: chain.contractAddress,
-      data,
+      data: this.#encodeTxData(e, bundle),
     })
+  }
+
+  #encodeTxData(e: EstimatedPrice, bundle: TxBundle): string {
+    const chain = e.from.chain
+    const isV2NativeToken =
+      (isTraderJoe(chain) || isPancakeSwap(chain)) &&
+      isNativeToken(this.#chains, e.from)
+
+    const functionFragment = isV2NativeToken
+      ? 'swapExactNativeInputMultiHopThenBridge'
+      : 'swapExactOutputMultiHopThenBridge'
+
+    return new utils.Interface(
+      SWAP_CONTRACT_ABIS[chain.contactVersion],
+    ).encodeFunctionData(functionFragment, [
+      getSwapAmount(this.#target!.price), // amount out
+      ...(isV2NativeToken ? [] : [e.price.value]), // amount in Maximum
+      e.path,
+      this.#provider.address, // Receiver address
+      this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
+        ?.name ?? '', // NFT chain name
+      true,
+      [bundle.salt || utils.hexlify(utils.randomBytes(32)), bundle.bundle],
+    ])
   }
 
   async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {

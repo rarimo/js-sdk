@@ -1,5 +1,5 @@
 import JSBI from 'jsbi'
-import { Target, Token } from '@/types'
+import { BridgeChain, Target, Token } from '@/types'
 import {
   Token as PCToken,
   Route,
@@ -13,6 +13,7 @@ import { IProvider } from '@rarimo/provider'
 import { Provider as EtherProvider } from '@ethersproject/providers'
 import { Price } from '@/entities'
 import { validateSlippage } from './slippage'
+import { getFromToken } from './check-native-token'
 
 const getSlippage = (slippage?: number): Percent => {
   if (!slippage) {
@@ -25,17 +26,21 @@ const getSlippage = (slippage?: number): Percent => {
 }
 
 export const estimatePancakeSwap = async (
+  tokens: Token[],
+  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ) => {
+  const _from = getFromToken(chains, tokens, from, to.chain.id)
+
   const tokenA = new PCToken(
-    Number(from.chain.id),
-    from.address,
-    from.decimals,
-    from.symbol,
-    from.name,
+    Number(_from.chain.id),
+    _from.address,
+    _from.decimals,
+    _from.symbol,
+    _from.name,
   )
 
   const tokenB = new PCToken(
@@ -65,8 +70,8 @@ export const estimatePancakeSwap = async (
     to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      from.decimals,
-      from.symbol,
+      _from.decimals,
+      _from.symbol,
     ),
   }
 }

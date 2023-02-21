@@ -4,8 +4,8 @@ export enum ChainNames {
   Avalanche = 'Avalanche C-Chain',
   Goerli = 'Görli',
   Sepolia = 'Sepolia',
-  Mumbai = 'Avalanche Fuji-Chain',
-  Fuji = 'Polygon Mumbai',
+  Mumbai = 'Polygon Mumbai',
+  Fuji = 'Avalanche Fuji-Chain',
   BSC = 'Binance Smart Chain',
   BSCTestnet = 'Binance Smart Chain Testnet',
 }

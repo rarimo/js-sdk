@@ -59,14 +59,6 @@ export class Provider implements IProvider {
     await this.#proxy.connect()
   }
 
-  public async disconnect() {
-    if (this.#proxy?.disconnect) {
-      await this.#proxy.disconnect()
-    } else {
-      this.#proxy = undefined
-    }
-  }
-
   public async switchChain(chainId: ChainId) {
     await this.#proxy?.switchChain?.(chainId)
   }

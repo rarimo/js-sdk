@@ -97,10 +97,6 @@ export class MetamaskProvider implements ProviderProxy {
     }
   }
 
-  disconnect(): Promise<void> {
-    return Promise.resolve(undefined)
-  }
-
   getAddressUrl(chain: Chain, address: string): string {
     return getEthExplorerAddressUrl(chain, address)
   }

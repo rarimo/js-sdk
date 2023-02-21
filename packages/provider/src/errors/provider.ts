@@ -2,78 +2,60 @@ import { RuntimeError } from './runtime'
 
 export class ProviderNotInitializedError extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider is not initialized')
     this.name = 'ProviderNotInitializedError'
   }
 }
 
 export class ProviderInjectedInstanceNotFoundError extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(
+      message ||
+        'Cant find injected provider instance in window object, please check your provider installation',
+    )
     this.name = 'ProviderInjectedInstanceNotFoundError'
-  }
-}
-
-export class ProviderWrapperMethodNotFoundError extends RuntimeError {
-  constructor(message?: string) {
-    super(message)
-    this.name = 'ProviderWrapperMethodNotFoundError'
   }
 }
 
 export class ProviderChainNotFoundError extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Cant detect chain in provider')
     this.name = 'ProviderChainNotFoundError'
-  }
-}
-
-export class ProviderNotSupportedError extends RuntimeError {
-  constructor(message?: string) {
-    super(message)
-    this.name = 'ProviderNotSupportedError'
   }
 }
 
 export class ProviderUserRejectedRequest extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'User rejected request')
     this.name = 'ProviderUserRejectedRequest'
   }
 }
 
 export class ProviderUnauthorized extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider unauthorized')
     this.name = 'ProviderUnauthorized'
   }
 }
 
 export class ProviderUnsupportedMethod extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider not support this method')
     this.name = 'ProviderUnsupportedMethod'
   }
 }
 
 export class ProviderDisconnected extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider has been disconnected')
     this.name = 'ProviderDisconnected'
   }
 }
 
 export class ProviderChainDisconnected extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider chain has been disconnected')
     this.name = 'ProviderChainDisconnected'
-  }
-}
-
-export class ProviderChainUnrecognized extends RuntimeError {
-  constructor(message?: string) {
-    super(message)
-    this.name = 'ProviderChainUnrecognized'
   }
 }
 
@@ -86,35 +68,35 @@ export class ProviderParseError extends RuntimeError {
 
 export class ProviderInvalidRequest extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider returned invalid request')
     this.name = 'ProviderInvalidRequest'
   }
 }
 
 export class ProviderMethodNotFound extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider method not implemented or not found')
     this.name = 'ProviderMethodNotFound'
   }
 }
 
 export class ProviderInvalidParams extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider returned invalid params')
     this.name = 'ProviderInvalidParams'
   }
 }
 
 export class ProviderInternalError extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider internal error')
     this.name = 'ProviderInternalError'
   }
 }
 
 export class ProviderInvalidInput extends RuntimeError {
   constructor(message?: string) {
-    super(message)
+    super(message || 'Provider returned invalid input')
     this.name = 'ProviderInvalidInput'
   }
 }

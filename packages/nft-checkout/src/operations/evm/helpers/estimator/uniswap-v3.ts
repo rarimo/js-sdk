@@ -21,6 +21,7 @@ import { errors } from '@/errors'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 import { providers } from 'ethers'
 import { validateSlippage } from './slippage'
+import { getSwapAmount } from '@/operations/evm/helpers/estimator/get-swap-amount'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -37,17 +38,6 @@ const getPrice = (
     from.decimals,
     from.symbol,
   )
-}
-
-export const getSwapAmount = (price: Price) => {
-  const amountBN = new BN(price.value).fromFraction(price.decimals)
-
-  const fee = new BN(
-    new BN(amountBN.toString(), { decimals: 24 }).mul(2.5).toString(),
-    { decimals: 24 },
-  ).div(100) // 2.5% for bridge fee
-
-  return amountBN.add(fee).toFraction(price.decimals).toString()
 }
 
 const getRoutePath = (route: RouteWithValidQuote[]) => {
