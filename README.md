@@ -8,7 +8,12 @@
 
 # Rarimo JavaScript SDK
 
-TypeScript-based source development script for Rarimo Protocol
+Rarimo is a multichain protocol developed to solve the problems of liquidity, access, and interoperability across non-fungible and fungible use-cases. We have created a suite of tools that make it easy to build ground-breaking integrations on top of our technology.
+
+The Rarimo JavaScript/TypeScript SDK provides tools in these packages:
+
+- [@rarimo/provider](./modules/_rarimo_provider.html): Tools that provide access to wallets
+- [@rarimo/nft-checkout](./modules/_rarimo_nft_checkout.html): Tools to get the estimated price of a transaction and to send transactions to Rarimo
 
 ## Changelog
 
