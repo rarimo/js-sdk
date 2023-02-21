@@ -26,6 +26,15 @@ import { OperationEventBus } from '../event-bus'
 const MAX_UINT_256 =
   '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 
+/**
+ * An operation on an EVM chain.
+ *
+ * @example
+ * ```js
+ * const provider = await createProvider(MetamaskProvider)
+ * const op = createCheckoutOperation(EVMOperation, provider)
+ * ```
+ */
 export class EVMOperation
   extends OperationEventBus
   implements INFTCheckoutOperation
@@ -63,6 +72,10 @@ export class EVMOperation
     return this.#target
   }
 
+  /**
+   * Initialize the operation with the source chain and transaction parameters
+   * @param param0 Information about the source chain and the target transaction of the operation
+   */
   async init({ chainIdFrom, target }: OperationCreateParams) {
     if (!this.#chains.length) {
       await this.supportedChains()
@@ -91,6 +104,11 @@ export class EVMOperation
     })
   }
 
+  /**
+   * Get the chains that are supported for the operation type
+   *
+   * @returns A list of supported chains and information about them
+   */
   public async supportedChains() {
     // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!
@@ -98,6 +116,12 @@ export class EVMOperation
     return this.#chains
   }
 
+  /**
+   * Load the wallet's balance of payment tokens on the specified chain.
+   *
+   * @param chain A chain from {@link supportedChains}
+   * @returns An array of tokens and the wallet's balance of each token
+   */
   public async loadPaymentTokens(chain: BridgeChain) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
@@ -116,6 +140,12 @@ export class EVMOperation
     )
   }
 
+  /**
+   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
+   *
+   * @param from The token to use for the transaction
+   * @returns Information about the costs involved in the transaction, including the gas price
+   */
   public async estimatePrice(from: PaymentToken) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
@@ -127,6 +157,13 @@ export class EVMOperation
     ).estimate()
   }
 
+  /**
+   * Send a transaction to Rarimo for processing
+   *
+   * @param e The estimated price of the transaction, from {@link estimatePrice}
+   * @param bundle The transaction bundle
+   * @returns The hash of the transaction
+   */
   public async checkout(e: EstimatedPrice, bundle: TxBundle) {
     const chain = e.from.chain
 
