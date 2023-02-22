@@ -7,21 +7,19 @@
 </div>
 
 # Rarimo JavaScript SDK
+
 TypeScript-based source development script for Rarimo Protocol
 
 ## Changelog
+
 Change log can be found by the following link: [CHANGELOG.md](https://github.com/rarimo/js-sdk/blob/main/CHANGELOG.md)
-
-
 
 ## API documentation
 
-The full API documentation is hosted at [rarimo.github.io/js-sdk](https://rarimo.github.io/js-sdk). This is a bit
-tricky to navigate and requires basic TypeScript understanding. It is helpful if
-you want to look up details for advanced use cases. This documentation is
-auto-generated based on the current main branch and can occasionally diverge
+The full API documentation is hosted at [rarimo.github.io/js-sdk](https://rarimo.github.io/js-sdk).
+This is Typedoc-generated documentation. It is helpful if you want to look up details for advanced use cases.
+This documentation is auto-generated based on the current main branch and can occasionally diverge
 from the latest release.
-
 
 ## Packages
 
@@ -36,9 +34,8 @@ Here are some of them to get an idea:
 
 ## Webpack Configs
 
-With WebPack 5, you have to be explicit about the usage of Node.js types and
-modules that were simply replaced with re-implementations for browsers in
-Webpack 4:
+With Webpack 4 you don't need to do anything, but for Webpack 5
+you have to add the following to your Webpack config:
 
 ```js
 module.exports = [
@@ -67,7 +64,9 @@ module.exports = [
 
 
 ## Development
+
 ### VSCode
+
 To start work on the project in VSCode, you need to go for the following steps:
 
 1. Install the [ZipFS Extension](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
@@ -77,6 +76,7 @@ To start work on the project in VSCode, you need to go for the following steps:
 5. Choose "Use Workspace Version"
 
 ### WebStorm
+
 To fix ESLint resolve in WebStorm, you need to go for the following steps:
 
 1. Go to WebStorm Settings: Languages & Frameworks > Javascript > Code Quality Tools > ESLint
