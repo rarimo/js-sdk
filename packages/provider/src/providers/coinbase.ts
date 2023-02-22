@@ -2,7 +2,7 @@ import { ProviderProxy, RawProvider } from '../types'
 import { BaseEthereumProvider } from './baseEthereum'
 import { Providers } from '../enums'
 
-export class MetamaskProvider
+export class CoinbaseProvider
   extends BaseEthereumProvider
   implements ProviderProxy
 {
@@ -11,6 +11,6 @@ export class MetamaskProvider
   }
 
   static get providerType(): Providers {
-    return Providers.Metamask
+    return Providers.Coinbase
   }
 }

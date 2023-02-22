@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - `root`: Yarn TypeScript plugin which automatically adds @types/ packages into your dependencies when you add a package that doesn't include its own types
+- `@rarimo/provider`: Support of Phantom wallet
+- `@rarimo/provider`: Support of Coinbase wallet
+- `@rarimo/provider`: Support of Solfare wallet
 
 ### Changed
 - `root`: Moved all repo to the [Yarn PnP](https://yarnpkg.com/features/pnp)

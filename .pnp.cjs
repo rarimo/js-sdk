@@ -1186,7 +1186,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "bs58",\
-        "npm:4.0.1"\
+        "npm:5.0.0"\
       ],\
       [\
         "bs58check",\
@@ -6552,6 +6552,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@solana/web3.js", "npm:1.73.2"],\
             ["@types/jest", "npm:29.4.0"],\
             ["@types/node", "npm:18.14.0"],\
+            ["bs58", "npm:5.0.0"],\
             ["ethers", "npm:5.7.2"],\
             ["web3", "npm:1.8.2"],\
             ["web3-core", "npm:1.8.2"]\
@@ -8176,6 +8177,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["safe-buffer", "npm:5.2.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:4.0.0", {\
+          "packageLocation": "./.yarn/cache/base-x-npm-4.0.0-64a1f6fa5e-b25db9e07e.zip/node_modules/base-x/",\
+          "packageDependencies": [\
+            ["base-x", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["base64-js", [\
@@ -8533,6 +8541,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["bs58", "npm:4.0.1"],\
             ["base-x", "npm:3.0.9"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:5.0.0", {\
+          "packageLocation": "./.yarn/cache/bs58-npm-5.0.0-da02537b92-2475cb0684.zip/node_modules/bs58/",\
+          "packageDependencies": [\
+            ["bs58", "npm:5.0.0"],\
+            ["base-x", "npm:4.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
