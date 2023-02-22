@@ -10,9 +10,7 @@ import {
   TxBundle,
 } from '@/types'
 import { ChainId, ChainTypes, errors, IProvider } from '@rarimo/provider'
-import { JsonRpcProvider } from '@ethersproject/providers'
 import {
-  newRpcProvider,
   getPaymentTokens,
   loadTokens,
   Estimator,
@@ -35,8 +33,6 @@ export class EVMOperation implements INFTCheckoutOperation {
 
   #chainFrom: BridgeChain
   #target?: Target
-
-  #rpc: JsonRpcProvider
 
   #chains: BridgeChain[]
   #tokens: Token[] = []
@@ -73,8 +69,6 @@ export class EVMOperation implements INFTCheckoutOperation {
     this.#chainFrom = from
     this.#target = target
 
-    this.#rpc = newRpcProvider(from.rpcUrl, from.id)
-
     if (this.#provider.chainType !== ChainTypes.EVM) {
       throw new errors.OperationInvalidProviderChainTypeError()
     }
@@ -84,10 +78,7 @@ export class EVMOperation implements INFTCheckoutOperation {
 
   public async supportedChains() {
     // TODO: add backend integration
-    this.#chains = CHAINS[ChainTypes.EVM]!.map(chain => ({
-      ...chain,
-      rpcUrl: chain.rpcUrl + this.#config.INFURA_KEY,
-    }))
+    this.#chains = CHAINS[ChainTypes.EVM]!
 
     return this.#chains
   }
@@ -105,8 +96,7 @@ export class EVMOperation implements INFTCheckoutOperation {
 
     return getPaymentTokens(
       this.#chainFrom!,
-      this.#rpc,
-      this.#provider.address!,
+      this.#provider,
       await this.#loadTokens(),
     )
   }
@@ -115,11 +105,10 @@ export class EVMOperation implements INFTCheckoutOperation {
     if (!this.initialized) throw new errors.OperatorNotInitializedError()
 
     return new Estimator(
-      this.#rpc,
+      this.#provider,
       this.#tokens,
       from,
       this.#target!,
-      this.#provider.address!,
     ).estimate()
   }
 
@@ -132,13 +121,13 @@ export class EVMOperation implements INFTCheckoutOperation {
       isV2(chain) ? SWAP_V2 : SWAP_V3,
     )
 
+    // TODO: fix for v2 native tokens
     const data = contractInterface.encodeFunctionData(
-      'swapExactOutputSingleThenBridge',
+      'swapExactOutputMultiHopThenBridge',
       [
         getSwapAmount(this.#target!.price), // amount out
-        e.price.value, // approval amount
-        e.from.address,
-        e.to.address,
+        e.price.value, // amount in Maximum
+        e.path,
         this.#provider.address, // Receiver address
         this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
           ?.name ?? '', // NFT chain name
@@ -155,7 +144,11 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
-    const contract = new Contract(e.from.address, ERC20_ABI, this.#rpc)
+    const contract = new Contract(
+      e.from.address,
+      ERC20_ABI,
+      this.#provider?.getWeb3Provider?.(),
+    )
 
     const allowanceRaw = await contract.allowance(
       this.#provider.address,
@@ -169,6 +162,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     const allowance = new BN(allowanceRaw.toString()).fromFraction(
       e.from.decimals,
     )
+
     const estimationPrice = new BN(e.price.value).fromFraction(e.from.decimals)
 
     if (estimationPrice.compare(allowance) == -1) {
@@ -176,7 +170,7 @@ export class EVMOperation implements INFTCheckoutOperation {
     }
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
-      e.from.address,
+      routerAddress,
       MAX_UINT_256,
     ])
 

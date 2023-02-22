@@ -2849,6 +2849,7 @@ __metadata:
     "@distributedlab/utils": ^3.1.0
     "@rarimo/provider": "workspace:*"
     "@traderjoe-xyz/sdk": 2.0.7
+    "@types/events": ^3.0.0
     "@uniswap/sdk-core": 3.1.0
     "@uniswap/smart-order-router": ^2.10.0
     "@uniswap/token-lists": 1.0.0-beta.30
@@ -2856,6 +2857,7 @@ __metadata:
     axios: ^1.3.1
     ethereum-erc20-token-balances-multicall: ^1.0.2
     ethers: ^5.7.2
+    events: ^3.3.0
     jsbi: ^3.2.5
     lodash: ^4.17.21
   languageName: unknown
@@ -3145,6 +3147,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: f11a1ccfed540723dddd7cb496543ad40a2f663f22ff825e9b220f0bae86db8b1ced2184ee41d3fb358b019ad6519e39481b06386db91ebb859003ad1d54fe6a
+  languageName: node
+  linkType: hard
+
+"@types/events@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@types/events@npm:3.0.0"
+  checksum: c23b6abb253df754eca21cdfb6c4e66e7b1dc977d08934e4e01b436c776c971e4f7cac2876c9d060d72169ce451a757c9983e6a0388e155161957ce48cef0cd1
   languageName: node
   linkType: hard
 
@@ -6786,7 +6795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.0.0":
+"events@npm:^3.0.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: d6b6f2adbccbcda74ddbab52ed07db727ef52e31a61ed26db9feb7dc62af7fc8e060defa65e5f8af9449b86b52cc1a1f6a79f2eafcf4e62add2b7a1fa4a432f6

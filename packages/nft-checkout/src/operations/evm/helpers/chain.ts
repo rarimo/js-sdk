@@ -4,7 +4,7 @@ import { CHAIN_IDS } from '@/const'
 import { ChainTypes } from '@rarimo/provider'
 
 export const isV2 = (chain: BridgeChain): boolean => {
-  return chain.contactVersion === SwapContractVersion.V2
+  return chain.contactVersion === SwapContractVersion.AvalancheV2
 }
 
 const chains = CHAIN_IDS[ChainTypes.EVM]

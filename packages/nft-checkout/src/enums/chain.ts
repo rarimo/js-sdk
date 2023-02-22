@@ -9,6 +9,6 @@ export enum ChainNames {
 }
 
 export enum SwapContractVersion {
-  V2 = 'V2',
-  V3 = 'V3',
+  AvalancheV2 = 'AvalancheV2',
+  UniswapV3 = 'UniswapV3',
 }

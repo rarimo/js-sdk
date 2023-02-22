@@ -10,7 +10,7 @@ import {
 } from '@/types'
 import { HttpProvider } from 'web3-core'
 import Web3 from 'web3/types'
-import { ChainTypes, ProviderEvents } from '@/enums'
+import { ChainTypes, ProviderEvents, Providers } from '@/enums'
 import {
   connectEthProvider,
   detectCurrentEthChain,
@@ -21,6 +21,7 @@ import {
   requestAddEthChain,
   requestSwitchEthChain,
 } from '@/helpers'
+import { providers } from 'ethers'
 
 declare global {
   interface Window {
@@ -41,6 +42,10 @@ export class MetamaskProvider implements ProviderProxy {
     this.#isConnected = false
   }
 
+  static get providerType(): Providers {
+    return Providers.Metamask
+  }
+
   get chainType(): ChainTypes {
     return ChainTypes.EVM
   }
@@ -55,6 +60,10 @@ export class MetamaskProvider implements ProviderProxy {
 
   get address(): string | undefined {
     return this.#address
+  }
+
+  getWeb3Provider(): providers.Web3Provider {
+    return new providers.Web3Provider(this.#provider)
   }
 
   async init(): Promise<void> {

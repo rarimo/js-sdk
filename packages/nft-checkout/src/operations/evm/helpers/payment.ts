@@ -3,9 +3,9 @@ import {
   getBalancesForEthereumAddress,
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { BridgeChain, PaymentToken, Token } from '@/types'
 import { BN } from '@distributedlab/utils'
+import { IProvider } from '@rarimo/provider'
 
 const mapTokenBalances = (
   supportedTokens: Token[],
@@ -57,8 +57,7 @@ const createPaymentToken = (
 
 export const getPaymentTokens = async (
   chain: BridgeChain,
-  ethersProvider: JsonRpcProvider,
-  address: string,
+  provider: IProvider,
   tokens: Token[],
 ) => {
   return mapTokenBalances(
@@ -66,8 +65,8 @@ export const getPaymentTokens = async (
     chain,
     await getBalancesForEthereumAddress({
       contractAddresses: tokens.map(i => i.address),
-      ethereumAddress: address,
-      providerOptions: { ethersProvider },
+      ethereumAddress: provider.address!,
+      providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
     }),
   )
 }

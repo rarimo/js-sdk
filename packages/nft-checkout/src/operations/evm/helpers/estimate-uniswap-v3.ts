@@ -1,4 +1,3 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { EstimatedPrice, Price, Target, Token } from '@/types'
 import {
   Currency,
@@ -8,11 +7,17 @@ import {
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
+import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import JSBI from 'jsbi'
-import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
+import {
+  AlphaRouter,
+  ChainId as UNIChainId,
+  RouteWithValidQuote,
+} from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
-import { errors } from '@rarimo/provider'
+import { errors, IProvider } from '@rarimo/provider'
 import { computeRealizedPriceImpact } from './uniswap-impact'
+import { providers } from 'ethers'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -46,16 +51,24 @@ export const getSwapAmount = (price: Price) => {
   return amountBN.add(fee).toFraction(price.decimals).toString()
 }
 
+const getRoutePath = (route: RouteWithValidQuote[]) => {
+  return route.reduce((path, r) => {
+    const p = encodeRouteToPath(r.route as Route<Currency, Currency>, true)
+    path += path ? p.replace('0x', '') : p
+
+    return path
+  }, '')
+}
+
 const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
   return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
 }
 
-export const estimateV3 = async (
-  rpc: JsonRpcProvider,
+export const estimateUniswapV3 = async (
+  provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
-  walletAddress: string,
 ): Promise<EstimatedPrice> => {
   const tokenA = new UNIToken(
     Number(from.chain.id),
@@ -78,11 +91,11 @@ export const estimateV3 = async (
 
   const router = new AlphaRouter({
     chainId: from.chain.id as UNIChainId,
-    provider: rpc,
+    provider: provider?.getWeb3Provider?.() as providers.Web3Provider,
   })
 
   const route = await router.route(swapAmount, tokenA, TradeType.EXACT_OUTPUT, {
-    recipient: walletAddress,
+    recipient: provider.address ?? '',
     slippageTolerance: new Percent(5, 100),
     deadline: Math.floor(Date.now() / 1000 + 1800),
   })
@@ -90,8 +103,6 @@ export const estimateV3 = async (
   if (!route) throw new errors.OperationSwapRouteNotFound()
 
   const { estimatedGasUsedUSD, gasPriceWei, trade } = route
-
-  const impact = trade ? computeRealizedPriceImpact(trade) : undefined
 
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
@@ -101,16 +112,15 @@ export const estimateV3 = async (
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
 
-  const price = getPrice(from, amount)
-
   return {
-    impact,
+    from,
+    to,
+    impact: trade ? computeRealizedPriceImpact(trade) : undefined,
+    price: getPrice(from, amount),
+    path: getRoutePath(route.route),
     gasPriceInUSD: new BN(estimatedGasUsedUSD.numerator.toString())
       .fromFraction(estimatedGasUsedUSD.currency.decimals)
       .toString(),
     gasPrice: new BN(gasPriceWei.toString()).fromWei().toString(),
-    from,
-    to,
-    price,
   }
 }
