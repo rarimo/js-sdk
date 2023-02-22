@@ -25,7 +25,8 @@ const sendTransaction = async () => {
   // Get the chains that are supported from that chain type.
   const chains = await op.supportedChains()
 
-  // Select the Goerli chain.
+  // Select the chain to pay from.
+  // This example uses the Goerli chain, but your application can ask the user which chain to use.
   const selectedChain = chains.find(i => i.name === ChainNames.Goerli)
 
   // Set the parameters for the transaction, including the price and the tokens to accept payment in.
@@ -54,6 +55,8 @@ const sendTransaction = async () => {
   })
 
   // Load the user's balance of payment tokens on the source chain.
+  // When this method runs, the wallet prompts the user to switch to the selected chain if necessary.
+  // Then, the method returns the tokens on this chain that the DEX supports and that the wallet has a balance of greater than zero.
   const tokens = await op.loadPaymentTokens(selectedChain!)
 
   // Select the token to accept payment in on the source chain.
@@ -61,6 +64,7 @@ const sendTransaction = async () => {
   const paymentToken = tokens[0]
 
   // Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in.
+  // At this point you can ask the user to confirm the transaction with the fees or cancel it.
   const estimatedPrice = await op.estimatePrice(paymentToken)
 
   // Create the transaction bundle, which includes custom logic that tells the Rarimo contract what to do after unlocking the transferred tokens on the destination chain, such as calling another contract to buy the NFT on the destination chain.
@@ -92,7 +96,7 @@ const sendTransaction = async () => {
   );
 
   // Call the asynchronous checkout method to run the transaction.
-  // The `checkout()` method takes the parameters from the operation instance and calls the Rarimo contract to handle the checkout and approve the transaction if needed.
+  // The `checkout()` method takes the parameters from the operation instance, gets approval from the user's wallet, and calls the Rarimo contract to handle the transaction.
   const txHash = await op.checkout(estimatedPrice, { bundle })
 
   // Print a link to the transaction.
