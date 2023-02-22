@@ -10,19 +10,18 @@
 TypeScript-based source development script for Rarimo Protocol
 
 ## Changelog
-Change log can be found by the following link: [CHANGELOG.md]
+Change log can be found by the following link: [CHANGELOG.md](https://github.com/rarimo/js-sdk/blob/main/CHANGELOG.md)
 
 
 
 ## API documentation
 
-The full API documentation is hosted at [rarimo.github.io/js-sdk]. This is a bit
+The full API documentation is hosted at [rarimo.github.io/js-sdk](https://rarimo.github.io/js-sdk). This is a bit
 tricky to navigate and requires basic TypeScript understanding. It is helpful if
 you want to look up details for advanced use cases. This documentation is
 auto-generated based on the current main branch and can occasionally diverge
 from the latest release.
 
-[rarimo.github.io/js-sdk]: https://rarimo.github.io/js-sdk
 
 ## Packages
 
