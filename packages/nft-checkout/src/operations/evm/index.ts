@@ -26,6 +26,7 @@ import {
   loadTokens,
 } from './helpers'
 import {
+  BUNDLE_SALT_BYTES,
   CHAINS,
   ERC20_ABI,
   SOLIDITY_MAX_UINT_256,
@@ -162,17 +163,28 @@ export class EVMOperation implements INFTCheckoutOperation {
       ? 'swapExactNativeInputMultiHopThenBridge'
       : 'swapExactOutputMultiHopThenBridge'
 
+    const amountOut = getSwapAmount(this.#target!.price)
+    const amountInMax = e.price.value
+    const receiverAddress = this.#provider.address
+
+    const networkName = this.#chains.find(
+      i => Number(i.id) === Number(this.#target?.chainId),
+    )
+    const bundleTuple = [
+      bundle.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
+      bundle.bundle,
+    ]
+
     return new utils.Interface(
       SWAP_CONTRACT_ABIS[chain.contactVersion],
     ).encodeFunctionData(functionFragment, [
-      getSwapAmount(this.#target!.price), // amount out
-      ...(isV2NativeToken ? [] : [e.price.value]), // amount in Maximum
+      amountOut,
+      ...(isV2NativeToken ? [] : [amountInMax]),
       e.path,
-      this.#provider.address, // Receiver address
-      this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
-        ?.name ?? '', // NFT chain name
+      receiverAddress,
+      networkName,
       true,
-      [bundle.salt || utils.hexlify(utils.randomBytes(32)), bundle.bundle],
+      bundleTuple,
     ])
   }
 

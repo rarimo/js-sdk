@@ -16,9 +16,11 @@ import { Price } from '@/entities'
 import { validateSlippage } from './slippage'
 import { getFromToken } from './check-native-token'
 
+const JOE_TRADER_DEFAULT_SLIPPAGE = new Percent('5', '100')
+
 const getSlippage = (slippage?: number): Percent => {
   if (!slippage) {
-    return new Percent('5', '100')
+    return JOE_TRADER_DEFAULT_SLIPPAGE
   }
 
   validateSlippage(slippage)
