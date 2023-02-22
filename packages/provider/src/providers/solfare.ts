@@ -8,10 +8,10 @@ import {
   SolanaProviderRpcError,
   TransactionResponse,
   TxRequestBody,
-} from '@/types'
+} from '../types'
 import { HttpProvider } from 'web3-core'
-import { ChainTypes, ProviderEvents, Providers } from '@/enums'
-import { decodeSolanaTx, handleEthError, handleSolError } from '@/helpers'
+import { ChainTypes, ProviderEvents, Providers } from '../enums'
+import { decodeSolanaTx, handleEthError, handleSolError } from '../helpers'
 import {
   Connection,
   Cluster,

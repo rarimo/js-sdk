@@ -1,6 +1,6 @@
-import { ProviderProxy, RawProvider } from '@/types'
-import { BaseEthereumProvider } from '@/providers/baseEthereum'
-import { Providers } from '@/enums'
+import { ProviderProxy, RawProvider } from '../types'
+import { BaseEthereumProvider } from './baseEthereum'
+import { Providers } from '../enums'
 
 export class MetamaskProvider
   extends BaseEthereumProvider

@@ -3,7 +3,7 @@ import {
   getBalancesForEthereumAddress,
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
-import { BridgeChain, PaymentToken, Token } from '@/types'
+import { BridgeChain, PaymentToken, Token } from '../../../types'
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
 

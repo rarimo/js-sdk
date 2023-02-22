@@ -1,6 +1,6 @@
 import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
-import { EstimatedPrice, Target, Token } from '@/types'
+import { EstimatedPrice, Target, Token } from '../../../types'
 
 import {
   ChainId,

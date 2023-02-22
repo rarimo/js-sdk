@@ -11,7 +11,7 @@ import {
   PaymentToken,
   Target,
   TxBundle,
-} from '@/types'
+} from '../types'
 
 export interface INFTCheckoutOperationConstructor {
   new (config: Config, provider: IProvider): INFTCheckoutOperation

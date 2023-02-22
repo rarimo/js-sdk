@@ -2,9 +2,6 @@ name: Build and Lint
 
 on: [push, pull_request]
 
-env:
-  NPM_AUTH_TOKEN: auth_token
-
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
@@ -14,9 +11,21 @@ jobs:
       # https://github.com/actions/setup-node
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'yarn'
+          node-version: '18'
 
-      - run: yarn install
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn build
       - run: yarn lint

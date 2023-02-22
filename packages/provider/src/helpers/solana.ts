@@ -1,9 +1,9 @@
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
-import { EIP1193, EIP1474, SolanaChains } from '@/enums'
-import { errors } from '@/errors'
-import { SolanaProviderRpcError } from '@/types'
+import { EIP1193, EIP1474, SolanaChains } from '../enums'
+import { errors } from '../errors'
+import { SolanaProviderRpcError } from '../types'
 
 export function handleSolError(error: SolanaProviderRpcError) {
   const ErrorCode = error?.error?.code || error?.code
