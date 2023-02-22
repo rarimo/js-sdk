@@ -46,7 +46,6 @@ interface ProviderBase {
   isConnected: boolean
 
   connect: () => Promise<void>
-  disconnect?: () => Promise<void>
 
   addChain?: (chain: Chain) => Promise<void>
   switchChain: (chainId: ChainId) => Promise<void>

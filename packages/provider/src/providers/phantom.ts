@@ -10,7 +10,7 @@ import {
   TxRequestBody,
 } from '@/types'
 import { HttpProvider } from 'web3-core'
-import { ChainTypes, ProviderEvents } from '@/enums'
+import { ChainTypes, ProviderEvents, Providers } from "@/enums";
 import { decodeSolanaTx, handleEthError, handleSolError } from '@/helpers'
 import {
   Connection,
@@ -36,6 +36,10 @@ export class PhantomProviderSolana implements ProviderProxy {
     this.#web3 = new window.Web3(provider as unknown as HttpProvider)
     this.#provider = (<unknown>this.#web3?.currentProvider) as _PhantomProvider
     this.#isConnected = false
+  }
+
+  static get providerType(): Providers {
+    return Providers.Phantom
   }
 
   get chainType(): ChainTypes {
