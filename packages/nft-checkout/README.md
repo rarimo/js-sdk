@@ -67,7 +67,8 @@ const sendTransaction = async () => {
   // Optionally, you can set the bundle salt to be able to access the temporary contracts that Rarimo uses to run the bundled transactions.
   // See "Bundling" in the Rarimo documentation.
 
-  // First, encode a function to purchase the NFT on the destination chain.
+  // First, use the Ethers Interface to encode a command to add to the bundle.
+  // This example encodes a command that purchases the NFT on the destination chain via the NFT contract's Application Binary Interface (ABI).
   // You can include other custom logic in the bundle.
   const encodedFunctionData = new utils
     .Interface(["function buy(address receiver_) payable"])
