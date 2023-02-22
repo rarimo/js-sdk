@@ -7,10 +7,10 @@ import {
   RawProvider,
   TransactionResponse,
   TxRequestBody,
-} from '@/types'
+} from '../types'
 import { HttpProvider } from 'web3-core'
 import Web3 from 'web3/types'
-import { ChainTypes, ProviderEvents, Providers } from '@/enums'
+import { ChainTypes, ProviderEvents, Providers } from '../enums'
 import {
   connectEthProvider,
   detectCurrentEthChain,
@@ -20,7 +20,7 @@ import {
   hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
-} from '@/helpers'
+} from '../helpers'
 import { providers } from 'ethers'
 
 declare global {

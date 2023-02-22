@@ -1,5 +1,5 @@
 import { Chain, ChainId } from '@rarimo/provider'
-import { SwapContractVersion } from '@/enums'
+import { SwapContractVersion } from '../enums'
 
 export type Config = {
   V3_TOKEN_LIST?: string

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { BridgeChain, Config, Token } from '@/types'
+import { BridgeChain, Config, Token } from '../../../types'
 import { errors } from '@rarimo/provider'
 import { TokenInfo } from '@uniswap/token-lists'
 import { isV2 } from './chain'
