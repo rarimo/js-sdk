@@ -44,8 +44,5 @@
       "unplugged": true
     }
   },
-  "packageManager": "yarn@3.4.1",
-  "resolutions": {
-    "test-sdk": "portal:/Users/nikitabelous/work/test-js-sdk"
-  }
+  "packageManager": "yarn@3.4.1"
 }
