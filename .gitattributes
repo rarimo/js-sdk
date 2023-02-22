@@ -11,3 +11,6 @@
 *.ttf binary
 *.woff binary
 *.woff2 binary
+/.yarn/releases/** binary
+/.yarn/plugins/** binary
+*.zip filter=lfs diff=lfs merge=lfs -text

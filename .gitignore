@@ -21,15 +21,17 @@ deprecated
 
 # Editor directories and files
 .idea
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 
-
-.pnp.*
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 .yarn/*
+!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases

@@ -8,7 +8,7 @@ import {
   Target,
   Token,
   TxBundle,
-} from '@/types'
+} from '../../types'
 import { ChainId, ChainTypes, errors, IProvider } from '@rarimo/provider'
 import {
   getPaymentTokens,
@@ -17,7 +17,7 @@ import {
   getSwapAmount,
   isV2,
 } from './helpers'
-import { CHAINS, SWAP_V3, ERC20_ABI, SWAP_V2 } from '@/const'
+import { CHAINS, SWAP_V3, ERC20_ABI, SWAP_V2 } from '../../const'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
