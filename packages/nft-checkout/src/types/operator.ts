@@ -7,7 +7,7 @@ import {
 import { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import { Config } from './config'
 import { EstimatedPrice, PaymentToken, Token } from './token'
-import { Price } from '@/entities'
+import { Price } from '../entities'
 
 export type Target = {
   chainId: ChainId

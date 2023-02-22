@@ -1,6 +1,6 @@
-import { Price } from '@/entities'
+import { Price } from '../../../../entities'
+import { RARIMO_BRIDGE_FEE } from '../../../../const'
 import { BN } from '@distributedlab/utils'
-import { RARIMO_BRIDGE_FEE } from '@/const'
 
 export const getSwapAmount = (price: Price) => {
   const amountBN = new BN(price.value).fromFraction(price.decimals)

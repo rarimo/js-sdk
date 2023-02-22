@@ -6,11 +6,11 @@ import {
 } from '@solana/web3.js'
 import { ethers, providers } from 'ethers'
 
-import { ChainTypes, Providers } from '@/enums'
+import { ChainTypes, Providers } from '../enums'
 import { EthereumProvider } from './ethereum'
 import { TransactionConfig } from 'web3-core'
 import { PhantomProvider } from './solana'
-import { Chain, ChainId } from '@/types/chain'
+import { Chain, ChainId } from "./chain"
 
 export type RawProvider = EthereumProvider | PhantomProvider
 

@@ -4,9 +4,9 @@ import {
   PaymentToken,
   Target,
   Token,
-} from '@/types'
+} from '../../../../types'
+import { errors } from '../../../../errors'
 import { IProvider } from '@rarimo/provider'
-import { errors } from '@/errors'
 import { estimateUniswapV3 } from './uniswap-v3'
 import { estimateJoeTrader } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'

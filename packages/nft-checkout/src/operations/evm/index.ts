@@ -8,7 +8,7 @@ import {
   Target,
   Token,
   TxBundle,
-} from '@/types'
+} from '../../types'
 import {
   ChainId,
   ChainTypes,
@@ -32,12 +32,12 @@ import {
   SOLIDITY_MAX_UINT_256,
   SWAP_V2_ABI,
   SWAP_V3_ABI,
-} from '@/const'
-import { errors } from '@/errors'
+} from '../../const'
+import { errors } from '../../errors'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
-import { SwapContractVersion } from '@/enums'
+import { SwapContractVersion } from '../../enums'
 
 const SWAP_CONTRACT_ABIS = {
   [SwapContractVersion.TraderJoe]: SWAP_V2_ABI,

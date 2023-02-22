@@ -1,9 +1,9 @@
-import axios from 'axios'
+import { BridgeChain, Config, Token } from '../../../types'
+import { SwapContractVersion } from '../../../enums'
+import { errors } from '../../../errors'
 
-import { BridgeChain, Config, Token } from '@/types'
-import { errors } from '@/errors'
+import axios from 'axios'
 import { TokenInfo } from '@uniswap/token-lists'
-import { SwapContractVersion } from '@/enums'
 
 export const loadTokens = async (
   config: Config,

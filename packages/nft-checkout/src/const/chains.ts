@@ -1,6 +1,6 @@
 import { ChainTypes } from '@rarimo/provider'
-import { BridgeChain } from '@/types'
-import { ChainNames, SwapContractVersion } from '@/enums'
+import { BridgeChain } from '../types'
+import { ChainNames, SwapContractVersion } from '../enums'
 
 const EVM_CHAIN_IDS = {
   [ChainNames.Ethereum]: 1,

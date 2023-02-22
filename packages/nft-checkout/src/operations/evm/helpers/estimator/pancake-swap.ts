@@ -1,5 +1,8 @@
+import { BridgeChain, Target, Token } from '../../../../types'
+import { Price } from '../../../../entities'
+import { validateSlippage } from './slippage'
+import { getFromToken } from './check-native-token'
 import JSBI from 'jsbi'
-import { BridgeChain, Target, Token } from '@/types'
 import {
   Token as PCToken,
   Route,
@@ -11,9 +14,6 @@ import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { IProvider } from '@rarimo/provider'
 import { Provider as EtherProvider } from '@ethersproject/providers'
-import { Price } from '@/entities'
-import { validateSlippage } from './slippage'
-import { getFromToken } from './check-native-token'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 

@@ -2,10 +2,10 @@ import {
   INFTCheckoutOperationConstructor,
   INFTCheckoutOperation,
   Config,
-} from '@/types'
+} from './types'
 import { ChainTypes, IProvider } from '@rarimo/provider'
-import { DEFAULT_CONFIG } from '@/config'
-import { errors } from '@/errors'
+import { errors } from './errors'
+import { DEFAULT_CONFIG } from './config'
 
 export type Operators = {
   [key in ChainTypes]?: INFTCheckoutOperationConstructor

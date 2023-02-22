@@ -1,9 +1,9 @@
-import { BridgeChain, Token } from '@/types'
-import { CHAIN_IDS } from '@/const'
+import { BridgeChain, Token } from '../../../../types'
+import { CHAIN_IDS } from '../../../../const'
+import { OperatorWrappedTokenNotFound } from '../../../../errors'
+import { ChainNames } from '../../../../enums'
+import { TARGET_TOKEN_SYMBOLS } from '../chain'
 import { ChainId, ChainTypes } from '@rarimo/provider'
-import { ChainNames } from '@/enums'
-import { TARGET_TOKEN_SYMBOLS } from '@/operations/evm/helpers'
-import { OperatorWrappedTokenNotFound } from '@/errors'
 
 export const isNativeToken = (chains: BridgeChain[], token: Token): boolean => {
   const chain = chains.find(chain => chain.id === token.chain.id)

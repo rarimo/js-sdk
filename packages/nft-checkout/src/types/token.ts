@@ -1,5 +1,5 @@
 import { Address, BridgeChain, Decimals } from './common'
-import { Amount, Price } from '@/entities'
+import { Amount, Price } from '../entities'
 
 export type Token = {
   chain: BridgeChain

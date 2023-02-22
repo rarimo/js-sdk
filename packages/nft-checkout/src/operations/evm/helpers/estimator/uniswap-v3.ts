@@ -1,5 +1,9 @@
-import { EstimatedPrice, Target, Token } from '@/types'
-import { Price } from '@/entities'
+import { Price } from '../../../../entities'
+import { errors } from '../../../../errors'
+import { EstimatedPrice, Target, Token } from '../../../../types'
+import { computeRealizedPriceImpact } from './uniswap-impact'
+import { getSwapAmount } from './get-swap-amount'
+import { validateSlippage } from './slippage'
 import {
   Currency,
   CurrencyAmount,
@@ -17,11 +21,7 @@ import {
 } from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
-import { errors } from '@/errors'
-import { computeRealizedPriceImpact } from './uniswap-impact'
 import { providers } from 'ethers'
-import { validateSlippage } from './slippage'
-import { getSwapAmount } from '@/operations/evm/helpers/estimator/get-swap-amount'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 

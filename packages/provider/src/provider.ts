@@ -1,4 +1,4 @@
-import { Providers } from '@/enums'
+import { Providers } from './enums'
 import {
   ChainId,
   ProviderProxy,
@@ -8,9 +8,9 @@ import {
   ProviderProxyConstructor,
   IProvider,
   Chain,
-} from '@/types'
-import { errors } from '@/errors'
-import { Web3 } from '@/web3'
+} from './types'
+import { errors } from './errors'
+import { Web3 } from './web3'
 
 export type CreateProviderOpts = {
   web3Instance?: Web3

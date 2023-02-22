@@ -1,6 +1,6 @@
-import { CHAIN_IDS } from '@/const'
-import { ChainNames, SwapContractVersion } from '@/enums'
-import { BridgeChain } from '@/types'
+import { ChainNames, SwapContractVersion } from '../../../enums'
+import { BridgeChain } from '../../../types'
+import { CHAIN_IDS } from '../../../const'
 import { ChainTypes } from '@rarimo/provider'
 
 export const isTraderJoe = (chain: BridgeChain): boolean => {

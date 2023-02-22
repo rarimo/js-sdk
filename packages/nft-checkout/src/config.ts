@@ -1,4 +1,4 @@
-import { Config } from '@/types'
+import { Config } from './types'
 
 export const DEFAULT_CONFIG: Config = {
   UNISWAP_V3_TOKEN_LIST: 'https://ipfs.io/ipns/tokens.uniswap.org',
