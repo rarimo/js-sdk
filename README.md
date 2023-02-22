@@ -12,7 +12,6 @@ TypeScript-based source development script for Rarimo Protocol
 ## Changelog
 Change log can be found by the following link: [CHANGELOG.md]
 
-[CHANGELOG.md]: https://github.com/rarimo/js-sdk/blob/main/CHANGELOG.md
 
 
 ## API documentation
