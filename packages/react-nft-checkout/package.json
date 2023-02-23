@@ -20,13 +20,13 @@
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-nft-checkout"
   },
   "scripts": {
+    "vite-dev-server": "vite",
     "vite-build": "vite build",
+    "start": "cross-env VITE_APP_ENVIRONMENT=development yarn vite-dev-server",
     "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production yarn vite-build",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@emotion/styled": "^11.10.5",
-    "@mui/material": "^5.11.8",
     "@rarimo/nft-checkout": "workspace:*",
     "iconoir-react": "^6.2.1",
     "react": "^18.2.0",

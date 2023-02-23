@@ -14,25 +14,32 @@ export default defineConfig(({ mode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const env = loadEnv(mode, process.cwd(), '')
 
+  const isProduction = env.VITE_APP_ENVIRONMENT === 'production'
+
   return {
-    build: {
-      lib: {
-        entry: path.resolve(__dirname, `${root}/index.ts`),
-        formats: ['cjs', 'es'],
-        fileName: format => `react-nft-checkout.${format}.js`,
+    ...(!isProduction && {
+      server: { port: 3333 },
+    }),
+    ...(isProduction && {
+      build: {
+        lib: {
+          entry: path.resolve(__dirname, `${root}/index.ts`),
+          formats: ['cjs', 'es'],
+          fileName: format => `react-nft-checkout.${format}.js`,
+        },
+        rollupOptions: {
+          // make sure to externalize deps that shouldn't be bundled
+          // into your library
+          external: ['react'],
+          // output: {
+          //   // Provide global variables to use in the UMD build
+          //   // for externalized deps
+          //   globals: {},
+          // },
+        },
+        sourcemap: true,
       },
-      rollupOptions: {
-        // make sure to externalize deps that shouldn't be bundled
-        // into your library
-        external: ['react', '@emotion/react'],
-        // output: {
-        //   // Provide global variables to use in the UMD build
-        //   // for externalized deps
-        //   globals: {},
-        // },
-      },
-      sourcemap: true,
-    },
+    }),
     publicDir: 'static',
     plugins: [react(), tsconfigPaths(), dts()],
     resolve: {

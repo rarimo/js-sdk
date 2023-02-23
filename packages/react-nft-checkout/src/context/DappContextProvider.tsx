@@ -1,143 +1,67 @@
 import {
+  CreateCheckoutOperationParams,
+  INFTCheckoutOperation,
+} from '@rarimo/nft-checkout'
+import {
+  CreateProviderOpts,
+  MetamaskProvider,
+  Provider,
+} from '@rarimo/provider'
+import {
   createContext,
-  FC,
   ReactNode,
-  // useCallback,
   useContext,
   // useEffect,
   useMemo,
   useState,
 } from 'react'
 
-// import { PROVIDERS } from '@/enums'
-// import { useProvider, useWeb3 } from '@/hooks'
-// import { DesignatedProvider } from '@/types'
+import { useCheckoutOperation, useProvider } from '..'
 
 export interface DappContextPropsType {
-  // web3Providers: DesignatedProvider[]
-  qwe: string
+  provider: Provider | null
+  checkoutOperation: INFTCheckoutOperation | null
+  isInitialized: boolean
 }
 
 export interface DappContextProviderPropsType {
   children: ReactNode
+  createProviderOpts?: CreateProviderOpts
+  createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
 
 const DappContext = createContext({} as DappContextPropsType)
 
-export const DappContextProvider: FC<DappContextProviderPropsType> = ({
+export const DappContextProvider = ({
   children,
-}) => {
-  // const [isInitialized, setIsInitialized] = useState(false)
-  const [isInitialized] = useState(true)
+  createProviderOpts,
+  createCheckoutOperationParams,
+}: DappContextProviderPropsType) => {
+  const [isInitialized] = useState(false)
 
-  // const web3 = useWeb3()
+  const provider = useProvider(MetamaskProvider, createProviderOpts)
+  const checkoutOperation = useCheckoutOperation(
+    provider,
+    createCheckoutOperationParams,
+  )
 
-  // const [web3Providers, setWeb3Providers] = useState<DesignatedProvider[]>([])
+  console.log('provider', checkoutOperation?.initialized)
 
-  // const metamaskProvider = useProvider()
-  // const coinbaseProvider = useProvider()
-  // const phantomProvider = useProvider()
-  // const solflareProvider = useProvider()
-  // const nearProvider = useProvider()
-
-  // const providers = useMemo(
-  //   () => [
-  //     metamaskProvider,
-  //     coinbaseProvider,
-  //     phantomProvider,
-  //     solflareProvider,
-  //     nearProvider,
-  //   ],
-  //   [
-  //     coinbaseProvider,
-  //     metamaskProvider,
-  //     phantomProvider,
-  //     solflareProvider,
-  //     nearProvider,
-  //   ],
-  // )
-
-  // const initWeb3Providers = useCallback(async () => {
-  //   await web3.init()
-  // }, [web3])
-
-  // const initProviderWrappers = useCallback(async () => {
-  //   if (!web3Providers.length) return
-
-  //   const metamaskBrowserProvider = web3Providers.find(
-  //     el => el.name === PROVIDERS.metamask,
-  //   )
-
-  //   const coinbaseBrowserProvider = web3Providers.find(
-  //     el => el.name === PROVIDERS.coinbase,
-  //   )
-
-  //   const phantomBrowserProvider = web3Providers.find(
-  //     el => el.name === PROVIDERS.phantom,
-  //   )
-
-  //   const solflareBrowserProvider = web3Providers.find(
-  //     el => el.name === PROVIDERS.solflare,
-  //   )
-
-  //   const nearBrowserProvider = web3Providers.find(
-  //     el => el.name === PROVIDERS.near,
-  //   )
-
-  //   await Promise.all([
-  //     ...(metamaskBrowserProvider
-  //       ? [metamaskProvider.init(metamaskBrowserProvider)]
-  //       : []),
-  //     ...(coinbaseBrowserProvider
-  //       ? [coinbaseProvider.init(coinbaseBrowserProvider)]
-  //       : []),
-  //     ...(phantomBrowserProvider
-  //       ? [phantomProvider.init(phantomBrowserProvider)]
-  //       : []),
-  //     ...(solflareBrowserProvider
-  //       ? [solflareProvider.init(solflareBrowserProvider)]
-  //       : []),
-  //     ...(nearBrowserProvider ? [nearProvider.init(nearBrowserProvider)] : []),
-  //   ])
-  //   setIsInitialized(true)
+  // useEffect(() => {
+  //   console.log('useEffect', checkoutOperation?.initialized)
   // }, [
-  //   coinbaseProvider,
-  //   metamaskProvider,
-  //   phantomProvider,
-  //   solflareProvider,
-  //   nearProvider,
-  //   web3Providers,
-  // ])
-
-  // useEffect(() => {
-  //   initWeb3Providers()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  // useEffect(() => {
-  //   setWeb3Providers(web3.providers)
-  // }, [web3.providers])
-
-  // useEffect(() => {
-  //   if (providers.find(el => Boolean(el.selectedProvider))?.selectedProvider)
-  //     return
-
-  //   initProviderWrappers()
-  // }, [
-  //   initProviderWrappers,
-  //   metamaskProvider.selectedProvider,
-  //   providers,
-  //   web3Providers,
+  //   checkoutOperation?.chain,
+  //   checkoutOperation?.initialized,
+  //   checkoutOperation?.provider,
   // ])
 
   const memoizedContextValue = useMemo(
     () => ({
-      // web3Providers,
-      qwe: 'qwe',
+      isInitialized,
+      provider,
+      checkoutOperation,
     }),
-    [
-      // web3Providers
-    ],
+    [isInitialized, checkoutOperation, provider],
   )
 
   return (

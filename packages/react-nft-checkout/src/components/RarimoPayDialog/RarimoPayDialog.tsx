@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from '@mui/material'
 import { Cancel } from 'iconoir-react'
 
-import PaymentWallets from '@/components/PaymentWallets'
+import { PaymentWallets } from '@/components'
 
 const RarimoPayDialog = ({
   open,
