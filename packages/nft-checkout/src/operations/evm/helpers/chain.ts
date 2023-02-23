@@ -28,6 +28,6 @@ export const TARGET_TOKEN_SYMBOLS = {
   [chains[ChainNames.Fuji]]: 'WAVAX',
 
   // BSC
-  [chains[ChainNames.BSC]]: 'WBNB',
-  [chains[ChainNames.BSCTestnet]]: 'WBNB',
+  [chains[ChainNames.BinanceSmartChain]]: 'WBNB',
+  [chains[ChainNames.Chapel]]: 'WBNB',
 }

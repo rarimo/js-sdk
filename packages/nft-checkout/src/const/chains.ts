@@ -10,8 +10,8 @@ const EVM_CHAIN_IDS = {
   [ChainNames.Goerli]: 5,
   [ChainNames.Sepolia]: 11155111,
   [ChainNames.Mumbai]: 80001,
-  [ChainNames.BSC]: 56,
-  [ChainNames.BSCTestnet]: 97,
+  [ChainNames.BinanceSmartChain]: 56,
+  [ChainNames.Chapel]: 97,
 }
 
 const EVM_CHAINS: BridgeChain[] = [
@@ -93,8 +93,8 @@ const EVM_CHAINS: BridgeChain[] = [
     contactVersion: SwapContractVersion.TraderJoe,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.BSC],
-    name: ChainNames.BSC,
+    id: EVM_CHAIN_IDS[ChainNames.BinanceSmartChain],
+    name: ChainNames.BinanceSmartChain,
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     symbol: 'BNB',
     explorerUrl: 'https://bscscan.com',
@@ -104,8 +104,8 @@ const EVM_CHAINS: BridgeChain[] = [
     contactVersion: SwapContractVersion.PancakeSwap,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.BSCTestnet],
-    name: ChainNames.BSCTestnet,
+    id: EVM_CHAIN_IDS[ChainNames.Chapel],
+    name: ChainNames.Chapel,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
     symbol: 'BNB',
     explorerUrl: 'https://testnet.bscscan.com',

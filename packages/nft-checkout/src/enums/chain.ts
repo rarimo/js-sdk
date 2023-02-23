@@ -6,8 +6,8 @@ export enum ChainNames {
   Sepolia = 'Sepolia',
   Mumbai = 'Polygon Mumbai',
   Fuji = 'Avalanche Fuji-Chain',
-  BSC = 'Binance Smart Chain',
-  BSCTestnet = 'Binance Smart Chain Testnet',
+  BinanceSmartChain = 'Binance Smart Chain',
+  Chapel = 'Binance Smart Chain Testnet',
 }
 
 export enum SwapContractVersion {
