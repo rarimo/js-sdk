@@ -25,7 +25,7 @@ from the latest release.
 
 Rarimo JavaScript SDK is a library that consists of many smaller npm packages within the
 [@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo.
-Here are some of them to get an idea:
+Here are the packages in the namespace:
 
 | Package                                | Description                                                                                                                                       | Latest                                                                                                                    |
 |----------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
@@ -35,7 +35,7 @@ Here are some of them to get an idea:
 ## Webpack Configs
 
 With Webpack 4 you don't need to do anything, but for Webpack 5
-you have to add the following to your Webpack config:
+you must add the following code to your Webpack config:
 
 ```js
 module.exports = [
@@ -61,3 +61,22 @@ module.exports = [
   },
 ]
 ```
+
+## Development
+
+### VSCode
+
+To start work on the project in VSCode, follow these steps:
+
+1. Install the [ZipFS Extension](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
+2. Open the project folder in VSCode
+3. Press `Ctrl+Shift+P` in a TypeScript file
+4. Select "Select TypeScript Version"
+5. Select "Use Workspace Version"
+
+### WebStorm
+
+To fix ESLint resolve in WebStorm, follow these steps:
+
+1. Go to WebStorm Settings: Languages & Frameworks > Javascript > Code Quality Tools > ESLint
+2. Choose Manual ESLint configuration and select 'Detect package and configuration file from the nearest package.json' in the ESLint package field
