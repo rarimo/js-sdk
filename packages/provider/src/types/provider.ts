@@ -10,7 +10,8 @@ import { ChainTypes, Providers } from '../enums'
 import { EthereumProvider } from './ethereum'
 import { TransactionConfig } from 'web3-core'
 import { PhantomProvider } from './solana'
-import { Chain, ChainId } from "./chain"
+import { Chain, ChainId } from './chain'
+import { ProviderSubscriber } from './provider-event-bus'
 
 export type RawProvider = EthereumProvider | PhantomProvider
 
@@ -39,7 +40,7 @@ export interface ProviderProxyConstructor {
   providerType: Providers
 }
 
-interface ProviderBase {
+interface ProviderBase extends ProviderSubscriber {
   chainId?: ChainId
   chainType?: ChainTypes
   address?: string

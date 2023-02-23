@@ -419,14 +419,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/utils@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@distributedlab/utils@npm:3.1.0"
+"@distributedlab/utils@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@distributedlab/utils@npm:3.2.1"
   dependencies:
     "@babel/runtime": ^7.19.0
     bignumber.js: ^9.1.0
     dayjs: ^1.11.5
-  checksum: 8737839b099b8693f2c1aa2d1effa422af74ae7628364aa904b5be503e834c4084e1a8c0b6538a1109038158c74343173ffc3884568bfe4f213b83766fb88ee5
+  checksum: 6de26b8bae7d78ae103a2d20402727f4fb6565984e5382d0ffd2cc3d923df4dec5db3c609b83017fc7878b93e408926d07299453fb89d4cf080fd2640b4f7e19
   languageName: node
   linkType: hard
 
@@ -1808,7 +1808,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/utils": ^3.1.0
+    "@distributedlab/utils": ^3.2.1
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@rarimo/provider": "workspace:*"
@@ -1834,6 +1834,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
+    "@distributedlab/utils": ^3.2.1
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@solana/web3.js": ^1.73.2

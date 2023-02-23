@@ -8,6 +8,9 @@ import {
   ProviderProxyConstructor,
   IProvider,
   Chain,
+  ProviderConnectRelatedEventPayload,
+  ProviderChainChangedEventPayload,
+  ProviderInitiatedEventPayload,
 } from './types'
 import { errors } from './errors'
 import { Web3 } from './web3'
@@ -95,6 +98,30 @@ export class Provider implements IProvider {
     }
 
     throw new errors.ProviderMethodNotSupported()
+  }
+
+  onAccountChanged(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+    this.#proxy?.onAccountChanged(cb)
+  }
+
+  onChainChanged(cb: (e: ProviderChainChangedEventPayload) => void): void {
+    this.#proxy?.onChainChanged(cb)
+  }
+
+  onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+    this.#proxy?.onConnect(cb)
+  }
+
+  onDisconnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+    this.#proxy?.onDisconnect(cb)
+  }
+
+  onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void {
+    this.#proxy?.onInitiated(cb)
+  }
+
+  clearHandlers(): void {
+    this.#proxy?.clearHandlers()
   }
 }
 

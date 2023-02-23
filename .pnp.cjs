@@ -190,7 +190,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "@distributedlab/utils",\
-        "npm:3.1.0"\
+        "npm:3.2.1"\
       ],\
       [\
         "@eslint/eslintrc",\
@@ -4778,10 +4778,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@distributedlab/utils", [\
-        ["npm:3.1.0", {\
-          "packageLocation": "./.yarn/cache/@distributedlab-utils-npm-3.1.0-2c6e26cc6b-8737839b09.zip/node_modules/@distributedlab/utils/",\
+        ["npm:3.2.1", {\
+          "packageLocation": "./.yarn/cache/@distributedlab-utils-npm-3.2.1-339393cb8a-6de26b8bae.zip/node_modules/@distributedlab/utils/",\
           "packageDependencies": [\
-            ["@distributedlab/utils", "npm:3.1.0"],\
+            ["@distributedlab/utils", "npm:3.2.1"],\
             ["@babel/runtime", "npm:7.21.0"],\
             ["bignumber.js", "npm:9.1.1"],\
             ["dayjs", "npm:1.11.7"]\
@@ -6519,7 +6519,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/nft-checkout/",\
           "packageDependencies": [\
             ["@rarimo/nft-checkout", "workspace:packages/nft-checkout"],\
-            ["@distributedlab/utils", "npm:3.1.0"],\
+            ["@distributedlab/utils", "npm:3.2.1"],\
             ["@ethersproject/abstract-provider", "npm:5.7.0"],\
             ["@ethersproject/properties", "npm:5.7.0"],\
             ["@rarimo/provider", "workspace:packages/provider"],\
@@ -6547,6 +6547,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/provider/",\
           "packageDependencies": [\
             ["@rarimo/provider", "workspace:packages/provider"],\
+            ["@distributedlab/utils", "npm:3.2.1"],\
             ["@ethersproject/abstract-provider", "npm:5.7.0"],\
             ["@ethersproject/properties", "npm:5.7.0"],\
             ["@solana/web3.js", "npm:1.73.2"],\
