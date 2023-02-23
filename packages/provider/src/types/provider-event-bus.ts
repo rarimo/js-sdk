@@ -24,6 +24,6 @@ export interface ProviderSubscriber {
   onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void
   onDisconnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void
   onAccountChanged(cb: (e: ProviderConnectRelatedEventPayload) => void): void
-  onChainChanged(cb: (e: ProviderChainChangedEventPayload) => void): void
+  onChainChanged?(cb: (e: ProviderChainChangedEventPayload) => void): void
   clearHandlers(): void
 }

@@ -100,27 +100,33 @@ export class Provider implements IProvider {
     throw new errors.ProviderMethodNotSupported()
   }
 
-  onAccountChanged(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+  public onAccountChanged(
+    cb: (e: ProviderConnectRelatedEventPayload) => void,
+  ): void {
     this.#proxy?.onAccountChanged(cb)
   }
 
-  onChainChanged(cb: (e: ProviderChainChangedEventPayload) => void): void {
-    this.#proxy?.onChainChanged(cb)
+  public onChainChanged(
+    cb: (e: ProviderChainChangedEventPayload) => void,
+  ): void {
+    this.#proxy?.onChainChanged?.(cb)
   }
 
-  onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+  public onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
     this.#proxy?.onConnect(cb)
   }
 
-  onDisconnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+  public onDisconnect(
+    cb: (e: ProviderConnectRelatedEventPayload) => void,
+  ): void {
     this.#proxy?.onDisconnect(cb)
   }
 
-  onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void {
+  public onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void {
     this.#proxy?.onInitiated(cb)
   }
 
-  clearHandlers(): void {
+  public clearHandlers(): void {
     this.#proxy?.clearHandlers()
   }
 }
