@@ -717,6 +717,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:7.18.3"\
       ],\
       [\
+        "@types/bluebird",\
+        "npm:3.5.38"\
+      ],\
+      [\
         "@types/bn.js",\
         "npm:4.11.6"\
       ],\
@@ -3470,7 +3474,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "supports-color",\
-        "npm:7.2.0"\
+        "npm:9.3.1"\
       ],\
       [\
         "supports-preserve-symlinks-flag",\
@@ -3970,14 +3974,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@types/bluebird", "npm:3.5.38"],\
             ["@typescript-eslint/eslint-plugin", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:5.53.0"],\
             ["@typescript-eslint/parser", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:5.53.0"],\
+            ["bluebird", "npm:3.7.2"],\
             ["eslint", "npm:8.34.0"],\
             ["eslint-config-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:8.6.0"],\
             ["eslint-plugin-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:4.2.1"],\
             ["jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.4.3"],\
             ["node-gyp", "npm:9.3.1"],\
             ["prettier", "npm:2.8.4"],\
+            ["supports-color", "npm:9.3.1"],\
             ["ts-jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.0.5"],\
             ["typedoc", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:0.23.25"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"]\
@@ -6829,6 +6836,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/babel__traverse", "npm:7.18.3"],\
             ["@babel/types", "npm:7.21.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/bluebird", [\
+        ["npm:3.5.38", {\
+          "packageLocation": "./.yarn/cache/@types-bluebird-npm-3.5.38-f885968f75-8d1b04261e.zip/node_modules/@types/bluebird/",\
+          "packageDependencies": [\
+            ["@types/bluebird", "npm:3.5.38"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -15176,14 +15192,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["rarimo-js-sdk-monorepo-root", "workspace:."],\
+            ["@types/bluebird", "npm:3.5.38"],\
             ["@typescript-eslint/eslint-plugin", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:5.53.0"],\
             ["@typescript-eslint/parser", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:5.53.0"],\
+            ["bluebird", "npm:3.7.2"],\
             ["eslint", "npm:8.34.0"],\
             ["eslint-config-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:8.6.0"],\
             ["eslint-plugin-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:4.2.1"],\
             ["jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.4.3"],\
             ["node-gyp", "npm:9.3.1"],\
             ["prettier", "npm:2.8.4"],\
+            ["supports-color", "npm:9.3.1"],\
             ["ts-jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.0.5"],\
             ["typedoc", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:0.23.25"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"]\
@@ -16198,6 +16217,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["supports-color", "npm:8.1.1"],\
             ["has-flag", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:9.3.1", {\
+          "packageLocation": "./.yarn/cache/supports-color-npm-9.3.1-08866b3304-00c4d1082a.zip/node_modules/supports-color/",\
+          "packageDependencies": [\
+            ["supports-color", "npm:9.3.1"]\
           ],\
           "linkType": "HARD"\
         }]\

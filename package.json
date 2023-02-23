@@ -28,6 +28,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@types/bluebird": "^3",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",
@@ -46,6 +47,8 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "node-gyp": "^9.3.1"
+    "bluebird": "^3.7.2",
+    "node-gyp": "^9.3.1",
+    "supports-color": "^9.3.1"
   }
 }
