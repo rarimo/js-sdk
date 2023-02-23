@@ -12,6 +12,7 @@ import {
   Target,
   TxBundle,
 } from '../types'
+import { OperationSubscriber } from './operation-event-bus'
 
 export interface INFTCheckoutOperationConstructor {
   new (config: Config, provider: IProvider): INFTCheckoutOperation
@@ -19,10 +20,10 @@ export interface INFTCheckoutOperationConstructor {
 
 export type OperationCreateParams = { chainIdFrom: ChainId; target: Target }
 
-export interface INFTCheckoutOperation {
-  chain: Chain | undefined
+export interface INFTCheckoutOperation extends OperationSubscriber {
+  chainFrom: Chain | undefined
   provider: IProvider
-  initialized: boolean
+  isInitialized: boolean
 
   init(args: OperationCreateParams): Promise<void>
 

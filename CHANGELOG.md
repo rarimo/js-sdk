@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/provider`: Support of Phantom wallet
 - `@rarimo/provider`: Support of Coinbase wallet
 - `@rarimo/provider`: Support of Solfare wallet
+- `@rarimo/provider`: Provider now implements `ProviderSubscriber` interface, which allows to subscribe to provider change state events
+- `@rarimo/nft-checkout`: NFT checkout operation now implements `OperationSubscriber` interface, which allows to subscribe to operation change state events
 
 ### Changed
 - `root`: Moved all repo to the [Yarn PnP](https://yarnpkg.com/features/pnp)
