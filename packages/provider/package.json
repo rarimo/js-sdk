@@ -1,7 +1,7 @@
 {
   "name": "@rarimo/provider",
   "version": "1.1.0",
-  "description": "Features of the Rarimo SDK that provide access to users' wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.",
+  "description": "Features of the Rarimo SDK that provide access to wallets and wrap the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/provider"

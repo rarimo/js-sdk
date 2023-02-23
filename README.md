@@ -10,11 +10,6 @@
 
 Rarimo is a multichain protocol developed to solve the problems of liquidity, access, and interoperability across non-fungible and fungible use-cases. We have created a suite of tools that make it easy to build ground-breaking integrations on top of our technology.
 
-The Rarimo JavaScript/TypeScript SDK provides tools in these packages:
-
-- [@rarimo/provider](./modules/_rarimo_provider.html): Tools that provide access to wallets
-- [@rarimo/nft-checkout](./modules/_rarimo_nft_checkout.html): Tools to get the estimated price of a transaction and to send transactions to Rarimo
-
 ## Changelog
 
 Change log can be found by the following link: [CHANGELOG.md](https://github.com/rarimo/js-sdk/blob/main/CHANGELOG.md)
@@ -32,10 +27,10 @@ Rarimo JavaScript SDK is a library that consists of many smaller npm packages wi
 [@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo.
 Here are some of them to get an idea:
 
-| Package                                | Description                                                                                                                                                                                                                              | Latest                                                                                                                    |
-|----------------------------------------| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/provider](packages/provider)  | A package which wraps managing multiple (EVM and non EVM type) chains wallet extension providers to the one common interface.| [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
-| [@rarimo/nft-checkout](packages/nft-checkout) | A package with cross-chain NFT purchases functionality, based on Rarimo Protocol.| [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
+| Package                                | Description                                                                                                                                       | Latest                                                                                                                    |
+|----------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
+| [@rarimo/provider](packages/provider)  | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
+| [@rarimo/nft-checkout](packages/nft-checkout) | Tools to create cross-train transactions with the Rarimo Protocol | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
 
 ## Webpack Configs
 
