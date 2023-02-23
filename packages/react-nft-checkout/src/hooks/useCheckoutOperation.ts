@@ -1,7 +1,6 @@
 import {
-  //   createCheckoutOperation,
+  createCheckoutOperation,
   CreateCheckoutOperationParams,
-  createProxyCheckoutOperation,
   EVMOperation,
   INFTCheckoutOperation,
 } from '@rarimo/nft-checkout'
@@ -18,47 +17,16 @@ export const useCheckoutOperation = (
 
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
-  //   const [proxyCheckoutOperation, setProxyCheckoutOperation] =
-  //     useState<INFTCheckoutOperation | null>(null)
 
   useEffect(() => {
     if (!provider) return
 
-    // const op = createCheckoutOperation(
-    //   EVMOperation,
-    //   provider,
-    //   createCheckoutOperationParams,
-    // )
-    // setCheckoutOperation(op)
-    const { proxy, config } = createProxyCheckoutOperation(
+    const op = createCheckoutOperation(
       EVMOperation,
-      //   provider,
+      provider,
       createCheckoutOperationParams,
     )
-    const op = new proxy(config, provider)
-    //   console.log(first)
     setCheckoutOperation(op)
-
-    // const handler = {
-    //   get(target, key) {
-    //     if (typeof target[key] === 'object' && target[key] !== null) {
-    //       return new Proxy(target[key], handler)
-    //     }
-    //     // bind context to original object
-    //     if (target[key] instanceof Function) {
-    //       return target[key].bind(op)
-    //     }
-    //     return target[key]
-    //   },
-    //   set(target, prop, value) {
-    //     console.log(`changed ${prop} from ${target[prop]} to ${value}`)
-    //     target[prop] = value
-    //   },
-    // }
-
-    // const proxyOp = new Proxy(op, handler)
-
-    // setCheckoutOperation(proxyOp)
   }, [createCheckoutOperationParams, provider])
 
   useEffect(() => {
@@ -87,19 +55,18 @@ export const useCheckoutOperation = (
         chainIdFrom: selectedChain.id,
         target,
       })
-      //   forceUpdate()
     }
 
     init()
   }, [checkoutOperation])
 
-  //   useEffect(() => {
-  //     forceUpdate()
-  //   }, [
-  //     checkoutOperation?.chain,
-  //     checkoutOperation?.initialized,
-  //     checkoutOperation?.provider,
-  //   ])
+  useEffect(() => {
+    forceUpdate()
+  }, [
+    checkoutOperation?.chain,
+    checkoutOperation?.initialized,
+    checkoutOperation?.provider,
+  ])
 
   return checkoutOperation
 }
