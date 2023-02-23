@@ -3976,6 +3976,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:8.6.0"],\
             ["eslint-plugin-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:4.2.1"],\
             ["jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.4.3"],\
+            ["node-gyp", "npm:9.3.1"],\
             ["prettier", "npm:2.8.4"],\
             ["ts-jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.0.5"],\
             ["typedoc", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:0.23.25"],\
@@ -15181,6 +15182,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:8.6.0"],\
             ["eslint-plugin-prettier", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:4.2.1"],\
             ["jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.4.3"],\
+            ["node-gyp", "npm:9.3.1"],\
             ["prettier", "npm:2.8.4"],\
             ["ts-jest", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:29.0.5"],\
             ["typedoc", "virtual:880707d88b697cd6619f0610422b7ccc2a3b4db57059454cbbad5ce07ecd7b311be6c8f08c9368bcf9524a95c8b2277fe99923479bf5d119f512dfbbaf72163e#npm:0.23.25"],\

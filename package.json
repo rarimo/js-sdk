@@ -44,5 +44,8 @@
       "unplugged": true
     }
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.4.1",
+  "dependencies": {
+    "node-gyp": "^9.3.1"
+  }
 }
