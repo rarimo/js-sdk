@@ -12,8 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/provider`: Support of Solfare wallet
 
 ### Changed
-- `root`: Moved all repo to the [Yarn PnP](https://yarnpkg.com/features/pnp)
-- `root`: Added some more info about SDK and developing to the readme
+- `root`: Added some more info about SDK to the readme
 - `all`: Moved all changelogs to the one file in the root of the repo
 
 ### Removed
