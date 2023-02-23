@@ -10,7 +10,7 @@ Features of the Rarimo SDK that create cross-chain transactions based on the Rar
 
 Here is an example of creating a transaction on the Goerli test chain:
 
-```js
+```ts
 import { createCheckoutOperation, EVMOperation, ChainNames } from '@rarimo/nft-checkout'
 import { createProvider, MetamaskProvider } from '@rarimo/provider'
 import { utils } from "ethers";
@@ -38,7 +38,7 @@ const sendTransaction = async () => {
     // Recipient's wallet address
     recipient: "0x8fe0d4923f61ff466430f63471e27b89a7cf0c92",
     price: {
-      // Price amount as an unsigned integer
+      // Price amount as an unsigned integer in a string
       value: "10000000000000000",
       // Number of decimals in the currency; in this case 18 for wei
       decimals: 18,
@@ -46,6 +46,8 @@ const sendTransaction = async () => {
       symbol: "ETH",
       // Results in a price of 10000000000000000/10^18, or 0.01 ETH
     },
+    // The token to swap the payment token to
+    swapTargetTokenSymbol: "WETH",
   }
 
   // Initialize the operation with the source chain and transaction parameters.
