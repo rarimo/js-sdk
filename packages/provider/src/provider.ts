@@ -1,4 +1,4 @@
-import { Providers } from '@/enums'
+import { Providers } from './enums'
 import {
   ChainId,
   ProviderProxy,
@@ -8,9 +8,9 @@ import {
   ProviderProxyConstructor,
   IProvider,
   Chain,
-} from '@/types'
-import { errors } from '@/errors'
-import { Web3 } from '@/web3'
+} from './types'
+import { errors } from './errors'
+import { Web3 } from './web3'
 
 export type CreateProviderOpts = {
   web3Instance?: Web3
@@ -57,14 +57,6 @@ export class Provider implements IProvider {
   public async connect() {
     if (!this.#proxy) throw new errors.ProviderNotInitializedError()
     await this.#proxy.connect()
-  }
-
-  public async disconnect() {
-    if (this.#proxy?.disconnect) {
-      await this.#proxy.disconnect()
-    } else {
-      this.#proxy = undefined
-    }
   }
 
   public async switchChain(chainId: ChainId) {

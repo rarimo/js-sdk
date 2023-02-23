@@ -3,3 +3,8 @@ export enum ChainTypes {
   Solana = 1,
   Near = 2,
 }
+export enum SolanaChains {
+  devnet = 'devnet',
+  testnet = 'testnet',
+  mainnet = 'mainnet',
+}

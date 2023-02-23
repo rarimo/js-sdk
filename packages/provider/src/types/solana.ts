@@ -35,7 +35,6 @@ export type PhantomProvider = {
     options?: SendOptions,
   ): Promise<{ signature: TransactionSignature }>
   connect: (opts?: Partial<ConnectOpts>) => Promise<{ publicKey: PublicKey }>
-  disconnect: () => Promise<void>
   on: (event: PhantomEvent, handler: (args: unknown) => void) => void
   request: (method: PhantomRequestMethod, params: any) => Promise<unknown>
 }

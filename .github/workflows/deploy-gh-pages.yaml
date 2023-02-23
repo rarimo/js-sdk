@@ -12,9 +12,6 @@ on:
     branches:
       - main
 
-env:
-  NPM_AUTH_TOKEN: auth_token
-
 jobs:
   deploy_pages:
     runs-on: ubuntu-latest
@@ -23,9 +20,21 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'yarn'
-      - run: yarn install
+          node-version: '18'
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn build
       - run: yarn docs
 

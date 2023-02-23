@@ -1,6 +1,6 @@
-import { sleep } from '@/helpers'
-import { Providers, ProviderChecks } from '@/enums'
-import { EthereumProvider, RawProvider, ProviderInstance } from '@/types'
+import { sleep } from './helpers'
+import { Providers, ProviderChecks } from './enums'
+import { EthereumProvider, RawProvider, ProviderInstance } from './types'
 
 declare global {
   interface Window {

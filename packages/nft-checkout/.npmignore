@@ -1,15 +1,6 @@
-/.github/
-/.vscode/
-/node_modules/
-packages/**/node_modules/
-/tmp/
-.idea/*
-/docs/
-
 coverage
 *.log
 
-package-lock.json
 /*.tgz
 /tmp*
 /mnt/
@@ -22,17 +13,5 @@ yarn-debug.log*
 yarn-error.log*
 babel-debug.log
 
-.browserslistrc
-.editorconfig
-.eslintignore
-.eslintrc.js
-.gitlab-ci.yml
 jest.config.js
-.prettierrc
 tsconfig.json
-tsconfig.base.json
-lerna.json
-/scripts/
-esbuild.js
-babel.config.json
-babel.config.node.json

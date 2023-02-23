@@ -1,4 +1,4 @@
-import { EstimatedPrice, Price, Target, Token } from '@/types'
+import { EstimatedPrice, Price, Target, Token } from '../../../types'
 import {
   Currency,
   CurrencyAmount,
