@@ -7,13 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - `root`: Yarn TypeScript plugin which automatically adds @types/ packages into your dependencies when you add a package that doesn't include its own types
+- `@rarimo/provider`: Support of Phantom wallet
+- `@rarimo/provider`: Support of Coinbase wallet
+- `@rarimo/provider`: Support of Solfare wallet
 - `@rarimo/nft-checkout`: `supportedTokens` method to `INFTCheckoutOperation` interface to get supported tokens for swap on the selected chain
 - `@rarimo/nft-checkout`: PancakeSwap integration
 - `@rarimo/nft-checkout`: Ability to provide slippage in target object
 
 ### Changed
-- `root`: Moved all repo to the [Yarn PnP](https://yarnpkg.com/features/pnp)
-- `root`: Added some more info about SDK and developing to the readme
+- `root`: Added some more info about SDK to the readme
 - `all`: Moved all changelogs to the one file in the root of the repo
 - `all`: Operator errors moved into from `@rarimo/provider` to `@rarimo/nft-checkout`
 - `@rarimo/nft-checkout`: Target object now has the required field `swapTargetTokenSymbol`, which need to determine output token for swap.

@@ -97,7 +97,7 @@ const EVM_CHAINS: BridgeChain[] = [
     name: ChainNames.BinanceSmartChain,
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     symbol: 'BNB',
-    explorerUrl: 'https://bscscan.com',
+    explorerUrl: 'https://bscscan.com',ya
     type: ChainTypes.EVM,
     icon: 'https://icons.llamao.fi/icons/chains/rsz_binance.jpg',
     contractAddress: '0x6405b0cBaa17B8ACdc566d335e2D8bFe971FB26F',
