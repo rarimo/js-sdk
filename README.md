@@ -29,8 +29,8 @@ Here are the packages in the namespace:
 
 | Package                                | Description                                                                                                                                       | Latest                                                                                                                    |
 |----------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/provider](packages/provider)  | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
-| [@rarimo/nft-checkout](packages/nft-checkout) | Tools to create cross-train transactions with the Rarimo Protocol | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
+| [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)  | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
+| [@rarimo/nft-checkout]https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html) | Tools to create cross-train transactions with the Rarimo protocol | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
 
 ## Webpack Configs
 
