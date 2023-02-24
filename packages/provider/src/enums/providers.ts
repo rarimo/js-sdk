@@ -30,3 +30,11 @@ export enum ProviderEvents {
   AccountsChanged = 'accountsChanged',
   AccountChanged = 'accountChanged',
 }
+
+export enum ProviderEventBusEvents {
+  Connect = 'connect',
+  Disconnect = 'disconnect',
+  ChainChanged = 'chain-changed',
+  AccountChanged = 'account-changed',
+  Initiated = 'initiated',
+}
