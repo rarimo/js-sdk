@@ -1,11 +1,8 @@
 import { ProviderProxy, RawProvider } from '../types'
-import { BaseEthereumProvider } from './baseEthereum'
+import { BaseEVMProvider } from './base-evm'
 import { Providers } from '../enums'
 
-export class CoinbaseProvider
-  extends BaseEthereumProvider
-  implements ProviderProxy
-{
+export class CoinbaseProvider extends BaseEVMProvider implements ProviderProxy {
   constructor(provider: RawProvider) {
     super(provider)
   }

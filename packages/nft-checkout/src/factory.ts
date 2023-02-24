@@ -15,8 +15,8 @@ export type CreateCheckoutOperationParams = {
 }
 
 export class NFTCheckoutFactory {
-  #operators: Operators
-  #config: Config
+  readonly #operators: Operators
+  readonly #config: Config
 
   constructor(operators: Operators, config?: Partial<Config>) {
     this.#operators = operators
