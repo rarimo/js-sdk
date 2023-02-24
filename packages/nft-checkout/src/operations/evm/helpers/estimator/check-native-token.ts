@@ -7,7 +7,7 @@ import { ChainId, ChainTypes } from '@rarimo/provider'
 
 export const isNativeToken = (chains: BridgeChain[], token: Token): boolean => {
   const chain = chains.find(chain => chain.id === token.chain.id)
-  return chain?.symbol === token.symbol
+  return chain?.token?.symbol === token.symbol
 }
 
 export const getFromToken = (
@@ -17,6 +17,7 @@ export const getFromToken = (
   toChainId: ChainId,
 ): Token => {
   const isNative = isNativeToken(chains, from)
+  console.log({ isNative })
 
   const _from = isNative
     ? getWrappedToken(tokens, from.chain.id, toChainId)

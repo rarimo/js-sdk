@@ -1,14 +1,19 @@
 import { BridgeChain, Config, Token } from '../../../types'
-import { SwapContractVersion } from '../../../enums'
+import { ChainNames, SwapContractVersion } from '../../../enums'
 import { errors } from '../../../errors'
 
 import axios from 'axios'
 import { TokenInfo } from '@uniswap/token-lists'
+import { PANCAKE_SWAP_TESTNET_TOKEN_LIST } from '../../../const/tokens'
 
 export const loadTokens = async (
   config: Config,
   chain: BridgeChain,
 ): Promise<Token[]> => {
+  if (chain.name === ChainNames.Chapel) {
+    return PANCAKE_SWAP_TESTNET_TOKEN_LIST
+  }
+
   const url = getTokenListUrl(chain, config)
 
   if (!url) {
@@ -37,9 +42,9 @@ export const loadTokens = async (
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
   return {
-    [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST,
-    [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST,
-    [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST,
+    [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
+    [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
+    [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
   }[chain.contactVersion]
 }
 

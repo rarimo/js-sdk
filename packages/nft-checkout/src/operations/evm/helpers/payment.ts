@@ -43,7 +43,7 @@ const createPaymentToken = (
 
   const balance = new BN(token.balance)
 
-  if (balance.compare(new BN(0)) == -1) return
+  if (balance.compare(new BN(0)) != 1) return
 
   return {
     balance: balance.toString(),
@@ -58,13 +58,40 @@ export const getPaymentTokens = async (
   provider: IProvider,
   tokens: Token[],
 ) => {
-  return mapTokenBalances(
+  const erc20 = mapTokenBalances(
     tokens,
     chain,
     await getBalancesForEthereumAddress({
-      contractAddresses: tokens.map(i => i.address),
+      contractAddresses: tokens.reduce((acc: string[], i) => {
+        if (i.address) acc.push(i.address)
+        return acc
+      }, []),
       ethereumAddress: provider.address!,
       providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
     }),
   )
+
+  const _provider = provider.getWeb3Provider?.()
+  const nativeBalance = await _provider?.getBalance(provider.address!)
+
+  return [
+    ...erc20,
+    ...(nativeBalance && nativeBalance.gt(0)
+      ? [
+          {
+            chain,
+            balance: nativeBalance.toString(),
+            balanceRaw: Amount.fromRaw(nativeBalance.toString(), 18),
+            token: {
+              address: '',
+              chain,
+              symbol: chain.token.symbol,
+              decimals: chain.token.decimals,
+              name: chain.token.name,
+              logoURI: chain.icon,
+            },
+          },
+        ]
+      : []),
+  ]
 }

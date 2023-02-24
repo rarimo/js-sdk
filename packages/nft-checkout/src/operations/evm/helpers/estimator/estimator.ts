@@ -68,7 +68,7 @@ export class Estimator {
   }
 
   #checkTokens(from?: string, to?: string) {
-    if (!from || !to || from?.toLowerCase() === to?.toLowerCase()) {
+    if (!to || from?.toLowerCase() === to?.toLowerCase()) {
       throw new errors.OperationInvalidSelectedTokenPairError()
     }
   }

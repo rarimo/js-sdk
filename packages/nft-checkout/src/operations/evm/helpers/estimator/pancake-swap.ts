@@ -62,7 +62,17 @@ export const estimatePancakeSwap = async (
     provider: () => provider?.getWeb3Provider?.() as EtherProvider,
   })
 
-  const route = new Route(pairs, tokenA, tokenB)
+  const route = new Route(
+    pairs.filter(
+      p =>
+        (p.token0.address === tokenA.address ||
+          p.token1.address === tokenA.address) &&
+        (p.token0.address === tokenB.address ||
+          p.token1.address === tokenB.address),
+    ),
+    tokenA,
+    tokenB,
+  )
   const trade = new Trade(route, amount, TradeType.EXACT_OUTPUT)
 
   return {

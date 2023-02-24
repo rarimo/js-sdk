@@ -29,7 +29,6 @@ import {
   BUNDLE_SALT_BYTES,
   CHAINS,
   ERC20_ABI,
-  SOLIDITY_MAX_UINT_256,
   SWAP_V2_ABI,
   SWAP_V3_ABI,
 } from '../../const'
@@ -189,6 +188,8 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
+    if (isNativeToken(this.#chains, e.from)) return
+
     const contract = new Contract(
       e.from.address,
       ERC20_ABI,
@@ -216,7 +217,7 @@ export class EVMOperation implements INFTCheckoutOperation {
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       routerAddress,
-      SOLIDITY_MAX_UINT_256,
+      BN.MAX_UINT256.toString(),
     ])
 
     return this.#provider.signAndSendTx({
