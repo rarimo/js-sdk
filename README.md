@@ -61,23 +61,3 @@ module.exports = [
   },
 ]
 ```
-
-
-## Development
-
-### VSCode
-
-To start work on the project in VSCode, you need to go for the following steps:
-
-1. Install the [ZipFS Extension](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
-2. Open the project folder in VSCode
-3. Press `Ctrl+Shift+P` in a TypeScript file
-4. Choose "Select TypeScript Version"
-5. Choose "Use Workspace Version"
-
-### WebStorm
-
-To fix ESLint resolve in WebStorm, you need to go for the following steps:
-
-1. Go to WebStorm Settings: Languages & Frameworks > Javascript > Code Quality Tools > ESLint
-2. Choose Manual ESLint configuration and select 'Detect package and configuration file from the nearest package.json' in ESLint package field

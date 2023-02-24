@@ -21,7 +21,7 @@ type PhantomRequestMethod =
   | 'signMessage'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type PhantomProvider = {
+export type SolanaProvider = {
   publicKey: PublicKey | null
   isConnected: boolean | null
   signTransaction: (transaction: Transaction) => Promise<Transaction>

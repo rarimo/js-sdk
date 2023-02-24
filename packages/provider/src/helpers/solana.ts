@@ -3,7 +3,7 @@ import bs58 from 'bs58'
 
 import { EIP1193, EIP1474, SolanaChains } from '../enums'
 import { errors } from '../errors'
-import { SolanaProviderRpcError } from '../types'
+import { Chain, SolanaProviderRpcError } from '../types'
 
 export function handleSolError(error: SolanaProviderRpcError) {
   const ErrorCode = error?.error?.code || error?.code
@@ -53,22 +53,12 @@ export function decodeSolanaTx(tx: string) {
   return Transaction.from(buff)
 }
 
-export function getSolExplorerTxUrl(
-  chainId: string,
-  explorerUrl: string,
-  txHash: string,
-) {
-  return chainId === SolanaChains.mainnet
-    ? `${explorerUrl}/tx/${txHash}`
-    : `${explorerUrl}/tx/${txHash}?cluster=${chainId}`
+export function getSolExplorerTxUrl(chain: Chain, txHash: string) {
+  const url = `${chain.explorerUrl}/tx/${txHash}`
+  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
 }
 
-export function getSolExplorerAddressUrl(
-  chainId: string,
-  explorerUrl: string,
-  address: string,
-) {
-  return chainId === SolanaChains.mainnet
-    ? `${explorerUrl}/address/${address}`
-    : `${explorerUrl}/address/${address}?cluster=${chainId}`
+export function getSolExplorerAddressUrl(chain: Chain, address: string) {
+  const url = `${chain.explorerUrl}/address/${address}`
+  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
 }
