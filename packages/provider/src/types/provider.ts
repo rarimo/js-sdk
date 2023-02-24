@@ -6,6 +6,7 @@ import {
 } from '@solana/web3.js'
 import { ethers, providers } from 'ethers'
 
+import { providers as nearProviders } from 'near-api-js'
 import { ChainTypes, Providers } from '../enums'
 import { EthereumProvider } from './ethereum'
 import { TransactionConfig } from 'web3-core'
@@ -31,9 +32,12 @@ export type EthereumTransaction = TransactionConfig
 
 export type SolanaTransactionResponse = TransactionSignature
 
+export type NearTransactionResponse = nearProviders.FinalExecutionOutcome
+
 export type TransactionResponse =
   | EthTransactionResponse
   | SolanaTransactionResponse
+  | NearTransactionResponse
 
 export interface ProviderProxyConstructor {
   new (provider: RawProvider): ProviderProxy

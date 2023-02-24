@@ -8,3 +8,8 @@ export enum SolanaChains {
   testnet = 'testnet',
   mainnet = 'mainnet',
 }
+
+export enum NEAR_CHAINS {
+  testnet = 'testnet',
+  mainnet = 'mainnet',
+}
