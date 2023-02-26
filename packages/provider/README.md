@@ -13,7 +13,7 @@ Here is an example that creates a `MetamaskProvider` object for a MetaMask walle
 ```js
 import { createProvider, MetamaskProvider } from '@rarimo/provider'
 
-const getMetamaskBalances = async () => {
+const getMetamaskWalletAddress = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
   const provider = await createProvider(MetamaskProvider)
   await provider.connect()
