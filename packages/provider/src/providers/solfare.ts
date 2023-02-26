@@ -28,7 +28,7 @@ declare global {
  * ```js
  * import { createProvider, SolflareProvider } from '@rarimo/provider'
  *
- * const getSolflareBalances = async () => {
+ * const getSolflareWalletAddress = async () => {
  *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolflareProvider interface to limit bundle size.
  *   const provider = await createProvider(SolflareProvider)
  *   await provider.connect()

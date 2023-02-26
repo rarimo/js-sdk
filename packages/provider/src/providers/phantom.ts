@@ -22,7 +22,7 @@ import { Providers } from '../enums'
  * ```js
  * import { createProvider, PhantomProvider } from '@rarimo/provider'
  *
- * const getPhantomBalances = async () => {
+ * const getPhantomWalletAddress = async () => {
  *   // Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.
  *   const provider = await createProvider(PhantomProvider)
  *   await provider.connect()
