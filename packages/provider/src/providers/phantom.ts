@@ -25,6 +25,7 @@ import { Providers } from '../enums'
  * const getPhantomBalances = async () => {
  *   // Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.
  *   const provider = await createProvider(PhantomProvider)
+ *   await provider.connect()
  *
  *   // Get the address of the wallet
  *   console.log(provider.address)

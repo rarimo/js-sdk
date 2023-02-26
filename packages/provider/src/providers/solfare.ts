@@ -31,6 +31,7 @@ declare global {
  * const getSolflareBalances = async () => {
  *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolflareProvider interface to limit bundle size.
  *   const provider = await createProvider(SolflareProvider)
+ *   await provider.connect()
  *
  *   // Get the address of the wallet
  *   console.log(provider.address)
