@@ -18,6 +18,7 @@ import { utils } from "ethers";
 const sendTransaction = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
   const provider = await createProvider(MetamaskProvider)
+  await provider.connect()
 
   // Initialize the object that represents the transaction operation, in this case on EVM.
   const op = createCheckoutOperation(EVMOperation, provider)

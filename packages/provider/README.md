@@ -16,6 +16,7 @@ import { createProvider, MetamaskProvider } from '@rarimo/provider'
 const getMetamaskBalances = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
   const provider = await createProvider(MetamaskProvider)
+  await provider.connect()
 
   // Get the address of the wallet
   console.log(provider.address)
