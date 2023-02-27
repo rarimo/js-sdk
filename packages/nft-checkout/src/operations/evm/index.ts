@@ -45,6 +45,10 @@ const SWAP_CONTRACT_ABIS = {
   [SwapContractVersion.UniswapV3]: SWAP_V3_ABI,
 }
 
+// We always use liquidity pool and not control those token contracts
+// In case when `isWrapped: false`, bridge contract won't try to burn tokens
+const IS_TOKEN_WRAPPED = false
+
 /**
  * An operation on an EVM chain.
  *
@@ -197,6 +201,10 @@ export class EVMOperation
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
+    if (!chain.contractAddress) {
+      throw new errors.OperationChainNotSupportedError()
+    }
+
     return this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: chain.contractAddress,
@@ -243,7 +251,7 @@ export class EVMOperation
       e.path,
       receiverAddress,
       network?.name ?? '',
-      true,
+      IS_TOKEN_WRAPPED,
       bundleTuple,
     ])
   }

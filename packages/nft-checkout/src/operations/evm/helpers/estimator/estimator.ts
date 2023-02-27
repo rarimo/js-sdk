@@ -35,6 +35,7 @@ export class Estimator {
 
   async estimate(): Promise<EstimatedPrice> {
     const targetToken = this.#getTargetToken()
+
     this.#checkTokens(this.#from.token.address, targetToken?.address)
 
     if (isTraderJoe(this.#from.chain)) {
@@ -60,6 +61,8 @@ export class Estimator {
     }
 
     return estimateUniswapV3(
+      this.#tokens,
+      this.#chains,
       this.#provider,
       this.#from.token,
       targetToken!,
@@ -68,14 +71,23 @@ export class Estimator {
   }
 
   #checkTokens(from?: string, to?: string) {
-    if (!to || from?.toLowerCase() === to?.toLowerCase()) {
+    if (!to || toLow(from) === toLow(to)) {
       throw new errors.OperationInvalidSelectedTokenPairError()
     }
   }
 
   #getTargetToken() {
-    return this.#tokens.find(
-      t => t.symbol === this.#target.swapTargetTokenSymbol,
-    )
+    const chain = this.#chains.find(c => c.id === this.#target.chainId)!
+
+    const isNative =
+      toLow(chain.token.symbol) === toLow(this.#target.swapTargetTokenSymbol)
+
+    return isNative
+      ? { chain, logoURI: chain.icon, address: '', ...chain.token }
+      : this.#tokens.find(t => t.symbol === this.#target.swapTargetTokenSymbol)
   }
+}
+
+function toLow(str?: string): string {
+  return str?.toLowerCase() ?? ''
 }

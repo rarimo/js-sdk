@@ -1,6 +1,6 @@
 import { Price } from '../../../../entities'
 import { errors } from '../../../../errors'
-import { EstimatedPrice, Target, Token } from '../../../../types'
+import { BridgeChain, EstimatedPrice, Target, Token } from '../../../../types'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 import { getSwapAmount } from './get-swap-amount'
 import { validateSlippage } from './slippage'
@@ -22,6 +22,7 @@ import {
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
 import { providers } from 'ethers'
+import { getFromToken } from './check-native-token'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -64,21 +65,25 @@ const getSlippage = (slippage?: number): Percent => {
 }
 
 export const estimateUniswapV3 = async (
+  tokens: Token[],
+  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
+  const _from = getFromToken(chains, tokens, from, to.chain.id)
+
   const tokenA = new UNIToken(
-    Number(from.chain.id),
-    from.address,
-    from.decimals,
-    from.symbol,
-    from.name,
+    Number(_from.chain.id),
+    _from.address,
+    _from.decimals,
+    _from.symbol,
+    _from.name,
   )
 
   const tokenB = new UNIToken(
-    Number(from.chain.id),
+    Number(_from.chain.id),
     to.address,
     to.decimals,
     to.symbol,
@@ -89,7 +94,7 @@ export const estimateUniswapV3 = async (
   const swapAmount = getSwapCurrencyAmount(tokenB, target.price)
 
   const router = new AlphaRouter({
-    chainId: from.chain.id as UNIChainId,
+    chainId: _from.chain.id as UNIChainId,
     provider: provider?.getWeb3Provider?.() as providers.Web3Provider,
   })
 
@@ -114,7 +119,7 @@ export const estimateUniswapV3 = async (
     from,
     to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
-    price: getPrice(from, amount),
+    price: getPrice(_from, amount),
     path: getRoutePath(route.route),
     gasPriceInUSD: new BN(estimatedGasUsedUSD.numerator.toString())
       .fromFraction(estimatedGasUsedUSD.currency.decimals)

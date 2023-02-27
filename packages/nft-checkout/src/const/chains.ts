@@ -61,7 +61,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://sepolia.etherscan.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-    contractAddress: '0xe3C6b16AFAB73D836f12252f376613ceF967B5e1',
+    contractAddress: '',
     contactVersion: SwapContractVersion.UniswapV3,
   },
   {
@@ -90,7 +90,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://mumbai.polygonscan.com',
     type: ChainTypes.EVM,
-    contractAddress: '0xe3C6b16AFAB73D836f12252f376613ceF967B5e1',
+    contractAddress: '',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
     contactVersion: SwapContractVersion.UniswapV3,
   },
@@ -121,7 +121,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://cchain.explorer.avax-test.network',
     type: ChainTypes.EVM,
     icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
-    contractAddress: '',
+    contractAddress: '0x9f971C56B9Ce9Ff013c82A99daFA9c3C0a9585CA',
     contactVersion: SwapContractVersion.TraderJoe,
   },
   {
@@ -151,7 +151,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://testnet.bscscan.com',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
-    contractAddress: '0xF9105b653b2054218Db23CA33e7F96071b419f0B',
+    contractAddress: '0x08a87595f4423AaF591155aa2cEF31Fb904BcdE8',
     contactVersion: SwapContractVersion.PancakeSwap,
   },
 ]

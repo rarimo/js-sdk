@@ -17,7 +17,6 @@ export const getFromToken = (
   toChainId: ChainId,
 ): Token => {
   const isNative = isNativeToken(chains, from)
-  console.log({ isNative })
 
   const _from = isNative
     ? getWrappedToken(tokens, from.chain.id, toChainId)
