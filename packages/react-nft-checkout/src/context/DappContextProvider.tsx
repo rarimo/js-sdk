@@ -4,22 +4,15 @@ import {
 } from '@rarimo/nft-checkout'
 import {
   CreateProviderOpts,
+  IProvider,
   MetamaskProvider,
-  Provider,
 } from '@rarimo/provider'
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  // useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
-import { useCheckoutOperation, useProvider } from '..'
+import { useCheckoutOperation, useProvider } from '@/hooks'
 
 export interface DappContextPropsType {
-  provider: Provider | null
+  provider: IProvider | null
   checkoutOperation: INFTCheckoutOperation | null
   isInitialized: boolean
 }
@@ -44,16 +37,6 @@ export const DappContextProvider = ({
     provider,
     createCheckoutOperationParams,
   )
-
-  console.log('provider', checkoutOperation?.initialized)
-
-  // useEffect(() => {
-  //   console.log('useEffect', checkoutOperation?.initialized)
-  // }, [
-  //   checkoutOperation?.chain,
-  //   checkoutOperation?.initialized,
-  //   checkoutOperation?.provider,
-  // ])
 
   const memoizedContextValue = useMemo(
     () => ({

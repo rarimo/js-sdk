@@ -5,18 +5,32 @@ import {
   INFTCheckoutOperation,
 } from '@rarimo/nft-checkout'
 import { IProvider } from '@rarimo/provider'
-import { useEffect, useState } from 'react'
-
-import { useForceUpdate } from '@/hooks'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useCheckoutOperation = (
   provider: IProvider | null,
   createCheckoutOperationParams?: CreateCheckoutOperationParams,
 ) => {
-  const forceUpdate = useForceUpdate()
-
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
+  const [, setState] = useState(() => {
+    return {
+      isInitialized: checkoutOperation?.isInitialized,
+      chainFrom: checkoutOperation?.chainFrom,
+    }
+  })
+
+  const setListeners = useCallback(() => {
+    if (!checkoutOperation) return
+
+    checkoutOperation.onInitiated(({ chainFrom, isInitiated }) => {
+      setState(prev => ({
+        ...prev,
+        chainFrom,
+        isInitiated,
+      }))
+    })
+  }, [checkoutOperation])
 
   useEffect(() => {
     if (!provider) return
@@ -61,12 +75,12 @@ export const useCheckoutOperation = (
   }, [checkoutOperation])
 
   useEffect(() => {
-    forceUpdate()
-  }, [
-    checkoutOperation?.chain,
-    checkoutOperation?.initialized,
-    checkoutOperation?.provider,
-  ])
+    setListeners()
+
+    return () => {
+      checkoutOperation?.clearHandlers()
+    }
+  }, [checkoutOperation, setListeners])
 
   return checkoutOperation
 }
