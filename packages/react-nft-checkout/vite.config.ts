@@ -41,7 +41,29 @@ export default defineConfig(({ mode }) => {
       },
     }),
     publicDir: 'static',
-    plugins: [react(), tsconfigPaths(), dts()],
+    plugins: [
+      react(),
+      tsconfigPaths(),
+      dts(),
+      {
+        name: 'inject',
+        transformIndexHtml() {
+          return isProduction
+            ? []
+            : [
+                {
+                  tag: 'script',
+                  attrs: {
+                    type: 'module',
+                    src: 'https://unpkg.com/web3@latest/dist/web3.min.js',
+                    // defer: true,
+                  },
+                  injectTo: 'head',
+                },
+              ]
+        },
+      },
+    ],
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
       dedupe: ['react'],
