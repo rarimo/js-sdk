@@ -149,6 +149,15 @@ export class EVMOperation implements INFTCheckoutOperation {
       from: this.#provider.address,
       to: chain.contractAddress,
       data: this.#encodeTxData(e, bundle),
+      ...(isNativeToken(this.#chains, e.from)
+        ? {
+            value: new BN(
+              new BN(e.price.toString()).mul(1.02).round(e.price.decimals),
+            )
+              .toFraction(e.price.decimals)
+              .toString(),
+          }
+        : {}),
     })
   }
 

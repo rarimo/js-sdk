@@ -2,15 +2,19 @@ import { Price } from '../../../../entities'
 import { RARIMO_BRIDGE_FEE } from '../../../../const'
 import { BN } from '@distributedlab/utils'
 
+const ONE = 1
+const ONE_HUNDRED = 100
+
 export const getSwapAmount = (price: Price) => {
-  const amountBN = new BN(price.value).fromFraction(price.decimals)
+  const cfg = { decimals: price.decimals }
 
-  const fee = new BN(
-    new BN(amountBN.toString(), { decimals: 24 })
-      .mul(RARIMO_BRIDGE_FEE)
-      .toString(),
-    { decimals: 24 },
-  ).div(100)
+  const numerator = new BN(price.value, cfg).fromFraction(cfg.decimals)
 
-  return amountBN.add(fee).toFraction(price.decimals).toString()
+  const denominator = new BN(ONE, cfg).sub(
+    new BN(RARIMO_BRIDGE_FEE, cfg).div(ONE_HUNDRED),
+  )
+
+  return new BN(numerator.div(denominator), cfg)
+    .toFraction(cfg.decimals)
+    .toString()
 }
