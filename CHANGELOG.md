@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `root`: `esbuild` from dependencies
 - `root`: `@babel/*` from dependencies to simplify and speed up build process
 - `all`: `@/ -> ./src` aliases to remove `@babel/*` and all related packages
+- `@rarimo/nft-checkout`: Swap contract addresses removed from EVM mainnet chains till they will be deployed
 
 ### Fixed
 - `@rarimo/nft-checkout`: Swap for input native token
