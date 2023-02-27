@@ -1,82 +1,47 @@
-import Web3 from 'web3/types'
 import {
-  ChainId,
-  EthProviderRpcError,
-  PhantomProvider as _PhantomProvider,
   ProviderProxy,
   RawProvider,
   SolanaProviderRpcError,
   TransactionResponse,
   TxRequestBody,
 } from '../types'
-import { HttpProvider } from 'web3-core'
-import { ChainTypes, ProviderEvents, Providers } from '../enums'
-import { decodeSolanaTx, handleEthError, handleSolError } from '../helpers'
+import { decodeSolanaTx, handleSolError } from '../helpers'
 import {
-  Connection,
   Cluster,
   clusterApiUrl,
+  Connection,
   Transaction as SolTransaction,
-  PublicKey,
 } from '@solana/web3.js'
-declare global {
-  interface Window {
-    Web3: typeof Web3
-  }
-}
+import { BaseSolanaProvider } from './base-solana'
+import { Providers } from '../enums'
 
-export class PhantomProviderSolana implements ProviderProxy {
-  readonly #provider: _PhantomProvider
-  #isConnected = false
-  #web3: Web3
-  #chainId?: ChainId
-  #address?: string
-
+/**
+ * @description Represents a Phantom wallet.
+ *
+ * @example
+ * ```js
+ * import { createProvider, PhantomProvider } from '@rarimo/provider'
+ *
+ * const getPhantomWalletAddress = async () => {
+ *   // Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.
+ *   const provider = await createProvider(PhantomProvider)
+ *   await provider.connect()
+ *
+ *   // Get the address of the wallet
+ *   console.log(provider.address)
+ * }
+ * ```
+ */
+export class PhantomProvider
+  extends BaseSolanaProvider
+  implements ProviderProxy
+{
   constructor(provider: RawProvider) {
-    this.#web3 = new window.Web3(provider as unknown as HttpProvider)
-    this.#provider = (<unknown>this.#web3?.currentProvider) as _PhantomProvider
-    this.#isConnected = false
+    super(provider)
   }
 
   static get providerType(): Providers {
     return Providers.Phantom
-  }
-
-  get chainType(): ChainTypes {
-    return ChainTypes.Solana
-  }
-
-  get isConnected(): boolean {
-    return this.#isConnected
-  }
-
-  get chainId(): ChainId | undefined {
-    return this.#chainId
-  }
-
-  get address(): string | undefined {
-    return this.#address
-  }
-
-  async init(): Promise<void> {
-    this.#setListeners()
-    await this._updateProviderState()
-  }
-
-  async switchChain(_chainId: ChainId) {
-    try {
-      this.#chainId = _chainId
-    } catch (error) {
-      handleSolError(error as SolanaProviderRpcError)
-    }
-  }
-
-  async connect(): Promise<void> {
-    try {
-      await this.#provider.connect()
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
   }
 
   async signAndSendTx(
@@ -88,9 +53,9 @@ export class PhantomProviderSolana implements ProviderProxy {
           ? decodeSolanaTx(txRequestBody)
           : txRequestBody
 
-      const connection = new Connection(clusterApiUrl(this.#chainId as Cluster))
+      const connection = new Connection(clusterApiUrl(this.chainId as Cluster))
 
-      const { signature } = await this.#provider.signAndSendTransaction(
+      const { signature } = await this.provider.signAndSendTransaction(
         txBody as SolTransaction,
       )
       await connection.confirmTransaction(signature)
@@ -100,24 +65,5 @@ export class PhantomProviderSolana implements ProviderProxy {
     }
 
     return ''
-  }
-
-  #setListeners() {
-    this.#provider.on(ProviderEvents.Connect, () => {
-      this._updateProviderState()
-    })
-
-    this.#provider.on(ProviderEvents.Disconnect, () => {
-      this._updateProviderState()
-    })
-
-    this.#provider.on(ProviderEvents.AccountChanged, () => {
-      this._updateProviderState()
-    })
-  }
-
-  async _updateProviderState() {
-    const publicKey = this.#provider.publicKey
-    this.#address = publicKey ? new PublicKey(publicKey).toBase58() : ''
   }
 }

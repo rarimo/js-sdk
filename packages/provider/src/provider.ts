@@ -8,6 +8,9 @@ import {
   ProviderProxyConstructor,
   IProvider,
   Chain,
+  ProviderConnectRelatedEventPayload,
+  ProviderChainChangedEventPayload,
+  ProviderInitiatedEventPayload,
 } from './types'
 import { errors } from './errors'
 import { Web3 } from './web3'
@@ -16,6 +19,24 @@ export type CreateProviderOpts = {
   web3Instance?: Web3
 }
 
+/**
+ * @description Represents a browser-based wallet.
+ *
+ * To connect to a wallet, create an object to represent the wallet to access with the `createProvider()` method. These wallet objects implement the `Provider` interface so you can access different types of wallets in a consistent way.
+ *
+ * @example
+ * ```js
+ * import { createProvider, MetamaskProvider } from '@rarimo/provider'
+ *
+ * const getMetamaskWalletAddress = async () => {
+ *   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+ *   const provider = await createProvider(MetamaskProvider)
+ *
+ *   // Get the address of the wallet
+ *   console.log(provider.address)
+ * }
+ * ```
+ */
 export class Provider implements IProvider {
   readonly #proxyConstructor: ProviderProxyConstructor
   #selectedProvider?: Providers
@@ -96,10 +117,40 @@ export class Provider implements IProvider {
 
     throw new errors.ProviderMethodNotSupported()
   }
+
+  public onAccountChanged(
+    cb: (e: ProviderConnectRelatedEventPayload) => void,
+  ): void {
+    this.#proxy?.onAccountChanged(cb)
+  }
+
+  public onChainChanged(
+    cb: (e: ProviderChainChangedEventPayload) => void,
+  ): void {
+    this.#proxy?.onChainChanged?.(cb)
+  }
+
+  public onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+    this.#proxy?.onConnect(cb)
+  }
+
+  public onDisconnect(
+    cb: (e: ProviderConnectRelatedEventPayload) => void,
+  ): void {
+    this.#proxy?.onDisconnect(cb)
+  }
+
+  public onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void {
+    this.#proxy?.onInitiated(cb)
+  }
+
+  public clearHandlers(): void {
+    this.#proxy?.clearHandlers()
+  }
 }
 
 /**
- * @description Creates a provider instance
+ * @description Creates an instance of a wallet provider
  *
  * @example
  * const provider = await createProvider(MetamaskProvider)

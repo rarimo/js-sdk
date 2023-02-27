@@ -36,6 +36,7 @@ import { errors } from '../../errors'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
+import { OperationEventBus } from '../event-bus'
 import { SwapContractVersion } from '../../enums'
 
 const SWAP_CONTRACT_ABIS = {
@@ -44,11 +45,23 @@ const SWAP_CONTRACT_ABIS = {
   [SwapContractVersion.UniswapV3]: SWAP_V3_ABI,
 }
 
-export class EVMOperation implements INFTCheckoutOperation {
+/**
+ * An operation on an EVM chain.
+ *
+ * @example
+ * ```js
+ * const provider = await createProvider(MetamaskProvider)
+ * const op = createCheckoutOperation(EVMOperation, provider)
+ * ```
+ */
+export class EVMOperation
+  extends OperationEventBus
+  implements INFTCheckoutOperation
+{
   readonly #provider: IProvider
   readonly #config: Config
 
-  #initialized = false
+  #isInitialized = false
 
   #chainFrom: BridgeChain
   #target?: Target
@@ -57,11 +70,12 @@ export class EVMOperation implements INFTCheckoutOperation {
   #tokens: Token[] = []
 
   constructor(config: Config, provider: IProvider) {
+    super()
     this.#config = config
     this.#provider = provider
   }
 
-  public get chain(): BridgeChain {
+  public get chainFrom(): BridgeChain {
     return this.#chainFrom
   }
 
@@ -69,11 +83,19 @@ export class EVMOperation implements INFTCheckoutOperation {
     return this.#provider
   }
 
-  public get initialized(): boolean {
-    return this.#initialized
+  public get isInitialized(): boolean {
+    return this.#isInitialized
+  }
+
+  public get target() {
+    return this.#target
   }
 
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
+  /**
+   * Initialize the operation with the source chain and transaction parameters
+   * @param param0 Information about the source chain and the target transaction of the operation
+   */
     if (!this.#chains.length) {
       await this.supportedChains()
     }
@@ -92,10 +114,21 @@ export class EVMOperation implements INFTCheckoutOperation {
       throw new errors.OperationInvalidProviderChainTypeError()
     }
 
-    this.#initialized = true
+    this.#isInitialized = true
+
+    this.emitInitiated({
+      isInitiated: this.#isInitialized,
+      chainFrom: this.#chainFrom,
+      target: this.#target,
+    })
   }
 
   public async supportedChains(): Promise<BridgeChain[]> {
+  /**
+   * Get the chains that are supported for the operation type
+   *
+   * @returns A list of supported chains and information about them
+   */
     // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!
 
@@ -103,13 +136,19 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   public async supportedTokens(): Promise<Token[]> {
-    if (!this.initialized) throw new errors.OperatorNotInitializedError()
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     return this.#tokens
   }
 
+  /**
+   * Load the wallet's balance of payment tokens on the specified chain.
+   *
+   * @param chain A chain from {@link supportedChains}
+   * @returns An array of tokens and the wallet's balance of each token
+   */
   public async loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]> {
-    if (!this.initialized) throw new errors.OperatorNotInitializedError()
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
@@ -126,8 +165,14 @@ export class EVMOperation implements INFTCheckoutOperation {
     )
   }
 
-  public async estimatePrice(from: PaymentToken): Promise<EstimatedPrice> {
-    if (!this.initialized) throw new errors.OperatorNotInitializedError()
+  /**
+   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
+   *
+   * @param from The token to use for the transaction
+   * @returns Information about the costs involved in the transaction, including the gas price
+   */
+  public async estimatePrice(from: PaymentToken) {
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     return new Estimator(
       this.#provider,
@@ -138,10 +183,14 @@ export class EVMOperation implements INFTCheckoutOperation {
     ).estimate()
   }
 
-  public async checkout(
-    e: EstimatedPrice,
-    bundle: TxBundle,
-  ): Promise<TransactionResponse> {
+  /**
+   * Send a transaction to Rarimo for processing
+   *
+   * @param e The estimated price of the transaction, from {@link estimatePrice}
+   * @param bundle The transaction bundle
+   * @returns The hash of the transaction
+   */
+  public async checkout(e: EstimatedPrice, bundle: TxBundle): Promise<TransactionResponse> {
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
@@ -241,7 +290,7 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   async #loadTokens() {
-    if (!this.initialized) return []
+    if (!this.isInitialized) return []
 
     this.#tokens = await loadTokens(this.#config, this.#chainFrom)
 
@@ -249,7 +298,7 @@ export class EVMOperation implements INFTCheckoutOperation {
   }
 
   async #switchChain() {
-    if (!this.initialized) throw new errors.OperatorNotInitializedError()
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     try {
       await this.#provider.switchChain(this.#chainFrom!.id)

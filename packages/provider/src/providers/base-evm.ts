@@ -8,7 +8,7 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '../types'
-import { HttpProvider } from 'web3-core'
+import { HttpProvider, TransactionConfig } from 'web3-core'
 import Web3 from 'web3/types'
 import { ChainTypes, ProviderEvents } from '../enums'
 import {
@@ -22,24 +22,19 @@ import {
   requestSwitchEthChain,
 } from '../helpers'
 import { providers } from 'ethers'
+import { ProviderEventBus } from './event-bus'
 
-declare global {
-  interface Window {
-    Web3: typeof Web3
-  }
-}
-
-export class BaseEthereumProvider implements ProviderProxy {
+export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: EthereumProvider
-  #isConnected = false
-  #web3: Web3
+  readonly #web3: Web3
+
   #chainId?: ChainId
   #address?: string
 
   constructor(provider: RawProvider) {
+    super()
     this.#web3 = new window.Web3(provider as unknown as HttpProvider)
     this.#provider = (<unknown>this.#web3?.currentProvider) as EthereumProvider
-    this.#isConnected = false
   }
 
   get chainType(): ChainTypes {
@@ -47,7 +42,7 @@ export class BaseEthereumProvider implements ProviderProxy {
   }
 
   get isConnected(): boolean {
-    return this.#isConnected
+    return Boolean(this.#chainId && this.#address)
   }
 
   get chainId(): ChainId | undefined {
@@ -65,8 +60,13 @@ export class BaseEthereumProvider implements ProviderProxy {
   async init(): Promise<void> {
     this.#setListeners()
     await this.#detectCurrentChain()
-    this.#isConnected = Boolean(this.#provider.selectedAddress)
     this.#address = this.#provider.selectedAddress ?? ''
+
+    this.emitInitiated({
+      chainId: this.#chainId,
+      address: this.#address,
+      isConnected: this.isConnected,
+    })
   }
 
   async switchChain(chainId: ChainId): Promise<void> {
@@ -103,9 +103,9 @@ export class BaseEthereumProvider implements ProviderProxy {
 
   async signAndSendTx(tx: TxRequestBody): Promise<TransactionResponse> {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const txReceipt = await this.#web3.eth.sendTransaction(tx)
+      const txReceipt = await this.#web3.eth.sendTransaction(
+        tx as TransactionConfig,
+      )
       return txReceipt.transactionHash
     } catch (error) {
       handleEthError(error as EthProviderRpcError)
@@ -115,18 +115,39 @@ export class BaseEthereumProvider implements ProviderProxy {
   }
 
   #setListeners() {
-    this.#provider.on(ProviderEvents.AccountsChanged, () => {
+    this.#provider.on(ProviderEvents.Connect, () => {
       this.#address = this.#provider.selectedAddress ?? ''
-      this.#isConnected = Boolean(this.#address)
+
+      this.emitConnect({
+        address: this.#address,
+        isConnected: this.isConnected,
+      })
     })
 
     this.#provider.on(ProviderEvents.Disconnect, () => {
-      this.#isConnected = false
       this.#address = ''
+
+      this.emitDisconnect({
+        address: this.#address,
+        isConnected: this.isConnected,
+      })
+    })
+
+    this.#provider.on(ProviderEvents.AccountsChanged, () => {
+      this.#address = this.#provider.selectedAddress ?? ''
+
+      this.emitAccountChanged({
+        address: this.#address,
+        isConnected: this.isConnected,
+      })
     })
 
     this.#provider.on(ProviderEvents.ChainChanged, (chainId: ChainId) => {
       this.#chainId = hexToDecimal(chainId)
+
+      this.emitChainChanged({
+        chainId: this.#chainId,
+      })
     })
   }
 

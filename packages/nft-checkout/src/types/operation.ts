@@ -4,6 +4,7 @@ import {
   IProvider,
   TransactionResponse,
 } from '@rarimo/provider'
+import { OperationSubscriber } from './operation-event-bus'
 import { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import { Config } from './config'
 import { EstimatedPrice, PaymentToken, Token } from './token'
@@ -29,10 +30,10 @@ export interface INFTCheckoutOperationConstructor {
 
 export type OperationCreateParams = { chainIdFrom: ChainId; target: Target }
 
-export interface INFTCheckoutOperation {
-  chain: Chain | undefined
+export interface INFTCheckoutOperation extends OperationSubscriber {
+  chainFrom: Chain | undefined
   provider: IProvider
-  initialized: boolean
+  isInitialized: boolean
 
   init(args: OperationCreateParams): Promise<void>
 
