@@ -1,4 +1,4 @@
-import { sleep } from './helpers'
+import { nearProviderBase, sleep } from './helpers'
 import { Providers, ProviderChecks } from './enums'
 import { EthereumProvider, RawProvider, ProviderInstance } from './types'
 
@@ -62,9 +62,11 @@ export class Web3 {
       : undefined
     const phantomProvider = window?.solana
     const solflareProvider = window?.solflare
+    const nearProvider = [nearProviderBase]
 
     this.#rawProviders = [
       ...(ethProviders ? ethProviders : []),
+      ...(nearProvider ? nearProvider : []),
       ...(phantomProvider ? [phantomProvider] : []),
       ...(solflareProvider ? [solflareProvider] : []),
     ] as RawProvider[]

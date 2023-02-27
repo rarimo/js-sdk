@@ -13,12 +13,13 @@ import { TransactionConfig } from 'web3-core'
 import { SolanaProvider } from './solana'
 import { Chain, ChainId } from './chain'
 import { ProviderSubscriber } from './provider-event-bus'
+import { NearProviderType } from './near'
 
-export type RawProvider = EthereumProvider | SolanaProvider
+export type RawProvider = EthereumProvider | SolanaProvider | NearProviderType
 
 export type ProviderInstance = {
   name: Providers
-  instance: RawProvider
+  instance?: RawProvider
 }
 
 export type TxRequestBody =

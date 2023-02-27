@@ -1,16 +1,16 @@
 import { Providers } from './enums'
 import {
+  Chain,
   ChainId,
+  IProvider,
+  ProviderChainChangedEventPayload,
+  ProviderConnectRelatedEventPayload,
+  ProviderInitiatedEventPayload,
+  ProviderInstance,
   ProviderProxy,
+  ProviderProxyConstructor,
   TransactionResponse,
   TxRequestBody,
-  ProviderInstance,
-  ProviderProxyConstructor,
-  IProvider,
-  Chain,
-  ProviderConnectRelatedEventPayload,
-  ProviderChainChangedEventPayload,
-  ProviderInitiatedEventPayload,
 } from './types'
 import { errors } from './errors'
 import { Web3 } from './web3'
@@ -51,7 +51,9 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance) {
-    this.#proxy = new this.#proxyConstructor(provider.instance)
+    if (provider.instance) {
+      this.#proxy = new this.#proxyConstructor(provider.instance)
+    }
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
     return this
@@ -148,6 +150,7 @@ export const createProvider = async (
   const { web3Instance } = opts
 
   const provider = new Provider(proxy)
+
   const web3 = web3Instance || new Web3()
 
   if (!web3.initiated) {

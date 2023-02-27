@@ -11,6 +11,7 @@ import {
   EIP1474,
   NEAR_CHAINS,
   NEAR_WALLET_ACTION_TYPE,
+
 } from '../enums'
 import { errors } from '../errors'
 import {
@@ -18,12 +19,12 @@ import {
   ENearWalletId,
   NearProviderRpcError,
   NearTxRequestBody,
-} from '../types'
+} from "../types";
 
 const THIRTY_TGAS = '300000000000000'
 const NO_DEPOSIT = '0'
 
-export class NearProvider {
+export class _NearProviderBase {
   selector: WalletSelector | null = null
   wallet: Wallet | null = null
   createAccessKeyFor: string
@@ -36,7 +37,7 @@ export class NearProvider {
 
   async init() {
     this.selector = await setupWalletSelector({
-      network: NEAR_CHAINS.mainnet,
+      network: NEAR_CHAINS.testnet,
       modules: [setupMyNearWallet()],
     })
 
@@ -113,7 +114,7 @@ export class NearProvider {
   }
 }
 
-export const nearProvider = new NearProvider({
+export const nearProviderBase = new _NearProviderBase({
   // createAccessKeyFor: 'example-account.testnet',
 })
 
@@ -183,3 +184,4 @@ export function handleNearError(error: NearProviderRpcError): never {
       throw error
   }
 }
+

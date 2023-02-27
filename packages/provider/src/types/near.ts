@@ -1,4 +1,4 @@
-import { nearProvider } from '../helpers'
+import { nearProviderBase } from '../helpers'
 
 export enum ENearWalletId {
   MyNearWallet = 'my-near-wallet',
@@ -12,7 +12,7 @@ export type NearTxRequestBody = {
   deposit?: string
 }
 
-export type NearProvider = typeof nearProvider
+export type NearProviderType = typeof nearProviderBase
 
 export type NearProviderRpcError = {
   name: string
