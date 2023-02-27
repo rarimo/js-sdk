@@ -23,10 +23,6 @@ export class Price extends AmountBase {
   }
 
   static fromFraction(value: string, decimals: number, symbol: string): Price {
-    return new Price(
-      new BN(value).fromFraction(decimals).toString(),
-      decimals,
-      symbol,
-    )
+    return new Price(value, decimals, symbol)
   }
 }

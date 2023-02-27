@@ -92,10 +92,10 @@ export class EVMOperation
   }
 
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
-  /**
-   * Initialize the operation with the source chain and transaction parameters
-   * @param param0 Information about the source chain and the target transaction of the operation
-   */
+    /**
+     * Initialize the operation with the source chain and transaction parameters
+     * @param param0 Information about the source chain and the target transaction of the operation
+     */
     if (!this.#chains.length) {
       await this.supportedChains()
     }
@@ -124,11 +124,11 @@ export class EVMOperation
   }
 
   public async supportedChains(): Promise<BridgeChain[]> {
-  /**
-   * Get the chains that are supported for the operation type
-   *
-   * @returns A list of supported chains and information about them
-   */
+    /**
+     * Get the chains that are supported for the operation type
+     *
+     * @returns A list of supported chains and information about them
+     */
     // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!
 
@@ -190,7 +190,10 @@ export class EVMOperation
    * @param bundle The transaction bundle
    * @returns The hash of the transaction
    */
-  public async checkout(e: EstimatedPrice, bundle: TxBundle): Promise<TransactionResponse> {
+  public async checkout(
+    e: EstimatedPrice,
+    bundle: TxBundle,
+  ): Promise<TransactionResponse> {
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
@@ -224,7 +227,7 @@ export class EVMOperation
     const amountInMax = e.price.value
     const receiverAddress = this.#provider.address
 
-    const networkName = this.#chains.find(
+    const network = this.#chains.find(
       i => Number(i.id) === Number(this.#target?.chainId),
     )
     const bundleTuple = [
@@ -239,7 +242,7 @@ export class EVMOperation
       ...(isV2NativeToken ? [] : [amountInMax]),
       e.path,
       receiverAddress,
-      networkName,
+      network?.name ?? '',
       true,
       bundleTuple,
     ])
