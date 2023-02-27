@@ -21,6 +21,23 @@ declare global {
   }
 }
 
+/**
+ * @description Represents a Solflare wallet.
+ *
+ * @example
+ * ```js
+ * import { createProvider, SolfareProvider } from '@rarimo/provider'
+ *
+ * const getSolflareWalletAddress = async () => {
+ *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolfareProvider interface to limit bundle size.
+ *   const provider = await createProvider(SolfareProvider)
+ *   await provider.connect()
+ *
+ *   // Get the address of the wallet
+ *   console.log(provider.address)
+ * }
+ * ```
+ */
 export class SolfareProvider
   extends BaseSolanaProvider
   implements ProviderProxy

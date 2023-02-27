@@ -15,6 +15,23 @@ import {
 import { BaseSolanaProvider } from './base-solana'
 import { Providers } from '../enums'
 
+/**
+ * @description Represents a Phantom wallet.
+ *
+ * @example
+ * ```js
+ * import { createProvider, PhantomProvider } from '@rarimo/provider'
+ *
+ * const getPhantomWalletAddress = async () => {
+ *   // Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.
+ *   const provider = await createProvider(PhantomProvider)
+ *   await provider.connect()
+ *
+ *   // Get the address of the wallet
+ *   console.log(provider.address)
+ * }
+ * ```
+ */
 export class PhantomProvider
   extends BaseSolanaProvider
   implements ProviderProxy
