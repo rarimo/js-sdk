@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>PhantomProvider | rarimo-js-sdk-monorepo-root</title><meta name="description" content="Documentation for rarimo-js-sdk-monorepo-root"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>PhantomProvider | Rarimo JavaScript/Typescript SDK</title><meta name="description" content="Documentation for Rarimo JavaScript/Typescript SDK"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -6,16 +6,23 @@
 <div id="tsd-toolbar-links"></div></div>
 <ul class="results">
 <li class="state loading">Preparing search index...</li>
-<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">rarimo-js-sdk-monorepo-root</a></div>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">Rarimo JavaScript/Typescript SDK</a></div>
 <div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
 <div class="container container-main">
 <div class="col-8 col-content">
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
-<li><a href="../modules.html">rarimo-js-sdk-monorepo-root</a></li>
+<li><a href="../modules.html">Rarimo JavaScript/Typescript SDK</a></li>
 <li><a href="../modules/_rarimo_provider.html">@rarimo/provider</a></li>
 <li><a href="_rarimo_provider.PhantomProvider.html">PhantomProvider</a></li></ul>
 <h1>Class PhantomProvider</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography">
+<h3>Description</h3><p>Represents a Phantom wallet.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-7">import</span><span class="hl-1"> { </span><span class="hl-3">createProvider</span><span class="hl-1">, </span><span class="hl-3">PhantomProvider</span><span class="hl-1"> } </span><span class="hl-7">from</span><span class="hl-1"> </span><span class="hl-6">&#39;@rarimo/provider&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">getPhantomWalletAddress</span><span class="hl-1"> = </span><span class="hl-4">async</span><span class="hl-1"> () </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">// Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.</span><br/><span class="hl-1">  </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-8">provider</span><span class="hl-1"> = </span><span class="hl-7">await</span><span class="hl-1"> </span><span class="hl-5">createProvider</span><span class="hl-1">(</span><span class="hl-3">PhantomProvider</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-7">await</span><span class="hl-1"> </span><span class="hl-3">provider</span><span class="hl-1">.</span><span class="hl-5">connect</span><span class="hl-1">()</span><br/><br/><span class="hl-1">  </span><span class="hl-2">// Get the address of the wallet</span><br/><span class="hl-1">  </span><span class="hl-3">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">provider</span><span class="hl-1">.</span><span class="hl-3">address</span><span class="hl-1">)</span><br/><span class="hl-1">}</span>
+</code></pre>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
@@ -27,7 +34,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/_rarimo_provider.ProviderProxy.html" class="tsd-signature-type" data-tsd-kind="Interface">ProviderProxy</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/phantom.ts#L18">packages/provider/src/providers/phantom.ts:18</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/phantom.ts#L35">packages/provider/src/providers/phantom.ts:35</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -92,7 +99,7 @@
 <h4 class="tsd-returns-title">Returns <a href="_rarimo_provider.PhantomProvider.html" class="tsd-signature-type" data-tsd-kind="Class">PhantomProvider</a></h4><aside class="tsd-sources">
 <p>Overrides BaseSolanaProvider.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/phantom.ts#L22">packages/provider/src/providers/phantom.ts:22</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/phantom.ts#L39">packages/provider/src/providers/phantom.ts:39</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_address" class="tsd-anchor"></a>
@@ -100,31 +107,31 @@
 <div class="tsd-signature">#address<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#address</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L36">packages/provider/src/providers/base-solana.ts:36</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L36">packages/provider/src/providers/base-solana.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_chainId" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>#chain<wbr/>Id</span><a href="#_chainId" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#chain<wbr/>Id<span class="tsd-signature-symbol">?:</span> <a href="../types/_rarimo_provider.ChainId.html" class="tsd-signature-type" data-tsd-kind="Type alias">ChainId</a></div><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#chainId</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L35">packages/provider/src/providers/base-solana.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L35">packages/provider/src/providers/base-solana.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_emitter" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>#emitter</span><a href="#_emitter" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#emitter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventEmitter</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_provider.ProviderEventMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventMap</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#emitter</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L11">packages/provider/src/providers/event-bus.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L11">packages/provider/src/providers/event-bus.ts:11</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_provider" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>#provider</span><a href="#_provider" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#provider<span class="tsd-signature-symbol">:</span> <a href="../types/_rarimo_provider.SolanaProvider.html" class="tsd-signature-type" data-tsd-kind="Type alias">SolanaProvider</a></div><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#provider</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L33">packages/provider/src/providers/base-solana.ts:33</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L33">packages/provider/src/providers/base-solana.ts:33</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_web3" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#web3</span><a href="#_web3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#web3<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">default</span></div><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#web3</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L34">packages/provider/src/providers/base-solana.ts:34</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L34">packages/provider/src/providers/base-solana.ts:34</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="address" class="tsd-anchor"></a>
@@ -136,7 +143,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#address">address</a></p>
 <p>Inherited from BaseSolanaProvider.address</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L56">packages/provider/src/providers/base-solana.ts:56</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L56">packages/provider/src/providers/base-solana.ts:56</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="chainId" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>chain<wbr/>Id</span><a href="#chainId" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -146,7 +153,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#chainId">chainId</a></p>
 <p>Inherited from BaseSolanaProvider.chainId</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L52">packages/provider/src/providers/base-solana.ts:52</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L52">packages/provider/src/providers/base-solana.ts:52</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="chainType" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>chain<wbr/>Type</span><a href="#chainType" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -156,7 +163,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#chainType">chainType</a></p>
 <p>Inherited from BaseSolanaProvider.chainType</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L44">packages/provider/src/providers/base-solana.ts:44</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L44">packages/provider/src/providers/base-solana.ts:44</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="emitter" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emitter</span><a href="#emitter" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -165,7 +172,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">EventEmitter</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_provider.ProviderEventMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventMap</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitter</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L13">packages/provider/src/providers/event-bus.ts:13</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L13">packages/provider/src/providers/event-bus.ts:13</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="isConnected" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Connected</span><a href="#isConnected" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -175,7 +182,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#isConnected">isConnected</a></p>
 <p>Inherited from BaseSolanaProvider.isConnected</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L48">packages/provider/src/providers/base-solana.ts:48</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L48">packages/provider/src/providers/base-solana.ts:48</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="provider" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>provider</span><a href="#provider" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -184,7 +191,7 @@
 <h4 class="tsd-returns-title">Returns <a href="../types/_rarimo_provider.SolanaProvider.html" class="tsd-signature-type" data-tsd-kind="Type alias">SolanaProvider</a></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.provider</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L60">packages/provider/src/providers/base-solana.ts:60</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L60">packages/provider/src/providers/base-solana.ts:60</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="providerType" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>provider<wbr/>Type</span><a href="#providerType" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -192,7 +199,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="../enums/_rarimo_provider.Providers.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Providers</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/phantom.ts#L26">packages/provider/src/providers/phantom.ts:26</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/phantom.ts#L43">packages/provider/src/providers/phantom.ts:43</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-inherited"><a id="_setListeners" class="tsd-anchor"></a>
@@ -203,7 +210,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.#setListeners</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L113">packages/provider/src/providers/base-solana.ts:113</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L113">packages/provider/src/providers/base-solana.ts:113</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="clearHandlers" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear<wbr/>Handlers</span><a href="#clearHandlers" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -213,7 +220,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#clearHandlers">clearHandlers</a></p>
 <p>Inherited from BaseSolanaProvider.clearHandlers</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L63">packages/provider/src/providers/event-bus.ts:63</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L63">packages/provider/src/providers/event-bus.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="connect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>connect</span><a href="#connect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -223,7 +230,7 @@
 <p>Implementation of ProviderProxy.connect</p>
 <p>Inherited from BaseSolanaProvider.connect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L85">packages/provider/src/providers/base-solana.ts:85</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L85">packages/provider/src/providers/base-solana.ts:85</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="emitAccountChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emit<wbr/>Account<wbr/>Changed</span><a href="#emitAccountChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -237,7 +244,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitAccountChanged</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L29">packages/provider/src/providers/event-bus.ts:29</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L29">packages/provider/src/providers/event-bus.ts:29</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="emitChainChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emit<wbr/>Chain<wbr/>Changed</span><a href="#emitChainChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -251,7 +258,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitChainChanged</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L33">packages/provider/src/providers/event-bus.ts:33</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L33">packages/provider/src/providers/event-bus.ts:33</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="emitConnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emit<wbr/>Connect</span><a href="#emitConnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -265,7 +272,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitConnect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L21">packages/provider/src/providers/event-bus.ts:21</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L21">packages/provider/src/providers/event-bus.ts:21</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="emitDisconnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emit<wbr/>Disconnect</span><a href="#emitDisconnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -279,7 +286,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitDisconnect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L25">packages/provider/src/providers/event-bus.ts:25</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L25">packages/provider/src/providers/event-bus.ts:25</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="emitInitiated" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>emit<wbr/>Initiated</span><a href="#emitInitiated" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -293,7 +300,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from BaseSolanaProvider.emitInitiated</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L17">packages/provider/src/providers/event-bus.ts:17</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L17">packages/provider/src/providers/event-bus.ts:17</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getAddressUrl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Address<wbr/>Url</span><a href="#getAddressUrl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -310,7 +317,7 @@
 <p>Implementation of ProviderProxy.getAddressUrl</p>
 <p>Inherited from BaseSolanaProvider.getAddressUrl</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L93">packages/provider/src/providers/base-solana.ts:93</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L93">packages/provider/src/providers/base-solana.ts:93</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getHashFromTx" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Hash<wbr/>From<wbr/>Tx</span><a href="#getHashFromTx" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -325,7 +332,7 @@
 <p>Implementation of ProviderProxy.getHashFromTx</p>
 <p>Inherited from BaseSolanaProvider.getHashFromTx</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L101">packages/provider/src/providers/base-solana.ts:101</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L101">packages/provider/src/providers/base-solana.ts:101</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getTxUrl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Tx<wbr/>Url</span><a href="#getTxUrl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -342,7 +349,7 @@
 <p>Implementation of ProviderProxy.getTxUrl</p>
 <p>Inherited from BaseSolanaProvider.getTxUrl</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L97">packages/provider/src/providers/base-solana.ts:97</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L97">packages/provider/src/providers/base-solana.ts:97</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="init" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -352,7 +359,7 @@
 <p>Implementation of ProviderProxy.init</p>
 <p>Inherited from BaseSolanaProvider.init</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L64">packages/provider/src/providers/base-solana.ts:64</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L64">packages/provider/src/providers/base-solana.ts:64</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="onAccountChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Account<wbr/>Changed</span><a href="#onAccountChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -378,7 +385,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#onAccountChanged">onAccountChanged</a></p>
 <p>Inherited from BaseSolanaProvider.onAccountChanged</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L51">packages/provider/src/providers/event-bus.ts:51</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L51">packages/provider/src/providers/event-bus.ts:51</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="onChainChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Chain<wbr/>Changed</span><a href="#onChainChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -404,7 +411,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#onChainChanged">onChainChanged</a></p>
 <p>Inherited from BaseSolanaProvider.onChainChanged</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L57">packages/provider/src/providers/event-bus.ts:57</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L57">packages/provider/src/providers/event-bus.ts:57</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="onConnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Connect</span><a href="#onConnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -430,7 +437,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#onConnect">onConnect</a></p>
 <p>Inherited from BaseSolanaProvider.onConnect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L41">packages/provider/src/providers/event-bus.ts:41</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L41">packages/provider/src/providers/event-bus.ts:41</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="onDisconnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Disconnect</span><a href="#onDisconnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -456,7 +463,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#onDisconnect">onDisconnect</a></p>
 <p>Inherited from BaseSolanaProvider.onDisconnect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L45">packages/provider/src/providers/event-bus.ts:45</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L45">packages/provider/src/providers/event-bus.ts:45</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="onInitiated" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Initiated</span><a href="#onInitiated" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -482,7 +489,7 @@
 <p>Implementation of <a href="../interfaces/_rarimo_provider.ProviderProxy.html">ProviderProxy</a>.<a href="../interfaces/_rarimo_provider.ProviderProxy.html#onInitiated">onInitiated</a></p>
 <p>Inherited from BaseSolanaProvider.onInitiated</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/event-bus.ts#L37">packages/provider/src/providers/event-bus.ts:37</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/event-bus.ts#L37">packages/provider/src/providers/event-bus.ts:37</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="signAndSendTx" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>sign<wbr/>And<wbr/>Send<wbr/>Tx</span><a href="#signAndSendTx" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -497,7 +504,7 @@
 <p>Implementation of ProviderProxy.signAndSendTx</p>
 <p>Overrides BaseSolanaProvider.signAndSendTx</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/phantom.ts#L30">packages/provider/src/providers/phantom.ts:30</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/phantom.ts#L47">packages/provider/src/providers/phantom.ts:47</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="switchChain" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>switch<wbr/>Chain</span><a href="#switchChain" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -512,7 +519,7 @@
 <p>Implementation of ProviderProxy.switchChain</p>
 <p>Inherited from BaseSolanaProvider.switchChain</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c94297c/packages/provider/src/providers/base-solana.ts#L76">packages/provider/src/providers/base-solana.ts:76</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/7f40f0d/packages/provider/src/providers/base-solana.ts#L76">packages/provider/src/providers/base-solana.ts:76</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -532,7 +539,7 @@
 <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
 <div class="tsd-accordion-details">
 <ul>
-<li class="current"><a href="../modules.html">rarimo-<wbr/>js-<wbr/>sdk-<wbr/>monorepo-<wbr/>root</a>
+<li class="current"><a href="../modules.html">Rarimo <wbr/>Java<wbr/>Script/<wbr/>Typescript SDK</a>
 <ul>
 <li class="tsd-kind-module"><a href="../modules/_rarimo_nft_checkout.html">@rarimo/nft-<wbr/>checkout</a></li>
 <li class="current tsd-kind-module"><a href="../modules/_rarimo_provider.html">@rarimo/provider</a></li></ul></li></ul></div></details></nav>
