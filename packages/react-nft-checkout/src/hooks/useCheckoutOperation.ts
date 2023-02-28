@@ -1,16 +1,32 @@
 import {
+  BridgeChain,
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
   INFTCheckoutOperation,
+  Target,
 } from '@rarimo/nft-checkout'
 import { IProvider } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
 
-export const useCheckoutOperation = (
-  provider: IProvider | null,
-  createCheckoutOperationParams?: CreateCheckoutOperationParams,
-) => {
+type Props = {
+  provider: IProvider | null
+  createCheckoutOperationParams?: CreateCheckoutOperationParams
+  selectedChainState: [
+    BridgeChain | undefined,
+    React.Dispatch<React.SetStateAction<BridgeChain | undefined>>,
+  ]
+  targetNft: Target
+}
+
+export const useCheckoutOperation = ({
+  provider,
+  createCheckoutOperationParams,
+  selectedChainState,
+  targetNft,
+}: Props) => {
+  const [, setSelectedChain] = selectedChainState
+
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
   const [, setState] = useState(() => {
@@ -51,28 +67,17 @@ export const useCheckoutOperation = (
       const chains = await checkoutOperation.supportedChains()
 
       // In our case we hardcode Goerli chain as selected chain
-      const selectedChain = chains[3]
-
-      // NFT target params
-      const target = {
-        chainId: 11155111, // Source chain id (Sepolia in our case)
-        address: '0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1', // Contract address
-        recipient: '0x8fe0d4923f61ff466430f63471e27b89a7cf0c92', // Recipient wallet address
-        price: {
-          value: '10000000000000000', // Price amount in UINT (10000000000000000*10^18 = 0.01 ETH)
-          decimals: 18, // Price amount decimals
-          symbol: 'ETH', // Price token symbol
-        },
-      }
+      const targetChain = chains[3]
+      setSelectedChain(targetChain)
 
       await checkoutOperation.init({
-        chainIdFrom: selectedChain.id,
-        target,
+        chainIdFrom: targetChain.id,
+        target: targetNft,
       })
     }
 
     init()
-  }, [checkoutOperation])
+  }, [checkoutOperation, setSelectedChain, targetNft])
 
   useEffect(() => {
     setListeners()
