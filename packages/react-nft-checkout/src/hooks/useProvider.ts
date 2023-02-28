@@ -11,7 +11,7 @@ export const useProvider = (
   createProviderOpts?: CreateProviderOpts,
 ) => {
   const [provider, setProvider] = useState<IProvider | null>(null)
-  const [, setState] = useState(() => {
+  const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
       isConnected: provider?.isConnected,
       providerType: provider?.providerType,
@@ -25,7 +25,7 @@ export const useProvider = (
     if (!provider) return
 
     provider.onInitiated(({ address, isConnected, chainId }) => {
-      setState(prev => ({
+      setProviderReactiveState(prev => ({
         ...prev,
         address,
         isConnected,
@@ -33,27 +33,27 @@ export const useProvider = (
       }))
     })
     provider.onConnect(({ address, isConnected }) => {
-      setState(prev => ({
+      setProviderReactiveState(prev => ({
         ...prev,
         address,
         isConnected,
       }))
     })
     provider.onAccountChanged(({ isConnected, address }) => {
-      setState(prev => ({
+      setProviderReactiveState(prev => ({
         ...prev,
         address,
         isConnected,
       }))
     })
     provider.onChainChanged?.(({ chainId }) => {
-      setState(prev => ({
+      setProviderReactiveState(prev => ({
         ...prev,
         chainId,
       }))
     })
     provider.onDisconnect(({ isConnected, address }) => {
-      setState(prev => ({
+      setProviderReactiveState(prev => ({
         ...prev,
         address,
         isConnected,
@@ -81,5 +81,5 @@ export const useProvider = (
     }
   }, [provider, setListeners])
 
-  return provider
+  return { provider, providerReactiveState }
 }

@@ -29,18 +29,19 @@ export const useCheckoutOperation = ({
 
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
-  const [, setState] = useState(() => {
-    return {
-      isInitialized: checkoutOperation?.isInitialized,
-      chainFrom: checkoutOperation?.chainFrom,
-    }
-  })
+  const [checkoutOperationReactiveState, setCheckoutOperationReactiveState] =
+    useState(() => {
+      return {
+        isInitialized: checkoutOperation?.isInitialized,
+        chainFrom: checkoutOperation?.chainFrom,
+      }
+    })
 
   const setListeners = useCallback(() => {
     if (!checkoutOperation) return
 
     checkoutOperation.onInitiated(({ chainFrom, isInitiated }) => {
-      setState(prev => ({
+      setCheckoutOperationReactiveState(prev => ({
         ...prev,
         chainFrom,
         isInitiated,
@@ -87,5 +88,5 @@ export const useCheckoutOperation = ({
     }
   }, [checkoutOperation, setListeners])
 
-  return checkoutOperation
+  return { checkoutOperation, checkoutOperationReactiveState }
 }

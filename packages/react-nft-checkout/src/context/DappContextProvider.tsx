@@ -74,17 +74,21 @@ export const DappContextProvider = ({
     EstimatedPrice | undefined
   >()
 
-  const provider = useProvider(MetamaskProvider, createProviderOpts)
-  const checkoutOperation = useCheckoutOperation({
-    provider,
-    createCheckoutOperationParams,
-    selectedChainState,
-    targetNft,
-  })
+  const { provider, providerReactiveState } = useProvider(
+    MetamaskProvider,
+    createProviderOpts,
+  )
+  const { checkoutOperation, checkoutOperationReactiveState } =
+    useCheckoutOperation({
+      provider,
+      createCheckoutOperationParams,
+      selectedChainState,
+      targetNft,
+    })
 
   const isInitialized = useMemo(
     () => Boolean(checkoutOperation?.isInitialized),
-    [checkoutOperation],
+    [checkoutOperation?.isInitialized],
   )
 
   const loadPaymentTokens = useCallback(async () => {
@@ -141,10 +145,13 @@ export const DappContextProvider = ({
       checkout,
     }
     return ctx
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isInitialized,
     provider,
+    providerReactiveState,
     checkoutOperation,
+    checkoutOperationReactiveState,
     loadPaymentTokens,
     estimatePrice,
     checkout,
