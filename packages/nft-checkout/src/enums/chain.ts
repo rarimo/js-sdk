@@ -4,11 +4,14 @@ export enum ChainNames {
   Avalanche = 'Avalanche C-Chain',
   Goerli = 'Görli',
   Sepolia = 'Sepolia',
-  Mumbai = 'Avalanche Fuji-Chain',
-  Fuji = 'Polygon Mumbai',
+  Mumbai = 'Polygon Mumbai',
+  Fuji = 'Avalanche Fuji-Chain',
+  BinanceSmartChain = 'Binance Smart Chain',
+  Chapel = 'Binance Smart Chain Testnet',
 }
 
 export enum SwapContractVersion {
-  AvalancheV2 = 'AvalancheV2',
+  TraderJoe = 'TraderJoe',
+  PancakeSwap = 'PancakeSwap',
   UniswapV3 = 'UniswapV3',
 }

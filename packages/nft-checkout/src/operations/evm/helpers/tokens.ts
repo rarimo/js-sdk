@@ -1,42 +1,56 @@
-import axios from 'axios'
+import { BridgeChain, Config } from '../../../types'
+import { ChainNames, SwapContractVersion } from '../../../enums'
+import { errors } from '../../../errors'
+import { Token } from '../../../entities'
 
-import { BridgeChain, Config, Token } from '../../../types'
-import { errors } from '@rarimo/provider'
+import {
+  PANCAKE_SWAP_TESTNET_TOKEN_LIST,
+  TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
+} from '../../../const'
+
+import axios from 'axios'
 import { TokenInfo } from '@uniswap/token-lists'
-import { isV2 } from './chain'
 
 export const loadTokens = async (
   config: Config,
   chain: BridgeChain,
 ): Promise<Token[]> => {
-  const url = isV2(chain) ? config.V2_TOKEN_LIST : config.V3_TOKEN_LIST
+  if (chain.name === ChainNames.Chapel) {
+    return [Token.fromChain(chain), ...PANCAKE_SWAP_TESTNET_TOKEN_LIST]
+  }
+
+  if (chain.name === ChainNames.Fuji) {
+    return [Token.fromChain(chain), ...TRADER_JOE_SWAP_TESTNET_TOKEN_LIST]
+  }
+
+  const url = getTokenListUrl(chain, config)
 
   if (!url) {
     throw new errors.OperationChainNotSupportedError()
   }
 
-  const { data }: { data: { tokens: Array<TokenInfo> } } = await axios.get(url)
+  const { data }: { data: { tokens: Array<TokenInfo> } | Array<TokenInfo> } =
+    await axios.get(url)
 
   if (!data) throw new errors.OperationSupportedTokensLoadFailedError()
 
-  if (!data.tokens.length) return []
+  const tokens = Array.isArray(data) ? data : data.tokens
 
-  return data.tokens
-    .reduce((acc, token) => {
-      if (Number(token.chainId) === Number(chain.id)) {
-        acc.push(tokenFromTokenInfo(token, chain))
-      }
+  if (!tokens.length) return []
 
-      return acc
-    }, [] as Token[])
-    .sort((a, b) => a.symbol.localeCompare(b.symbol))
+  return tokens.reduce((acc, token) => {
+    if (Number(token.chainId) === Number(chain.id)) {
+      acc.push(Token.fromTokenInfo(token, chain))
+    }
+
+    return [Token.fromChain(chain), ...acc]
+  }, [] as Token[])
 }
 
-const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => ({
-  chain,
-  address: token.address,
-  name: token.name,
-  symbol: token.symbol,
-  decimals: token.decimals,
-  logoURI: token.logoURI,
-})
+const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
+  return {
+    [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
+    [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
+    [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
+  }[chain.contactVersion]
+}

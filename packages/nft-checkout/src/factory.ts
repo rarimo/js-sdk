@@ -3,7 +3,8 @@ import {
   INFTCheckoutOperation,
   Config,
 } from './types'
-import { errors, ChainTypes, IProvider } from '@rarimo/provider'
+import { ChainTypes, IProvider } from '@rarimo/provider'
+import { errors } from './errors'
 import { DEFAULT_CONFIG } from './config'
 
 export type Operators = {

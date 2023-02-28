@@ -7,7 +7,11 @@ export type Chain = {
   name: string
   rpcUrl: string
   explorerUrl: string
-  symbol: string
+  token: {
+    name: string
+    symbol: string
+    decimals: number
+  }
   type: ChainTypes
   icon: string
 }

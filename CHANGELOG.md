@@ -12,15 +12,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/provider`: Support of Solfare wallet
 - `@rarimo/provider`: Provider now implements `ProviderSubscriber` interface, which allows to subscribe to provider change state events
 - `@rarimo/nft-checkout`: NFT checkout operation now implements `OperationSubscriber` interface, which allows to subscribe to operation change state events
+- `@rarimo/nft-checkout`: `supportedTokens` method to `INFTCheckoutOperation` interface to get supported tokens for swap on the selected chain
+- `@rarimo/nft-checkout`: PancakeSwap integration
+- `@rarimo/nft-checkout`: Ability to provide slippage in target object
 
 ### Changed
 - `root`: Added some more info about SDK to the readme
 - `all`: Moved all changelogs to the one file in the root of the repo
+- `all`: Operator errors moved into from `@rarimo/provider` to `@rarimo/nft-checkout`
+- `@rarimo/nft-checkout`: Target object now has the required field `swapTargetTokenSymbol`, which need to determine output token for swap.
+- `@rarimo/nft-checkout`: Price type refactored to class, which provides developer friendly interface to create price instance
 
 ### Removed
 - `root`: `esbuild` from dependencies
 - `root`: `@babel/*` from dependencies to simplify and speed up build process
 - `all`: `@/ -> ./src` aliases to remove `@babel/*` and all related packages
+- `@rarimo/nft-checkout`: Swap contract addresses removed from EVM mainnet chains till they will be deployed
+
+### Fixed
+- `@rarimo/nft-checkout`: Swap for input native token
 
 ## 1.1.0 - 2023-02-20
 ### Added

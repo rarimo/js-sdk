@@ -4,27 +4,39 @@ import {
   EstimatedPrice,
   INFTCheckoutOperation,
   OperationCreateParams,
-  PaymentToken,
   Target,
-  Token,
   TxBundle,
 } from '../../types'
-import { ChainId, ChainTypes, errors, IProvider } from '@rarimo/provider'
 import {
-  getPaymentTokens,
-  loadTokens,
+  ChainId,
+  ChainTypes,
+  errors as providerErrors,
+  IProvider,
+  TransactionResponse,
+} from '@rarimo/provider'
+import {
   Estimator,
+  getPaymentTokens,
   getSwapAmount,
-  isV2,
+  loadTokens,
 } from './helpers'
-import { CHAINS, SWAP_V3, ERC20_ABI, SWAP_V2 } from '../../const'
+import {
+  BUNDLE_SALT_BYTES,
+  CHAINS,
+  ERC20_ABI,
+  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
+  SWAP_CONTRACT_ABIS,
+} from '../../const'
+import { errors } from '../../errors'
 
 import { Contract, utils } from 'ethers'
 import { BN } from '@distributedlab/utils'
 import { OperationEventBus } from '../event-bus'
+import { PaymentToken, Price, Token } from '../../entities'
 
-const MAX_UINT_256 =
-  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+// We always use liquidity pool and not control those token contracts
+// In case when `isWrapped: false`, bridge contract won't try to burn tokens
+const IS_TOKEN_WRAPPED = false
 
 /**
  * An operation on an EVM chain.
@@ -56,15 +68,15 @@ export class EVMOperation
     this.#provider = provider
   }
 
-  public get chainFrom() {
+  public get chainFrom(): BridgeChain {
     return this.#chainFrom
   }
 
-  public get provider() {
+  public get provider(): IProvider {
     return this.#provider
   }
 
-  public get isInitialized() {
+  public get isInitialized(): boolean {
     return this.#isInitialized
   }
 
@@ -72,11 +84,11 @@ export class EVMOperation
     return this.#target
   }
 
-  /**
-   * Initialize the operation with the source chain and transaction parameters
-   * @param param0 Information about the source chain and the target transaction of the operation
-   */
-  async init({ chainIdFrom, target }: OperationCreateParams) {
+  async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
+    /**
+     * Initialize the operation with the source chain and transaction parameters
+     * @param param0 Information about the source chain and the target transaction of the operation
+     */
     if (!this.#chains.length) {
       await this.supportedChains()
     }
@@ -109,11 +121,17 @@ export class EVMOperation
    *
    * @returns A list of supported chains and information about them
    */
-  public async supportedChains() {
+  public async supportedChains(): Promise<BridgeChain[]> {
     // TODO: add backend integration
     this.#chains = CHAINS[ChainTypes.EVM]!
 
     return this.#chains
+  }
+
+  public async supportedTokens(): Promise<Token[]> {
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
+    return this.#tokens
   }
 
   /**
@@ -122,7 +140,7 @@ export class EVMOperation
    * @param chain A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token
    */
-  public async loadPaymentTokens(chain: BridgeChain) {
+  public async loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     if (!this.#provider.isConnected) {
@@ -164,38 +182,115 @@ export class EVMOperation
    * @param bundle The transaction bundle
    * @returns The hash of the transaction
    */
-  public async checkout(e: EstimatedPrice, bundle: TxBundle) {
+  public async checkout(
+    e: EstimatedPrice,
+    bundle: TxBundle,
+  ): Promise<TransactionResponse> {
     const chain = e.from.chain
-
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
-    const contractInterface = new utils.Interface(
-      isV2(chain) ? SWAP_V2 : SWAP_V3,
-    )
-
-    // TODO: fix for v2 native tokens
-    const data = contractInterface.encodeFunctionData(
-      'swapExactOutputMultiHopThenBridge',
-      [
-        getSwapAmount(this.#target!.price), // amount out
-        e.price.value, // amount in Maximum
-        e.path,
-        this.#provider.address, // Receiver address
-        this.#chains.find(i => Number(i.id) === Number(this.#target?.chainId))
-          ?.name ?? '', // NFT chain name
-        true,
-        [bundle.salt || utils.hexlify(utils.randomBytes(32)), bundle.bundle],
-      ],
-    )
+    if (!chain.contractAddress) {
+      throw new errors.OperationChainNotSupportedError()
+    }
 
     return this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: chain.contractAddress,
-      data,
+      data: this.#encodeTxData(e, bundle),
+      ...(e.from.isNative
+        ? {
+            value: this.#getNativeAmountIn(e.price),
+          }
+        : {}),
     })
   }
 
+  #getNativeAmountIn(price: Price) {
+    return new BN(
+      new BN(price.toString())
+        .mul(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER)
+        .round(price.decimals),
+    )
+      .toFraction(price.decimals)
+      .toString()
+  }
+
+  #getFunctionFragment(from: Token, to: Token) {
+    const isV2 = !from.isUniswapV3
+    const isFromNative = from.isNative
+    const isToNative = to.isNative
+
+    if (isFromNative && isToNative) {
+      throw new errors.OperationInvalidTokenPairError()
+    }
+
+    if (isFromNative && isV2) {
+      return 'swapExactNativeInputMultiHopThenBridge'
+    }
+
+    if (isFromNative) {
+      return 'swapExactInputMultiHopThenBridge'
+    }
+
+    if (isToNative && isV2) {
+      return 'swapNativeExactOutputMultiHopThenBridge'
+    }
+
+    return 'swapExactOutputMultiHopThenBridge'
+  }
+
+  #getAmounts(from: Token, to: Token, e: EstimatedPrice) {
+    const isV2 = !from.isUniswapV3
+    const isFromNative = from.isNative
+    const isToNative = to.isNative
+    const amountOutMinimum = getSwapAmount(this.#target!.price)
+    const amountIn = this.#getNativeAmountIn(e.price)
+
+    if (isFromNative && isV2) {
+      return [amountOutMinimum]
+    }
+
+    if (isFromNative) {
+      return [amountIn, amountOutMinimum]
+    }
+
+    if (isToNative && isV2) {
+      return [amountOutMinimum, amountIn]
+    }
+
+    return [amountOutMinimum, e.price.value]
+  }
+
+  #encodeTxData(e: EstimatedPrice, bundle: TxBundle): string {
+    const chain = e.from.chain
+    const functionFragment = this.#getFunctionFragment(e.from, e.to)
+    const receiverAddress = this.#provider.address
+    const amounts = this.#getAmounts(e.from, e.to, e)
+
+    const network = this.#chains.find(
+      i => Number(i.id) === Number(this.#target?.chainId),
+    )
+
+    const bundleTuple = [
+      bundle.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
+      bundle.bundle,
+    ]
+
+    return new utils.Interface(
+      SWAP_CONTRACT_ABIS[chain.contactVersion],
+    ).encodeFunctionData(functionFragment, [
+      ...amounts,
+      e.path,
+      receiverAddress,
+      network?.name ?? '',
+      IS_TOKEN_WRAPPED,
+      bundleTuple,
+    ])
+  }
+
   async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
+    if (e.from.isNative) return
+
     const contract = new Contract(
       e.from.address,
       ERC20_ABI,
@@ -223,10 +318,10 @@ export class EVMOperation
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       routerAddress,
-      MAX_UINT_256,
+      BN.MAX_UINT256.toString(),
     ])
 
-    await this.#provider.signAndSendTx({
+    return this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: e.from.address,
       data,
@@ -251,7 +346,7 @@ export class EVMOperation
     try {
       await this.#provider.switchChain(this.#chainFrom!.id)
     } catch (e) {
-      if (!(e instanceof errors.ProviderChainNotFoundError)) {
+      if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
         throw e
       }
       await this.#provider.addChain!(this.#chainFrom!)

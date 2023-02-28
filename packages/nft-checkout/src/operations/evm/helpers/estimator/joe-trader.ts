@@ -1,7 +1,10 @@
+import { EstimatedPrice, Target } from '../../../../types'
+import { Price, Token } from '../../../../entities'
+import { validateSlippage } from './slippage'
+import { handleNativeTokens } from './check-native-token'
+
 import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
-import { EstimatedPrice, Target, Token } from '../../../types'
-
 import {
   ChainId,
   Fetcher,
@@ -13,12 +16,27 @@ import {
   TradeType,
 } from '@traderjoe-xyz/sdk'
 
-export const estimateAvalancheV2 = async (
+const JOE_TRADER_DEFAULT_SLIPPAGE = new Percent('5', '100')
+
+const getSlippage = (slippage?: number): Percent => {
+  if (!slippage) {
+    return JOE_TRADER_DEFAULT_SLIPPAGE
+  }
+
+  validateSlippage(slippage)
+
+  return new Percent(String(slippage), '1')
+}
+
+export const estimateJoeTrader = async (
+  tokens: Token[],
   provider: IProvider,
-  from: Token,
-  to: Token,
+  _from: Token,
+  _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
+  const { from, to } = handleNativeTokens(tokens, _from, _to)
+
   const tokenA = new TJToken(
     Number(from.chain.id),
     from.address,
@@ -57,13 +75,10 @@ export const estimateAvalancheV2 = async (
     path: trade.route.path.map(token => token.address),
     from,
     to,
-    price: {
-      value: trade
-        // TODO: add ability to set slippage
-        .maximumAmountIn(new Percent('5', '100'))
-        .numerator.toString(),
-      decimals: from.decimals,
-      symbol: from.symbol,
-    },
+    price: Price.fromFraction(
+      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
+      from.decimals,
+      from.symbol,
+    ),
   }
 }

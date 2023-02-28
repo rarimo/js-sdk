@@ -19,6 +19,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "gitHooks": {
+    "pre-commit": "yarn lint"
+  },
   "scripts": {
     "build": "yarn workspaces foreach --parallel --topological-dev --verbose run build",
     "docs": "typedoc --options typedoc.json",
@@ -37,7 +40,8 @@
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
     "typedoc": "^0.23.8",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "yorkie": "^2.0.0"
   },
   "dependenciesMeta": {
     "eslint@8.33.0": {
