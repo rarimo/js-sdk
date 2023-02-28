@@ -1878,7 +1878,7 @@ __metadata:
     "@pancakeswap/sdk": ^3.1.4
     "@pancakeswap/smart-router": ^0.6.1
     "@pancakeswap/swap-sdk-core": ^0.0.1
-    "@rarimo/provider": "workspace:*"
+    "@rarimo/provider": "workspace:^"
     "@traderjoe-xyz/sdk": 2.0.7
     "@types/events": ^3.0.0
     "@types/jest": ^29.4.0
@@ -1897,7 +1897,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@rarimo/provider@workspace:*, @rarimo/provider@workspace:packages/provider":
+"@rarimo/provider@workspace:^, @rarimo/provider@workspace:packages/provider":
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
