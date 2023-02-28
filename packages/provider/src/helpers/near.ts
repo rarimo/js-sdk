@@ -1,146 +1,34 @@
-import {
-  setupWalletSelector,
-  Wallet,
-  WalletSelector,
-} from '@near-wallet-selector/core'
-import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
-import { providers, utils } from 'near-api-js'
+import { utils } from 'near-api-js'
 
-import {
-  EIP1193,
-  EIP1474,
-  NEAR_CHAINS,
-  NEAR_WALLET_ACTION_TYPE,
-
-} from '../enums'
+import { EIP1193, EIP1474 } from '../enums'
 import { errors } from '../errors'
-import {
-  Chain,
-  ENearWalletId,
-  NearProviderRpcError,
-  NearTxRequestBody,
-} from "../types";
+import { Chain, NearProviderRpcError } from '../types'
+import { NearRawProvider } from '../providers/near-raw-provider'
 
-const THIRTY_TGAS = '300000000000000'
-const NO_DEPOSIT = '0'
+export const MAX_GAS_LIMIT = '300000000000000'
+export const NO_DEPOSIT = '0'
 
-export class _NearProviderBase {
-  selector: WalletSelector | null = null
-  wallet: Wallet | null = null
-  createAccessKeyFor: string
-  accountId = ''
-  isNear = true
+export const nearProviderBase = new NearRawProvider({})
 
-  constructor({ createAccessKeyFor = '' }: { createAccessKeyFor?: string }) {
-    this.createAccessKeyFor = createAccessKeyFor
-  }
-
-  async init() {
-    this.selector = await setupWalletSelector({
-      network: NEAR_CHAINS.testnet,
-      modules: [setupMyNearWallet()],
-    })
-
-    const isSignedIn = this.selector.isSignedIn()
-
-    if (isSignedIn) {
-      this.wallet = await this.selector.wallet()
-      this.accountId =
-        this.selector.store.getState().accounts[0].accountId ?? ''
-    }
-
-    return isSignedIn
-  }
-
-  async signIn() {
-    if (!this.selector || Boolean(this.accountId)) return
-
-    this.wallet = await this.selector.wallet(ENearWalletId.MyNearWallet)
-    await this.wallet.signIn({
-      contractId: this.createAccessKeyFor,
-      methodNames: [],
-      accounts: [],
-    })
-  }
-
-  async signOut() {
-    if (!this.wallet) return
-
-    await this.wallet.signOut()
-    this.wallet = null
-    this.accountId = ''
-  }
-
-  // Call a method that changes the contract's state
-  async signAndSendTx({
-    contractId,
-    method,
-    args = {},
-    gas = THIRTY_TGAS,
-    deposit = NO_DEPOSIT,
-  }: NearTxRequestBody) {
-    if (!this.wallet) return
-
-    // Sign a transaction with the "FunctionCall" action
-    const outcome = await this.wallet.signAndSendTransaction({
-      signerId: this.accountId,
-      receiverId: contractId,
-      actions: [
-        {
-          type: NEAR_WALLET_ACTION_TYPE.functionCall,
-          params: {
-            methodName: method,
-            args,
-            gas,
-            deposit,
-          },
-        },
-      ],
-    })
-
-    return outcome ? providers.getTransactionLastResult(outcome) : null
-  }
-
-  // Get transaction result from the network
-  async getTransactionResult(txhash: string) {
-    if (!this.selector) return
-
-    const { network } = this.selector.options
-    const provider = new providers.JsonRpcProvider({ url: network.nodeUrl })
-
-    // Retrieve transaction result from the network
-    const transaction = await provider.txStatus(txhash, 'unnused')
-    return providers.getTransactionLastResult(transaction)
-  }
-}
-
-export const nearProviderBase = new _NearProviderBase({
-  // createAccessKeyFor: 'example-account.testnet',
-})
-
-export const convertNearAmountToYocto = (amount: string) => {
-  // converts NEAR amount into yoctoNEAR (10^-24)
-
+export const nearToYocto = (amount: string): string | null => {
   return utils.format.parseNearAmount(amount)
 }
 
-export const convertYoctoToNearAmount = (amount: string) => {
-  // converts yoctoNEAR (10^-24) amount into NEAR
-
+export const yoctoToNear = (amount: string): string | null => {
   return utils.format.formatNearAmount(amount)
 }
 
 export function getNearExplorerTxUrl(
   explorerUrl: string | Chain,
   txHash: string,
-) {
+): string {
   return `${explorerUrl}/transactions/${txHash}`
 }
 
 export function getNearExplorerAddressUrl(
   explorerUrl: string | Chain,
   address: string,
-) {
+): string {
   return `${explorerUrl}/accounts/${address}`
 }
 
@@ -184,4 +72,3 @@ export function handleNearError(error: NearProviderRpcError): never {
       throw error
   }
 }
-

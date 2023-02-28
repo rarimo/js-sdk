@@ -1,6 +1,7 @@
-import { nearProviderBase, sleep } from './helpers'
+import { sleep } from './helpers'
 import { Providers, ProviderChecks } from './enums'
 import { EthereumProvider, RawProvider, ProviderInstance } from './types'
+import { NearRawProvider } from './providers/near-raw-provider'
 
 declare global {
   interface Window {
@@ -62,11 +63,11 @@ export class Web3 {
       : undefined
     const phantomProvider = window?.solana
     const solflareProvider = window?.solflare
-    const nearProvider = [nearProviderBase]
+    const nearProvider = new NearRawProvider({})
 
     this.#rawProviders = [
       ...(ethProviders ? ethProviders : []),
-      ...(nearProvider ? nearProvider : []),
+      ...(nearProvider ? [nearProvider] : []),
       ...(phantomProvider ? [phantomProvider] : []),
       ...(solflareProvider ? [solflareProvider] : []),
     ] as RawProvider[]
