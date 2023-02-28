@@ -22,7 +22,7 @@ import {
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
 import { providers } from 'ethers'
-import { getToken } from './check-native-token'
+import { handleNativeTokens } from './check-native-token'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -67,34 +67,33 @@ const getSlippage = (slippage?: number): Percent => {
 export const estimateUniswapV3 = async (
   tokens: Token[],
   provider: IProvider,
-  from: Token,
-  to: Token,
+  _from: Token,
+  _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
-  const _from = getToken(tokens, from, to.chain.id)
-  const _to = getToken(tokens, to, from.chain.id)
+  const { from, to } = handleNativeTokens(tokens, _from, _to)
 
   const tokenA = new UNIToken(
-    Number(_from.chain.id),
-    _from.address,
-    _from.decimals,
-    _from.symbol,
-    _from.name,
+    Number(from.chain.id),
+    from.address,
+    from.decimals,
+    from.symbol,
+    from.name,
   )
 
   const tokenB = new UNIToken(
-    Number(_from.chain.id),
-    _to.address,
-    _to.decimals,
-    _to.symbol,
-    _to.name,
+    Number(from.chain.id),
+    to.address,
+    to.decimals,
+    to.symbol,
+    to.name,
   )
 
   // Input amount is the original price of nft.
   const swapAmount = getSwapCurrencyAmount(tokenB, target.price)
 
   const router = new AlphaRouter({
-    chainId: _from.chain.id as UNIChainId,
+    chainId: from.chain.id as UNIChainId,
     provider: provider?.getWeb3Provider?.() as providers.Web3Provider,
   })
 
@@ -119,7 +118,7 @@ export const estimateUniswapV3 = async (
     from,
     to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
-    price: getPrice(_from, amount),
+    price: getPrice(from, amount),
     path: getRoutePath(route.route),
     gasPriceInUSD: new BN(estimatedGasUsedUSD.numerator.toString())
       .fromFraction(estimatedGasUsedUSD.currency.decimals)

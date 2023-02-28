@@ -1,7 +1,7 @@
 import { EstimatedPrice, Target } from '../../../../types'
 import { Price, Token } from '../../../../entities'
 import { validateSlippage } from './slippage'
-import { getToken } from './check-native-token'
+import { handleNativeTokens } from './check-native-token'
 
 import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
@@ -31,27 +31,26 @@ const getSlippage = (slippage?: number): Percent => {
 export const estimateJoeTrader = async (
   tokens: Token[],
   provider: IProvider,
-  from: Token,
-  to: Token,
+  _from: Token,
+  _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
-  const _from = getToken(tokens, from, to.chain.id)
-  const _to = getToken(tokens, to, from.chain.id)
+  const { from, to } = handleNativeTokens(tokens, _from, _to)
 
   const tokenA = new TJToken(
-    Number(_from.chain.id),
-    _from.address,
-    _from.decimals,
-    _from.symbol,
-    _from.name,
+    Number(from.chain.id),
+    from.address,
+    from.decimals,
+    from.symbol,
+    from.name,
   )
 
   const tokenB = new TJToken(
-    Number(_from.chain.id),
-    _to.address,
-    _to.decimals,
-    _to.symbol,
-    _to.name,
+    Number(from.chain.id),
+    to.address,
+    to.decimals,
+    to.symbol,
+    to.name,
   )
 
   const amount = new TokenAmount(tokenB, JSBI.BigInt(target.price.value))
@@ -68,7 +67,7 @@ export const estimateJoeTrader = async (
     route,
     amount,
     TradeType.EXACT_OUTPUT,
-    Number(_from.chain.id) as ChainId,
+    Number(from.chain.id) as ChainId,
   )
 
   return {
@@ -78,8 +77,8 @@ export const estimateJoeTrader = async (
     to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      _from.decimals,
-      _from.symbol,
+      from.decimals,
+      from.symbol,
     ),
   }
 }

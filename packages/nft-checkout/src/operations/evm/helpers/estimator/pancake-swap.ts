@@ -1,7 +1,7 @@
 import { Target } from '../../../../types'
 import { Price, Token } from '../../../../entities'
 import { validateSlippage } from './slippage'
-import { getToken } from './check-native-token'
+import { handleNativeTokens } from './check-native-token'
 import JSBI from 'jsbi'
 import {
   Token as PCToken,
@@ -30,27 +30,26 @@ const getSlippage = (slippage?: number): Percent => {
 export const estimatePancakeSwap = async (
   tokens: Token[],
   provider: IProvider,
-  from: Token,
-  to: Token,
+  _from: Token,
+  _to: Token,
   target: Target,
 ) => {
-  const _from = getToken(tokens, from, to.chain.id)
-  const _to = getToken(tokens, to, from.chain.id)
+  const { from, to } = handleNativeTokens(tokens, _from, _to)
 
   const tokenA = new PCToken(
-    Number(_from.chain.id),
-    _from.address,
-    _from.decimals,
-    _from.symbol,
-    _from.name,
+    Number(from.chain.id),
+    from.address,
+    from.decimals,
+    from.symbol,
+    from.name,
   )
 
   const tokenB = new PCToken(
     Number(from.chain.id),
-    _to.address,
-    _to.decimals,
-    _to.symbol,
-    _to.name,
+    to.address,
+    to.decimals,
+    to.symbol,
+    to.name,
   )
 
   const amount = CurrencyAmount.fromRawAmount(
@@ -82,8 +81,8 @@ export const estimatePancakeSwap = async (
     to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      _from.decimals,
-      _from.symbol,
+      from.decimals,
+      from.symbol,
     ),
   }
 }

@@ -1,17 +1,11 @@
-import { CHAIN_IDS } from '../../../../const'
 import { OperatorWrappedTokenNotFound } from '../../../../errors'
-import { ChainNames } from '../../../../enums'
 import { TARGET_TOKEN_SYMBOLS } from '../chain'
-import { ChainId, ChainTypes } from '@rarimo/provider'
+import { ChainId } from '@rarimo/provider'
 import { Token } from '../../../../entities'
 
-export const getToken = (
-  tokens: Token[],
-  token: Token,
-  toChainId: ChainId,
-): Token => {
+export const handleNativeToken = (tokens: Token[], token: Token): Token => {
   const _token = token.isNative
-    ? getWrappedToken(tokens, token.chain.id, toChainId)
+    ? getWrappedToken(tokens, token.chain.id)
     : token
 
   if (!_token) {
@@ -21,28 +15,20 @@ export const getToken = (
   return _token
 }
 
+export const handleNativeTokens = (
+  tokens: Token[],
+  _from: Token,
+  _to: Token,
+): { from: Token; to: Token } => {
+  const from = handleNativeToken(tokens, _from)
+  const to = handleNativeToken(tokens, _to)
+  return { from, to }
+}
+
 const getWrappedToken = (
   tokens: Token[],
   fromChainId: ChainId,
-  toChainId: ChainId,
 ): Token | undefined => {
-  const chains = CHAIN_IDS[ChainTypes.EVM]
-  let symbol = ''
-
-  const _fromChainId = Number(fromChainId)
-  const _toChainId = Number(toChainId)
-
-  symbol = TARGET_TOKEN_SYMBOLS[_fromChainId] ?? ''
-
-  // TODO: do something with this please
-  // For the Avalanche Wrapped ethereum symbol is WETH.e.
-  // WETH is a symbol for Wormhole ethereum which has low liquidity
-  if (
-    _fromChainId === chains[ChainNames.Avalanche] &&
-    _toChainId === chains[ChainNames.Ethereum]
-  ) {
-    symbol = 'WETH.e'
-  }
-
+  const symbol = TARGET_TOKEN_SYMBOLS[Number(fromChainId)] ?? ''
   return tokens.find(t => t.symbol === symbol)
 }
