@@ -1,7 +1,7 @@
-import { BridgeChain, EstimatedPrice, Target, Token } from '../../../../types'
-import { Price } from '../../../../entities'
+import { EstimatedPrice, Target } from '../../../../types'
+import { Price, Token } from '../../../../entities'
 import { validateSlippage } from './slippage'
-import { getFromToken } from './check-native-token'
+import { getToken } from './check-native-token'
 
 import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
@@ -30,13 +30,13 @@ const getSlippage = (slippage?: number): Percent => {
 
 export const estimateJoeTrader = async (
   tokens: Token[],
-  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
-  const _from = getFromToken(chains, tokens, from, to.chain.id)
+  const _from = getToken(tokens, from, to.chain.id)
+  const _to = getToken(tokens, to, from.chain.id)
 
   const tokenA = new TJToken(
     Number(_from.chain.id),
@@ -48,10 +48,10 @@ export const estimateJoeTrader = async (
 
   const tokenB = new TJToken(
     Number(_from.chain.id),
-    to.address,
-    to.decimals,
-    to.symbol,
-    to.name,
+    _to.address,
+    _to.decimals,
+    _to.symbol,
+    _to.name,
   )
 
   const amount = new TokenAmount(tokenB, JSBI.BigInt(target.price.value))

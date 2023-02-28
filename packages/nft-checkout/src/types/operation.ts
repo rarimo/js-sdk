@@ -7,8 +7,8 @@ import {
 import { OperationSubscriber } from './operation-event-bus'
 import { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import { Config } from './config'
-import { EstimatedPrice, PaymentToken, Token } from './token'
-import { Price } from '../entities'
+import { EstimatedPrice } from './token'
+import { Price, Token, PaymentToken } from '../entities'
 
 export type Target = {
   chainId: ChainId

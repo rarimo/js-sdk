@@ -1,7 +1,7 @@
-import { BridgeChain, Target, Token } from '../../../../types'
-import { Price } from '../../../../entities'
+import { Target } from '../../../../types'
+import { Price, Token } from '../../../../entities'
 import { validateSlippage } from './slippage'
-import { getFromToken } from './check-native-token'
+import { getToken } from './check-native-token'
 import JSBI from 'jsbi'
 import {
   Token as PCToken,
@@ -29,13 +29,13 @@ const getSlippage = (slippage?: number): Percent => {
 
 export const estimatePancakeSwap = async (
   tokens: Token[],
-  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ) => {
-  const _from = getFromToken(chains, tokens, from, to.chain.id)
+  const _from = getToken(tokens, from, to.chain.id)
+  const _to = getToken(tokens, to, from.chain.id)
 
   const tokenA = new PCToken(
     Number(_from.chain.id),
@@ -47,10 +47,10 @@ export const estimatePancakeSwap = async (
 
   const tokenB = new PCToken(
     Number(from.chain.id),
-    to.address,
-    to.decimals,
-    to.symbol,
-    to.name,
+    _to.address,
+    _to.decimals,
+    _to.symbol,
+    _to.name,
   )
 
   const amount = CurrencyAmount.fromRawAmount(

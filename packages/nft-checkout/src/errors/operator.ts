@@ -49,6 +49,13 @@ export class OperationInvalidChainPairError extends RuntimeError {
   }
 }
 
+export class OperationInvalidTokenPairError extends RuntimeError {
+  constructor(message?: string) {
+    super(message || 'Provided token pair is invalid')
+    this.name = 'OperationInvalidTokenPairError'
+  }
+}
+
 export class OperationSwapRouteNotFound extends RuntimeError {
   constructor(message?: string) {
     super(message || 'Failed to find swap route')

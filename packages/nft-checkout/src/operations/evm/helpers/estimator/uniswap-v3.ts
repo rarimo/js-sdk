@@ -1,6 +1,6 @@
-import { Price } from '../../../../entities'
+import { Price, Token } from '../../../../entities'
 import { errors } from '../../../../errors'
-import { BridgeChain, EstimatedPrice, Target, Token } from '../../../../types'
+import { EstimatedPrice, Target } from '../../../../types'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 import { getSwapAmount } from './get-swap-amount'
 import { validateSlippage } from './slippage'
@@ -22,7 +22,7 @@ import {
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
 import { providers } from 'ethers'
-import { getFromToken } from './check-native-token'
+import { getToken } from './check-native-token'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -66,13 +66,13 @@ const getSlippage = (slippage?: number): Percent => {
 
 export const estimateUniswapV3 = async (
   tokens: Token[],
-  chains: BridgeChain[],
   provider: IProvider,
   from: Token,
   to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
-  const _from = getFromToken(chains, tokens, from, to.chain.id)
+  const _from = getToken(tokens, from, to.chain.id)
+  const _to = getToken(tokens, to, from.chain.id)
 
   const tokenA = new UNIToken(
     Number(_from.chain.id),
@@ -84,10 +84,10 @@ export const estimateUniswapV3 = async (
 
   const tokenB = new UNIToken(
     Number(_from.chain.id),
-    to.address,
-    to.decimals,
-    to.symbol,
-    to.name,
+    _to.address,
+    _to.decimals,
+    _to.symbol,
+    _to.name,
   )
 
   // Input amount is the original price of nft.

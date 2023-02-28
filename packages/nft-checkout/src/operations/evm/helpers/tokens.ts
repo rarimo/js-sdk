@@ -1,17 +1,26 @@
-import { BridgeChain, Config, Token } from '../../../types'
+import { BridgeChain, Config } from '../../../types'
 import { ChainNames, SwapContractVersion } from '../../../enums'
 import { errors } from '../../../errors'
+import { Token } from '../../../entities'
+
+import {
+  PANCAKE_SWAP_TESTNET_TOKEN_LIST,
+  TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
+} from '../../../const'
 
 import axios from 'axios'
 import { TokenInfo } from '@uniswap/token-lists'
-import { PANCAKE_SWAP_TESTNET_TOKEN_LIST } from '../../../const/tokens'
 
 export const loadTokens = async (
   config: Config,
   chain: BridgeChain,
 ): Promise<Token[]> => {
   if (chain.name === ChainNames.Chapel) {
-    return PANCAKE_SWAP_TESTNET_TOKEN_LIST
+    return [Token.fromChain(chain), ...PANCAKE_SWAP_TESTNET_TOKEN_LIST]
+  }
+
+  if (chain.name === ChainNames.Fuji) {
+    return [Token.fromChain(chain), ...TRADER_JOE_SWAP_TESTNET_TOKEN_LIST]
   }
 
   const url = getTokenListUrl(chain, config)
@@ -29,15 +38,13 @@ export const loadTokens = async (
 
   if (!tokens.length) return []
 
-  return tokens
-    .reduce((acc, token) => {
-      if (Number(token.chainId) === Number(chain.id)) {
-        acc.push(tokenFromTokenInfo(token, chain))
-      }
+  return tokens.reduce((acc, token) => {
+    if (Number(token.chainId) === Number(chain.id)) {
+      acc.push(Token.fromTokenInfo(token, chain))
+    }
 
-      return acc
-    }, [] as Token[])
-    .sort((a, b) => a.symbol.localeCompare(b.symbol))
+    return [Token.fromChain(chain), ...acc]
+  }, [] as Token[])
 }
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
@@ -47,12 +54,3 @@ const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
     [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
   }[chain.contactVersion]
 }
-
-const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => ({
-  chain,
-  address: token.address,
-  name: token.name,
-  symbol: token.symbol,
-  decimals: token.decimals,
-  logoURI: token.logoURI,
-})

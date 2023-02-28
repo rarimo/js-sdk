@@ -1,5 +1,5 @@
-import { BridgeChain, PaymentToken, Token } from '../../../types'
-import { Amount } from '../../../entities'
+import { BridgeChain } from '../../../types'
+import { Amount, PaymentToken, Token } from '../../../entities'
 import {
   BalanceResult,
   getBalancesForEthereumAddress,
@@ -10,13 +10,12 @@ import { IProvider } from '@rarimo/provider'
 
 const mapTokenBalances = (
   supportedTokens: Token[],
-  chain: BridgeChain,
   balances: BalanceResult,
 ): PaymentToken[] => {
   if (!balances.tokens) return []
 
   return balances.tokens.reduce((acc, token) => {
-    const paymentToken = createPaymentToken(supportedTokens, token, chain)
+    const paymentToken = createPaymentToken(supportedTokens, token)
     if (paymentToken) acc.push(paymentToken)
     return acc
   }, [] as PaymentToken[])
@@ -32,7 +31,6 @@ const getTokenByAddress = (
 const createPaymentToken = (
   supportedTokens: Token[],
   token: TokenInfo,
-  chain: BridgeChain,
 ): PaymentToken | undefined => {
   const internalToken = getTokenByAddress(
     supportedTokens,
@@ -45,22 +43,19 @@ const createPaymentToken = (
 
   if (balance.compare(new BN(0)) != 1) return
 
-  return {
-    balance: balance.toString(),
-    balanceRaw: Amount.fromRaw(token.balance, token.decimals),
-    token: internalToken,
-    chain,
-  }
+  return PaymentToken.fromToken(
+    internalToken,
+    Amount.fromRaw(token.balance, token.decimals),
+  )
 }
 
 export const getPaymentTokens = async (
   chain: BridgeChain,
   provider: IProvider,
   tokens: Token[],
-) => {
+): Promise<PaymentToken[]> => {
   const erc20 = mapTokenBalances(
     tokens,
-    chain,
     await getBalancesForEthereumAddress({
       contractAddresses: tokens.reduce((acc: string[], i) => {
         if (i.address) acc.push(i.address)
@@ -78,19 +73,10 @@ export const getPaymentTokens = async (
     ...erc20,
     ...(nativeBalance && nativeBalance.gt(0)
       ? [
-          {
-            chain,
-            balance: nativeBalance.toString(),
-            balanceRaw: Amount.fromRaw(nativeBalance.toString(), 18),
-            token: {
-              address: '',
-              chain,
-              symbol: chain.token.symbol,
-              decimals: chain.token.decimals,
-              name: chain.token.name,
-              logoURI: chain.icon,
-            },
-          },
+          PaymentToken.fromToken(
+            Token.fromChain(chain),
+            Amount.fromRaw(nativeBalance.toString(), chain.token.decimals),
+          ),
         ]
       : []),
   ]

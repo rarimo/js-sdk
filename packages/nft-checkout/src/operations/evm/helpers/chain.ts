@@ -1,15 +1,6 @@
-import { ChainNames, SwapContractVersion } from '../../../enums'
-import { BridgeChain } from '../../../types'
+import { ChainNames } from '../../../enums'
 import { CHAIN_IDS } from '../../../const'
 import { ChainTypes } from '@rarimo/provider'
-
-export const isTraderJoe = (chain: BridgeChain): boolean => {
-  return chain.contactVersion === SwapContractVersion.TraderJoe
-}
-
-export const isPancakeSwap = (chain: BridgeChain): boolean => {
-  return chain.contactVersion === SwapContractVersion.PancakeSwap
-}
 
 const chains = CHAIN_IDS[ChainTypes.EVM]
 

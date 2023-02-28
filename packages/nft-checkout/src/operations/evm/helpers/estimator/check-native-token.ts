@@ -1,35 +1,27 @@
-import { BridgeChain, Token } from '../../../../types'
 import { CHAIN_IDS } from '../../../../const'
 import { OperatorWrappedTokenNotFound } from '../../../../errors'
 import { ChainNames } from '../../../../enums'
 import { TARGET_TOKEN_SYMBOLS } from '../chain'
 import { ChainId, ChainTypes } from '@rarimo/provider'
+import { Token } from '../../../../entities'
 
-export const isNativeToken = (chains: BridgeChain[], token: Token): boolean => {
-  const chain = chains.find(chain => chain.id === token.chain.id)
-  return chain?.token?.symbol === token.symbol
-}
-
-export const getFromToken = (
-  chains: BridgeChain[],
+export const getToken = (
   tokens: Token[],
-  from: Token,
+  token: Token,
   toChainId: ChainId,
 ): Token => {
-  const isNative = isNativeToken(chains, from)
+  const _token = token.isNative
+    ? getWrappedToken(tokens, token.chain.id, toChainId)
+    : token
 
-  const _from = isNative
-    ? getWrappedToken(tokens, from.chain.id, toChainId)
-    : from
-
-  if (!_from) {
+  if (!_token) {
     throw new OperatorWrappedTokenNotFound()
   }
 
-  return _from
+  return _token
 }
 
-export const getWrappedToken = (
+const getWrappedToken = (
   tokens: Token[],
   fromChainId: ChainId,
   toChainId: ChainId,
@@ -40,6 +32,8 @@ export const getWrappedToken = (
   const _fromChainId = Number(fromChainId)
   const _toChainId = Number(toChainId)
 
+  symbol = TARGET_TOKEN_SYMBOLS[_fromChainId] ?? ''
+
   // TODO: do something with this please
   // For the Avalanche Wrapped ethereum symbol is WETH.e.
   // WETH is a symbol for Wormhole ethereum which has low liquidity
@@ -49,8 +43,6 @@ export const getWrappedToken = (
   ) {
     symbol = 'WETH.e'
   }
-
-  symbol = TARGET_TOKEN_SYMBOLS[_fromChainId] ?? ''
 
   return tokens.find(t => t.symbol === symbol)
 }

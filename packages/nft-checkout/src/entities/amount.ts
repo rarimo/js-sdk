@@ -28,7 +28,7 @@ export class Amount extends AmountBase {
   }
 
   static fromRaw(value: string, decimals: number): Amount {
-    return new Amount(new BN(value).toFraction(decimals).toString(), decimals)
+    return new Amount(value, decimals)
   }
 
   static fromFraction(value: string, decimals: number): Amount {
