@@ -26,11 +26,11 @@ declare global {
  *
  * @example
  * ```js
- * import { createProvider, SolfareProvider } from '@rarimo/provider'
+ * import { createProvider, SolflareProvider } from '@rarimo/provider'
  *
  * const getSolflareWalletAddress = async () => {
- *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolfareProvider interface to limit bundle size.
- *   const provider = await createProvider(SolfareProvider)
+ *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolflareProvider interface to limit bundle size.
+ *   const provider = await createProvider(SolflareProvider)
  *   await provider.connect()
  *
  *   // Get the address of the wallet
@@ -38,7 +38,7 @@ declare global {
  * }
  * ```
  */
-export class SolfareProvider
+export class SolflareProvider
   extends BaseSolanaProvider
   implements ProviderProxy
 {
