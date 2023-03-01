@@ -3,7 +3,8 @@ import {
   INFTCheckoutOperation,
   Config,
 } from './types'
-import { errors, ChainTypes, IProvider } from '@rarimo/provider'
+import { ChainTypes, IProvider } from '@rarimo/provider'
+import { errors } from './errors'
 import { DEFAULT_CONFIG } from './config'
 
 export type Operators = {
@@ -38,7 +39,10 @@ export class NFTCheckoutFactory {
 
 /**
  *
- * @description Creates a NFT checkout operation.
+ * @description Creates a transaction to buy NFTs and bundle other operations.
+ *
+ * For a full example, see [@rarimo/nft-checkout](../modules/_rarimo_nft_checkout.html).
+ *
  * @example
  * const provider = await createProvider(MetamaskProvider)
  * const op = createCheckoutOperation(EVMCheckoutOperation, provider)

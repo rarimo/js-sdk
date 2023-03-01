@@ -1,7 +1,7 @@
 export enum ChainTypes {
-  EVM = 0,
-  Solana = 1,
-  Near = 2,
+  EVM = 1,
+  Solana = 2,
+  Near = 3,
 }
 export enum SolanaChains {
   devnet = 'devnet',

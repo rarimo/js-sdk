@@ -1,7 +1,7 @@
 {
   "name": "@rarimo/provider",
-  "version": "1.1.0",
-  "description": "The @rarimo/provider TypeScript package which wraps managing multiple (EVM and non EVM type) chains wallet extension providers to the one common interface.",
+  "version": "1.2.0",
+  "description": "Features of the Rarimo SDK that provide access to wallets and wrap the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/provider"

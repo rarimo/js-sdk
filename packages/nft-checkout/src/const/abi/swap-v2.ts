@@ -1,4 +1,4 @@
-export const SWAP_V2 = [
+export const SWAP_V2_ABI = [
   {
     inputs: [
       {

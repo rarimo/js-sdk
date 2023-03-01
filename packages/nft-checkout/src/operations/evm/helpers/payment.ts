@@ -1,21 +1,21 @@
+import { BridgeChain } from '../../../types'
+import { Amount, PaymentToken, Token } from '../../../entities'
 import {
   BalanceResult,
   getBalancesForEthereumAddress,
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
-import { BridgeChain, PaymentToken, Token } from '../../../types'
 import { BN } from '@distributedlab/utils'
 import { IProvider } from '@rarimo/provider'
 
 const mapTokenBalances = (
   supportedTokens: Token[],
-  chain: BridgeChain,
   balances: BalanceResult,
 ): PaymentToken[] => {
   if (!balances.tokens) return []
 
   return balances.tokens.reduce((acc, token) => {
-    const paymentToken = createPaymentToken(supportedTokens, token, chain)
+    const paymentToken = createPaymentToken(supportedTokens, token)
     if (paymentToken) acc.push(paymentToken)
     return acc
   }, [] as PaymentToken[])
@@ -31,8 +31,7 @@ const getTokenByAddress = (
 const createPaymentToken = (
   supportedTokens: Token[],
   token: TokenInfo,
-  chain: BridgeChain,
-) => {
+): PaymentToken | undefined => {
   const internalToken = getTokenByAddress(
     supportedTokens,
     token.contractAddress,
@@ -42,31 +41,43 @@ const createPaymentToken = (
 
   const balance = new BN(token.balance)
 
-  if (balance.compare(new BN(0)) == -1) return
+  if (balance.compare(new BN(0)) != 1) return
 
-  return {
-    balance: balance.toString(),
-    balanceRow: {
-      value: new BN(token.balance).toFraction(token.decimals).toString(),
-      decimals: token.decimals,
-    },
-    token: internalToken,
-    chain,
-  }
+  return PaymentToken.fromToken(
+    internalToken,
+    Amount.fromRaw(token.balance, token.decimals),
+  )
 }
 
 export const getPaymentTokens = async (
   chain: BridgeChain,
   provider: IProvider,
   tokens: Token[],
-) => {
-  return mapTokenBalances(
+): Promise<PaymentToken[]> => {
+  const erc20 = mapTokenBalances(
     tokens,
-    chain,
     await getBalancesForEthereumAddress({
-      contractAddresses: tokens.map(i => i.address),
+      contractAddresses: tokens.reduce((acc: string[], i) => {
+        if (i.address) acc.push(i.address)
+        return acc
+      }, []),
       ethereumAddress: provider.address!,
       providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
     }),
   )
+
+  const _provider = provider.getWeb3Provider?.()
+  const nativeBalance = await _provider?.getBalance(provider.address!)
+
+  return [
+    ...erc20,
+    ...(nativeBalance && nativeBalance.gt(0)
+      ? [
+          PaymentToken.fromToken(
+            Token.fromChain(chain),
+            Amount.fromRaw(nativeBalance.toString(), chain.token.decimals),
+          ),
+        ]
+      : []),
+  ]
 }

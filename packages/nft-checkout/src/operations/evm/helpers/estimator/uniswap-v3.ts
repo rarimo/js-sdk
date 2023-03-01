@@ -1,4 +1,9 @@
-import { EstimatedPrice, Price, Target, Token } from '../../../types'
+import { Price, Token } from '../../../../entities'
+import { errors } from '../../../../errors'
+import { EstimatedPrice, Target } from '../../../../types'
+import { computeRealizedPriceImpact } from './uniswap-impact'
+import { getSwapAmount } from './get-swap-amount'
+import { validateSlippage } from './slippage'
 import {
   Currency,
   CurrencyAmount,
@@ -15,9 +20,9 @@ import {
   RouteWithValidQuote,
 } from '@uniswap/smart-order-router'
 import { BN } from '@distributedlab/utils'
-import { errors, IProvider } from '@rarimo/provider'
-import { computeRealizedPriceImpact } from './uniswap-impact'
+import { IProvider } from '@rarimo/provider'
 import { providers } from 'ethers'
+import { handleNativeTokens } from './check-native-token'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -25,30 +30,15 @@ const getPrice = (
   from: Token,
   amount: CurrencyAmount<Currency> | undefined,
 ) => {
-  const price = {
-    symbol: from.symbol,
-    value: '',
-    decimals: from.decimals,
-  }
-
   if (!amount || JSBI.equal(amount?.quotient, JSBI.BigInt(0))) {
-    return price
+    return Price.fromRaw('0', from.decimals, from.symbol)
   }
 
-  price.value = amount.numerator.toString()
-
-  return price
-}
-
-export const getSwapAmount = (price: Price) => {
-  const amountBN = new BN(price.value).fromFraction(price.decimals)
-
-  const fee = new BN(
-    new BN(amountBN.toString(), { decimals: 24 }).mul(2.5).toString(),
-    { decimals: 24 },
-  ).div(100) // 2.5% for bridge fee
-
-  return amountBN.add(fee).toFraction(price.decimals).toString()
+  return Price.fromFraction(
+    amount.numerator.toString(),
+    from.decimals,
+    from.symbol,
+  )
 }
 
 const getRoutePath = (route: RouteWithValidQuote[]) => {
@@ -64,12 +54,25 @@ const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
   return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
 }
 
+const getSlippage = (slippage?: number): Percent => {
+  if (!slippage) {
+    return V3_SWAP_DEFAULT_SLIPPAGE
+  }
+
+  validateSlippage(slippage)
+
+  return new Percent(slippage, 1)
+}
+
 export const estimateUniswapV3 = async (
+  tokens: Token[],
   provider: IProvider,
-  from: Token,
-  to: Token,
+  _from: Token,
+  _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
+  const { from, to } = handleNativeTokens(tokens, _from, _to)
+
   const tokenA = new UNIToken(
     Number(from.chain.id),
     from.address,
@@ -107,8 +110,7 @@ export const estimateUniswapV3 = async (
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
     new Fraction(JSBI.BigInt(1))
-      // TODO: add ability to set slippage
-      .add(V3_SWAP_DEFAULT_SLIPPAGE)
+      .add(getSlippage(target.slippage))
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
 

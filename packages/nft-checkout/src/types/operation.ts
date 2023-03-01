@@ -4,15 +4,25 @@ import {
   IProvider,
   TransactionResponse,
 } from '@rarimo/provider'
-import {
-  BridgeChain,
-  Config,
-  EstimatedPrice,
-  PaymentToken,
-  Target,
-  TxBundle,
-} from '../types'
 import { OperationSubscriber } from './operation-event-bus'
+import { Address, BridgeChain, HexString, TokenSymbol } from './common'
+import { Config } from './config'
+import { EstimatedPrice } from './token'
+import { Price, Token, PaymentToken } from '../entities'
+
+export type Target = {
+  chainId: ChainId
+  address: Address
+  recipient: Address
+  price: Price
+  swapTargetTokenSymbol: TokenSymbol // WETH, USDT, etc
+  slippage?: number // 0.5, 1, 5, 10 etc
+}
+
+export type TxBundle = {
+  bundle: HexString
+  salt?: HexString
+}
 
 export interface INFTCheckoutOperationConstructor {
   new (config: Config, provider: IProvider): INFTCheckoutOperation
@@ -28,6 +38,7 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
   init(args: OperationCreateParams): Promise<void>
 
   supportedChains(): Promise<BridgeChain[]>
+  supportedTokens(): Promise<Token[]>
 
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>
