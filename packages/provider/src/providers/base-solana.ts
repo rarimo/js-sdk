@@ -11,8 +11,6 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '../types'
-import Web3 from 'web3'
-import { HttpProvider } from 'web3-core'
 import { ChainTypes, ProviderEvents, SolanaChains } from '../enums'
 import {
   getSolExplorerAddressUrl,
@@ -31,14 +29,12 @@ export class BaseSolanaProvider
   implements ProviderProxy
 {
   readonly #provider: SolanaProvider
-  #web3: Web3
   #chainId?: ChainId
   #address?: string
 
   constructor(provider: RawProvider) {
     super()
-    this.#web3 = new window.Web3(provider as unknown as HttpProvider)
-    this.#provider = (<unknown>this.#web3?.currentProvider) as SolanaProvider
+    this.#provider = provider as SolanaProvider
   }
 
   get chainType(): ChainTypes {

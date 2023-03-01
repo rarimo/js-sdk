@@ -10,8 +10,6 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '../types'
-import { HttpProvider } from 'web3-core'
-import Web3 from 'web3/types'
 import { NEAR_CHAINS, Providers } from '../enums'
 import {
   getNearExplorerAddressUrl,
@@ -23,15 +21,13 @@ import { ProviderEventBus } from './event-bus'
 
 export class NearProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: NearProviderType
-  readonly #web3: Web3
 
   #chainId?: ChainId
   #address?: string
 
   constructor(provider: RawProvider) {
     super()
-    this.#web3 = new window.Web3(provider as unknown as HttpProvider)
-    this.#provider = (<unknown>this.#web3?.currentProvider) as NearProviderType
+    this.#provider = provider as NearProviderType
   }
   static get providerType(): Providers {
     return Providers.Near

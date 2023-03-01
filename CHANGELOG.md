@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `root`: `esbuild` from dependencies
 - `root`: `@babel/*` from dependencies to simplify and speed up build process
 - `all`: `@/ -> ./src` aliases to remove `@babel/*` and all related packages
+- `@rarimo/provider`: dependence on the web3
 
 ## 1.1.0 - 2023-02-20
 ### Added
