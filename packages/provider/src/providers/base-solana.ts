@@ -105,6 +105,7 @@ export class BaseSolanaProvider
   async signAndSendTx(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     txRequestBody: TxRequestBody,
   ): Promise<TransactionResponse> {
     throw new TypeError('Method should be implemented in extender class')
