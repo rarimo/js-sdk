@@ -2090,6 +2090,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@rarimo/react-provider@workspace:packages/react-provider":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/react-provider@workspace:packages/react-provider"
+  dependencies:
+    "@types/react": ^18.0.27
+    "@types/react-dom": ^18.0.10
+    "@vitejs/plugin-react": ^3.1.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4.9.3
+    vite: ^4.1.0
+  languageName: unknown
+  linkType: soft
+
 "@resolver-engine/core@npm:^0.2.1":
   version: 0.2.1
   resolution: "@resolver-engine/core@npm:0.2.1"
@@ -9850,20 +9864,6 @@ __metadata:
   checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
   languageName: node
   linkType: hard
-
-"react-provider@workspace:packages/react-provider":
-  version: 0.0.0-use.local
-  resolution: "react-provider@workspace:packages/react-provider"
-  dependencies:
-    "@types/react": ^18.0.27
-    "@types/react-dom": ^18.0.10
-    "@vitejs/plugin-react": ^3.1.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    typescript: ^4.9.3
-    vite: ^4.1.0
-  languageName: unknown
-  linkType: soft
 
 "react-refresh@npm:^0.14.0":
   version: 0.14.0
