@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `all`: Build to CommonJS and ES modules
 - `all`: `tsc-alias` package to use aliases in TypeScript
 - `root`: `yarn rsc` Release Sanity Check script
+- `root`: Publish to NPM GitHub Action
 
 ### Fixed
 - `@rarimo/provider`: Solflare wallet naming [issue](https://github.com/rarimo/js-sdk/issues/12)
