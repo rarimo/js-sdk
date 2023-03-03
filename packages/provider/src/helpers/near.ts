@@ -1,9 +1,9 @@
 import { utils } from 'near-api-js'
 
-import { EIP1193, EIP1474 } from '../enums'
-import { errors } from '../errors'
-import { NearRawProvider } from '../providers/near-raw-provider'
-import { Chain, NearProviderRpcError } from '../types'
+import { EIP1193, EIP1474 } from '@/enums'
+import { errors } from '@/errors'
+import { NearRawProvider } from '@/providers/near-raw-provider'
+import { Chain, NearProviderRpcError } from '@/types'
 
 export const MAX_GAS_LIMIT = '300000000000000'
 export const NO_DEPOSIT = '0'
