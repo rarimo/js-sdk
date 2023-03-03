@@ -55,6 +55,6 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'react/display-name': 'off',
     'import/namespace': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-non-null-assertion': 0,
   },
 }

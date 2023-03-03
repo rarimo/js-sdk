@@ -1,4 +1,4 @@
-import { EthereumProvider } from '@/types'
+import { EthereumProvider } from '@rarimo/provider'
 
 declare global {
   interface Window {

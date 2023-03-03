@@ -1,18 +1,17 @@
 import { useState } from 'react'
 
-import Button, { ButtonProps } from '@/components/Button'
-import RarimoPayDialog from '@/components/RarimoPayDialog'
+import { AppButton, AppButtonProps, RarimoPayDialog } from '@/components'
 
-const RarimoPayButton = (props: ButtonProps) => {
+const RarimoPayButton = (props: AppButtonProps) => {
   const [isVisibleSupportedChains, setIsVisibleSupportedChains] =
     useState(false)
 
   return (
     <>
-      <Button
-        {...props}
-        label={props?.label || 'Buy with Rarimo'}
+      <AppButton
+        text="Buy with Rarify"
         onClick={() => setIsVisibleSupportedChains(true)}
+        {...props}
       />
       {isVisibleSupportedChains && (
         <RarimoPayDialog

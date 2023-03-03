@@ -1,5 +1,6 @@
 import {
   BridgeChain,
+  ChainNames,
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
@@ -58,7 +59,12 @@ export const useCheckoutOperation = ({
       createCheckoutOperationParams,
     )
     setCheckoutOperation(op)
-  }, [createCheckoutOperationParams, provider])
+  }, [
+    createCheckoutOperationParams,
+    provider,
+    provider?.chainId,
+    provider?.address,
+  ])
 
   useEffect(() => {
     if (!checkoutOperation) return
@@ -66,15 +72,17 @@ export const useCheckoutOperation = ({
     const init = async () => {
       // Call asynchronous supportedChains method to get supported chains on selected chain type
       const chains = await checkoutOperation.supportedChains()
-
       // In our case we hardcode Goerli chain as selected chain
-      const targetChain = chains[3]
-      setSelectedChain(targetChain)
+      const selectedChain = chains.find(i => i.name === ChainNames.Goerli)
 
-      await checkoutOperation.init({
-        chainIdFrom: targetChain.id,
-        target: targetNft,
-      })
+      setSelectedChain(selectedChain)
+
+      if (selectedChain) {
+        await checkoutOperation.init({
+          chainIdFrom: selectedChain.id,
+          target: targetNft,
+        })
+      }
     }
 
     init()
