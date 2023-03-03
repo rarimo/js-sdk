@@ -1,6 +1,7 @@
-import { errors } from '../errors'
 import Web3 from 'web3/types'
-import { Chain, ChainId, EthereumProvider, EthProviderRpcError } from '../types'
+
+import { errors } from '@/errors'
+import { Chain, ChainId, EthereumProvider, EthProviderRpcError } from '@/types'
 
 export const detectCurrentEthChain = async (web3: Web3): Promise<number> => {
   return web3.eth.net.getId()

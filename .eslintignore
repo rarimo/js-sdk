@@ -1,4 +1,8 @@
-packages/**/lib/*
-*.md
-*.config.js
+packages/**/dist/*
+packages/**/*.js
+jest.config.js
+jest.config.base.js
+node_modules/
+.yarn/
 .eslintrc.js
+scripts/*js

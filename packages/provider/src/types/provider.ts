@@ -5,13 +5,14 @@ import {
   TransactionSignature,
 } from '@solana/web3.js'
 import { ethers, providers } from 'ethers'
-
-import { ChainTypes, Providers } from '../enums'
-import { EthereumProvider } from './ethereum'
 import { TransactionConfig } from 'web3-core'
-import { SolanaProvider } from './solana'
+
+import { ChainTypes, Providers } from '@/enums'
+
 import { Chain, ChainId } from './chain'
+import { EthereumProvider } from './ethereum'
 import { ProviderSubscriber } from './provider-event-bus'
+import { SolanaProvider } from './solana'
 
 export type RawProvider = EthereumProvider | SolanaProvider
 

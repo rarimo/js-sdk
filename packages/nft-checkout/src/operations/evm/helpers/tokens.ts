@@ -1,15 +1,14 @@
-import { BridgeChain, Config } from '../../../types'
-import { ChainNames, SwapContractVersion } from '../../../enums'
-import { errors } from '../../../errors'
-import { Token } from '../../../entities'
+import { TokenInfo } from '@uniswap/token-lists'
+import axios from 'axios'
 
 import {
   PANCAKE_SWAP_TESTNET_TOKEN_LIST,
   TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
-} from '../../../const'
-
-import axios from 'axios'
-import { TokenInfo } from '@uniswap/token-lists'
+} from '@/const'
+import { Token } from '@/entities'
+import { ChainNames, SwapContractVersion } from '@/enums'
+import { errors } from '@/errors'
+import { BridgeChain, Config } from '@/types'
 
 export const loadTokens = async (
   config: Config,

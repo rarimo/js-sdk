@@ -1,3 +1,22 @@
+import { BN } from '@distributedlab/utils'
+import {
+  ChainId,
+  ChainTypes,
+  errors as providerErrors,
+  IProvider,
+  TransactionResponse,
+} from '@rarimo/provider'
+import { Contract, utils } from 'ethers'
+
+import {
+  BUNDLE_SALT_BYTES,
+  CHAINS,
+  ERC20_ABI,
+  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
+  SWAP_CONTRACT_ABIS,
+} from '@/const'
+import { PaymentToken, Price, Token } from '@/entities'
+import { errors } from '@/errors'
 import {
   BridgeChain,
   Config,
@@ -6,33 +25,15 @@ import {
   OperationCreateParams,
   Target,
   TxBundle,
-} from '../../types'
-import {
-  ChainId,
-  ChainTypes,
-  errors as providerErrors,
-  IProvider,
-  TransactionResponse,
-} from '@rarimo/provider'
+} from '@/types'
+
+import { OperationEventBus } from '../event-bus'
 import {
   Estimator,
   getPaymentTokens,
   getSwapAmount,
   loadTokens,
 } from './helpers'
-import {
-  BUNDLE_SALT_BYTES,
-  CHAINS,
-  ERC20_ABI,
-  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
-  SWAP_CONTRACT_ABIS,
-} from '../../const'
-import { errors } from '../../errors'
-
-import { Contract, utils } from 'ethers'
-import { BN } from '@distributedlab/utils'
-import { OperationEventBus } from '../event-bus'
-import { PaymentToken, Price, Token } from '../../entities'
 
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
@@ -56,10 +57,10 @@ export class EVMOperation
 
   #isInitialized = false
 
-  #chainFrom: BridgeChain
+  #chainFrom?: BridgeChain
   #target?: Target
 
-  #chains: BridgeChain[]
+  #chains: BridgeChain[] = []
   #tokens: Token[] = []
 
   constructor(config: Config, provider: IProvider) {
@@ -68,7 +69,7 @@ export class EVMOperation
     this.#provider = provider
   }
 
-  public get chainFrom(): BridgeChain {
+  public get chainFrom(): BridgeChain | undefined {
     return this.#chainFrom
   }
 
@@ -335,7 +336,7 @@ export class EVMOperation
   async #loadTokens() {
     if (!this.isInitialized) return []
 
-    this.#tokens = await loadTokens(this.#config, this.#chainFrom)
+    this.#tokens = await loadTokens(this.#config, this.#chainFrom!)
 
     return this.#tokens
   }

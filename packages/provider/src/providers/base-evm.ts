@@ -1,16 +1,8 @@
-import {
-  Chain,
-  ChainId,
-  EthereumProvider,
-  EthProviderRpcError,
-  ProviderProxy,
-  RawProvider,
-  TransactionResponse,
-  TxRequestBody,
-} from '../types'
-import { HttpProvider, TransactionConfig } from 'web3-core'
+import { providers } from 'ethers'
 import Web3 from 'web3/types'
-import { ChainTypes, ProviderEvents } from '../enums'
+import { HttpProvider, TransactionConfig } from 'web3-core'
+
+import { ChainTypes, ProviderEvents } from '@/enums'
 import {
   connectEthProvider,
   detectCurrentEthChain,
@@ -20,8 +12,18 @@ import {
   hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
-} from '../helpers'
-import { providers } from 'ethers'
+} from '@/helpers'
+import {
+  Chain,
+  ChainId,
+  EthereumProvider,
+  EthProviderRpcError,
+  ProviderProxy,
+  RawProvider,
+  TransactionResponse,
+  TxRequestBody,
+} from '@/types'
+
 import { ProviderEventBus } from './event-bus'
 
 export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
