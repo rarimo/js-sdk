@@ -1,4 +1,3 @@
-import { Transaction } from '@solana/web3.js'
 import { TransactionResponse, TxRequestBody } from './provider'
 import { Wallet, WalletSelector } from '@near-wallet-selector/core'
 
@@ -23,8 +22,6 @@ export type NearProviderType = {
   signIn: () => Promise<void>
   signOut: () => Promise<void>
   isConnected: boolean | null
-  signTransaction: (transaction: Transaction) => Promise<Transaction>
-  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
   signAndSendTx(
     txRequestBody: TxRequestBody | NearTxRequestBody,
   ): Promise<TransactionResponse>
