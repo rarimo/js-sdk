@@ -1,4 +1,6 @@
-import { nearProviderBase } from '../helpers'
+import { Transaction } from '@solana/web3.js'
+import { TransactionResponse, TxRequestBody } from './provider'
+import { Wallet, WalletSelector } from '@near-wallet-selector/core'
 
 export enum ENearWalletId {
   MyNearWallet = 'my-near-wallet',
@@ -12,7 +14,23 @@ export type NearTxRequestBody = {
   deposit?: string
 }
 
-export type NearProviderType = typeof nearProviderBase
+export type NearProviderType = {
+  selector: WalletSelector | null
+  wallet: Wallet | null
+  createAccessKeyFor: string
+  accountId: string
+  init: () => Promise<void>
+  signIn: () => Promise<void>
+  signOut: () => Promise<void>
+  isConnected: boolean | null
+  signTransaction: (transaction: Transaction) => Promise<Transaction>
+  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
+  signAndSendTx(
+    txRequestBody: TxRequestBody | NearTxRequestBody,
+  ): Promise<TransactionResponse>
+  getHashFromTxResponse(txResponse: TransactionResponse): string
+  connect: () => Promise<void>
+}
 
 export type NearProviderRpcError = {
   name: string
