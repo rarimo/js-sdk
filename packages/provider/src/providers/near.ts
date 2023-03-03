@@ -10,7 +10,7 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '../types'
-import { NEAR_CHAINS, Providers } from '../enums'
+import { NearChains, Providers } from '../enums'
 import {
   getNearExplorerAddressUrl,
   getNearExplorerTxUrl,
@@ -63,7 +63,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     const networkId = this.#provider.selector?.options.network.networkId
 
     this.#address = this.#provider?.accountId || ''
-    this.#chainId = networkId || NEAR_CHAINS.testnet
+    this.#chainId = networkId || NearChains.TestNet
   }
 
   async switchChain(chainId: ChainId): Promise<void> {

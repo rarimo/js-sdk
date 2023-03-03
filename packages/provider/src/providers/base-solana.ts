@@ -60,7 +60,7 @@ export class BaseSolanaProvider
   async init(): Promise<void> {
     this.#setListeners()
     this.#address = getAddress(this.#provider.publicKey)
-    this.#chainId = SolanaChains.devnet
+    this.#chainId = SolanaChains.DevNet
 
     this.emitInitiated({
       chainId: this.#chainId,

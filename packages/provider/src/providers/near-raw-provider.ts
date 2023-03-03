@@ -3,7 +3,7 @@ import {
   Wallet,
   WalletSelector,
 } from '@near-wallet-selector/core'
-import { NEAR_CHAINS, NEAR_WALLET_ACTION_TYPE } from '../enums'
+import { NearChains, NEAR_WALLET_ACTION_TYPE } from '../enums'
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 import { ENearWalletId, NearTxRequestBody } from '../types'
 import { providers } from 'near-api-js'
@@ -22,7 +22,7 @@ export class NearRawProvider {
 
   async init() {
     this.selector = await setupWalletSelector({
-      network: NEAR_CHAINS.testnet,
+      network: NearChains.TestNet,
       modules: [setupMyNearWallet()],
     })
 

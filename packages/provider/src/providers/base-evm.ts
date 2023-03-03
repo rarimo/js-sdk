@@ -120,7 +120,6 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async #setListeners() {
-
     this.#provider.on(ProviderEvents.Connect, async () => {
       const currentAccounts = await this.#provider.listAccounts()
       this.#address = currentAccounts[0] ?? ''

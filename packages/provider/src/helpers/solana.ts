@@ -55,10 +55,10 @@ export function decodeSolanaTx(tx: string) {
 
 export function getSolExplorerTxUrl(chain: Chain, txHash: string) {
   const url = `${chain.explorerUrl}/tx/${txHash}`
-  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
 }
 
 export function getSolExplorerAddressUrl(chain: Chain, address: string) {
   const url = `${chain.explorerUrl}/address/${address}`
-  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
 }
