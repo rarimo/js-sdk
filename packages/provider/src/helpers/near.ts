@@ -1,14 +1,39 @@
-import { Transaction } from '@solana/web3.js'
-import bs58 from 'bs58'
+import { utils } from 'near-api-js'
 
-import { EIP1193, EIP1474, SolanaChains } from '@/enums'
+import { EIP1193, EIP1474 } from '@/enums'
 import { errors } from '@/errors'
-import { Chain, SolanaProviderRpcError } from '@/types'
+import { NearRawProvider } from '@/providers/near-raw-provider'
+import { Chain, NearProviderRpcError } from '@/types'
 
-export function handleSolError(error: SolanaProviderRpcError) {
-  const ErrorCode = error?.error?.code || error?.code
+export const MAX_GAS_LIMIT = '300000000000000'
+export const NO_DEPOSIT = '0'
 
-  switch (ErrorCode) {
+export const nearProviderBase = new NearRawProvider({})
+
+export const nearToYocto = (amount: string): string | null => {
+  return utils.format.parseNearAmount(amount)
+}
+
+export const yoctoToNear = (amount: string): string | null => {
+  return utils.format.formatNearAmount(amount)
+}
+
+export function getNearExplorerTxUrl(
+  explorerUrl: string | Chain,
+  txHash: string,
+): string {
+  return `${explorerUrl}/transactions/${txHash}`
+}
+
+export function getNearExplorerAddressUrl(
+  explorerUrl: string | Chain,
+  address: string,
+): string {
+  return `${explorerUrl}/accounts/${address}`
+}
+
+export function handleNearError(error: NearProviderRpcError): never {
+  switch (error.code) {
     case EIP1193.userRejectedRequest:
       throw new errors.ProviderUserRejectedRequest()
     case EIP1193.unauthorized:
@@ -46,19 +71,4 @@ export function handleSolError(error: SolanaProviderRpcError) {
     default:
       throw error
   }
-}
-
-export function decodeSolanaTx(tx: string) {
-  const buff = bs58.decode(tx)
-  return Transaction.from(buff)
-}
-
-export function getSolExplorerTxUrl(chain: Chain, txHash: string) {
-  const url = `${chain.explorerUrl}/tx/${txHash}`
-  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
-}
-
-export function getSolExplorerAddressUrl(chain: Chain, address: string) {
-  const url = `${chain.explorerUrl}/address/${address}`
-  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
 }

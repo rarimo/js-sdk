@@ -5,20 +5,22 @@ import {
   TransactionSignature,
 } from '@solana/web3.js'
 import { ethers, providers } from 'ethers'
+import { providers as nearProviders } from 'near-api-js'
 import { TransactionConfig } from 'web3-core'
 
 import { ChainTypes, Providers } from '@/enums'
 
 import { Chain, ChainId } from './chain'
 import { EthereumProvider } from './ethereum'
+import { NearProviderType } from './near'
 import { ProviderSubscriber } from './provider-event-bus'
 import { SolanaProvider } from './solana'
 
-export type RawProvider = EthereumProvider | SolanaProvider
+export type RawProvider = EthereumProvider | SolanaProvider | NearProviderType
 
 export type ProviderInstance = {
   name: Providers
-  instance: RawProvider
+  instance?: RawProvider
 }
 
 export type TxRequestBody =
@@ -32,9 +34,12 @@ export type EthereumTransaction = TransactionConfig
 
 export type SolanaTransactionResponse = TransactionSignature
 
+export type NearTransactionResponse = nearProviders.FinalExecutionOutcome
+
 export type TransactionResponse =
   | EthTransactionResponse
   | SolanaTransactionResponse
+  | NearTransactionResponse
 
 export interface ProviderProxyConstructor {
   new (provider: RawProvider): ProviderProxy

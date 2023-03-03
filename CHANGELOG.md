@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/nft-checkout`: `supportedTokens` method to `INFTCheckoutOperation` interface to get supported tokens for swap on the selected chain
 - `@rarimo/nft-checkout`: PancakeSwap integration
 - `@rarimo/nft-checkout`: Ability to provide slippage in target object
+- `@rarimo/provider`: Support of Near wallet
 
 ### Changed
 - `root`: Added some more info about SDK to the readme
@@ -37,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `root`: `@babel/*` from dependencies to simplify and speed up build process
 - `all`: `@/ -> ./src` aliases to remove `@babel/*` and all related packages
 - `@rarimo/nft-checkout`: Swap contract addresses removed from EVM mainnet chains till they will be deployed
+- `@rarimo/provider`: dependence on the web3
 
 ### Fixed
 - `@rarimo/nft-checkout`: Swap for input native token

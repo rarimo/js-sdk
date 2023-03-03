@@ -1,11 +1,10 @@
-import { providers } from 'ethers'
-import Web3 from 'web3/types'
-import { HttpProvider, TransactionConfig } from 'web3-core'
+import { TransactionRequest } from '@ethersproject/abstract-provider'
+import { Deferrable } from '@ethersproject/properties'
+import { ethers, providers } from 'ethers'
 
 import { ChainTypes, ProviderEvents } from '@/enums'
 import {
-  connectEthProvider,
-  detectCurrentEthChain,
+  connectEthAccounts,
   getEthExplorerAddressUrl,
   getEthExplorerTxUrl,
   handleEthError,
@@ -16,7 +15,6 @@ import {
 import {
   Chain,
   ChainId,
-  EthereumProvider,
   EthProviderRpcError,
   ProviderProxy,
   RawProvider,
@@ -27,16 +25,17 @@ import {
 import { ProviderEventBus } from './event-bus'
 
 export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
-  readonly #provider: EthereumProvider
-  readonly #web3: Web3
+  readonly #provider: providers.Web3Provider
 
   #chainId?: ChainId
   #address?: string
 
   constructor(provider: RawProvider) {
     super()
-    this.#web3 = new window.Web3(provider as unknown as HttpProvider)
-    this.#provider = (<unknown>this.#web3?.currentProvider) as EthereumProvider
+    this.#provider = new ethers.providers.Web3Provider(
+      provider as ethers.providers.ExternalProvider,
+      'any',
+    )
   }
 
   get chainType(): ChainTypes {
@@ -56,13 +55,13 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   getWeb3Provider(): providers.Web3Provider {
-    return new providers.Web3Provider(this.#provider)
+    return this.#provider
   }
 
   async init(): Promise<void> {
     this.#setListeners()
-    await this.#detectCurrentChain()
-    this.#address = this.#provider.selectedAddress ?? ''
+    const currentAccounts = await this.#provider.listAccounts()
+    this.#address = currentAccounts[0]
 
     this.emitInitiated({
       chainId: this.#chainId,
@@ -81,7 +80,12 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
 
   async addChain(chain: Chain): Promise<void> {
     try {
-      await requestAddEthChain(this.#provider, chain)
+      await requestAddEthChain(
+        this.#provider,
+        Number(chain),
+        chain.name,
+        chain.rpcUrl,
+      )
     } catch (error) {
       handleEthError(error as EthProviderRpcError)
     }
@@ -89,7 +93,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
 
   async connect(): Promise<void> {
     try {
-      await connectEthProvider(this.#provider)
+      await connectEthAccounts(this.#provider)
     } catch (error) {
       handleEthError(error as EthProviderRpcError)
     }
@@ -105,10 +109,11 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
 
   async signAndSendTx(tx: TxRequestBody): Promise<TransactionResponse> {
     try {
-      const txReceipt = await this.#web3.eth.sendTransaction(
-        tx as TransactionConfig,
-      )
-      return txReceipt.transactionHash
+      const transactionResponse = await this.#provider
+        .getSigner()
+        .sendTransaction(tx as Deferrable<TransactionRequest>)
+
+      return transactionResponse.wait()
     } catch (error) {
       handleEthError(error as EthProviderRpcError)
     }
@@ -116,9 +121,10 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
     return ''
   }
 
-  #setListeners() {
-    this.#provider.on(ProviderEvents.Connect, () => {
-      this.#address = this.#provider.selectedAddress ?? ''
+  async #setListeners() {
+    this.#provider.on(ProviderEvents.Connect, async () => {
+      const currentAccounts = await this.#provider.listAccounts()
+      this.#address = currentAccounts[0] ?? ''
 
       this.emitConnect({
         address: this.#address,
@@ -135,8 +141,9 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
       })
     })
 
-    this.#provider.on(ProviderEvents.AccountsChanged, () => {
-      this.#address = this.#provider.selectedAddress ?? ''
+    this.#provider.on(ProviderEvents.AccountsChanged, async () => {
+      const currentAccounts = await this.#provider.listAccounts()
+      this.#address = currentAccounts[0] ?? ''
 
       this.emitAccountChanged({
         address: this.#address,
@@ -151,13 +158,5 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
         chainId: this.#chainId,
       })
     })
-  }
-
-  async #detectCurrentChain(): Promise<void> {
-    try {
-      this.#chainId = await detectCurrentEthChain(this.#web3)
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
   }
 }

@@ -1,5 +1,7 @@
 import { Providers } from '@/enums'
 import { errors } from '@/errors'
+import { Web3 } from '@/web3'
+
 import {
   Chain,
   ChainId,
@@ -12,8 +14,7 @@ import {
   ProviderProxyConstructor,
   TransactionResponse,
   TxRequestBody,
-} from '@/types'
-import { Web3 } from '@/web3'
+} from './types'
 
 export type CreateProviderOpts = {
   web3Instance?: Web3
@@ -69,7 +70,9 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance) {
-    this.#proxy = new this.#proxyConstructor(provider.instance)
+    if (provider.instance) {
+      this.#proxy = new this.#proxyConstructor(provider.instance)
+    }
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
     return this
