@@ -1,7 +1,9 @@
-import { OperatorWrappedTokenNotFound } from '../../../../errors'
-import { TARGET_TOKEN_SYMBOLS } from '../chain'
 import { ChainId } from '@rarimo/provider'
-import { Token } from '../../../../entities'
+
+import { Token } from '@/entities'
+import { OperatorWrappedTokenNotFound } from '@/errors'
+
+import { TARGET_TOKEN_SYMBOLS } from '../chain'
 
 export const handleNativeToken = (tokens: Token[], token: Token): Token => {
   const _token = token.isNative

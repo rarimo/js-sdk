@@ -1,4 +1,14 @@
-import { ProviderEventBus } from './event-bus'
+import { PublicKey } from '@solana/web3.js'
+import Web3 from 'web3'
+import { HttpProvider } from 'web3-core'
+
+import { ChainTypes, ProviderEvents, SolanaChains } from '@/enums'
+import {
+  getSolExplorerAddressUrl,
+  getSolExplorerTxUrl,
+  handleEthError,
+  handleSolError,
+} from '@/helpers'
 import {
   Chain,
   ChainId,
@@ -10,17 +20,9 @@ import {
   SolanaTransactionResponse,
   TransactionResponse,
   TxRequestBody,
-} from '../types'
-import Web3 from 'web3'
-import { HttpProvider } from 'web3-core'
-import { ChainTypes, ProviderEvents, SolanaChains } from '../enums'
-import {
-  getSolExplorerAddressUrl,
-  getSolExplorerTxUrl,
-  handleEthError,
-  handleSolError,
-} from '../helpers'
-import { PublicKey } from '@solana/web3.js'
+} from '@/types'
+
+import { ProviderEventBus } from './event-bus'
 
 const getAddress = (publicKey: PublicKey | null): string => {
   return publicKey ? new PublicKey(publicKey).toBase58() : ''

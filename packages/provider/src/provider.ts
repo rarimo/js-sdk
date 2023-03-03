@@ -1,19 +1,19 @@
-import { Providers } from './enums'
+import { Providers } from '@/enums'
+import { errors } from '@/errors'
 import {
+  Chain,
   ChainId,
+  IProvider,
+  ProviderChainChangedEventPayload,
+  ProviderConnectRelatedEventPayload,
+  ProviderInitiatedEventPayload,
+  ProviderInstance,
   ProviderProxy,
+  ProviderProxyConstructor,
   TransactionResponse,
   TxRequestBody,
-  ProviderInstance,
-  ProviderProxyConstructor,
-  IProvider,
-  Chain,
-  ProviderConnectRelatedEventPayload,
-  ProviderChainChangedEventPayload,
-  ProviderInitiatedEventPayload,
-} from './types'
-import { errors } from './errors'
-import { Web3 } from './web3'
+} from '@/types'
+import { Web3 } from '@/web3'
 
 export type CreateProviderOpts = {
   web3Instance?: Web3

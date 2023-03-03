@@ -1,11 +1,12 @@
-import { ProviderEventBusEvents } from '../enums'
+import { EventEmitter } from '@distributedlab/utils'
+
+import { ProviderEventBusEvents } from '@/enums'
 import {
   ProviderChainChangedEventPayload,
   ProviderConnectRelatedEventPayload,
   ProviderEventMap,
   ProviderInitiatedEventPayload,
-} from '../types'
-import { EventEmitter } from '@distributedlab/utils'
+} from '@/types'
 
 export class ProviderEventBus {
   readonly #emitter = new EventEmitter<ProviderEventMap>()

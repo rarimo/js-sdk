@@ -4,11 +4,13 @@ import {
   IProvider,
   TransactionResponse,
 } from '@rarimo/provider'
-import { OperationSubscriber } from './operation-event-bus'
+
+import { PaymentToken, Price, Token } from '@/entities'
+
 import { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import { Config } from './config'
+import { OperationSubscriber } from './operation-event-bus'
 import { EstimatedPrice } from './token'
-import { Price, Token, PaymentToken } from '../entities'
 
 export type Target = {
   chainId: ChainId

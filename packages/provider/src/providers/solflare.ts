@@ -1,20 +1,23 @@
+import {
+  Cluster,
+  clusterApiUrl,
+  Connection,
+  Transaction as SolTransaction,
+} from '@solana/web3.js'
 import Web3 from 'web3/types'
+
+import { Providers } from '@/enums'
+import { decodeSolanaTx, handleSolError } from '@/helpers'
 import {
   ProviderProxy,
   RawProvider,
   SolanaProviderRpcError,
   TransactionResponse,
   TxRequestBody,
-} from '../types'
-import { decodeSolanaTx, handleSolError } from '../helpers'
-import {
-  Connection,
-  Cluster,
-  clusterApiUrl,
-  Transaction as SolTransaction,
-} from '@solana/web3.js'
+} from '@/types'
+
 import { BaseSolanaProvider } from './base-solana'
-import { Providers } from '../enums'
+
 declare global {
   interface Window {
     Web3: typeof Web3
