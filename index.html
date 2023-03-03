@@ -77,6 +77,116 @@ Here are the packages in the namespace:</p>
 you must add the following code to your Webpack config:</p>
 <pre><code class="language-js"><span class="hl-0">module</span><span class="hl-1">.</span><span class="hl-0">exports</span><span class="hl-1"> = [</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-2">// ...</span><br/><span class="hl-1">    </span><span class="hl-3">plugins:</span><span class="hl-1"> [</span><br/><span class="hl-1">      ...,</span><br/><span class="hl-1">      </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-3">webpack</span><span class="hl-1">.</span><span class="hl-5">ProvidePlugin</span><span class="hl-1">({</span><br/><span class="hl-1">        </span><span class="hl-3">Buffer:</span><span class="hl-1"> [</span><span class="hl-6">&quot;buffer&quot;</span><span class="hl-1">, </span><span class="hl-6">&quot;Buffer&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">      }),</span><br/><span class="hl-1">    ],</span><br/><span class="hl-1">    </span><span class="hl-2">// ...</span><br/><span class="hl-1">    </span><span class="hl-3">resolve:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-3">fallback:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-3">buffer:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-3">crypto:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-3">events:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-3">path:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-3">stream:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-3">string_decoder:</span><span class="hl-1"> </span><span class="hl-4">false</span><span class="hl-1">,</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">]</span>
 </code></pre>
+
+<a href="#development" id="development" style="color: inherit; text-decoration: none;">
+  <h2>Development</h2>
+</a>
+
+<a href="#editors" id="editors" style="color: inherit; text-decoration: none;">
+  <h3>Editors</h3>
+</a>
+
+<a href="#vscode" id="vscode" style="color: inherit; text-decoration: none;">
+  <h4>VSCode</h4>
+</a>
+<p>To get ESLint and Prettier working in VSCode, install <a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint extension</a> and add the following to your settings.json:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;editor.codeActionsOnSave&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-7">&quot;source.fixAll.eslint&quot;</span><span class="hl-1">: </span><span class="hl-4">true</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;editor.formatOnSave&quot;</span><span class="hl-1">: </span><span class="hl-4">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;eslint.validate&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    </span><span class="hl-6">&quot;javascript&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-6">&quot;typescript&quot;</span><br/><span class="hl-1">  ],</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;eslint.alwaysShowStatus&quot;</span><span class="hl-1">: </span><span class="hl-4">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;eslint.packageManager&quot;</span><span class="hl-1">: </span><span class="hl-6">&quot;yarn&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;eslint.workingDirectories&quot;</span><span class="hl-1">: [{ </span><span class="hl-7">&quot;mode&quot;</span><span class="hl-1">: </span><span class="hl-6">&quot;auto&quot;</span><span class="hl-1"> }]</span><br/><span class="hl-1">}</span>
+</code></pre>
+
+<a href="#webstorm" id="webstorm" style="color: inherit; text-decoration: none;">
+  <h4>WebStorm</h4>
+</a>
+<p>To get ESLint and Prettier working in WebStorm, go to <code>Preferences &gt; Languages &amp; Frameworks &gt; JavaScript &gt; Code Quality Tools &gt; ESLint</code> and check the following:</p>
+<ul>
+<li><code>Run eslint --fix on save</code> enabled</li>
+<li><code>Automatic ESLint configuration</code> enabled</li>
+<li><code>{**/*,*}.{js,ts}</code> in <code>Run for files</code> field</li>
+</ul>
+
+<a href="#dependencies" id="dependencies" style="color: inherit; text-decoration: none;">
+  <h3>Dependencies</h3>
+</a>
+
+<a href="#local-dependencies" id="local-dependencies" style="color: inherit; text-decoration: none;">
+  <h4>Local dependencies</h4>
+</a>
+<p>To install all dependencies, run:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">install</span>
+</code></pre>
+<p>If you are implementing a new package which needs to depend on the local package, you can use the following command to install it:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">workspace</span><span class="hl-1"> </span><span class="hl-6">@rarimo/target-package</span><span class="hl-1"> </span><span class="hl-6">add</span><span class="hl-1"> </span><span class="hl-6">@distributedlab/package-to-add</span>
+</code></pre>
+<p>To install a dependency to all packages, use the following command:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">workspaces</span><span class="hl-1"> </span><span class="hl-6">foreach</span><span class="hl-1"> </span><span class="hl-6">-pt</span><span class="hl-1"> </span><span class="hl-6">run</span><span class="hl-1"> </span><span class="hl-6">add</span><span class="hl-1"> </span><span class="hl-6">@rarimo/package-to-add</span>
+</code></pre>
+
+<a href="#testing-dependencies" id="testing-dependencies" style="color: inherit; text-decoration: none;">
+  <h4>Testing dependencies</h4>
+</a>
+<p>To test the packages, you need:</p>
+<ol>
+<li><p>Build the packages:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">build</span>
+</code></pre>
+</li>
+<li><p>Switch yarn to version berry in the project where you want to test package, to yarn be able to resolve workspace dependencies:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">set</span><span class="hl-1"> </span><span class="hl-6">version</span><span class="hl-1"> </span><span class="hl-6">berry</span>
+</code></pre>
+</li>
+<li><p>Add this to the <code>.yarnrc.yml</code> file:</p>
+<pre><code class="language-yaml"><span class="hl-8">nodeLinker</span><span class="hl-1">: </span><span class="hl-9">node-modules</span>
+</code></pre>
+</li>
+<li><p>Link the packages to the project:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">link</span><span class="hl-1"> </span><span class="hl-6">-p</span><span class="hl-1"> </span><span class="hl-6">-A</span><span class="hl-1"> </span><span class="hl-6">/path/to/js-sdk/root/directory</span>
+</code></pre>
+</li>
+<li><p>Add dependencies to the package.json file:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dependencies&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-7">&quot;@rarimo/provider&quot;</span><span class="hl-1">: </span><span class="hl-6">&quot;*&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code></pre>
+</li>
+<li><p>Install the dependencies:</p>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">install</span>
+</code></pre>
+</li>
+</ol>
+
+<a href="#basics" id="basics" style="color: inherit; text-decoration: none;">
+  <h3>Basics</h3>
+</a>
+
+<a href="#build" id="build" style="color: inherit; text-decoration: none;">
+  <h4>Build</h4>
+</a>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">build</span>
+</code></pre>
+
+<a href="#run-tests" id="run-tests" style="color: inherit; text-decoration: none;">
+  <h4>Run tests</h4>
+</a>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">test</span>
+</code></pre>
+
+<a href="#run-linter" id="run-linter" style="color: inherit; text-decoration: none;">
+  <h4>Run linter</h4>
+</a>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">lint</span>
+</code></pre>
+
+<a href="#check-release-version" id="check-release-version" style="color: inherit; text-decoration: none;">
+  <h4>Check release version</h4>
+</a>
+<pre><code class="language-bash"><span class="hl-1">yarn </span><span class="hl-6">rsc</span><span class="hl-1"> </span><span class="hl-6">0.1.0</span>
+</code></pre>
+
+<a href="#resources" id="resources" style="color: inherit; text-decoration: none;">
+  <h3>Resources</h3>
+</a>
+<ul>
+<li><a href="https://yarnpkg.com/cli/install">Yarn Berry</a></li>
+<li><a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a></li>
+<li><a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a></li>
+</ul>
 </div></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
@@ -99,6 +209,10 @@ you must add the following code to your Webpack config:</p>
 <ul>
 <li class="current selected"><a href="modules.html">Rarimo <wbr/>Java<wbr/>Script/<wbr/>Typescript SDK</a>
 <ul>
+<li class="tsd-kind-module"><a href="modules/__home_runner_work_js_sdk_js_sdk_packages_nft_checkout_src_index_.html">&quot;/home/runner/work/js-<wbr/>sdk/js-<wbr/>sdk/packages/nft-<wbr/>checkout/src/index&quot;</a></li>
+<li class="tsd-kind-module"><a href="modules/__home_runner_work_js_sdk_js_sdk_packages_nft_checkout_src_index_-1.html">&quot;/home/runner/work/js-<wbr/>sdk/js-<wbr/>sdk/packages/nft-<wbr/>checkout/src/index&quot;</a></li>
+<li class="tsd-kind-module"><a href="modules/__home_runner_work_js_sdk_js_sdk_packages_provider_src_index_.html">&quot;/home/runner/work/js-<wbr/>sdk/js-<wbr/>sdk/packages/provider/src/index&quot;</a></li>
+<li class="tsd-kind-module"><a href="modules/__home_runner_work_js_sdk_js_sdk_packages_provider_src_index_-1.html">&quot;/home/runner/work/js-<wbr/>sdk/js-<wbr/>sdk/packages/provider/src/index&quot;</a></li>
 <li class="tsd-kind-module"><a href="modules/_rarimo_nft_checkout.html">@rarimo/nft-<wbr/>checkout</a></li>
 <li class="tsd-kind-module"><a href="modules/_rarimo_provider.html">@rarimo/provider</a></li></ul></li></ul></div></details></nav></div></div>
 <div class="container tsd-generator">
