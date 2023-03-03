@@ -1,13 +1,8 @@
-import {
-  Chain,
-  ChainId,
-  EthProviderRpcError,
-  ProviderProxy,
-  RawProvider,
-  TransactionResponse,
-  TxRequestBody,
-} from '../types'
-import { ChainTypes, ProviderEvents } from '../enums'
+import { TransactionRequest } from '@ethersproject/abstract-provider'
+import { Deferrable } from '@ethersproject/properties'
+import { ethers, providers } from 'ethers'
+
+import { ChainTypes, ProviderEvents } from '@/enums'
 import {
   connectEthAccounts,
   getEthExplorerAddressUrl,
@@ -16,11 +11,18 @@ import {
   hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
-} from '../helpers'
-import { ethers, providers } from 'ethers'
+} from '@/helpers'
+import {
+  Chain,
+  ChainId,
+  EthProviderRpcError,
+  ProviderProxy,
+  RawProvider,
+  TransactionResponse,
+  TxRequestBody,
+} from '@/types'
+
 import { ProviderEventBus } from './event-bus'
-import { Deferrable } from '@ethersproject/properties'
-import { TransactionRequest } from '@ethersproject/abstract-provider'
 
 export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: providers.Web3Provider

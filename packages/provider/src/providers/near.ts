@@ -1,21 +1,21 @@
+import { NearChains, Providers } from '@/enums'
+import {
+  getNearExplorerAddressUrl,
+  getNearExplorerTxUrl,
+  handleNearError,
+} from '@/helpers'
 import {
   Chain,
   ChainId,
-  NearProviderType,
   NearProviderRpcError,
+  NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
   ProviderProxy,
   RawProvider,
   TransactionResponse,
   TxRequestBody,
-} from '../types'
-import { NearChains, Providers } from '../enums'
-import {
-  getNearExplorerAddressUrl,
-  getNearExplorerTxUrl,
-  handleNearError,
-} from '../helpers'
+} from '@/types'
 
 import { ProviderEventBus } from './event-bus'
 

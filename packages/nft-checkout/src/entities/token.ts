@@ -1,13 +1,14 @@
+import { TokenInfo } from '@uniswap/token-lists'
+
+import { SwapContractVersion } from '@/enums'
+import { toLow } from '@/helpers'
 import {
   Address,
   BridgeChain,
   CreateTokenOpts,
   Decimals,
   TokenSymbol,
-} from '../types'
-import { TokenInfo } from '@uniswap/token-lists'
-import { toLow } from '../helpers'
-import { SwapContractVersion } from '../enums'
+} from '@/types'
 
 export class Token {
   readonly #chain: BridgeChain

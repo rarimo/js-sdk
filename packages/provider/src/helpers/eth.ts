@@ -1,6 +1,7 @@
-import { errors } from '../errors'
-import { Chain, ChainId, EthProviderRpcError } from '../types'
 import { ethers, providers } from 'ethers'
+
+import { errors } from '@/errors'
+import { Chain, ChainId, EthProviderRpcError } from '@/types'
 
 export const getEthExplorerTxUrl = (chain: Chain, txHash: string): string => {
   return `${chain.explorerUrl}/tx/${txHash}`

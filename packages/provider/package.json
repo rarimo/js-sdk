@@ -7,16 +7,33 @@
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/provider"
   },
   "license": "MIT",
-  "files": [
-    "lib",
-    "*.md"
-  ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "sideEffects": false,
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "./dist/types/*"
+      ]
+    }
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
   "scripts": {
-    "build": "yarn clean && tsc",
-    "clean": "rm -rf lib",
-    "type-check": "tsc --noEmit"
+    "build": "yarn clean && yarn build:types && yarn build:cjs && yarn build:esm && node ./postbuild.js",
+    "build:types": "tsc -p tsconfig.json --outDir ./dist/types --declaration --emitDeclarationOnly",
+    "build:cjs": "tsc -p tsconfig.json --outDir ./dist/cjs --module commonjs",
+    "build:esm": "tsc -p tsconfig.json --outDir ./dist/esm --module esnext",
+    "clean": "rm -rf dist",
+    "test": "yarn jest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@distributedlab/utils": "^3.2.1",
@@ -33,6 +50,7 @@
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
+    "tsc-alias": "^1.8.2",
     "web3": "^1.7.4"
   },
   "publishConfig": {

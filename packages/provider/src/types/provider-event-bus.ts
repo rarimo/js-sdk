@@ -1,4 +1,5 @@
-import { ProviderEventBusEvents } from '../enums'
+import { ProviderEventBusEvents } from '@/enums'
+
 import { ChainId } from './chain'
 
 export type ProviderConnectRelatedEventPayload = {

@@ -1,7 +1,7 @@
-import { Fraction, Percent, Currency, TradeType } from '@uniswap/sdk-core'
+import { Trade } from '@uniswap/router-sdk'
+import { Currency, Fraction, Percent, TradeType } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { FeeAmount, Pool } from '@uniswap/v3-sdk'
-import { Trade } from '@uniswap/router-sdk'
 
 export class InterfaceTrade extends Trade<Currency, Currency, TradeType> {}
 

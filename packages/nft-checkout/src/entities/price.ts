@@ -1,5 +1,7 @@
 import { BN } from '@distributedlab/utils'
-import { Decimals, TokenSymbol } from '../types'
+
+import { Decimals, TokenSymbol } from '@/types'
+
 import { AmountBase } from './amount'
 
 export class Price extends AmountBase {

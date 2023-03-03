@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["esnext", "dom"],
+    "types": [
+      "@types/node",
+      "@types/jest"
+    ],
     "moduleResolution": "node",
-    "declaration": true,
+    "declaration": false,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -19,6 +23,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "newLine": "lf"
   }
 }

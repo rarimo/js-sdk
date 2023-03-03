@@ -1,9 +1,3 @@
-import { EstimatedPrice, Target } from '../../../../types'
-import { Price, Token } from '../../../../entities'
-import { validateSlippage } from './slippage'
-import { handleNativeTokens } from './check-native-token'
-
-import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
 import {
   ChainId,
@@ -15,6 +9,13 @@ import {
   Trade,
   TradeType,
 } from '@traderjoe-xyz/sdk'
+import JSBI from 'jsbi'
+
+import { Price, Token } from '@/entities'
+import { EstimatedPrice, Target } from '@/types'
+
+import { handleNativeTokens } from './check-native-token'
+import { validateSlippage } from './slippage'
 
 const JOE_TRADER_DEFAULT_SLIPPAGE = new Percent('5', '100')
 

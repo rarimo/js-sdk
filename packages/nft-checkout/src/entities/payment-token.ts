@@ -1,6 +1,7 @@
-import { Token } from './token'
-import { CreateTokenOpts } from '../types'
+import { CreateTokenOpts } from '@/types'
+
 import { Amount } from './amount'
+import { Token } from './token'
 
 export class PaymentToken extends Token {
   readonly #balance: Amount

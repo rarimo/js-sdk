@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./lib",
     "baseUrl": ".",
-    "types": ["node", "jest"],
-    "lib": ["ES6", "DOM"],
-    "strictPropertyInitialization": false,
+    "lib": ["ESNext", "DOM"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["test", "**/*.test.ts"]
 }

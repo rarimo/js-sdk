@@ -1,4 +1,7 @@
-import { Providers } from './enums'
+import { Providers } from '@/enums'
+import { errors } from '@/errors'
+import { Web3 } from '@/web3'
+
 import {
   Chain,
   ChainId,
@@ -12,8 +15,6 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from './types'
-import { errors } from './errors'
-import { Web3 } from './web3'
 
 export type CreateProviderOpts = {
   web3Instance?: Web3
@@ -168,7 +169,6 @@ export const createProvider = async (
   const { web3Instance } = opts
 
   const provider = new Provider(proxy)
-
   const web3 = web3Instance || new Web3()
 
   if (!web3.initiated) {
