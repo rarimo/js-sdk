@@ -46,7 +46,7 @@ const createPaymentToken = (
 
   return PaymentToken.fromToken(
     internalToken,
-    Amount.fromRaw(token.balance, token.decimals),
+    Amount.fromFraction(token.balance, token.decimals),
   )
 }
 
@@ -76,7 +76,7 @@ export const getPaymentTokens = async (
       ? [
           PaymentToken.fromToken(
             Token.fromChain(chain),
-            Amount.fromRaw(nativeBalance.toString(), chain.token.decimals),
+            Amount.fromFraction(nativeBalance.toString(), chain.token.decimals),
           ),
         ]
       : []),

@@ -74,8 +74,8 @@ export const estimateJoeTrader = async (
   return {
     impact: trade.priceImpact.toSignificant(3),
     path: trade.route.path.map(token => token.address),
-    from,
-    to,
+    from: _from,
+    to: _to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
       from.decimals,

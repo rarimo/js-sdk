@@ -207,13 +207,15 @@ export class EVMOperation
   }
 
   #getNativeAmountIn(price: Price) {
-    return new BN(
-      new BN(price.toString())
-        .mul(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER)
-        .round(price.decimals),
+    const amount = new BN(
+      new BN(price.toString(), { decimals: price.decimals }).mul(
+        NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
+      ),
     )
       .toFraction(price.decimals)
       .toString()
+
+    return amount.split('.')[0]
   }
 
   #getFunctionFragment(from: Token, to: Token) {

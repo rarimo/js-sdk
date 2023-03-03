@@ -117,8 +117,8 @@ export const estimateUniswapV3 = async (
   )
 
   return {
-    from,
-    to,
+    from: _from,
+    to: _to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
     price: getPrice(from, amount),
     path: getRoutePath(route.route),
