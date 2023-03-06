@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import { useProvider } from './hooks'
+import { MetamaskProvider } from '@rarimo/provider'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const provider = useProvider(MetamaskProvider)
+
+  console.log(provider)
 
   return (
     <div className="App">
