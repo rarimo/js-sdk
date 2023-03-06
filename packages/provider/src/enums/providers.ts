@@ -3,10 +3,7 @@ export enum Providers {
   Fallback = 'fallback',
   Metamask = 'metamask',
   Phantom = 'phantom',
-
-  // Not implemented yet
   Coinbase = 'coinbase',
-  WalletConnect = 'wallet-connect',
   Solflare = 'solflare',
   Near = 'near',
 }

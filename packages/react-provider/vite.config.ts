@@ -11,7 +11,6 @@ const root = path.resolve(__dirname, resolveApp('src'))
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const env = loadEnv(mode, process.cwd(), '')
 
   const isProduction = env.VITE_APP_ENVIRONMENT === 'production'

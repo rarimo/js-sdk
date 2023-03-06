@@ -1,10 +1,7 @@
-import { errors } from '../errors'
-import Web3 from 'web3/types'
-import { Chain, ChainId, EthereumProvider, EthProviderRpcError } from '../types'
+import { ethers, providers } from 'ethers'
 
-export const detectCurrentEthChain = async (web3: Web3): Promise<number> => {
-  return web3.eth.net.getId()
-}
+import { errors } from '@/errors'
+import { Chain, ChainId, EthProviderRpcError } from '@/types'
 
 export const getEthExplorerTxUrl = (chain: Chain, txHash: string): string => {
   return `${chain.explorerUrl}/tx/${txHash}`
@@ -18,38 +15,31 @@ export const getEthExplorerAddressUrl = (
 }
 
 export const requestSwitchEthChain = async (
-  provider: EthereumProvider,
+  provider: providers.Web3Provider,
   chainId: ChainId,
 ): Promise<void> => {
-  await provider.request({
-    method: 'wallet_switchEthereumChain',
-    params: [{ chainId: window.Web3.utils.toHex(chainId) }],
-  })
+  await provider.send('wallet_switchEthereumChain', [
+    { chainId: ethers.utils.hexValue(chainId) },
+  ])
 }
 
 export const requestAddEthChain = async (
-  provider: EthereumProvider,
-  chain: Chain,
+  provider: providers.Web3Provider,
+  chainId: number,
+  chainName: string,
+  chainRpcUrl: string,
 ): Promise<void> => {
-  await provider.request({
-    method: 'wallet_addEthereumChain',
-    params: [
-      {
-        chainId: window.Web3.utils.toHex(chain.id),
-        chainName: chain.name,
-        rpcUrls: [chain.rpcUrl],
-        blockExplorerUrls: [chain.explorerUrl],
-      },
-    ],
-  })
+  await provider.send('wallet_addEthereumChain', [
+    {
+      chainId: ethers.utils.hexValue(chainId),
+      chainName,
+      rpcUrls: [chainRpcUrl],
+    },
+  ])
 }
 
-export const connectEthProvider = async (
-  provider: EthereumProvider,
-): Promise<void> => {
-  await provider.request({
-    method: 'eth_requestAccounts',
-  })
+export const connectEthAccounts = async (provider: providers.Web3Provider) => {
+  await provider.send('eth_requestAccounts', [])
 }
 
 export function handleEthError(error: EthProviderRpcError): void {

@@ -1,9 +1,9 @@
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
-import { EIP1193, EIP1474, SolanaChains } from '../enums'
-import { errors } from '../errors'
-import { Chain, SolanaProviderRpcError } from '../types'
+import { EIP1193, EIP1474, SolanaChains } from '@/enums'
+import { errors } from '@/errors'
+import { Chain, SolanaProviderRpcError } from '@/types'
 
 export function handleSolError(error: SolanaProviderRpcError) {
   const ErrorCode = error?.error?.code || error?.code
@@ -55,10 +55,10 @@ export function decodeSolanaTx(tx: string) {
 
 export function getSolExplorerTxUrl(chain: Chain, txHash: string) {
   const url = `${chain.explorerUrl}/tx/${txHash}`
-  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
 }
 
 export function getSolExplorerAddressUrl(chain: Chain, address: string) {
   const url = `${chain.explorerUrl}/address/${address}`
-  return chain.id === SolanaChains.mainnet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
 }

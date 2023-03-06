@@ -1,12 +1,12 @@
 export enum ChainNames {
-  Ethereum = 'Ethereum Mainnet',
-  Polygon = 'Polygon Mainnet',
-  Avalanche = 'Avalanche C-Chain',
-  Goerli = 'Görli',
+  Ethereum = 'Ethereum',
+  Polygon = 'Polygon',
+  Avalanche = 'Avalanche',
+  Goerli = 'Goerli',
   Sepolia = 'Sepolia',
-  Mumbai = 'Polygon Mumbai',
-  Fuji = 'Avalanche Fuji-Chain',
-  BinanceSmartChain = 'Binance Smart Chain',
+  Mumbai = 'Mumbai',
+  Fuji = 'fuji',
+  BinanceSmartChain = 'BSC',
   Chapel = 'Binance Smart Chain Testnet',
 }
 

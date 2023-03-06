@@ -1,6 +1,7 @@
 import { ChainTypes } from '@rarimo/provider'
-import { BridgeChain } from '../types'
-import { ChainNames, SwapContractVersion } from '../enums'
+
+import { ChainNames, SwapContractVersion } from '@/enums'
+import { BridgeChain } from '@/types'
 
 const EVM_CHAIN_IDS = {
   [ChainNames.Ethereum]: 1,
@@ -31,7 +32,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://etherscan.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-    contractAddress: '',
+    contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
     contactVersion: SwapContractVersion.UniswapV3,
   },
   {
@@ -105,7 +106,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://cchain.explorer.avax.network',
     type: ChainTypes.EVM,
-    contractAddress: '',
+    contractAddress: '0x2021Fa349Ec57F33F03961E430f54d9b05781E3c',
     icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
     contactVersion: SwapContractVersion.TraderJoe,
   },
@@ -136,7 +137,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://bscscan.com',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
-    contractAddress: '',
+    contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
     contactVersion: SwapContractVersion.PancakeSwap,
   },
   {

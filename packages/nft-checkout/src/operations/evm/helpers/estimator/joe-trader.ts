@@ -1,9 +1,3 @@
-import { EstimatedPrice, Target } from '../../../../types'
-import { Price, Token } from '../../../../entities'
-import { validateSlippage } from './slippage'
-import { handleNativeTokens } from './check-native-token'
-
-import JSBI from 'jsbi'
 import { IProvider } from '@rarimo/provider'
 import {
   ChainId,
@@ -15,6 +9,13 @@ import {
   Trade,
   TradeType,
 } from '@traderjoe-xyz/sdk'
+import JSBI from 'jsbi'
+
+import { Price, Token } from '@/entities'
+import { EstimatedPrice, Target } from '@/types'
+
+import { handleNativeTokens } from './check-native-token'
+import { validateSlippage } from './slippage'
 
 const JOE_TRADER_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -73,8 +74,8 @@ export const estimateJoeTrader = async (
   return {
     impact: trade.priceImpact.toSignificant(3),
     path: trade.route.path.map(token => token.address),
-    from,
-    to,
+    from: _from,
+    to: _to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
       from.decimals,

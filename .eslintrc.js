@@ -6,23 +6,20 @@ module.exports = {
     jest: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.eslint.json'],
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'plugin:prettier/recommended',
+    'plugin:import/typescript',
   ],
-  ignorePatterns: ['lib', 'node_modules', 'examples', 'scripts'],
+  plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
   rules: {
-    'prettier/prettier': [
-      'warn',
-      {
-        printWidth: 80,
-        trailingComma: 'all',
-        endOfLine: 'auto',
-      },
-    ],
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'arrow-parens': 0,
     'no-debugger': 1,
     'no-warning-comments': [
@@ -45,5 +42,8 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
-}
+};
+

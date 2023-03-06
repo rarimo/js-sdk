@@ -1,5 +1,6 @@
-import { Token } from '../entities'
-import { ChainNames } from '../enums'
+import { Token } from '@/entities'
+import { ChainNames } from '@/enums'
+
 import { EVM_CHAINS } from './chains'
 
 const chapelChain = EVM_CHAINS.find(i => i.name === ChainNames.Chapel)!

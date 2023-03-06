@@ -1,4 +1,5 @@
-import { OperationEventBusEvents } from '../enums'
+import { OperationEventBusEvents } from '@/enums'
+
 import { BridgeChain } from './common'
 import { Target } from './operation'
 

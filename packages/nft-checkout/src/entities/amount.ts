@@ -27,11 +27,11 @@ export class Amount extends AmountBase {
     super(value, decimals)
   }
 
-  static fromRaw(value: string, decimals: number): Amount {
+  static fromFraction(value: string, decimals: number): Amount {
     return new Amount(value, decimals)
   }
 
-  static fromFraction(value: string, decimals: number): Amount {
-    return new Amount(new BN(value).fromFraction(decimals).toString(), decimals)
+  static fromRaw(value: string, decimals: number): Amount {
+    return new Amount(new BN(value).toFraction(decimals).toString(), decimals)
   }
 }

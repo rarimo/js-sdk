@@ -1,19 +1,21 @@
-import { Target } from '../../../../types'
-import { Price, Token } from '../../../../entities'
-import { validateSlippage } from './slippage'
-import { handleNativeTokens } from './check-native-token'
-import JSBI from 'jsbi'
+import { Provider as EtherProvider } from '@ethersproject/providers'
 import {
-  Token as PCToken,
+  Percent,
   Route,
+  Token as PCToken,
   Trade,
   TradeType,
-  Percent,
 } from '@pancakeswap/sdk'
-import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
+import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { IProvider } from '@rarimo/provider'
-import { Provider as EtherProvider } from '@ethersproject/providers'
+import JSBI from 'jsbi'
+
+import { Price, Token } from '@/entities'
+import { Target } from '@/types'
+
+import { handleNativeTokens } from './check-native-token'
+import { validateSlippage } from './slippage'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -77,8 +79,8 @@ export const estimatePancakeSwap = async (
   return {
     impact: trade.priceImpact.toSignificant(3),
     path: trade.route.path.map(token => token.address),
-    from,
-    to,
+    from: _from,
+    to: _to,
     price: Price.fromFraction(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
       from.decimals,

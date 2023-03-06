@@ -1,4 +1,5 @@
-import { SwapContractVersion } from '../../enums'
+import { SwapContractVersion } from '@/enums'
+
 import { SWAP_V2_ABI } from './swap-v2'
 import { SWAP_V3_ABI } from './swap-v3'
 
