@@ -1,19 +1,65 @@
 import {
   createProvider,
   CreateProviderOpts,
-  Provider,
+  IProvider,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
-import { useEffect, useState } from 'react'
-
-import { useForceUpdate } from './useForceUpdate'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
 ) => {
-  const forceUpdate = useForceUpdate()
-  const [provider, setProvider] = useState<Provider | null>(null)
+  const [provider, setProvider] = useState<IProvider | null>(null)
+  const [providerReactiveState, setProviderReactiveState] = useState(() => {
+    return {
+      isConnected: provider?.isConnected,
+      providerType: provider?.providerType,
+      chainId: provider?.chainId,
+      chainType: provider?.chainType,
+      address: provider?.address,
+    }
+  })
+
+  const setListeners = useCallback(() => {
+    if (!provider) return
+
+    provider.onInitiated(({ address, isConnected, chainId }) => {
+      setProviderReactiveState(prev => ({
+        ...prev,
+        address,
+        isConnected,
+        chainId,
+      }))
+    })
+    provider.onConnect(({ address, isConnected }) => {
+      setProviderReactiveState(prev => ({
+        ...prev,
+        address,
+        isConnected,
+      }))
+    })
+    provider.onAccountChanged(({ isConnected, address }) => {
+      setProviderReactiveState(prev => ({
+        ...prev,
+        address,
+        isConnected,
+      }))
+    })
+    provider.onChainChanged?.(({ chainId }) => {
+      setProviderReactiveState(prev => ({
+        ...prev,
+        chainId,
+      }))
+    })
+    provider.onDisconnect(({ isConnected, address }) => {
+      setProviderReactiveState(prev => ({
+        ...prev,
+        address,
+        isConnected,
+      }))
+    })
+  }, [provider])
 
   useEffect(() => {
     const initProvider = async () => {
@@ -28,14 +74,12 @@ export const useProvider = (
   }, [providerProxy, createProviderOpts])
 
   useEffect(() => {
-    forceUpdate()
-  }, [
-    provider?.address,
-    provider?.chainId,
-    provider?.chainType,
-    provider?.isConnected,
-    provider?.providerType,
-  ])
+    setListeners()
 
-  return provider
+    return () => {
+      provider?.clearHandlers()
+    }
+  }, [provider, setListeners])
+
+  return { provider, providerReactiveState }
 }
