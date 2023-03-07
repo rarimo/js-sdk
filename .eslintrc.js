@@ -5,10 +5,16 @@ module.exports = {
     browser: true,
     jest: true,
   },
+  ignorePatterns: ['dist'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.eslint.json'],
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   extends: [
     'eslint:recommended',
@@ -18,6 +24,39 @@ module.exports = {
     'plugin:import/typescript',
   ],
   plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
+  overrides: [
+    {
+      files: ['**/*.tsx'],
+      extends: [
+        'plugin:import/recommended',
+        'plugin:jsx-a11y/recommended',
+        'plugin:react/recommended',
+        'plugin:react/jsx-runtime',
+        'plugin:react-hooks/recommended',
+      ],
+      rules: {
+        'react/display-name': 'off',
+        'import/namespace': 'off',
+      },
+      settings: {
+        'import/parsers': {
+          '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
+        'import/resolver': {
+          typescript: {
+            project: 'packages/*/tsconfig.json',
+          },
+          node: {
+            paths: ['src'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          },
+        },
+        react: {
+          version: 'detect',
+        },
+      },
+    },
+  ],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'arrow-parens': 0,
@@ -45,5 +84,4 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
   },
-};
-
+}
