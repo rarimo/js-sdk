@@ -3,14 +3,6 @@ import { EstimatedPrice } from '@rarimo/nft-checkout'
 
 import { useDappContext } from '@/context'
 
-// const TRANSACTION_STEP_TEXTS: { [step: number]: string } = {
-//   1: 'Transaction started',
-//   2: 'Approve token swap',
-//   3: 'Exchange pending',
-//   4: 'Approve checkout',
-//   5: 'NFT purchase in progress',
-// }
-
 type Props = {
   isTransactionProcessing: boolean
   txHash: string
@@ -39,7 +31,6 @@ const TransactionSummary = ({
           marginTop={1.5}
         >
           <CircularProgress />
-          {/* <Typography>{TRANSACTION_STEP_TEXTS[transactionStep]}</Typography> */}
           <Typography>Transaction processing</Typography>
         </Box>
       )}

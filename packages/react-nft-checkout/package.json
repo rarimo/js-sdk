@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/react-nft-checkout",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "license": "MIT",
   "sideEffects": false,
   "types": "./dist/index.d.ts",
@@ -8,13 +8,12 @@
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/react-nft-checkout.cjs.js",
       "import": "./dist/react-nft-checkout.es.js",
-      "require": "./dist/react-nft-checkout.cjs.js"
+      "default": "./dist/react-nft-checkout.es.js"
     }
   },
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-nft-checkout"
@@ -29,32 +28,19 @@
   "devDependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
-    "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.6.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
     "@vitejs/plugin-react": "^3.1.0",
     "chalk": "^5.0.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.31.0",
-    "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.2",
-    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "happy-dom": "^8.1.3",
     "postcss": "^8.4.16",
-    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typechain": "^8.1.0",
-    "typescript": "^4.6.3",
     "vite": "^4.1.1",
     "vite-plugin-dts": "^2.0.0-beta.0",
     "vite-tsconfig-paths": "^4.0.5"

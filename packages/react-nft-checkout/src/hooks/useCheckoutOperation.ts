@@ -1,13 +1,13 @@
 import {
   BridgeChain,
-  ChainNames,
+  CHAIN_IDS,
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
   INFTCheckoutOperation,
   Target,
 } from '@rarimo/nft-checkout'
-import { IProvider } from '@rarimo/provider'
+import { ChainTypes, IProvider } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
 
 type Props = {
@@ -73,7 +73,9 @@ export const useCheckoutOperation = ({
       // Call asynchronous supportedChains method to get supported chains on selected chain type
       const chains = await checkoutOperation.supportedChains()
       // In our case we hardcode Goerli chain as selected chain
-      const selectedChain = chains.find(i => i.name === ChainNames.Goerli)
+      const selectedChain = chains.find(
+        i => i.id === CHAIN_IDS[ChainTypes.EVM].Goerli,
+      )
 
       setSelectedChain(selectedChain)
 

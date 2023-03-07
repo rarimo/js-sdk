@@ -156,7 +156,7 @@ export const DappContextProvider = ({
 export const useDappContext = (): DappContextType => {
   const context = useContext(DappContext)
 
-  if (typeof context === 'undefined' || Object.values(context).length === 0) {
+  if (Object.values(context || {}).length === 0) {
     throw new Error('useDappContext must be used within an DappContextProvider')
   }
   return context

@@ -7,8 +7,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "types": ["node", "vite/client", "@types/lodash-es"],
-    "outDir": "./lib/types",
+    "types": ["node", "vite/client"],
+    "outDir": "./dist",
     "paths": {
       "@/*": ["src/*"]
     },
