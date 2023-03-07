@@ -1,4 +1,4 @@
-import { BN } from '@distributedlab/utils'
+import { BN } from '@distributedlab/tools'
 import {
   ChainId,
   ChainTypes,
@@ -207,15 +207,9 @@ export class EVMOperation
   }
 
   #getNativeAmountIn(price: Price) {
-    const amount = new BN(
-      new BN(price.toString(), { decimals: price.decimals }).mul(
-        NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
-      ),
-    )
-      .toFraction(price.decimals)
-      .toString()
-
-    return amount.split('.')[0]
+    return BN.fromBigInt(price.value, price.decimals)
+      .mul(BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, 2))
+      .valueOf()
   }
 
   #getFunctionFragment(from: Token, to: Token) {
@@ -242,7 +236,7 @@ export class EVMOperation
     return 'swapExactOutputMultiHopThenBridge'
   }
 
-  #getAmounts(from: Token, to: Token, e: EstimatedPrice) {
+  #getAmounts(from: Token, to: Token, e: EstimatedPrice): string[] {
     const isV2 = !from.isUniswapV3
     const isFromNative = from.isNative
     const isToNative = to.isNative
@@ -309,19 +303,16 @@ export class EVMOperation
       throw new errors.OperationEstimatedPriceNotExistError()
     }
 
-    const allowance = new BN(allowanceRaw.toString()).fromFraction(
-      e.from.decimals,
-    )
+    const allowance = BN.fromBigInt(allowanceRaw.toString(), e.from.decimals)
+    const estimationPrice = BN.fromBigInt(e.price.value, e.price.decimals)
 
-    const estimationPrice = new BN(e.price.value).fromFraction(e.from.decimals)
-
-    if (estimationPrice.compare(allowance) == -1) {
+    if (estimationPrice.isLessThan(allowance)) {
       return
     }
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       routerAddress,
-      BN.MAX_UINT256.toString(),
+      BN.MAX_UINT256.valueOf(),
     ])
 
     return this.#provider.signAndSendTx({

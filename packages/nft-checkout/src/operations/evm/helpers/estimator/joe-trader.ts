@@ -76,10 +76,10 @@ export const estimateJoeTrader = async (
     path: trade.route.path.map(token => token.address),
     from: _from,
     to: _to,
-    price: Price.fromFraction(
-      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      from.decimals,
-      from.symbol,
+    price: Price.fromRaw(
+      trade.maximumAmountIn(getSlippage(target.slippage)).quotient.toString(),
+      _from.decimals,
+      _from.symbol,
     ),
   }
 }

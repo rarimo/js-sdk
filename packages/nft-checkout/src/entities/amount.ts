@@ -1,37 +1,39 @@
-import { BN } from '@distributedlab/utils'
+import { BN } from '@distributedlab/tools'
+
+import { Decimals } from '@/types'
 
 export class AmountBase {
-  readonly #value: string
-  readonly #decimals: number
+  readonly #value: BN
+  readonly #decimals: Decimals
 
-  protected constructor(value: string, decimals: number) {
+  protected constructor(value: BN) {
     this.#value = value
-    this.#decimals = decimals
+    this.#decimals = value.cfg.decimals
   }
 
   get value(): string {
-    return this.#value
+    return this.#value.valueOf()
   }
 
-  get decimals(): number {
+  get decimals(): Decimals {
     return this.#decimals
   }
 
   toString(): string {
-    return new BN(this.#value).fromFraction(this.#decimals).toString()
+    return this.#value.fromFraction(this.#decimals).toString()
   }
 }
 
 export class Amount extends AmountBase {
-  protected constructor(value: string, decimals: number) {
-    super(value, decimals)
+  protected constructor(value: BN) {
+    super(value)
   }
 
-  static fromFraction(value: string, decimals: number): Amount {
-    return new Amount(value, decimals)
+  static fromBigInt(value: string, decimals: Decimals): Amount {
+    return new Amount(BN.fromBigInt(value, decimals))
   }
 
-  static fromRaw(value: string, decimals: number): Amount {
-    return new Amount(new BN(value).toFraction(decimals).toString(), decimals)
+  static fromRaw(value: string, decimals: Decimals): Amount {
+    return new Amount(BN.fromRaw(value, decimals))
   }
 }

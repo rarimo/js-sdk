@@ -1,4 +1,4 @@
-import { BN } from '@distributedlab/utils'
+import { BN } from '@distributedlab/tools'
 import { IProvider } from '@rarimo/provider'
 import {
   BalanceResult,
@@ -40,13 +40,11 @@ const createPaymentToken = (
 
   if (!internalToken) return
 
-  const balance = new BN(token.balance)
-
-  if (balance.compare(new BN(0)) != 1) return
+  if (BN.fromBigInt(token.balance, token.decimals).isZero) return
 
   return PaymentToken.fromToken(
     internalToken,
-    Amount.fromFraction(token.balance, token.decimals),
+    Amount.fromBigInt(token.balance, token.decimals),
   )
 }
 
@@ -76,7 +74,7 @@ export const getPaymentTokens = async (
       ? [
           PaymentToken.fromToken(
             Token.fromChain(chain),
-            Amount.fromFraction(nativeBalance.toString(), chain.token.decimals),
+            Amount.fromBigInt(nativeBalance.toString(), chain.token.decimals),
           ),
         ]
       : []),
