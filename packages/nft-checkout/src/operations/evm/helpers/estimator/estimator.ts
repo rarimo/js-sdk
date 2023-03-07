@@ -1,11 +1,13 @@
-import { EstimatedPrice, Target } from '../../../../types'
-import { errors } from '../../../../errors'
 import { IProvider } from '@rarimo/provider'
-import { estimateUniswapV3 } from './uniswap-v3'
+
+import { PaymentToken, Token } from '@/entities'
+import { errors } from '@/errors'
+import { toLow } from '@/helpers'
+import { EstimatedPrice, Target } from '@/types'
+
 import { estimateJoeTrader } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'
-import { toLow } from '../../../../helpers'
-import { PaymentToken, Token } from '../../../../entities'
+import { estimateUniswapV3 } from './uniswap-v3'
 
 export class Estimator {
   readonly #target: Target

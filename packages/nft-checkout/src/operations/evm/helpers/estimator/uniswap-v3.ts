@@ -1,9 +1,5 @@
-import { Price, Token } from '../../../../entities'
-import { errors } from '../../../../errors'
-import { EstimatedPrice, Target } from '../../../../types'
-import { computeRealizedPriceImpact } from './uniswap-impact'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import { BN } from '@distributedlab/utils'
+import { IProvider } from '@rarimo/provider'
 import {
   Currency,
   CurrencyAmount,
@@ -12,17 +8,23 @@ import {
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
-import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
-import JSBI from 'jsbi'
 import {
   AlphaRouter,
   ChainId as UNIChainId,
   RouteWithValidQuote,
 } from '@uniswap/smart-order-router'
-import { BN } from '@distributedlab/utils'
-import { IProvider } from '@rarimo/provider'
+import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import { providers } from 'ethers'
+import JSBI from 'jsbi'
+
+import { Price, Token } from '@/entities'
+import { errors } from '@/errors'
+import { EstimatedPrice, Target } from '@/types'
+
 import { handleNativeTokens } from './check-native-token'
+import { getSwapAmount } from './get-swap-amount'
+import { validateSlippage } from './slippage'
+import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
@@ -115,8 +117,8 @@ export const estimateUniswapV3 = async (
   )
 
   return {
-    from,
-    to,
+    from: _from,
+    to: _to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
     price: getPrice(from, amount),
     path: getRoutePath(route.route),

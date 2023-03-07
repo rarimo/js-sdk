@@ -1,4 +1,12 @@
-import { ProviderEventBus } from './event-bus'
+import { PublicKey } from '@solana/web3.js'
+
+import { ChainTypes, ProviderEvents, SolanaChains } from '@/enums'
+import {
+  getSolExplorerAddressUrl,
+  getSolExplorerTxUrl,
+  handleEthError,
+  handleSolError,
+} from '@/helpers'
 import {
   Chain,
   ChainId,
@@ -10,17 +18,9 @@ import {
   SolanaTransactionResponse,
   TransactionResponse,
   TxRequestBody,
-} from '../types'
-import Web3 from 'web3'
-import { HttpProvider } from 'web3-core'
-import { ChainTypes, ProviderEvents, SolanaChains } from '../enums'
-import {
-  getSolExplorerAddressUrl,
-  getSolExplorerTxUrl,
-  handleEthError,
-  handleSolError,
-} from '../helpers'
-import { PublicKey } from '@solana/web3.js'
+} from '@/types'
+
+import { ProviderEventBus } from './event-bus'
 
 const getAddress = (publicKey: PublicKey | null): string => {
   return publicKey ? new PublicKey(publicKey).toBase58() : ''
@@ -31,14 +31,12 @@ export class BaseSolanaProvider
   implements ProviderProxy
 {
   readonly #provider: SolanaProvider
-  #web3: Web3
   #chainId?: ChainId
   #address?: string
 
   constructor(provider: RawProvider) {
     super()
-    this.#web3 = new window.Web3(provider as unknown as HttpProvider)
-    this.#provider = (<unknown>this.#web3?.currentProvider) as SolanaProvider
+    this.#provider = provider as SolanaProvider
   }
 
   get chainType(): ChainTypes {
@@ -64,7 +62,7 @@ export class BaseSolanaProvider
   async init(): Promise<void> {
     this.#setListeners()
     this.#address = getAddress(this.#provider.publicKey)
-    this.#chainId = SolanaChains.devnet
+    this.#chainId = SolanaChains.DevNet
 
     this.emitInitiated({
       chainId: this.#chainId,

@@ -1,19 +1,21 @@
 import {
-  ProviderProxy,
-  RawProvider,
-  SolanaProviderRpcError,
-  TransactionResponse,
-  TxRequestBody,
-} from '../types'
-import { decodeSolanaTx, handleSolError } from '../helpers'
-import {
   Cluster,
   clusterApiUrl,
   Connection,
   Transaction as SolTransaction,
 } from '@solana/web3.js'
+
+import { Providers } from '@/enums'
+import { decodeSolanaTx, handleSolError } from '@/helpers'
+import {
+  ProviderProxy,
+  RawProvider,
+  SolanaProviderRpcError,
+  TransactionResponse,
+  TxRequestBody,
+} from '@/types'
+
 import { BaseSolanaProvider } from './base-solana'
-import { Providers } from '../enums'
 
 /**
  * @description Represents a Phantom wallet.

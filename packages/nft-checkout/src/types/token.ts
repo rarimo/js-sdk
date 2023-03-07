@@ -1,4 +1,5 @@
-import { Price, Token } from '../entities'
+import { Price, Token } from '@/entities'
+
 import { Address, BridgeChain, Decimals, TokenSymbol } from './common'
 
 export type EstimatedPrice = {

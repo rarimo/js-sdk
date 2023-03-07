@@ -1,9 +1,7 @@
 import { EventEmitter } from '@distributedlab/utils'
-import {
-  OperationEventMap,
-  OperationInitiatedEventPayload,
-} from '../types/operation-event-bus'
-import { OperationEventBusEvents } from '../enums'
+
+import { OperationEventBusEvents } from '@/enums'
+import { OperationEventMap, OperationInitiatedEventPayload } from '@/types'
 
 export class OperationEventBus {
   readonly #emitter = new EventEmitter<OperationEventMap>()

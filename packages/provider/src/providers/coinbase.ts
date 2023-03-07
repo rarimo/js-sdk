@@ -1,6 +1,7 @@
-import { ProviderProxy, RawProvider } from '../types'
+import { Providers } from '@/enums'
+import { ProviderProxy, RawProvider } from '@/types'
+
 import { BaseEVMProvider } from './base-evm'
-import { Providers } from '../enums'
 
 /**
  * @description Represents a Coinbase wallet.
