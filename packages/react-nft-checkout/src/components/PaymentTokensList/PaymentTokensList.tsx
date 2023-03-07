@@ -9,7 +9,7 @@ import { ChainNames, PaymentToken } from '@rarimo/nft-checkout'
 import { useEffect, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'
-import { useDappContext } from '@/context'
+import { useDappContext } from '@/hooks'
 
 const PaymentTokensList = () => {
   const {

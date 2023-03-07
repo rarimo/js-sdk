@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
-import { useDappContext } from '@/context'
+import { useDappContext } from '@/hooks'
 
 type Props = {
   isTransactionProcessing: boolean

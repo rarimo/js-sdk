@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 
 import { CheckoutModal } from '@/components'
-import { useDappContext } from '@/context'
+import { useDappContext } from '@/hooks'
 
 const PaymentWallets = () => {
   const { provider } = useDappContext()

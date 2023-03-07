@@ -16,7 +16,6 @@ import {
   createContext,
   ReactNode,
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState,
@@ -52,7 +51,7 @@ export type DappContextProviderPropsType = {
   createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
 
-const DappContext = createContext({} as DappContextType)
+export const DappContext = createContext({} as DappContextType)
 
 export const DappContextProvider = ({
   children,
@@ -151,13 +150,4 @@ export const DappContextProvider = ({
       {isInitialized ? <>{children}</> : null}
     </DappContext.Provider>
   )
-}
-
-export const useDappContext = (): DappContextType => {
-  const context = useContext(DappContext)
-
-  if (Object.values(context || {}).length === 0) {
-    throw new Error('useDappContext must be used within an DappContextProvider')
-  }
-  return context
 }

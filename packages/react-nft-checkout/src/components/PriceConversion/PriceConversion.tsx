@@ -2,7 +2,7 @@ import { Box, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
 import { LoadingIndicator } from '@/components'
-import { useDappContext } from '@/context'
+import { useDappContext } from '@/hooks'
 
 type Props = {
   isLoading: boolean

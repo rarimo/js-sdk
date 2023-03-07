@@ -9,7 +9,7 @@ import {
   PriceConversion,
   TransactionSummary,
 } from '@/components'
-import { useDappContext } from '@/context'
+import { useDappContext } from '@/hooks'
 
 import styles from './CheckoutModal.module.css'
 
