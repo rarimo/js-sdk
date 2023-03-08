@@ -1,4 +1,4 @@
-import { EventEmitter } from '@distributedlab/utils'
+import { EventEmitter } from '@distributedlab/tools'
 
 import { ProviderEventBusEvents } from '@/enums'
 import {

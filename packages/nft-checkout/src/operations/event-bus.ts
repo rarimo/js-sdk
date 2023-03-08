@@ -1,4 +1,4 @@
-import { EventEmitter } from '@distributedlab/utils'
+import { EventEmitter } from '@distributedlab/tools'
 
 import { OperationEventBusEvents } from '@/enums'
 import { OperationEventMap, OperationInitiatedEventPayload } from '@/types'
