@@ -3,24 +3,22 @@ import { BN } from '@distributedlab/tools'
 import { Decimals } from '@/types'
 
 export class AmountBase {
-  readonly #value: BN
-  readonly #decimals: Decimals
+  readonly #bn: BN
 
   protected constructor(value: BN) {
-    this.#value = value
-    this.#decimals = value.cfg.decimals
+    this.#bn = value
   }
 
   get value(): string {
-    return this.#value.valueOf()
+    return this.#bn.value
   }
 
   get decimals(): Decimals {
-    return this.#decimals
+    return this.#bn.decimals
   }
 
   toString(): string {
-    return this.#value.fromFraction(this.#decimals).toString()
+    return this.#bn.toString()
   }
 }
 

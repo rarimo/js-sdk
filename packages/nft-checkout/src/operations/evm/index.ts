@@ -207,9 +207,9 @@ export class EVMOperation
   }
 
   #getNativeAmountIn(price: Price) {
-    return BN.fromBigInt(price.value, price.decimals)
-      .mul(BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, 2))
-      .valueOf()
+    return BN.fromBigInt(price.value, price.decimals).mul(
+      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, 2),
+    ).value
   }
 
   #getFunctionFragment(from: Token, to: Token) {
@@ -312,7 +312,7 @@ export class EVMOperation
 
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       routerAddress,
-      BN.MAX_UINT256.valueOf(),
+      BN.MAX_UINT256.value,
     ])
 
     return this.#provider.signAndSendTx({

@@ -10,10 +10,11 @@ export const getSwapAmount = (price: Price) => {
   const decimals = price.decimals
   const numerator = BN.fromBigInt(price.value, decimals)
 
-  const percentBN = BN.fromRaw(RARIMO_BRIDGE_FEE, decimals)
-    .div(BN.fromRaw(ONE_HUNDRED, decimals))
-    .toFraction(decimals)
-  const denominator = BN.fromRaw(ONE, 18).sub(percentBN)
+  const percentBN = BN.fromRaw(RARIMO_BRIDGE_FEE, decimals).div(
+    BN.fromRaw(ONE_HUNDRED, decimals),
+  )
 
-  return numerator.div(denominator).toFraction(decimals).valueOf()
+  const denominator = BN.fromRaw(ONE, decimals).sub(percentBN)
+
+  return numerator.div(denominator).toFraction(decimals).value
 }
