@@ -10,6 +10,9 @@ import {
 import { CheckoutModal } from '@/components'
 import { useDappContext } from '@/hooks'
 
+/**
+ * @description A list of the wallets detected in the user's browser
+ */
 const PaymentWallets = () => {
   const { provider } = useDappContext()
 
