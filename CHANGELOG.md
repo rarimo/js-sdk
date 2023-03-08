@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `@rarimo/nft-checkout`: Fix price calculation for estimates
+- `@rarimo/provider`: Not changing provider state on events
+- `@rarimo/provider`: Emitting provider change state events
 
 ## [1.3.0] - 2023-03-03
 ### Added
