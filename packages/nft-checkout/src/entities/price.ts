@@ -1,4 +1,4 @@
-import { BN } from '@distributedlab/utils'
+import { BN } from '@distributedlab/tools'
 
 import { Decimals, TokenSymbol } from '@/types'
 
@@ -7,8 +7,8 @@ import { AmountBase } from './amount'
 export class Price extends AmountBase {
   readonly #symbol: TokenSymbol
 
-  protected constructor(value: string, decimals: Decimals, symbol: string) {
-    super(value, decimals)
+  protected constructor(value: BN, symbol: string) {
+    super(value)
     this.#symbol = symbol
   }
 
@@ -16,15 +16,11 @@ export class Price extends AmountBase {
     return this.#symbol
   }
 
-  static fromRaw(value: string, decimals: number, symbol: string): Price {
-    return new Price(
-      new BN(value).toFraction(decimals).toString(),
-      decimals,
-      symbol,
-    )
+  static fromRaw(value: string, decimals: Decimals, symbol: string): Price {
+    return new Price(BN.fromRaw(value, decimals), symbol)
   }
 
-  static fromFraction(value: string, decimals: number, symbol: string): Price {
-    return new Price(value, decimals, symbol)
+  static fromBigInt(value: string, decimals: Decimals, symbol: string): Price {
+    return new Price(BN.fromBigInt(value, decimals), symbol)
   }
 }

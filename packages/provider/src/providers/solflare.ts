@@ -4,7 +4,6 @@ import {
   Connection,
   Transaction as SolTransaction,
 } from '@solana/web3.js'
-import Web3 from 'web3/types'
 
 import { Providers } from '@/enums'
 import { decodeSolanaTx, handleSolError } from '@/helpers'
@@ -17,12 +16,6 @@ import {
 } from '@/types'
 
 import { BaseSolanaProvider } from './base-solana'
-
-declare global {
-  interface Window {
-    Web3: typeof Web3
-  }
-}
 
 /**
  * @description Represents a Solflare wallet.

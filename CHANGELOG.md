@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `@rarimo/nft-checkout`: Mumbai chain swap contract address
+- `@rarimo/nft-checkout`: Chapel test tokens
+
+### Changed
+- `@rarimo/nft-checkout`: Fuji chain swap contract address
+- `all`: Migrated to `@distributedlab/tools` from `@distributedlab/utils`
+
+### Fixed
+- `@rarimo/nft-checkout`: Fix price calculation for estimates
+- `@rarimo/provider`: Not changing provider state on events
+- `@rarimo/provider`: Emitting provider change state events
 
 ## [1.3.0] - 2023-03-03
 ### Added

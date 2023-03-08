@@ -9,9 +9,9 @@ import {
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { IProvider } from '@rarimo/provider'
-import JSBI from 'jsbi'
 
 import { Price, Token } from '@/entities'
+import { getSwapAmount } from '@/operations/evm/helpers'
 import { Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
@@ -56,7 +56,7 @@ export const estimatePancakeSwap = async (
 
   const amount = CurrencyAmount.fromRawAmount(
     tokenB,
-    JSBI.BigInt(target.price.value),
+    getSwapAmount(target.price),
   )
 
   const pairs = await getAllCommonPairs(tokenA, tokenB, {
@@ -76,15 +76,15 @@ export const estimatePancakeSwap = async (
   )
   const trade = new Trade(route, amount, TradeType.EXACT_OUTPUT)
 
+  const maximumAmountInRaw = trade
+    .maximumAmountIn(getSlippage(target.slippage))
+    .quotient.toString()
+
   return {
     impact: trade.priceImpact.toSignificant(3),
     path: trade.route.path.map(token => token.address),
     from: _from,
     to: _to,
-    price: Price.fromFraction(
-      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      from.decimals,
-      from.symbol,
-    ),
+    price: Price.fromBigInt(maximumAmountInRaw, _from.decimals, _from.symbol),
   }
 }

@@ -1,4 +1,4 @@
-import { BN } from '@distributedlab/utils'
+import { BN } from '@distributedlab/tools'
 import { IProvider } from '@rarimo/provider'
 import {
   Currency,
@@ -28,21 +28,6 @@ import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
-const getPrice = (
-  from: Token,
-  amount: CurrencyAmount<Currency> | undefined,
-) => {
-  if (!amount || JSBI.equal(amount?.quotient, JSBI.BigInt(0))) {
-    return Price.fromRaw('0', from.decimals, from.symbol)
-  }
-
-  return Price.fromFraction(
-    amount.numerator.toString(),
-    from.decimals,
-    from.symbol,
-  )
-}
-
 const getRoutePath = (route: RouteWithValidQuote[]) => {
   return route.reduce((path, r) => {
     const p = encodeRouteToPath(r.route as Route<Currency, Currency>, true)
@@ -53,7 +38,7 @@ const getRoutePath = (route: RouteWithValidQuote[]) => {
 }
 
 const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
-  return CurrencyAmount.fromRawAmount(token, JSBI.BigInt(getSwapAmount(price)))
+  return CurrencyAmount.fromRawAmount(token, getSwapAmount(price))
 }
 
 const getSlippage = (slippage?: number): Percent => {
@@ -120,11 +105,16 @@ export const estimateUniswapV3 = async (
     from: _from,
     to: _to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
-    price: getPrice(from, amount),
+    price: Price.fromRaw(
+      amount?.quotient?.toString() ?? '0',
+      _from.decimals,
+      _from.symbol,
+    ),
     path: getRoutePath(route.route),
-    gasPriceInUSD: new BN(estimatedGasUsedUSD.numerator.toString())
-      .fromFraction(estimatedGasUsedUSD.currency.decimals)
-      .toString(),
-    gasPrice: new BN(gasPriceWei.toString()).fromWei().toString(),
+    gasPriceInUSD: BN.fromRaw(
+      estimatedGasUsedUSD.quotient.toString(),
+      estimatedGasUsedUSD.currency.decimals,
+    ).toString(),
+    gasPrice: BN.fromBigInt(gasPriceWei.toString(), BN.WEI_DECIMALS).toString(),
   }
 }
