@@ -6,6 +6,12 @@ interface Props {
   variant?: Variant | 'inherit'
 }
 
+/**
+ * @description An error message
+ *
+ * @param props.text The error message
+ * @param props.variant The text variant for the Material UI Typography component
+ */
 const ErrorText = ({ text, variant = 'subtitle2' }: Props) => {
   return (
     <Typography

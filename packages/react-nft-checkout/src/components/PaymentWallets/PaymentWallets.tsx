@@ -31,6 +31,9 @@ const PROVIDERS_DATA = [
   },
 ]
 
+/**
+ * @description A list of the wallets detected in the user's browser
+ */
 const PaymentWallets = () => {
   const { provider, setSelectedProviderProxy, createProviderError } =
     useDappContext()
