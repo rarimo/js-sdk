@@ -2,9 +2,25 @@ import {
   createProvider,
   CreateProviderOpts,
   IProvider,
+  ProviderChainChangedEventPayload,
+  ProviderConnectRelatedEventPayload,
+  ProviderInitiatedEventPayload,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
+
+const PROVIDER_EVENTS: Array<keyof IProvider> = [
+  'onInitiated',
+  'onConnect',
+  'onAccountChanged',
+  'onChainChanged',
+  'onDisconnect',
+]
+
+type ProviderEventPayload =
+  | ProviderConnectRelatedEventPayload
+  | ProviderChainChangedEventPayload
+  | ProviderInitiatedEventPayload
 
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
@@ -24,40 +40,17 @@ export const useProvider = (
   const setListeners = useCallback(() => {
     if (!provider) return
 
-    provider.onInitiated(({ address, isConnected, chainId }) => {
-      setProviderReactiveState(prev => ({
-        ...prev,
-        address,
-        isConnected,
-        chainId,
-      }))
-    })
-    provider.onConnect(({ address, isConnected }) => {
-      setProviderReactiveState(prev => ({
-        ...prev,
-        address,
-        isConnected,
-      }))
-    })
-    provider.onAccountChanged(({ isConnected, address }) => {
-      setProviderReactiveState(prev => ({
-        ...prev,
-        address,
-        isConnected,
-      }))
-    })
-    provider.onChainChanged?.(({ chainId }) => {
-      setProviderReactiveState(prev => ({
-        ...prev,
-        chainId,
-      }))
-    })
-    provider.onDisconnect(({ isConnected, address }) => {
-      setProviderReactiveState(prev => ({
-        ...prev,
-        address,
-        isConnected,
-      }))
+    PROVIDER_EVENTS.forEach(event => {
+      const providerEvent = provider[event] as (
+        cb: (payload: ProviderEventPayload) => void,
+      ) => void
+
+      providerEvent?.call(provider, payload => {
+        setProviderReactiveState(prev => ({
+          ...prev,
+          ...payload,
+        }))
+      })
     })
   }, [provider])
 
