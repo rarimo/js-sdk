@@ -18,15 +18,6 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
   }),
   new Token({
     chain: chapelChain,
-    address: '0x8BaBbB98678facC7342735486C851ABD7A0d17Ca',
-    name: 'Ethereum Token',
-    symbol: 'ETH',
-    decimals: 18,
-    logoURI:
-      'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-  }),
-  new Token({
-    chain: chapelChain,
     address: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     name: 'Wrapped Binance Testnet Token',
     symbol: 'WBNB',

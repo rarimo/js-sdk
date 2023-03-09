@@ -5,7 +5,7 @@ import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import { EstimatedPrice, Target } from '@/types'
 
-import { estimateJoeTrader } from './joe-trader'
+import { estimateTraderJoe } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'
 import { estimateUniswapV3 } from './uniswap-v3'
 
@@ -33,7 +33,7 @@ export class Estimator {
     this.#checkTokens(this.#from.address, targetToken?.address)
 
     if (this.#from.isTraderJoe) {
-      return estimateJoeTrader(
+      return estimateTraderJoe(
         this.#tokens,
         this.#provider,
         this.#from,

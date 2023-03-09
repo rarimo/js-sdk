@@ -37,7 +37,7 @@ export const EVM_CHAINS: BridgeChain[] = [
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Goerli],
-    name: 'Görli',
+    name: ChainNames.Goerli,
     rpcUrl: 'https://goerli.infura.io/v3/',
     token: {
       symbol: 'ETH',
@@ -52,7 +52,7 @@ export const EVM_CHAINS: BridgeChain[] = [
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Sepolia],
-    name: 'Sepolia',
+    name: ChainNames.Sepolia,
     rpcUrl: 'https://sepolia.infura.io/v3/',
     token: {
       symbol: 'ETH',
@@ -104,7 +104,7 @@ export const EVM_CHAINS: BridgeChain[] = [
       name: 'Avalanche',
       ...nativeToken,
     },
-    explorerUrl: 'https://cchain.explorer.avax.network',
+    explorerUrl: 'https://snowtrace.io',
     type: ChainTypes.EVM,
     contractAddress: '0x2021Fa349Ec57F33F03961E430f54d9b05781E3c',
     icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
@@ -119,7 +119,7 @@ export const EVM_CHAINS: BridgeChain[] = [
       name: 'Fuji Avalanche',
       ...nativeToken,
     },
-    explorerUrl: 'https://cchain.explorer.avax-test.network',
+    explorerUrl: 'https://testnet.snowtrace.io',
     type: ChainTypes.EVM,
     icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
     contractAddress: '0x13734D554d25EA67DFD45653659e447996a1C9B4',
