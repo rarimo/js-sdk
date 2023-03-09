@@ -4,9 +4,8 @@ import {
   ChainTypes,
   errors as providerErrors,
   IProvider,
-  TransactionResponse,
 } from '@rarimo/provider'
-import { Contract, utils } from 'ethers'
+import { Contract, providers, utils } from 'ethers'
 
 import {
   BUNDLE_SALT_BYTES,
@@ -17,6 +16,7 @@ import {
 } from '@/const'
 import { PaymentToken, Price, Token } from '@/entities'
 import { errors } from '@/errors'
+import { toLow } from '@/helpers'
 import {
   BridgeChain,
   Config,
@@ -101,6 +101,10 @@ export class EVMOperation
       throw new errors.OperationInvalidChainPairError()
     }
 
+    if (toLow(target.swapTargetTokenSymbol) === toLow(from.token.symbol)) {
+      throw new errors.OperationSwapIntoNativeNotSupported()
+    }
+
     this.#chainFrom = from
     this.#target = target
 
@@ -183,10 +187,7 @@ export class EVMOperation
    * @param bundle The transaction bundle
    * @returns The hash of the transaction
    */
-  public async checkout(
-    e: EstimatedPrice,
-    bundle: TxBundle,
-  ): Promise<TransactionResponse> {
+  public async checkout(e: EstimatedPrice, bundle: TxBundle): Promise<string> {
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
@@ -194,7 +195,7 @@ export class EVMOperation
       throw new errors.OperationChainNotSupportedError()
     }
 
-    return this.#provider.signAndSendTx({
+    const result = await this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: chain.contractAddress,
       data: this.#encodeTxData(e, bundle),
@@ -204,11 +205,15 @@ export class EVMOperation
           }
         : {}),
     })
+
+    return typeof result === 'string'
+      ? result
+      : (result as providers.TransactionReceipt)?.transactionHash
   }
 
   #getNativeAmountIn(price: Price) {
     return BN.fromBigInt(price.value, price.decimals).mul(
-      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, 2),
+      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, price.decimals),
     ).value
   }
 
@@ -243,16 +248,12 @@ export class EVMOperation
     const amountOutMinimum = getSwapAmount(this.#target!.price)
     const amountIn = this.#getNativeAmountIn(e.price)
 
-    if (isFromNative && isV2) {
+    if ((isFromNative || isToNative) && isV2) {
       return [amountOutMinimum]
     }
 
     if (isFromNative) {
       return [amountIn, amountOutMinimum]
-    }
-
-    if (isToNative && isV2) {
-      return [amountOutMinimum, amountIn]
     }
 
     return [amountOutMinimum, e.price.value]

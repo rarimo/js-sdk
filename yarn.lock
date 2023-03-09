@@ -419,14 +419,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/tools@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "@distributedlab/tools@npm:0.1.4"
+"@distributedlab/tools@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "@distributedlab/tools@npm:0.1.5"
   dependencies:
     bignumber.js: ^9.1.1
     dayjs: ^1.11.7
     tslib: ^2.5.0
-  checksum: 435ce29016b0bbcbb4f3657f1b4ad2d439d6c3c7f0e566df98832fedb2e7922daa72e5a4baf94a9b5e17298e1a288630e593d15f296f9528a422196d4b48a334
+  checksum: 2d98f6efc3f59eda3eb45355b126918e4836fbbfaaded16ec2bfda31dc541c6a8cea778af789ae3e5b2a30cb7a8f493c50f6e36aaba63f46cf0f6500f9556f17
   languageName: node
   linkType: hard
 
@@ -1913,7 +1913,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/tools": ^0.1.4
+    "@distributedlab/tools": ^0.1.5
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
@@ -1944,7 +1944,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
-    "@distributedlab/tools": ^0.1.4
+    "@distributedlab/tools": ^0.1.5
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@near-wallet-selector/core": ^7.8.2
