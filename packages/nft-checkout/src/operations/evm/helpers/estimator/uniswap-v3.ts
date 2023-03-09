@@ -28,9 +28,9 @@ import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
 
-const getRoutePath = (route: RouteWithValidQuote[]) => {
+const getRoutePath = (route: RouteWithValidQuote[], isNative: boolean) => {
   return route.reduce((path, r) => {
-    const p = encodeRouteToPath(r.route as Route<Currency, Currency>, true)
+    const p = encodeRouteToPath(r.route as Route<Currency, Currency>, !isNative)
     path += path ? p.replace('0x', '') : p
 
     return path
@@ -105,14 +105,14 @@ export const estimateUniswapV3 = async (
     from: _from,
     to: _to,
     impact: trade ? computeRealizedPriceImpact(trade) : undefined,
-    price: Price.fromRaw(
-      amount?.quotient?.toString() ?? '0',
+    price: Price.fromBigInt(
+      amount.numerator.toString() ?? '0',
       _from.decimals,
       _from.symbol,
     ),
-    path: getRoutePath(route.route),
-    gasPriceInUSD: BN.fromRaw(
-      estimatedGasUsedUSD.quotient.toString(),
+    path: getRoutePath(route.route, _from.isNative),
+    gasPriceInUSD: BN.fromBigInt(
+      estimatedGasUsedUSD.numerator.toString(),
       estimatedGasUsedUSD.currency.decimals,
     ).toString(),
     gasPrice: BN.fromBigInt(gasPriceWei.toString(), BN.WEI_DECIMALS).toString(),

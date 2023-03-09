@@ -16,5 +16,5 @@ export const getSwapAmount = (price: Price) => {
 
   const denominator = BN.fromRaw(ONE, decimals).sub(percentBN)
 
-  return numerator.div(denominator).toFraction(decimals).value
+  return numerator.div(denominator).value
 }

@@ -1,9 +1,4 @@
-import {
-  Chain,
-  ChainId,
-  IProvider,
-  TransactionResponse,
-} from '@rarimo/provider'
+import { Chain, ChainId, IProvider } from '@rarimo/provider'
 
 import { PaymentToken, Price, Token } from '@/entities'
 
@@ -44,5 +39,5 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
 
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>
-  checkout(e: EstimatedPrice, bundle: TxBundle): Promise<TransactionResponse>
+  checkout(e: EstimatedPrice, bundle: TxBundle): Promise<string>
 }
