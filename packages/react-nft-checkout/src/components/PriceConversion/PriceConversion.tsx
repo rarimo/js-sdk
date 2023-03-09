@@ -1,3 +1,4 @@
+import { BN } from '@distributedlab/tools'
 import { Box, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
@@ -17,7 +18,8 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
       {isLoading ? (
         <LoadingIndicator text="Fetching best price" />
       ) : (
-        estimatedPrice && (
+        estimatedPrice &&
+        targetNft && (
           <Box
             sx={{
               display: 'flex',
@@ -49,14 +51,15 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
               >
                 <Typography>Price conversion</Typography>
                 <Typography>
-                  {/* FIXME */}
-                  {`${
-                    Number(targetNft.price.value) /
-                    10 ** targetNft.price.decimals
-                  } ${checkoutOperation?.chainFrom?.token.symbol} = ${
-                    Number(estimatedPrice.price.value) /
-                    10 ** estimatedPrice.price.decimals
-                  } ${estimatedPrice.price.symbol}`}
+                  {`${BN.fromBigInt(
+                    targetNft.price.value,
+                    targetNft.price.decimals,
+                  )} ${
+                    checkoutOperation?.chainFrom?.token.symbol
+                  } = ${BN.fromBigInt(
+                    estimatedPrice.price.value,
+                    estimatedPrice.price.decimals,
+                  )} ${estimatedPrice.price.symbol}`}
                 </Typography>
               </Box>
               <Divider />

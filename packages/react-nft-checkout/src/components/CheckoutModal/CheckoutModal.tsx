@@ -1,3 +1,4 @@
+import { BN } from '@distributedlab/tools'
 import { Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 import { useEffect, useMemo, useState } from 'react'
@@ -24,11 +25,13 @@ const CheckoutModal = () => {
   const [txHash, setTxHash] = useState('')
 
   const isEnoughTokensForCheckout = useMemo(() => {
-    /* FIXME */
-    return (
-      Number(selectedPaymentToken?.balance) >=
-      Number(estimatedPrice?.price.value) /
-        10 ** Number(estimatedPrice?.price.decimals)
+    if (!selectedPaymentToken || !estimatedPrice) return false
+
+    return BN.fromBigInt(
+      selectedPaymentToken.balance,
+      1,
+    ).isGreaterThanOrEqualTo(
+      BN.fromBigInt(estimatedPrice.price.value, estimatedPrice.price.decimals),
     )
   }, [estimatedPrice, selectedPaymentToken])
 

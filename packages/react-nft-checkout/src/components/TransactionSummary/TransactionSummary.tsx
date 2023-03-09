@@ -1,3 +1,4 @@
+import { BN } from '@distributedlab/tools'
 import { Box, CircularProgress, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
@@ -34,7 +35,7 @@ const TransactionSummary = ({
           <Typography>Transaction processing</Typography>
         </Box>
       )}
-      {txHash && (
+      {txHash && targetNft && estimatedPrice && (
         <Box
           display="flex"
           flexDirection="column"
@@ -62,18 +63,15 @@ const TransactionSummary = ({
             >
               <Typography>Spent:</Typography>
               <Typography>
-                {/* FIXME */}
-                {
-                  `${
-                    Number(targetNft.price.value) /
-                    10 ** targetNft.price.decimals
-                  } ${checkoutOperation?.chainFrom?.token.symbol} = ${
-                    /* eslint-disable @typescript-eslint/no-non-null-assertion */
-                    Number(estimatedPrice!.price.value) /
-                    10 ** estimatedPrice!.price.decimals
-                  } ${estimatedPrice!.price.symbol}`
-                  /* eslint-enable @typescript-eslint/no-non-null-assertion */
-                }
+                {`${BN.fromBigInt(
+                  targetNft.price.value,
+                  targetNft.price.decimals,
+                )} ${
+                  checkoutOperation?.chainFrom?.token.symbol
+                } = ${BN.fromBigInt(
+                  estimatedPrice.price.value,
+                  estimatedPrice.price.decimals,
+                )} ${estimatedPrice.price.symbol}`}
               </Typography>
             </Box>
           </Box>
