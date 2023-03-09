@@ -17,7 +17,7 @@ type Props = {
     BridgeChain | undefined,
     React.Dispatch<React.SetStateAction<BridgeChain | undefined>>,
   ]
-  targetNft: Target
+  targetNft?: Target
 }
 
 export const useCheckoutOperation = ({
@@ -67,7 +67,7 @@ export const useCheckoutOperation = ({
   ])
 
   useEffect(() => {
-    if (!checkoutOperation) return
+    if (!checkoutOperation || !targetNft) return
 
     const init = async () => {
       // Call asynchronous supportedChains method to get supported chains on selected chain type

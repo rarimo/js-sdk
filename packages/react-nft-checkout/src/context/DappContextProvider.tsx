@@ -4,7 +4,6 @@ import {
   EstimatedPrice,
   INFTCheckoutOperation,
   PaymentToken,
-  Price,
   Target,
 } from '@rarimo/nft-checkout'
 import {
@@ -12,33 +11,21 @@ import {
   IProvider,
   MetamaskProvider,
 } from '@rarimo/provider'
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useMemo, useState } from 'react'
 
-import { buildDemoTxBundle } from '@/helpers/build-demo-tx-bundle'
 import { useCheckoutOperation, useProvider } from '@/hooks'
-
-export type CheckoutProps = {
-  price?: EstimatedPrice
-  txBundleProp?: string
-}
 
 export type DappContextType = {
   provider: IProvider | null
   checkoutOperation: INFTCheckoutOperation | null
   selectedChain?: BridgeChain
-  targetNft: Target
+  targetNft?: Target
+  checkoutTxBundle?: string
   isInitialized: boolean
   loadPaymentTokens?: INFTCheckoutOperation['loadPaymentTokens']
   estimatePrice?: INFTCheckoutOperation['estimatePrice']
   estimatedPrice?: EstimatedPrice
-  checkout: (checkoutProps?: CheckoutProps) => Promise<string>
+  checkout?: INFTCheckoutOperation['checkout']
   selectedPaymentToken?: PaymentToken
   setSelectedPaymentToken: React.Dispatch<
     React.SetStateAction<PaymentToken | undefined>
@@ -47,6 +34,8 @@ export type DappContextType = {
 
 export type DappContextProviderPropsType = {
   children: ReactNode
+  targetNft?: Target
+  checkoutTxBundle?: string
   createProviderOpts?: CreateProviderOpts
   createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
@@ -55,18 +44,11 @@ export const DappContext = createContext({} as DappContextType)
 
 export const DappContextProvider = ({
   children,
+  targetNft,
+  checkoutTxBundle,
   createProviderOpts,
   createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
-  const targetNft = useRef({
-    chainId: 11155111, // Source chain id (Sepolia in our case)
-    address: '0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1', // Contract address
-    recipient: '0x8fe0d4923f61ff466430f63471e27b89a7cf0c92', // Recipient wallet address
-    price: Price.fromRaw('0.01', 18, 'ETH'),
-    // The token to swap the payment token to
-    swapTargetTokenSymbol: 'WETH',
-  }).current
-
   const selectedChainState = useState<BridgeChain | undefined>()
   const [selectedChain] = selectedChainState
 
@@ -100,20 +82,9 @@ export const DappContextProvider = ({
     [checkoutOperation],
   )
 
-  const checkout = useCallback(
-    async ({ price, txBundleProp }: CheckoutProps = {}) => {
-      if (!price) {
-        throw new Error('Estimated price not provided')
-      }
-
-      const bundle = txBundleProp || buildDemoTxBundle(targetNft)
-
-      const txHash = await checkoutOperation?.checkout(price, {
-        bundle,
-      })
-      return txHash ? String(txHash) : ''
-    },
-    [checkoutOperation, targetNft],
+  const checkout = useMemo(
+    () => checkoutOperation?.checkout.bind(checkoutOperation),
+    [checkoutOperation],
   )
 
   const memoizedContextValue = useMemo(() => {
@@ -123,6 +94,7 @@ export const DappContextProvider = ({
       checkoutOperation,
       selectedChain,
       targetNft,
+      checkoutTxBundle,
       loadPaymentTokens,
       estimatePrice,
       checkout,
@@ -139,6 +111,7 @@ export const DappContextProvider = ({
     checkoutOperationReactiveState,
     selectedChain,
     targetNft,
+    checkoutTxBundle,
     loadPaymentTokens,
     estimatePrice,
     checkout,

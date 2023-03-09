@@ -9,7 +9,7 @@ const RarimoPayButton = (props: AppButtonProps) => {
   return (
     <>
       <AppButton
-        text="Buy with Rarify"
+        text="Buy with Rarimo"
         onClick={() => setIsVisibleSupportedChains(true)}
         {...props}
       />

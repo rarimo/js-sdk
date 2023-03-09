@@ -15,7 +15,8 @@ import { useDappContext } from '@/hooks'
 import styles from './CheckoutModal.module.css'
 
 const CheckoutModal = () => {
-  const { selectedPaymentToken, checkout, estimatePrice } = useDappContext()
+  const { selectedPaymentToken, checkout, estimatePrice, checkoutTxBundle } =
+    useDappContext()
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
   const [estimatedPrice, setEstimatedPrice] = useState<
@@ -36,11 +37,11 @@ const CheckoutModal = () => {
   }, [estimatedPrice, selectedPaymentToken])
 
   const onCheckoutHandler = async () => {
-    if (!estimatedPrice) return
+    if (!estimatedPrice || !checkoutTxBundle) return
 
     setIsTransactionProcessing(true)
 
-    const hash = await checkout({ price: estimatedPrice })
+    const hash = await checkout?.(estimatedPrice, { bundle: checkoutTxBundle })
     if (hash) {
       setTxHash(hash)
     }
