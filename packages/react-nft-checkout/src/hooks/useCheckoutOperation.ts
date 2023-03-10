@@ -59,12 +59,7 @@ export const useCheckoutOperation = ({
       createCheckoutOperationParams,
     )
     setCheckoutOperation(op)
-  }, [
-    createCheckoutOperationParams,
-    provider,
-    provider?.chainId,
-    provider?.address,
-  ])
+  }, [createCheckoutOperationParams, provider])
 
   useEffect(() => {
     if (!checkoutOperation || !targetNft) return
