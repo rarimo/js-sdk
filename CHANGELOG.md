@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/nft-checkout`: Mumbai chain swap contract address
 - `@rarimo/nft-checkout`: Chapel test tokens
 - `@rarimo/nft-checkout`: Throwing error if `swapTargetTokenSymbol` is native token, because it's not supported on the smart contracts side
+- `@rarimo/react-nft-checkout` package
+- `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
+- `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT chekout
 
 ### Changed
 - `@rarimo/nft-checkout`: Fuji chain swap contract address
