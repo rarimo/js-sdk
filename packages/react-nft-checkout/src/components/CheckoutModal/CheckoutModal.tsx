@@ -12,8 +12,6 @@ import {
 } from '@/components'
 import { useDappContext } from '@/hooks'
 
-import styles from './CheckoutModal.module.css'
-
 const CheckoutModal = () => {
   const { selectedPaymentToken, checkout, estimatePrice, checkoutTxBundle } =
     useDappContext()
@@ -86,11 +84,12 @@ const CheckoutModal = () => {
             <>
               {isEnoughTokensForCheckout ? (
                 <AppButton
-                  className={styles.CheckoutButton}
-                  text="Checkout"
+                  sx={{ mt: '1rem' }}
                   disabled={!estimatedPrice}
                   onClick={onCheckoutHandler}
-                />
+                >
+                  Checkout
+                </AppButton>
               ) : (
                 <ErrorText
                   text={`Not enough ${selectedPaymentToken?.symbol} tokens in wallet. Please select other token.`}
