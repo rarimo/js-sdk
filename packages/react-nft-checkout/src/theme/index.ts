@@ -4,4 +4,9 @@ import { componentsTheme } from '@/theme/components.theme'
 
 export const defaultTheme = createTheme({
   components: componentsTheme,
+  typography: {
+    caption: {
+      fontStyle: 'italic',
+    },
+  },
 })

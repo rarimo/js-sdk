@@ -82,29 +82,25 @@ const TransactionSummary = ({
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                Transaction ID:
-              </Typography>
+              <Typography variant="caption">Transaction ID:</Typography>
               <Typography
                 variant="caption"
-                sx={{ color: '#9ce680', fontWeight: 'bold' }}
+                sx={{
+                  color: '#9ce680',
+                  fontWeight: 'bold',
+                  fontStyle: 'normal',
+                }}
               >
                 Confirmed
               </Typography>
             </Box>
             <Divider />
-            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-              {txHash}
-            </Typography>
+            <Typography variant="caption">{txHash}</Typography>
           </Box>
           <Box>
-            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-              Receiving address:
-            </Typography>
+            <Typography variant="caption">Receiving address:</Typography>
             <Divider />
-            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-              {provider?.address}
-            </Typography>
+            <Typography variant="caption">{provider?.address}</Typography>
           </Box>
         </Box>
       )}

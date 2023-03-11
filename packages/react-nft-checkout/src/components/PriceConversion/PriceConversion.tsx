@@ -66,20 +66,16 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
             </Box>
             {estimatedPrice.impact && (
               <Box display="flex" justifyContent="space-between">
-                <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                  Price Impact
-                </Typography>
-                <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+                <Typography variant="caption">Price Impact</Typography>
+                <Typography variant="caption">
                   {`${estimatedPrice.impact}%`}
                 </Typography>
               </Box>
             )}
             {estimatedPrice.gasPriceInUSD && (
               <Box display="flex" justifyContent="space-between">
-                <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                  Network Fees
-                </Typography>
-                <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+                <Typography variant="caption">Network Fees</Typography>
+                <Typography variant="caption">
                   ${estimatedPrice.gasPriceInUSD}
                 </Typography>
               </Box>
