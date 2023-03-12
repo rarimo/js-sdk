@@ -12,6 +12,9 @@ import {
 } from '@/components'
 import { useDappContext } from '@/hooks'
 
+/**
+ * @description A window that shows the transaction details and allows the user to confirm the transaction
+ */
 const CheckoutModal = () => {
   const { selectedPaymentToken, checkout, estimatePrice, checkoutTxBundle } =
     useDappContext()

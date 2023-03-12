@@ -1,5 +1,10 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 
+/**
+ * @description A loading indicator with a message
+ *
+ * @param props.text The message to show during loading
+ */
 const LoadingIndicator = ({ text }: { text: string }) => {
   return (
     <Box
