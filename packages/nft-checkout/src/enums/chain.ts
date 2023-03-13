@@ -12,6 +12,7 @@ export enum ChainNames {
 
 export enum SwapContractVersion {
   TraderJoe = 'TraderJoe',
+  QuickSwap = 'QuickSwap',
   PancakeSwap = 'PancakeSwap',
   UniswapV3 = 'UniswapV3',
 }

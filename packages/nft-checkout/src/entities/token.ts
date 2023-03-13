@@ -66,12 +66,20 @@ export class Token {
     return this.#chain.contactVersion === SwapContractVersion.TraderJoe
   }
 
+  public get isQuickSwap(): boolean {
+    return this.#chain.contactVersion === SwapContractVersion.QuickSwap
+  }
+
   public get isPancakeSwap(): boolean {
     return this.#chain.contactVersion === SwapContractVersion.PancakeSwap
   }
 
   public get isUniswapV3(): boolean {
     return this.#chain.contactVersion === SwapContractVersion.UniswapV3
+  }
+
+  public get isV2(): boolean {
+    return this.isQuickSwap || this.isPancakeSwap || this.isTraderJoe
   }
 
   public isSame(token: Token): boolean {

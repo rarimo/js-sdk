@@ -1,4 +1,5 @@
 ## Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -6,17 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- `@rarimo/nft-checkout`: Mumbai chain swap contract address
-- `@rarimo/nft-checkout`: Chapel test tokens
-- `@rarimo/nft-checkout`: Throwing error if `swapTargetTokenSymbol` is native token, because it's not supported on the smart contracts side
 - `@rarimo/react-nft-checkout` package
 - `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
 - `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT chekout
+
+## [1.4.0] - 2023-03-13
+### Added
+- `@rarimo/nft-checkout`: Mumbai chain swap contract address
+- `@rarimo/nft-checkout`: Chapel test tokens
+- `@rarimo/nft-checkout`: Throwing error if `swapTargetTokenSymbol` is native token, because it's not supported on the smart contracts side
+- `@rarimo/react-provider`: React `@rarimo/provider` adapter package
 
 ### Changed
 - `@rarimo/nft-checkout`: Fuji chain swap contract address
 - `all`: Migrated to `@distributedlab/tools` from `@distributedlab/utils`
 - `@rarimo/nft-checkout`: checkout method now return transaction hash string
+- `@rarimo/nft-checkout`: Polygon support moved to the QuickSwap DEX
+- `@rarimo/nft-checkout`: `@distributedlab/tools` package version bumped to `0.1.6`
 
 ### Fixed
 - `@rarimo/nft-checkout`: Fix price calculation for estimates
@@ -24,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/provider`: Emitting provider change state events
 - `@rarimo/nft-checkout`: Goerli and Sepolia names
 - `@rarimo/nft-checkout`: Uniswap V3 native to erc20 path encoding
+- `@rarimo/nft-checkout`: Multiple copies of the native token in the token list
+- `all`: Typedoc export types
 
 ## [1.3.0] - 2023-03-03
 ### Added
@@ -69,13 +78,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2023-02-20
 ### Added
- - `@rarimo/nft-checkout`: `createCheckoutOperation` function simplifies create NFT checkout operation.
- - `@rarimo/provider` -`createProvider` function, to simplify interface, which will create provider instance, user need to pass provider proxy implementation for needed wallet and web3 instance optionally.
+- `@rarimo/nft-checkout`: `createCheckoutOperation` function simplifies create NFT checkout operation.
+- `@rarimo/provider` -`createProvider` function, to simplify interface, which will create provider instance, user need to pass provider proxy implementation for needed wallet and web3 instance optionally.
 
 ### Changed
 - `@rarimo/nft-checkout`: Moved to the new swap contracts
 - `@rarimo/provider`: Provider initiation, now constructor accepts one proxy implementation instead of map
-
+-
 ### Fixed
 - `@rarimo/nft-checkout`: Approving non swap contract address, which cause error "transfer amount exceeds spender allowance"</li>
 
@@ -87,7 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/rarimo/js-sdk/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/rarimo/js-sdk/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/rarimo/js-sdk/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/rarimo/js-sdk/compare/1.0.1...1.1.0

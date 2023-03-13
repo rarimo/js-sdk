@@ -11,3 +11,5 @@ export type BridgeChain = Chain & {
   contractAddress: Address
   contactVersion: SwapContractVersion
 }
+
+export { Chain }

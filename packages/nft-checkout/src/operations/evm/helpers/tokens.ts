@@ -37,13 +37,16 @@ export const loadTokens = async (
 
   if (!tokens.length) return []
 
-  return tokens.reduce((acc, token) => {
-    if (Number(token.chainId) === Number(chain.id)) {
-      acc.push(Token.fromTokenInfo(token, chain))
-    }
+  return [
+    Token.fromChain(chain),
+    ...tokens.reduce((acc, token) => {
+      if (Number(token.chainId) === Number(chain.id)) {
+        acc.push(Token.fromTokenInfo(token, chain))
+      }
 
-    return [Token.fromChain(chain), ...acc]
-  }, [] as Token[])
+      return acc
+    }, [] as Token[]),
+  ]
 }
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
@@ -51,5 +54,6 @@ const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
     [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
     [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
     [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
+    [SwapContractVersion.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
   }[chain.contactVersion]
 }

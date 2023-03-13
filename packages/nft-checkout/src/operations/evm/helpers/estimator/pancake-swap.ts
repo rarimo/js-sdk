@@ -11,10 +11,10 @@ import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { IProvider } from '@rarimo/provider'
 
 import { Price, Token } from '@/entities'
-import { getSwapAmount } from '@/operations/evm/helpers'
 import { Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
+import { getSwapAmount } from './get-swap-amount'
 import { validateSlippage } from './slippage'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')

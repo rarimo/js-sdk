@@ -78,7 +78,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
     contractAddress: '',
-    contactVersion: SwapContractVersion.UniswapV3,
+    contactVersion: SwapContractVersion.QuickSwap,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Mumbai],
@@ -91,9 +91,9 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://mumbai.polygonscan.com',
     type: ChainTypes.EVM,
-    contractAddress: '0xAFACe6eCc6E26e1F1479176622718fb0638049B1',
+    contractAddress: '0x24Ae0B9DC81d2E4e9383e283163913BF200a579F',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
-    contactVersion: SwapContractVersion.UniswapV3,
+    contactVersion: SwapContractVersion.QuickSwap,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Avalanche],
@@ -164,3 +164,5 @@ export const CHAINS: Readonly<{ [key in ChainTypes]?: BridgeChain[] }> = {
 export const CHAIN_IDS = {
   [ChainTypes.EVM]: EVM_CHAIN_IDS,
 }
+
+export { ChainTypes }
