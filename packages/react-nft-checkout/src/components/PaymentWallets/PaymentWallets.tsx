@@ -25,9 +25,8 @@ const PaymentWallets = () => {
 
           <Divider />
 
-          <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <List>
             <ListItemButton
-              style={{ borderRadius: 8 }}
               onClick={() => {
                 provider?.connect()
               }}

@@ -1,5 +1,5 @@
 import { BN } from '@distributedlab/tools'
-import { Box, Divider, Typography } from '@mui/material'
+import { Box, Card, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
 import { LoadingIndicator } from '@/components'
@@ -20,37 +20,26 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
       ) : (
         estimatedPrice &&
         targetNft && (
-          <Box
+          <Card
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              border: '1px solid rgba(0, 0, 0, 0.12)',
-              padding: 1.5,
-              borderRadius: 1.5,
-              marginTop: 1,
-              background: '#f4f6fd',
-              color: '#99a0c0',
+              gap: 1,
+              mt: 1,
             }}
-            gap={1}
           >
             <Box
-              sx={{ display: 'flex', flexDirection: 'column' }}
+              display="flex"
+              flexDirection="column"
               justifyContent="space-between"
-              gap={1}
             >
               <Box
                 display="flex"
                 flexDirection="row"
                 justifyContent="space-between"
-                sx={{
-                  '>p': {
-                    color: '#99a0c0',
-                    fontWeight: 'bold',
-                  },
-                }}
               >
-                <Typography>Price conversion</Typography>
-                <Typography>
+                <Typography variant="subtitle1">Price conversion</Typography>
+                <Typography variant="subtitle1">
                   {`${BN.fromBigInt(
                     targetNft.price.value,
                     targetNft.price.decimals,
@@ -62,8 +51,8 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
                   )} ${estimatedPrice.price.symbol}`}
                 </Typography>
               </Box>
-              <Divider />
             </Box>
+            <Divider />
             {estimatedPrice.impact && (
               <Box display="flex" justifyContent="space-between">
                 <Typography variant="caption">Price Impact</Typography>
@@ -80,7 +69,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
                 </Typography>
               </Box>
             )}
-          </Box>
+          </Card>
         )
       )}
     </>

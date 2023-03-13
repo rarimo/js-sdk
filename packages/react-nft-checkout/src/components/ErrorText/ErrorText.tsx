@@ -11,7 +11,7 @@ const ErrorText = ({ text, variant = 'subtitle2' }: Props) => {
     <Typography
       variant={variant}
       sx={{
-        color: '#d32f2f',
+        color: 'error.main',
         display: 'block',
         textAlign: 'center',
       }}

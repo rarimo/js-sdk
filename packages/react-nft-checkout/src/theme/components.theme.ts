@@ -5,11 +5,11 @@ import { BaseTheme } from '@/types'
 export const componentsTheme: Components<BaseTheme> = {
   MuiButton: {
     styleOverrides: {
-      root: ({ ownerState }) => ({
-        backgroundColor: '#000000',
+      root: ({ ownerState, theme }) => ({
+        backgroundColor: theme.palette.common.black,
         borderRadius: '0.5rem',
         boxShadow: 'none',
-        color: '#ffffff',
+        color: theme.palette.common.white,
         fontFamily: 'sans-serif',
         fontWeight: '600',
         textTransform: 'none',
@@ -35,10 +35,56 @@ export const componentsTheme: Components<BaseTheme> = {
         '&:disabled, &.Mui-disabled': {
           filter: 'grayscale(0.75)',
           opacity: '0.5',
-          color: '#ffffff',
-          backgroundColor: '#000000',
+          color: theme.palette.common.white,
+          backgroundColor: theme.palette.common.black,
           cursor: 'not-allowed',
         },
+      }),
+    },
+  },
+  MuiDialogContent: {
+    styleOverrides: {
+      root: {
+        display: 'flex',
+        flexDirection: 'column',
+        gridGap: '0.625rem',
+        padding: '3rem',
+      },
+    },
+  },
+  MuiDialog: {
+    styleOverrides: {
+      paper: {
+        borderRadius: '1.5rem',
+      },
+    },
+  },
+  MuiList: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+      }),
+    },
+  },
+  MuiListItemButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: '0.5rem',
+        padding: '0.25rem',
+      },
+    },
+  },
+  MuiCard: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        padding: theme.spacing(1.5),
+        borderRadius: theme.spacing(1.5),
+        background: '#f4f6fd',
+        color: theme.palette.secondary.main,
+        boxShadow: 'none',
+        overflow: 'unset',
       }),
     },
   },

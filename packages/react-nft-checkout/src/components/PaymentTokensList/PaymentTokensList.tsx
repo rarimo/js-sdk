@@ -62,15 +62,7 @@ const PaymentTokensList = () => {
           ) : (
             <>
               {tokens.length ? (
-                <List
-                  sx={{
-                    width: '100%',
-                    bgcolor: 'background.paper',
-                    position: 'relative',
-                    overflow: 'auto',
-                    maxHeight: 300,
-                  }}
-                >
+                <List>
                   {tokens.map(paymentToken => {
                     const tokenLogoUri = paymentToken.logoURI?.replace(
                       'ipfs://',
@@ -83,10 +75,6 @@ const PaymentTokensList = () => {
                           selectedPaymentToken?.symbol === paymentToken.symbol
                         }
                         key={paymentToken.symbol}
-                        style={{
-                          borderRadius: 8,
-                          padding: 4,
-                        }}
                         onClick={() => setSelectedPaymentToken(paymentToken)}
                       >
                         <ListItemAvatar>

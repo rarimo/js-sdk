@@ -1,5 +1,5 @@
 import { BN } from '@distributedlab/tools'
-import { Box, CircularProgress, Divider, Typography } from '@mui/material'
+import { Box, Card, CircularProgress, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
 import { useDappContext } from '@/hooks'
@@ -39,30 +39,15 @@ const TransactionSummary = ({
         <Box
           display="flex"
           flexDirection="column"
-          sx={{
-            color: '#99a0c0',
-          }}
           gap={2}
+          sx={{
+            color: 'secondary.main',
+          }}
         >
           <Box display="flex" flexDirection="column" gap={3}>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              sx={{
-                '>p': {
-                  color: '#99a0c0',
-                  fontWeight: 'bold',
-                },
-                border: '1px solid rgba(0, 0, 0, 0.12)',
-                padding: 1.5,
-                borderRadius: 1.5,
-                background: '#f4f6fd',
-                color: '#99a0c0',
-              }}
-            >
-              <Typography>Spent:</Typography>
-              <Typography>
+            <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="subtitle1">Spent:</Typography>
+              <Typography variant="subtitle1">
                 {`${BN.fromBigInt(
                   targetNft.price.value,
                   targetNft.price.decimals,
@@ -73,7 +58,7 @@ const TransactionSummary = ({
                   estimatedPrice.price.decimals,
                 )} ${estimatedPrice.price.symbol}`}
               </Typography>
-            </Box>
+            </Card>
           </Box>
           <Box>
             <Box
@@ -86,7 +71,7 @@ const TransactionSummary = ({
               <Typography
                 variant="caption"
                 sx={{
-                  color: '#9ce680',
+                  color: 'success.main',
                   fontWeight: 'bold',
                   fontStyle: 'normal',
                 }}
