@@ -1,10 +1,10 @@
-import { useProvider } from './hooks'
 import { MetamaskProvider } from '@rarimo/provider'
 
+import { useProvider } from './hooks'
 function App() {
-  const { provider, providerReactiveState } = useProvider(MetamaskProvider)
+  const { provider, ...rest } = useProvider(MetamaskProvider)
 
-  console.log({ provider, providerReactiveState })
+  console.log({ provider, ...rest })
 
   return <div className="App">React Provider</div>
 }
