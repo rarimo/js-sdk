@@ -11,5 +11,6 @@ export * from './swap-v3'
 export const SWAP_CONTRACT_ABIS = {
   [SwapContractVersion.TraderJoe]: SWAP_TRADER_JOE_V2_ABI,
   [SwapContractVersion.PancakeSwap]: SWAP_V2_ABI,
+  [SwapContractVersion.QuickSwap]: SWAP_V2_ABI,
   [SwapContractVersion.UniswapV3]: SWAP_V3_ABI,
 }

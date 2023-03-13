@@ -441,14 +441,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/tools@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "@distributedlab/tools@npm:0.1.5"
+"@distributedlab/tools@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "@distributedlab/tools@npm:0.1.6"
   dependencies:
     bignumber.js: ^9.1.1
     dayjs: ^1.11.7
     tslib: ^2.5.0
-  checksum: 2d98f6efc3f59eda3eb45355b126918e4836fbbfaaded16ec2bfda31dc541c6a8cea778af789ae3e5b2a30cb7a8f493c50f6e36aaba63f46cf0f6500f9556f17
+  checksum: 70a3e92d0f266fe4bdefddca7d7ba2dcc58e0bf41acdcf53364b661f7b0ae050fe30b7a7dc1dd9aafd0fdbeb776360ee7735614eb87570a22fff000ccd3d49dd
   languageName: node
   linkType: hard
 
@@ -2141,7 +2141,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/tools": ^0.1.5
+    "@distributedlab/tools": ^0.1.6
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
@@ -2149,6 +2149,7 @@ __metadata:
     "@pancakeswap/smart-router": ^0.6.1
     "@pancakeswap/swap-sdk-core": ^0.0.1
     "@rarimo/provider": "workspace:^"
+    "@rarimo/quickswap-sdk": ^3.0.8
     "@traderjoe-xyz/sdk": 2.0.7
     "@types/events": ^3.0.0
     "@types/jest": ^29.4.0
@@ -2172,7 +2173,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
-    "@distributedlab/tools": ^0.1.5
+    "@distributedlab/tools": ^0.1.6
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@near-wallet-selector/core": ^7.8.2
@@ -2188,6 +2189,27 @@ __metadata:
     web3-core: ^1.8.2
   languageName: unknown
   linkType: soft
+
+"@rarimo/quickswap-sdk@npm:^3.0.8":
+  version: 3.0.8
+  resolution: "@rarimo/quickswap-sdk@npm:3.0.8"
+  dependencies:
+    "@uniswap/v2-core": ^1.0.0
+    big.js: ^5.2.2
+    decimal.js-light: ^2.5.0
+    jsbi: ^3.1.1
+    tiny-invariant: ^1.1.0
+    tiny-warning: ^1.0.3
+    toformat: ^2.0.0
+  peerDependencies:
+    "@ethersproject/address": ^5.0.0-beta
+    "@ethersproject/contracts": ^5.0.0-beta
+    "@ethersproject/networks": ^5.0.0-beta
+    "@ethersproject/providers": ^5.0.0-beta
+    "@ethersproject/solidity": ^5.0.0-beta
+  checksum: 4b7091aea5678d5bd41e592d7d737902c170d1591cdcfb102d6ee784f9f509dfc7ad29d2cbc38338318586cb8ce681bb940664776d01f6a7e53b94726cbaa9f7
+  languageName: node
+  linkType: hard
 
 "@rarimo/react-provider@workspace:packages/react-provider":
   version: 0.0.0-use.local
@@ -3080,7 +3102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v2-core@npm:1.0.1, @uniswap/v2-core@npm:^1.0.1":
+"@uniswap/v2-core@npm:1.0.1, @uniswap/v2-core@npm:^1.0.0, @uniswap/v2-core@npm:^1.0.1":
   version: 1.0.1
   resolution: "@uniswap/v2-core@npm:1.0.1"
   checksum: eaa118fe45eac2e80b7468547ce2cde12bd3c8157555d2e40e0462a788c9506c6295247b511382da85e44a89ad92aff7bb3433b23bfbd2eeea23942ecd46e979

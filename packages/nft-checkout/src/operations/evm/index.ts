@@ -218,23 +218,19 @@ export class EVMOperation
   }
 
   #getFunctionFragment(from: Token, to: Token) {
-    const isV2 = !from.isUniswapV3
-    const isFromNative = from.isNative
-    const isToNative = to.isNative
-
-    if (isFromNative && isToNative) {
+    if (from.isNative && to.isNative) {
       throw new errors.OperationInvalidTokenPairError()
     }
 
-    if (isFromNative && isV2) {
+    if (from.isNative && from.isV2) {
       return 'swapExactNativeInputMultiHopThenBridge'
     }
 
-    if (isFromNative) {
+    if (from.isNative) {
       return 'swapExactInputMultiHopThenBridge'
     }
 
-    if (isToNative && isV2) {
+    if (to.isNative && from.isV2) {
       return 'swapNativeExactOutputMultiHopThenBridge'
     }
 
@@ -242,17 +238,14 @@ export class EVMOperation
   }
 
   #getAmounts(from: Token, to: Token, e: EstimatedPrice): string[] {
-    const isV2 = !from.isUniswapV3
-    const isFromNative = from.isNative
-    const isToNative = to.isNative
     const amountOutMinimum = getSwapAmount(this.#target!.price)
     const amountIn = this.#getNativeAmountIn(e.price)
 
-    if ((isFromNative || isToNative) && isV2) {
+    if ((from.isNative || to.isNative) && from.isV2) {
       return [amountOutMinimum]
     }
 
-    if (isFromNative) {
+    if (from.isNative) {
       return [amountIn, amountOutMinimum]
     }
 
