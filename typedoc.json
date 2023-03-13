@@ -3,5 +3,5 @@
   "out": "doc",
   "entryPointStrategy": "packages",
   "entryPoints": ["./packages/*"],
-  "name": "Rarimo JavaScript/Typescript SDK",
+  "name": "Rarimo JavaScript/Typescript SDK"
 }

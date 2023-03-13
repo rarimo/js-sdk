@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-type ProvidersReturnType = Record<Providers, ProviderInstance>
+export type ProvidersReturnType = Record<Providers, ProviderInstance>
 
 export class Web3 {
   #providers: ProviderInstance[]

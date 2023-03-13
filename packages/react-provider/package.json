@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/react-provider",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-provider"
@@ -43,5 +43,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "@rarimo/react-provider"
   }
 }

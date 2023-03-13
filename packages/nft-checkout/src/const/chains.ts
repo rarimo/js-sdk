@@ -164,3 +164,5 @@ export const CHAINS: Readonly<{ [key in ChainTypes]?: BridgeChain[] }> = {
 export const CHAIN_IDS = {
   [ChainTypes.EVM]: EVM_CHAIN_IDS,
 }
+
+export { ChainTypes }

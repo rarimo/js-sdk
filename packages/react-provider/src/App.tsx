@@ -1,6 +1,7 @@
 import { MetamaskProvider } from '@rarimo/provider'
 
 import { useProvider } from './hooks'
+
 function App() {
   const { provider, ...rest } = useProvider(MetamaskProvider)
 
