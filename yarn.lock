@@ -2204,6 +2204,9 @@ __metadata:
     vite: ^4.1.0
     vite-plugin-dts: ^2.0.2
     vite-tsconfig-paths: ^4.0.5
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
