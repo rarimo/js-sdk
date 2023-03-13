@@ -23,7 +23,9 @@
     "pre-commit": "yarn lint"
   },
   "scripts": {
-    "build": "yarn workspaces foreach --parallel --topological-dev --verbose run build",
+    "build": "yarn workspaces foreach -pv --topological-dev run build",
+    "build:nft-checkout": "yarn workspace @rarimo/nft-checkout build",
+    "build:provider": "yarn workspace @rarimo/provider build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .ts --fix --cache --max-warnings=0 && yarn workspaces foreach -pv --no-private run typecheck",
     "test": "jest --verbose true",

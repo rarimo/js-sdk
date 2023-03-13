@@ -9,7 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `@rarimo/nft-checkout`: Mumbai chain swap contract address
+- `@rarimo/nft-checkout`: Chapel test tokens
+- `@rarimo/nft-checkout`: Throwing error if `swapTargetTokenSymbol` is native token, because it's not supported on the smart contracts side
 - `@rarimo/react-provider`: React provider
+
+### Changed
+
+- `@rarimo/nft-checkout`: Fuji chain swap contract address
+- `all`: Migrated to `@distributedlab/tools` from `@distributedlab/utils`
+- `@rarimo/nft-checkout`: checkout method now return transaction hash string
+
+### Fixed
+
+- `@rarimo/nft-checkout`: Fix price calculation for estimates
+- `@rarimo/provider`: Not changing provider state on events
+- `@rarimo/provider`: Emitting provider change state events
+- `@rarimo/nft-checkout`: Goerli and Sepolia names
+- `@rarimo/nft-checkout`: Uniswap V3 native to erc20 path encoding
 
 ## [1.3.0] - 2023-03-03
 

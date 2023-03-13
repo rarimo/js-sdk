@@ -59,7 +59,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async init(): Promise<void> {
-    this.#setListeners()
+    await this.#setListeners()
     const currentAccounts = await this.#provider.listAccounts()
     this.#address = currentAccounts[0]
 
@@ -122,7 +122,9 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async #setListeners() {
-    this.#provider.on(ProviderEvents.Connect, async () => {
+    const stubProvider = this.#provider.provider as providers.BaseProvider
+
+    stubProvider.on(ProviderEvents.Connect, async () => {
       const currentAccounts = await this.#provider.listAccounts()
       this.#address = currentAccounts[0] ?? ''
 
@@ -132,7 +134,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
       })
     })
 
-    this.#provider.on(ProviderEvents.Disconnect, () => {
+    stubProvider.on(ProviderEvents.Disconnect, () => {
       this.#address = ''
 
       this.emitDisconnect({
@@ -141,7 +143,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
       })
     })
 
-    this.#provider.on(ProviderEvents.AccountsChanged, async () => {
+    stubProvider.on(ProviderEvents.AccountsChanged, async () => {
       const currentAccounts = await this.#provider.listAccounts()
       this.#address = currentAccounts[0] ?? ''
 
@@ -151,7 +153,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
       })
     })
 
-    this.#provider.on(ProviderEvents.ChainChanged, (chainId: ChainId) => {
+    stubProvider.on(ProviderEvents.ChainChanged, (chainId: ChainId) => {
       this.#chainId = hexToDecimal(chainId)
 
       this.emitChainChanged({

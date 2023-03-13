@@ -7,21 +7,20 @@ import {
   Token as TJToken,
   TokenAmount,
   Trade,
-  TradeType,
 } from '@traderjoe-xyz/sdk'
-import JSBI from 'jsbi'
 
 import { Price, Token } from '@/entities'
+import { getSwapAmount } from '@/operations/evm/helpers'
 import { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
 import { validateSlippage } from './slippage'
 
-const JOE_TRADER_DEFAULT_SLIPPAGE = new Percent('5', '100')
+const TRADER_JOE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
 const getSlippage = (slippage?: number): Percent => {
   if (!slippage) {
-    return JOE_TRADER_DEFAULT_SLIPPAGE
+    return TRADER_JOE_DEFAULT_SLIPPAGE
   }
 
   validateSlippage(slippage)
@@ -29,7 +28,7 @@ const getSlippage = (slippage?: number): Percent => {
   return new Percent(String(slippage), '1')
 }
 
-export const estimateJoeTrader = async (
+export const estimateTraderJoe = async (
   tokens: Token[],
   provider: IProvider,
   _from: Token,
@@ -54,7 +53,7 @@ export const estimateJoeTrader = async (
     to.name,
   )
 
-  const amount = new TokenAmount(tokenB, JSBI.BigInt(target.price.value))
+  const amount = new TokenAmount(tokenB, getSwapAmount(target.price))
 
   const pair = await Fetcher.fetchPairData(
     tokenA,
@@ -63,23 +62,17 @@ export const estimateJoeTrader = async (
   )
 
   const route = new Route([pair], tokenA, tokenB)
-
-  const trade = new Trade(
-    route,
-    amount,
-    TradeType.EXACT_OUTPUT,
-    Number(from.chain.id) as ChainId,
-  )
+  const trade = Trade.exactOut(route, amount, Number(from.chain.id) as ChainId)
 
   return {
     impact: trade.priceImpact.toSignificant(3),
     path: trade.route.path.map(token => token.address),
     from: _from,
     to: _to,
-    price: Price.fromFraction(
+    price: Price.fromBigInt(
       trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
-      from.decimals,
-      from.symbol,
+      _from.decimals,
+      _from.symbol,
     ),
   }
 }

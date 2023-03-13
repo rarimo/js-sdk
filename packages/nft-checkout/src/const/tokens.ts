@@ -18,21 +18,30 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
   }),
   new Token({
     chain: chapelChain,
-    address: '0x8BaBbB98678facC7342735486C851ABD7A0d17Ca',
-    name: 'Ethereum Token',
-    symbol: 'ETH',
-    decimals: 18,
-    logoURI:
-      'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-  }),
-  new Token({
-    chain: chapelChain,
     address: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     name: 'Wrapped Binance Testnet Token',
     symbol: 'WBNB',
     decimals: 18,
     logoURI:
       'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
+  }),
+  new Token({
+    chain: chapelChain,
+    address: '0x64544969ed7EBf5f083679233325356EbE738930',
+    name: 'USDCoin',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+  }),
+  new Token({
+    chain: chapelChain,
+    address: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+    name: 'Tether USD',
+    symbol: 'USDT',
+    decimals: 18,
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
   }),
 ]
 
