@@ -1,26 +1,25 @@
 import { IProvider } from '@rarimo/provider'
 import {
-  ChainId,
   Fetcher,
   Percent,
   Route,
-  Token as TJToken,
+  Token as QSToken,
   TokenAmount,
   Trade,
-} from '@traderjoe-xyz/sdk'
+} from '@rarimo/quickswap-sdk'
 
-import { Price, Token } from '@/entities'
+import { PaymentToken, Price, Token } from '@/entities'
 import { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
 import { getSwapAmount } from './get-swap-amount'
 import { validateSlippage } from './slippage'
 
-const TRADER_JOE_DEFAULT_SLIPPAGE = new Percent('5', '100')
+const QUICK_SWAP_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
 const getSlippage = (slippage?: number): Percent => {
   if (!slippage) {
-    return TRADER_JOE_DEFAULT_SLIPPAGE
+    return QUICK_SWAP_DEFAULT_SLIPPAGE
   }
 
   validateSlippage(slippage)
@@ -28,16 +27,16 @@ const getSlippage = (slippage?: number): Percent => {
   return new Percent(String(slippage), '1')
 }
 
-export const estimateTraderJoe = async (
+export const estimateQuickSwap = async (
   tokens: Token[],
   provider: IProvider,
-  _from: Token,
+  _from: PaymentToken,
   _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
-  const tokenA = new TJToken(
+  const tokenA = new QSToken(
     Number(from.chain.id),
     from.address,
     from.decimals,
@@ -45,7 +44,7 @@ export const estimateTraderJoe = async (
     from.name,
   )
 
-  const tokenB = new TJToken(
+  const tokenB = new QSToken(
     Number(from.chain.id),
     to.address,
     to.decimals,
@@ -62,7 +61,7 @@ export const estimateTraderJoe = async (
   )
 
   const route = new Route([pair], tokenA, tokenB)
-  const trade = Trade.exactOut(route, amount, Number(from.chain.id) as ChainId)
+  const trade = Trade.exactOut(route, amount)
 
   return {
     impact: trade.priceImpact.toSignificant(3),

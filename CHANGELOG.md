@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/nft-checkout`: Goerli and Sepolia names
 - `@rarimo/nft-checkout`: Uniswap V3 native to erc20 path encoding
 
+### Removed
+- `@rarimo/nft-checkout`: Polygon Mumbai support
+
 ## [1.3.0] - 2023-03-03
 ### Added
 - `all`: Build to CommonJS and ES modules
