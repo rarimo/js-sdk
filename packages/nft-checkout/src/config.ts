@@ -6,4 +6,6 @@ export const DEFAULT_CONFIG: Config = {
     'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/mc.tokenlist.json',
   PANCAKE_SWAP_TOKEN_LIST_URL:
     'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
+  QUICK_SWAP_TOKEN_LIST_URL:
+    'https://unpkg.com/quickswap-default-token-list/build/quickswap-default.tokenlist.json',
 }

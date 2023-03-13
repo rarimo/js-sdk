@@ -7,6 +7,7 @@ import { EstimatedPrice, Target } from '@/types'
 
 import { estimateTraderJoe } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'
+import { estimateQuickSwap } from './quick-swap'
 import { estimateUniswapV3 } from './uniswap-v3'
 
 export class Estimator {
@@ -44,6 +45,16 @@ export class Estimator {
 
     if (this.#from.isPancakeSwap) {
       return estimatePancakeSwap(
+        this.#tokens,
+        this.#provider,
+        this.#from,
+        targetToken!,
+        this.#target,
+      )
+    }
+
+    if (this.#from.isQuickSwap) {
+      return estimateQuickSwap(
         this.#tokens,
         this.#provider,
         this.#from,

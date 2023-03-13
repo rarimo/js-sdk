@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/nft-checkout`: Fuji chain swap contract address
 - `all`: Migrated to `@distributedlab/tools` from `@distributedlab/utils`
 - `@rarimo/nft-checkout`: checkout method now return transaction hash string
+- `@rarimo/nft-checkout`: Polygon support moved to the QuickSwap DEX
+- `@rarimo/nft-checkout`: `@distributedlab/tools` package version bumped to `0.1.6`
 
 ### Fixed
 - `@rarimo/nft-checkout`: Fix price calculation for estimates
@@ -21,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/provider`: Emitting provider change state events
 - `@rarimo/nft-checkout`: Goerli and Sepolia names
 - `@rarimo/nft-checkout`: Uniswap V3 native to erc20 path encoding
+- `@rarimo/nft-checkout`: Multiple copies of the native token in the token list
 
 ## [1.3.0] - 2023-03-03
 ### Added
