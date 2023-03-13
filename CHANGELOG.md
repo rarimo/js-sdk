@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- `@rarimo/react-nft-checkout` package
+- `@rarimo/react-nft-checkout`: React implementation of `@rarimo/nft-checkout` package
 - `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
 - `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT chekout
 
