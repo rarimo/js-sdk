@@ -15,9 +15,6 @@
       "require": "./dist/react-provider.cjs.js"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "vite-dev-server": "vite",
     "vite-build": "vite build",

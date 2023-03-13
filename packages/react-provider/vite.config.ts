@@ -27,42 +27,12 @@ export default defineConfig(({ mode }) => {
           fileName: format => `react-provider.${format}.js`,
         },
         rollupOptions: {
-          // make sure to externalize deps that shouldn't be bundled
-          // into your library
           external: ['react'],
-          // output: {
-          //   // Provide global variables to use in the UMD build
-          //   // for externalized deps
-          //   globals: {},
-          // },
         },
         sourcemap: true,
       },
     }),
-    publicDir: 'static',
-    plugins: [
-      react(),
-      tsconfigPaths(),
-      dts(),
-      {
-        name: 'inject',
-        transformIndexHtml() {
-          return isProduction
-            ? []
-            : [
-                {
-                  tag: 'script',
-                  attrs: {
-                    type: 'module',
-                    src: 'https://unpkg.com/web3@latest/dist/web3.min.js',
-                    // defer: true,
-                  },
-                  injectTo: 'head',
-                },
-              ]
-        },
-      },
-    ],
+    plugins: [react(), tsconfigPaths(), dts()],
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
       dedupe: ['react'],
