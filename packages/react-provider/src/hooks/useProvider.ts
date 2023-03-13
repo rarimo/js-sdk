@@ -34,6 +34,15 @@ export const useProvider = (
       chainId: provider?.chainId,
       chainType: provider?.chainType,
       address: provider?.address,
+      connect: provider?.connect,
+      addChain: provider?.addChain,
+      switchChain: provider?.switchChain,
+      signAndSendTx: provider?.signAndSendTx,
+      signMessage: provider?.signMessage,
+      getHashFromTx: provider?.getHashFromTx,
+      getTxUrl: provider?.getTxUrl,
+      getAddressUrl: provider?.getAddressUrl,
+      getWeb3Provider: provider?.getWeb3Provider,
     }
   })
 
@@ -74,5 +83,8 @@ export const useProvider = (
     }
   }, [provider, setListeners])
 
-  return { provider, ...providerReactiveState }
+  return {
+    provider,
+    ...providerReactiveState,
+  }
 }
