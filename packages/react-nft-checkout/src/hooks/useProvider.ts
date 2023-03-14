@@ -23,7 +23,7 @@ type ProviderEventPayload =
   | ProviderInitiatedEventPayload
 
 export const useProvider = (
-  providerProxy: ProviderProxyConstructor,
+  providerProxy?: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
 ) => {
   const [provider, setProvider] = useState<IProvider | null>(null)
@@ -55,6 +55,8 @@ export const useProvider = (
   }, [provider])
 
   useEffect(() => {
+    if (!providerProxy) return
+
     const initProvider = async () => {
       const initedProvider = await createProvider(
         providerProxy,
@@ -67,7 +69,9 @@ export const useProvider = (
   }, [providerProxy, createProviderOpts])
 
   useEffect(() => {
+    provider?.clearHandlers()
     setListeners()
+    provider?.connect()
 
     return () => {
       provider?.clearHandlers()

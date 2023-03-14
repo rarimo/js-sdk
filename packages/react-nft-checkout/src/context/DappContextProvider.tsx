@@ -9,13 +9,16 @@ import {
 import {
   CreateProviderOpts,
   IProvider,
-  MetamaskProvider,
+  ProviderProxyConstructor,
 } from '@rarimo/provider'
 import { createContext, ReactNode, useMemo, useState } from 'react'
 
 import { useCheckoutOperation, useProvider } from '@/hooks'
 
 export type DappContextType = {
+  setSelectedProviderProxy: React.Dispatch<
+    React.SetStateAction<ProviderProxyConstructor | undefined>
+  >
   provider: IProvider | null
   checkoutOperation: INFTCheckoutOperation | null
   selectedChain?: BridgeChain
@@ -55,8 +58,12 @@ export const DappContextProvider = ({
   const [selectedPaymentToken, setSelectedPaymentToken] =
     useState<PaymentToken>()
 
+  const [selectedProviderProxy, setSelectedProviderProxy] = useState<
+    ProviderProxyConstructor | undefined
+  >()
+
   const { provider, providerReactiveState } = useProvider(
-    MetamaskProvider,
+    selectedProviderProxy,
     createProviderOpts,
   )
   const { checkoutOperation, checkoutOperationReactiveState } =
@@ -90,6 +97,7 @@ export const DappContextProvider = ({
   const memoizedContextValue = useMemo(() => {
     const ctx: DappContextType = {
       isInitialized,
+      setSelectedProviderProxy,
       provider,
       checkoutOperation,
       selectedChain,
@@ -120,7 +128,7 @@ export const DappContextProvider = ({
 
   return (
     <DappContext.Provider value={memoizedContextValue}>
-      {isInitialized ? <>{children}</> : null}
+      {children}
     </DappContext.Provider>
   )
 }
