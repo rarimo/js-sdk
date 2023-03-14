@@ -1,4 +1,3 @@
-import { BN } from '@distributedlab/tools'
 import { Box, Card, CircularProgress, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
@@ -48,15 +47,7 @@ const TransactionSummary = ({
             <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">Spent:</Typography>
               <Typography variant="subtitle1">
-                {`${BN.fromBigInt(
-                  targetNft.price.value,
-                  targetNft.price.decimals,
-                )} ${
-                  checkoutOperation?.chainFrom?.token.symbol
-                } = ${BN.fromBigInt(
-                  estimatedPrice.price.value,
-                  estimatedPrice.price.decimals,
-                )} ${estimatedPrice.price.symbol}`}
+                {`${targetNft.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
               </Typography>
             </Card>
           </Box>

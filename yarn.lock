@@ -2460,7 +2460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rarimo/nft-checkout@workspace:*, @rarimo/nft-checkout@workspace:packages/nft-checkout":
+"@rarimo/nft-checkout@workspace:^, @rarimo/nft-checkout@workspace:packages/nft-checkout":
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
@@ -2541,7 +2541,7 @@ __metadata:
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
     "@mui/material": ^5.11.10
-    "@rarimo/nft-checkout": "workspace:*"
+    "@rarimo/nft-checkout": "workspace:^"
     "@types/node": ^18.6.5
     "@types/react": ^18
     "@types/react-dom": ^18

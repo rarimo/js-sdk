@@ -9,7 +9,7 @@ export const App = () => {
   const targetNft = useRef({
     chainId: 11155111, // Source chain id (Sepolia in our case)
     address: '0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1', // Contract address
-    recipient: '0x8fe0d4923f61ff466430f63471e27b89a7cf0c92', // Recipient wallet address
+    recipient: '0x0000000000000000000000000000000000000000', // Recipient wallet address
     price: Price.fromRaw('0.01', 18, 'ETH'),
     // The token to swap the payment token to
     swapTargetTokenSymbol: 'WETH',

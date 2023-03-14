@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "license": "MIT",
   "sideEffects": false,
-  "types": "./dist/index.d.ts",
+  "types": "index.d.ts",
   "main": "./dist/react-nft-checkout.cjs.js",
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
@@ -55,7 +55,7 @@
     "iconoir-react": "^6.2.1"
   },
   "dependencies": {
-    "@rarimo/nft-checkout": "workspace:*"
+    "@rarimo/nft-checkout": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

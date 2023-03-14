@@ -1,4 +1,3 @@
-import { BN } from '@distributedlab/tools'
 import { Box, Card, Divider, Typography } from '@mui/material'
 import { EstimatedPrice } from '@rarimo/nft-checkout'
 
@@ -40,15 +39,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
               >
                 <Typography variant="subtitle1">Price conversion</Typography>
                 <Typography variant="subtitle1">
-                  {`${BN.fromBigInt(
-                    targetNft.price.value,
-                    targetNft.price.decimals,
-                  )} ${
-                    checkoutOperation?.chainFrom?.token.symbol
-                  } = ${BN.fromBigInt(
-                    estimatedPrice.price.value,
-                    estimatedPrice.price.decimals,
-                  )} ${estimatedPrice.price.symbol}`}
+                  {`${targetNft.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
                 </Typography>
               </Box>
             </Box>

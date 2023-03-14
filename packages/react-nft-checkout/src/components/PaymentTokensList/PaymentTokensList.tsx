@@ -29,12 +29,11 @@ const PaymentTokensList = () => {
       try {
         setIsLoading(true)
         setIsLoadFailed(false)
-        if (!selectedChain) {
-          setTokens([])
-        } else {
-          const paymentTokens = await loadPaymentTokens?.(selectedChain)
-          setTokens(paymentTokens?.filter(token => Number(token.balance)) || [])
-        }
+
+        const paymentTokens = selectedChain
+          ? (await loadPaymentTokens?.(selectedChain)) ?? []
+          : []
+        setTokens(paymentTokens)
       } catch (error) {
         setIsLoadFailed(true)
         provider?.switchChain(ChainNames.Goerli)
@@ -54,7 +53,7 @@ const PaymentTokensList = () => {
   return (
     <>
       {isLoadFailed ? (
-        <ErrorText text="An error occurred while loading tokens. Change network or try again later." />
+        <ErrorText text="An error occurred while loading tokens. Change the network or try again later." />
       ) : (
         <>
           {isLoading ? (
@@ -102,7 +101,7 @@ const PaymentTokensList = () => {
                   })}
                 </List>
               ) : (
-                <ErrorText text="No supported token found in user wallet. Please add supported tokens." />
+                <ErrorText text="No supported token was found in the user's wallet. Please add supported tokens." />
               )}
             </>
           )}

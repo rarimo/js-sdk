@@ -92,7 +92,7 @@ const CheckoutModal = () => {
                 </AppButton>
               ) : (
                 <ErrorText
-                  text={`Not enough ${selectedPaymentToken?.symbol} tokens in wallet. Please select other token.`}
+                  text={`Not enough ${selectedPaymentToken?.symbol} tokens in the wallet balance. Please select other token.`}
                 />
               )}
             </>
