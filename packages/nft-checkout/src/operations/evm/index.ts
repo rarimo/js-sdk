@@ -168,7 +168,7 @@ export class EVMOperation
     }
 
     if (this.#provider.chainId != chain.id) {
-      await this.#switchChain(chain.id)
+      await this.#switchChain(chain)
     }
 
     return getPaymentTokens(
@@ -343,17 +343,18 @@ export class EVMOperation
     return this.#tokens
   }
 
-  async #switchChain(chainId?: ChainId) {
+  async #switchChain(chain?: BridgeChain) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
+    const targetChain = chain ?? this.#chainFrom
     try {
-      await this.#provider.switchChain(chainId ?? this.#chainFrom!.id)
+      await this.#provider.switchChain(targetChain!.id)
     } catch (e) {
       if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
         throw e
       }
-      await this.#provider.addChain!(this.#chainFrom!)
-      await this.#switchChain(chainId)
+      await this.#provider.addChain!(targetChain!)
+      await this.#switchChain(targetChain)
     }
   }
 }
