@@ -107,7 +107,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://snowtrace.io',
     type: ChainTypes.EVM,
     contractAddress: '0x2021Fa349Ec57F33F03961E430f54d9b05781E3c',
-    icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
+    icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
     contactVersion: SwapContractVersion.TraderJoe,
   },
   {
@@ -121,7 +121,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://testnet.snowtrace.io',
     type: ChainTypes.EVM,
-    icon: 'https://github.com/MetaMask/metamask-extension/blob/develop/app/images/avax-token.png',
+    icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
     contractAddress: '0x13734D554d25EA67DFD45653659e447996a1C9B4',
     contactVersion: SwapContractVersion.TraderJoe,
   },
