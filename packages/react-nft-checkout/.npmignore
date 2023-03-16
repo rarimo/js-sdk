@@ -1,0 +1,9 @@
+/.github/
+src/test/
+src/**/*.test.ts
+index.html
+jest.config.js
+tsconfig.json
+tsconfig.eslint.json
+tsconfig.node.json
+vite.config.ts

@@ -1,0 +1,63 @@
+{
+  "name": "@rarimo/react-nft-checkout",
+  "version": "1.4.0",
+  "license": "MIT",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "main": "./dist/react-nft-checkout.cjs.js",
+  "module": "./dist/react-nft-checkout.es.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/react-nft-checkout.cjs.js",
+      "import": "./dist/react-nft-checkout.es.js",
+      "default": "./dist/react-nft-checkout.es.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-nft-checkout"
+  },
+  "scripts": {
+    "vite-dev-server": "vite",
+    "vite-build": "vite build",
+    "start": "cross-env VITE_APP_ENVIRONMENT=development yarn vite-dev-server",
+    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production yarn vite-build",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@types/node": "^18.6.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^3.1.0",
+    "chalk": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.16",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^4.1.1",
+    "vite-plugin-dts": "^2.0.0-beta.0",
+    "vite-tsconfig-paths": "^4.0.5"
+  },
+  "peerDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "optionalDependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.10",
+    "iconoir-react": "^6.2.1"
+  },
+  "dependencies": {
+    "@rarimo/nft-checkout": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

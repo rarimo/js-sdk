@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `@rarimo/react-nft-checkout`: React implementation of `@rarimo/nft-checkout` package
+- `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
+- `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT chekout
 
 ## [1.4.0] - 2023-03-13
 ### Added

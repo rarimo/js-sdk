@@ -1,0 +1,9 @@
+.ListItemIcon,
+.DefaultIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.ListItemIcon {
+  object-fit: cover;
+}
