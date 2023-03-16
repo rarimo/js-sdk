@@ -1,6 +1,7 @@
 import {
   createProvider,
   CreateProviderOpts,
+  EthProviderRpcError,
   IProvider,
   ProviderChainChangedEventPayload,
   ProviderConnectRelatedEventPayload,
@@ -36,6 +37,7 @@ export const useProvider = (
       address: provider?.address,
     }
   })
+  const [createProviderError, setCreateProviderError] = useState('')
 
   const setListeners = useCallback(() => {
     if (!provider) return
@@ -58,11 +60,18 @@ export const useProvider = (
     if (!providerProxy) return
 
     const initProvider = async () => {
-      const initedProvider = await createProvider(
-        providerProxy,
-        createProviderOpts,
-      )
-      setProvider(initedProvider)
+      try {
+        setCreateProviderError('')
+        const initedProvider = await createProvider(
+          providerProxy,
+          createProviderOpts,
+        )
+        setProvider(initedProvider)
+      } catch (error) {
+        setCreateProviderError(
+          (error as unknown as EthProviderRpcError)?.message,
+        )
+      }
     }
 
     initProvider()
@@ -78,5 +87,5 @@ export const useProvider = (
     }
   }, [provider, setListeners])
 
-  return { provider, providerReactiveState }
+  return { provider, providerReactiveState, createProviderError }
 }

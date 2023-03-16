@@ -88,4 +88,12 @@ export const componentsTheme: Components<BaseTheme> = {
       }),
     },
   },
+  MuiSelect: {
+    styleOverrides: {
+      outlined: {
+        display: 'flex',
+        alignItems: 'center',
+      },
+    },
+  },
 }

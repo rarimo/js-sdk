@@ -1,5 +1,6 @@
 export * from './AppButton'
 export { default as AppButton } from './AppButton'
+export { default as BridgeChainSelect } from './BridgeChainSelect'
 export { default as CheckoutModal } from './CheckoutModal'
 export { default as ErrorText } from './ErrorText'
 export { default as LoadingIndicator } from './LoadingIndicator'

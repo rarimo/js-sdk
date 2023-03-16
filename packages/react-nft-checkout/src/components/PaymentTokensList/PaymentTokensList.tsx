@@ -5,7 +5,8 @@ import {
   ListItemButton,
   ListItemText,
 } from '@mui/material'
-import { ChainNames, PaymentToken } from '@rarimo/nft-checkout'
+import { PaymentToken } from '@rarimo/nft-checkout'
+import { EthProviderRpcError } from '@rarimo/provider'
 import { useEffect, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'
@@ -21,22 +22,24 @@ const PaymentTokensList = () => {
   } = useDappContext()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [isLoadFailed, setIsLoadFailed] = useState(false)
+  const [loadingErrorText, setLoadingErrorText] = useState('')
   const [tokens, setTokens] = useState<PaymentToken[]>([])
 
   useEffect(() => {
     const fetchPaymentTokens = async () => {
       try {
         setIsLoading(true)
-        setIsLoadFailed(false)
+        setLoadingErrorText('')
 
         const paymentTokens = selectedChain
           ? (await loadPaymentTokens?.(selectedChain)) ?? []
           : []
         setTokens(paymentTokens)
       } catch (error) {
-        setIsLoadFailed(true)
-        provider?.switchChain(ChainNames.Goerli)
+        setLoadingErrorText(
+          (error as unknown as EthProviderRpcError)?.message ||
+            'An error occurred while loading tokens. Change the network or try again later.',
+        )
       }
       setIsLoading(false)
     }
@@ -45,15 +48,17 @@ const PaymentTokensList = () => {
   }, [loadPaymentTokens, selectedChain, provider])
 
   useEffect(() => {
+    setSelectedPaymentToken(undefined)
+
     return () => {
       setSelectedPaymentToken(undefined)
     }
-  }, [setSelectedPaymentToken])
+  }, [selectedChain, setSelectedPaymentToken])
 
   return (
     <>
-      {isLoadFailed ? (
-        <ErrorText text="An error occurred while loading tokens. Change the network or try again later." />
+      {loadingErrorText ? (
+        <ErrorText text={loadingErrorText} />
       ) : (
         <>
           {isLoading ? (

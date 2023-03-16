@@ -1,39 +1,33 @@
 import {
   BridgeChain,
-  CHAIN_IDS,
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
   INFTCheckoutOperation,
   Target,
 } from '@rarimo/nft-checkout'
-import { ChainTypes, IProvider } from '@rarimo/provider'
+import { IProvider } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
 
 type Props = {
   provider: IProvider | null
   createCheckoutOperationParams?: CreateCheckoutOperationParams
-  selectedChainState: [
-    BridgeChain | undefined,
-    React.Dispatch<React.SetStateAction<BridgeChain | undefined>>,
-  ]
+  selectedChain?: BridgeChain
   targetNft?: Target
 }
 
 export const useCheckoutOperation = ({
   provider,
   createCheckoutOperationParams,
-  selectedChainState,
+  selectedChain,
   targetNft,
 }: Props) => {
-  const [, setSelectedChain] = selectedChainState
-
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
   const [checkoutOperationReactiveState, setCheckoutOperationReactiveState] =
     useState(() => {
       return {
-        isInitialized: checkoutOperation?.isInitialized,
+        isInitiated: checkoutOperation?.isInitialized,
         chainFrom: checkoutOperation?.chainFrom,
       }
     })
@@ -62,28 +56,17 @@ export const useCheckoutOperation = ({
   }, [createCheckoutOperationParams, provider])
 
   useEffect(() => {
-    if (!checkoutOperation || !targetNft) return
+    if (!checkoutOperation || !targetNft || !selectedChain) return
 
     const init = async () => {
-      // Call asynchronous supportedChains method to get supported chains on selected chain type
-      const chains = await checkoutOperation.supportedChains()
-      // In our case we hardcode Goerli chain as selected chain
-      const selectedChain = chains.find(
-        i => i.id === CHAIN_IDS[ChainTypes.EVM].Goerli,
-      )
-
-      setSelectedChain(selectedChain)
-
-      if (selectedChain) {
-        await checkoutOperation.init({
-          chainIdFrom: selectedChain.id,
-          target: targetNft,
-        })
-      }
+      await checkoutOperation.init({
+        chainIdFrom: selectedChain.id,
+        target: targetNft,
+      })
     }
 
     init()
-  }, [checkoutOperation, setSelectedChain, targetNft])
+  }, [checkoutOperation, selectedChain, targetNft])
 
   useEffect(() => {
     setListeners()

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import {
   AppButton,
+  BridgeChainSelect,
   ErrorText,
   PaymentTokensList,
   PriceConversion,
@@ -13,8 +14,13 @@ import {
 import { useDappContext } from '@/hooks'
 
 const CheckoutModal = () => {
-  const { selectedPaymentToken, checkout, estimatePrice, checkoutTxBundle } =
-    useDappContext()
+  const {
+    isInitialized,
+    selectedPaymentToken,
+    checkout,
+    estimatePrice,
+    checkoutTxBundle,
+  } = useDappContext()
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
   const [estimatedPrice, setEstimatedPrice] = useState<
@@ -68,7 +74,9 @@ const CheckoutModal = () => {
           </Typography>
           <Divider />
 
-          <PaymentTokensList />
+          <BridgeChainSelect />
+
+          {isInitialized && <PaymentTokensList />}
 
           {selectedPaymentToken && (
             <>
@@ -77,23 +85,22 @@ const CheckoutModal = () => {
                 isLoading={isPriceLoading}
                 estimatedPrice={estimatedPrice}
               />
-            </>
-          )}
-
-          {!isPriceLoading && selectedPaymentToken && (
-            <>
-              {isEnoughTokensForCheckout ? (
-                <AppButton
-                  sx={{ mt: '1rem' }}
-                  disabled={!estimatedPrice}
-                  onClick={onCheckoutHandler}
-                >
-                  Checkout
-                </AppButton>
-              ) : (
-                <ErrorText
-                  text={`Not enough ${selectedPaymentToken?.symbol} tokens in the wallet balance. Please select other token.`}
-                />
+              {!isPriceLoading && (
+                <>
+                  {isEnoughTokensForCheckout ? (
+                    <AppButton
+                      sx={{ mt: '1rem' }}
+                      disabled={!estimatedPrice}
+                      onClick={onCheckoutHandler}
+                    >
+                      Checkout
+                    </AppButton>
+                  ) : (
+                    <ErrorText
+                      text={`Not enough ${selectedPaymentToken?.symbol} tokens in the wallet balance. Please select other token.`}
+                    />
+                  )}
+                </>
               )}
             </>
           )}

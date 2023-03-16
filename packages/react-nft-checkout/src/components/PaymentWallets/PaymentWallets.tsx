@@ -13,7 +13,7 @@ import {
 } from '@rarimo/provider'
 import { useCallback } from 'react'
 
-import { CheckoutModal } from '@/components'
+import { CheckoutModal, ErrorText } from '@/components'
 import { useDappContext } from '@/hooks'
 
 import styles from './PaymentWallets.module.css'
@@ -32,7 +32,8 @@ const PROVIDERS_DATA = [
 ]
 
 const PaymentWallets = () => {
-  const { provider, setSelectedProviderProxy } = useDappContext()
+  const { provider, setSelectedProviderProxy, createProviderError } =
+    useDappContext()
 
   const connectProvider = useCallback(
     (proxy: ProviderProxyConstructor) => {
@@ -72,6 +73,8 @@ const PaymentWallets = () => {
               </ListItemButton>
             ))}
           </List>
+
+          {createProviderError && <ErrorText text={createProviderError} />}
         </>
       )}
     </>

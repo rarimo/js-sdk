@@ -11,7 +11,7 @@ import {
   IProvider,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
-import { createContext, ReactNode, useMemo, useState } from 'react'
+import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { useCheckoutOperation, useProvider } from '@/hooks'
 
@@ -20,8 +20,13 @@ export type DappContextType = {
     React.SetStateAction<ProviderProxyConstructor | undefined>
   >
   provider: IProvider | null
+  createProviderError: string
   checkoutOperation: INFTCheckoutOperation | null
+  supportedChains: BridgeChain[]
   selectedChain?: BridgeChain
+  setSelectedChain: React.Dispatch<
+    React.SetStateAction<BridgeChain | undefined>
+  >
   targetNft?: Target
   checkoutTxBundle?: string
   isInitialized: boolean
@@ -52,8 +57,8 @@ export const DappContextProvider = ({
   createProviderOpts,
   createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
-  const selectedChainState = useState<BridgeChain | undefined>()
-  const [selectedChain] = selectedChainState
+  const [supportedChains, setSupportedChains] = useState<BridgeChain[]>([])
+  const [selectedChain, setSelectedChain] = useState<BridgeChain | undefined>()
 
   const [selectedPaymentToken, setSelectedPaymentToken] =
     useState<PaymentToken>()
@@ -62,17 +67,30 @@ export const DappContextProvider = ({
     ProviderProxyConstructor | undefined
   >()
 
-  const { provider, providerReactiveState } = useProvider(
+  const { provider, providerReactiveState, createProviderError } = useProvider(
     selectedProviderProxy,
     createProviderOpts,
   )
+
   const { checkoutOperation, checkoutOperationReactiveState } =
     useCheckoutOperation({
       provider,
       createCheckoutOperationParams,
-      selectedChainState,
+      selectedChain,
       targetNft,
     })
+
+  useEffect(() => {
+    if (!checkoutOperation) return
+
+    const getSupportedChains = async () => {
+      const chains = await checkoutOperation.supportedChains()
+
+      setSupportedChains(chains)
+    }
+
+    getSupportedChains()
+  }, [checkoutOperation])
 
   const isInitialized = useMemo(
     () => Boolean(checkoutOperation?.isInitialized),
@@ -99,8 +117,11 @@ export const DappContextProvider = ({
       isInitialized,
       setSelectedProviderProxy,
       provider,
+      createProviderError,
       checkoutOperation,
+      supportedChains,
       selectedChain,
+      setSelectedChain,
       targetNft,
       checkoutTxBundle,
       loadPaymentTokens,
@@ -115,8 +136,10 @@ export const DappContextProvider = ({
     isInitialized,
     provider,
     providerReactiveState,
+    createProviderError,
     checkoutOperation,
     checkoutOperationReactiveState,
+    supportedChains,
     selectedChain,
     targetNft,
     checkoutTxBundle,
