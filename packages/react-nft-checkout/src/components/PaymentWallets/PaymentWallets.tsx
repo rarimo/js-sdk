@@ -33,6 +33,7 @@ const PROVIDERS_DATA = [
 
 /**
  * @description A list of the wallets detected in the user's browser
+ * @group Components
  */
 const PaymentWallets = () => {
   const { provider, setSelectedProviderProxy, createProviderError } =

@@ -8,11 +8,17 @@ interface Props extends AppButtonProps {
   muiTheme?: Theme
 }
 
+// Typedoc does not appear to render these props correctly because of the destructured parameter, so I made them a bulleted list.
+// See https://typedoc.org/tags/param/#destructured-parameters
+
 /**
  * @description A Buy button that starts a Rarimo transaction
+ * @group Components
  *
- * @param props.text The text for the button; the default is "Buy with Rarimo"
- * @param props.onClick The function to run when the user clicks; by default, the button opens the {@link RarimoPayDialog} component
+ * @param props The properties for the component, including:
+ * - `text`: The text for the button
+ * - `onClick`: The function to run when the user clicks; by default, the button opens the {@link RarimoPayDialog} component
+ * - `muiTheme`: The Material UI theme to apply
  */
 const RarimoPayButton = ({ muiTheme, ...props }: Props) => {
   const [isVisibleSupportedChains, setIsVisibleSupportedChains] =

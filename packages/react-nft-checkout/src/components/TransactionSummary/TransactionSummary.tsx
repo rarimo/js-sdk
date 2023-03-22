@@ -9,6 +9,15 @@ type Props = {
   estimatedPrice?: EstimatedPrice
 }
 
+/**
+ * @description Information about the completed transaction
+ * @group Components
+ *
+ * @param props The properties for the component, including:
+ * - `isTransactionProcessing`: True if the transaction is not yet complete
+ * - `txHash`: The transaction hash
+ * - `estimatedPrice`: An {@link @rarimo/nft-checkout!EstimatedPrice} object with information about the transaction price
+ */
 const TransactionSummary = ({
   isTransactionProcessing,
   txHash,

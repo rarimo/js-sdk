@@ -8,9 +8,11 @@ interface Props {
 
 /**
  * @description An error message
+ * @group Components
  *
- * @param props.text The error message
- * @param props.variant The text variant for the Material UI Typography component
+ * @param props The properties for the component, including:
+ * - `text`: The text of the error message
+ * - `variant`: The Material UI Typography component
  */
 const ErrorText = ({ text, variant = 'subtitle2' }: Props) => {
   return (

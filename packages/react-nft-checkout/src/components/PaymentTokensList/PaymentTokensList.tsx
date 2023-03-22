@@ -14,6 +14,7 @@ import { useDappContext } from '@/hooks'
 
 /**
  * @description A list of the tokens in the user's selected wallet
+ * @group Components
  */
 const PaymentTokensList = () => {
   const {
