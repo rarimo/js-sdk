@@ -40,6 +40,19 @@ type ProviderEventPayload =
   | ProviderChainChangedEventPayload
   | ProviderInitiatedEventPayload
 
+/**
+ * @description A React hook that creates a provider object with access to the user's wallet
+ *
+ * @example
+ * ```ts
+ * const { provider, ...rest } = useProvider(MetamaskProvider)
+ * provider?.connect()
+ * console.log(provider?.address)
+ * ```
+ *
+ * @param providerProxy The type of provider from the @rarimo/provider package, such as {@link @rarimo/provider!MetamaskProvider}
+ * @param createProviderOpts Options for the connection
+ */
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
