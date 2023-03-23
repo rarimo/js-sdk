@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
       dedupe: ['react'],
       alias: {
         '@': `${root}/`,
+        'near-api-js': 'near-api-js/dist/near-api-js.js',
       },
     },
   }

@@ -38,32 +38,45 @@ Here are the packages in the namespace:
 
 ## Webpack Configs
 
-With Webpack 4 you don't need to do anything, but for Webpack 5
-you must add the following code to your Webpack config:
+To use such packages as `@rarimo/provider` and `@rarimo/nft-checkout` in React project, created with [create-react-app](https://create-react-app.dev/) you need to add [craco](https://craco.js.org/) package and config to resolve the ESM version:
+
+```shell
+yarn add -D @craco/craco
+```
+
+Next, in the root of your project (where `package.json` is located) create a file named `craco.config.js` with the following content:
 
 ```js
-module.exports = [
-  {
-    // ...
-    plugins: [
-      ...,
-      new webpack.ProvidePlugin({
-        Buffer: ["buffer", "Buffer"],
-      }),
-    ],
-    // ...
-    resolve: {
-      fallback: {
-        buffer: false,
-        crypto: false,
-        events: false,
-        path: false,
-        stream: false,
-        string_decoder: false,
+module.exports = {
+  webpack: {
+    configure: {
+      module: {
+        rules: [
+          {
+            test: /\.m?js$/,
+            resolve: {
+              fullySpecified: false,
+            },
+          },
+        ],
       },
     },
   },
-]
+}
+```
+
+This config disables the breaking change that causes [this error](https://stackoverflow.com/questions/70964723/webpack-5-in-ceate-react-app-cant-resolve-not-fully-specified-routes).
+
+Then change the `start`/`build`/`test` commands in `package.json` replacing react-scripts to `craco`:
+
+```json
+{
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
+  }
+}
 ```
 
 ## Development
