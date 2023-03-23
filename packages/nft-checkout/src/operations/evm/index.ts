@@ -350,7 +350,7 @@ export class EVMOperation
     try {
       await this.#provider.switchChain(targetChain!.id)
     } catch (e) {
-      if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
+      if (e instanceof providerErrors.ProviderChainNotFoundError) {
         throw e
       }
       await this.#provider.addChain!(targetChain!)

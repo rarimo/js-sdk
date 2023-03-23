@@ -82,7 +82,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
     try {
       await requestAddEthChain(
         this.#provider,
-        Number(chain),
+        Number(chain.id),
         chain.name,
         chain.rpcUrl,
       )
