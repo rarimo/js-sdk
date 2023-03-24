@@ -100,7 +100,9 @@ const PaymentTokensList = () => {
                             },
                           }}
                         />
-                        {paymentToken.balance}
+                        {paymentToken.isNative
+                          ? paymentToken.balance
+                          : paymentToken.balanceRaw.value}
                       </ListItemButton>
                     )
                   })}
