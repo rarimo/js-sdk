@@ -8,6 +8,8 @@ Features of the Rarimo SDK that provide access to users' wallets and map extensi
 
 ## Example
 
+For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo/js-sdk-examples/) on GitHub.
+
 Here is an example that creates a `MetamaskProvider` object for a MetaMask wallet and prints its address:
 
 ```js

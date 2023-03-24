@@ -8,6 +8,8 @@ Features of the Rarimo SDK that create cross-chain transactions based on the Rar
 
 ## Example
 
+For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo/js-sdk-examples/) on GitHub.
+
 Here is an example of creating a transaction on the Goerli test chain:
 
 ```ts

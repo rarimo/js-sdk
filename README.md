@@ -12,7 +12,9 @@ Rarimo is a multichain protocol developed to solve the problems of liquidity, ac
 
 ## Example
 
-For a complete example, see [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html).
+For a complete running example, see [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html).
+
+For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo/js-sdk-examples/) on GitHub.
 
 ## Changelog
 
