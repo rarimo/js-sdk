@@ -31,10 +31,12 @@ The Rarimo SDK is a library that consists of many smaller NPM packages within th
 [@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo.
 Here are the packages in the namespace:
 
-| Package                                | Description                                                                                                                                       | Latest                                                                                                                    |
-|----------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)  | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
-| [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html) | Tools to create cross-train transactions with the Rarimo protocol | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
+| Package                                                                                               | Description                                                                                                                                       | Latest                                                                                                                                  |
+|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)                     | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)                     |
+| [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html)             | Tools to create cross-train transactions with the Rarimo protocol                                                                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout)             |
+| [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)         | React `@rarimo/provider` adapter                                                                                                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)           |
+| [@rarimo/react-nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html) | React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol                                          | [![npm version](https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/react-nft-checkout) |
 
 ## Webpack Configs
 
@@ -195,6 +197,12 @@ yarn lint
 
 ```bash
 yarn rsc 0.1.0
+```
+
+#### Bump version for all packages
+
+```bash
+yarn apply-version 0.1.0
 ```
 
 ### Resources

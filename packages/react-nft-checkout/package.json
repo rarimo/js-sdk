@@ -1,10 +1,10 @@
 {
   "name": "@rarimo/react-nft-checkout",
-  "version": "1.5.0-rc.0",
+  "version": "1.5.0-rc.1",
   "description": "React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol",
   "license": "MIT",
   "sideEffects": false,
-  "types": "index.d.ts",
+  "types": "./dist/index.d.ts",
   "main": "./dist/react-nft-checkout.cjs.js",
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
@@ -23,7 +23,7 @@
     "vite-dev-server": "vite",
     "vite-build": "vite build",
     "start": "cross-env VITE_APP_ENVIRONMENT=development yarn vite-dev-server",
-    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production yarn vite-build",
+    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production NODE_ENV=production  yarn vite-build",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },

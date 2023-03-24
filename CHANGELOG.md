@@ -7,11 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0-rc.1] - 2023-03-24
+### Added
+- `@rarimo/react-nft-checkout`: `NODE_ENV=production` to the build script to force Vite to resolve production modules
+- `@rarimo/react-provider`: `NODE_ENV=production` to the build script force Vite to resolve production modules
+- `root`: `apply-version` Script to easier bump version
+
+### Fixed
+- `@rarimo/react-nft-checkout`: Types path
+- `@rarimo/react-nft-checkout`: npmignore
+- `@rarimo/react-provider`: npmignore
+
 ## [1.5.0-rc.0] - 2023-03-23
 ### Added
 - `@rarimo/react-nft-checkout`: React implementation of `@rarimo/nft-checkout` package
 - `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
 - `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT checkout
+
+### Fixed
+- `@rarimo/react-provider`: [near-api-js](https://github.com/vitejs/vite/issues/9703) vite build issue
 
 ## [1.4.0] - 2023-03-13
 ### Added
@@ -98,7 +112,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.0...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.1...HEAD
+[1.5.0-rc.1]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/rarimo/js-sdk/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/rarimo/js-sdk/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/rarimo/js-sdk/compare/1.2.0...1.3.0
