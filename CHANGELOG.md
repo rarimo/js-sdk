@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0-rc.2] - 2023-03-24
+### Added
+- `@rarimo/react-nft-checkout`: `jsbi` dependency to cover `@uniswap/smart-order-router` peer-dependency
+
 ## [1.5.0-rc.1] - 2023-03-24
 ### Added
 - `@rarimo/react-nft-checkout`: `NODE_ENV=production` to the build script to force Vite to resolve production modules
@@ -112,7 +116,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.1...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.2...HEAD
+[1.5.0-rc.2]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/rarimo/js-sdk/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/rarimo/js-sdk/compare/1.3.0...1.4.0
