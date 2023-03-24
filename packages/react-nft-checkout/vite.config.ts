@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': `${root}/`,
         'near-api-js': 'near-api-js/dist/near-api-js.js',
+        '@uniswap/router-sdk': '@uniswap/router-sdk/dist/router-sdk.esm.js',
       },
     },
   }
