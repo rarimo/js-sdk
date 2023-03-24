@@ -2549,7 +2549,7 @@ __metadata:
     chalk: ^5.0.1
     cross-env: ^7.0.3
     iconoir-react: ^6.2.1
-    jsbi: ^3.2.0
+    jsbi: ^3.2.5
     postcss: ^8.4.16
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -9326,7 +9326,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsbi@npm:^3.1.1, jsbi@npm:^3.1.4, jsbi@npm:^3.2.0, jsbi@npm:^3.2.5":
+"jsbi@npm:^3.1.1, jsbi@npm:^3.1.4, jsbi@npm:^3.2.5":
   version: 3.2.5
   resolution: "jsbi@npm:3.2.5"
   checksum: 642d1bb139ad1c1e96c4907eb159565e980a0d168487626b493d0d0b7b341da0e43001089d3b21703fe17b18a7a6c0f42c92026f71d54471ed0a0d1b3015ec0f

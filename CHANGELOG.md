@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0-rc.4] - 2023-03-24
+### Fixed
+- `@rarimo/react-nft-checkout`: yarn.lock `jsbi` version
+
 ## [1.5.0-rc.3] - 2023-03-24
 ### Fixed
 - `@rarimo/react-nft-checkout`: Trying to fix `jsbi` dependency issue, added `@uniswap/router-sdk` alias to the vite config to resolve esm module
@@ -120,7 +124,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.3...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.4...HEAD
+[1.5.0-rc.4]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.3...1.5.0-rc.4
 [1.5.0-rc.3]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.2...1.5.0-rc.3
 [1.5.0-rc.2]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.0...1.5.0-rc.1
