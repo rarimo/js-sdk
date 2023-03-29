@@ -50,6 +50,8 @@ import {
   loadTokens,
 } from './helpers'
 
+export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
+
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
@@ -148,10 +150,16 @@ export class EVMOperation
     return this.#chains
   }
 
-  public async supportedTokens(): Promise<Token[]> {
+  public async supportedTokens(chain: BridgeChain): Promise<Token[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+    if (!this.#provider.isConnected) {
+      await this.#provider.connect()
+    }
 
-    return this.#tokens
+    if (this.#provider.chainId != chain.id) {
+      await this.#switchChain(chain)
+    }
+    return await this.#loadTokens()
   }
 
   /**
@@ -337,9 +345,7 @@ export class EVMOperation
 
   async #loadTokens() {
     if (!this.isInitialized) return []
-
     this.#tokens = await loadTokens(this.#config, this.#chainFrom!)
-
     return this.#tokens
   }
 

@@ -9,6 +9,7 @@ import {
   ErrorText,
   PaymentTokensList,
   PriceConversion,
+  SwapTokensSelect,
   TransactionSummary,
 } from '@/components'
 import { useDappContext } from '@/hooks'
@@ -17,6 +18,7 @@ const CheckoutModal = () => {
   const {
     isInitialized,
     selectedPaymentToken,
+    selectedSwapToken,
     checkout,
     estimatePrice,
     checkoutTxBundle,
@@ -77,8 +79,9 @@ const CheckoutModal = () => {
           <Divider />
 
           <BridgeChainSelect />
+          {isInitialized && <SwapTokensSelect />}
 
-          {isInitialized && <PaymentTokensList />}
+          {isInitialized && selectedSwapToken && <PaymentTokensList />}
 
           {selectedPaymentToken && (
             <>

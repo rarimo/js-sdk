@@ -5,6 +5,7 @@ import {
   EVMOperation,
   INFTCheckoutOperation,
   Target,
+  Token,
 } from '@rarimo/nft-checkout'
 import { IProvider } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
@@ -14,6 +15,7 @@ type Props = {
   createCheckoutOperationParams?: CreateCheckoutOperationParams
   selectedChain?: BridgeChain
   targetNft?: Target
+  selectedSwapToken?: Token
 }
 
 export const useCheckoutOperation = ({
@@ -21,6 +23,7 @@ export const useCheckoutOperation = ({
   createCheckoutOperationParams,
   selectedChain,
   targetNft,
+  selectedSwapToken,
 }: Props) => {
   const [checkoutOperation, setCheckoutOperation] =
     useState<INFTCheckoutOperation | null>(null)
@@ -57,16 +60,18 @@ export const useCheckoutOperation = ({
 
   useEffect(() => {
     if (!checkoutOperation || !targetNft || !selectedChain) return
-
     const init = async () => {
       await checkoutOperation.init({
         chainIdFrom: selectedChain.id,
-        target: targetNft,
+        target: {
+          ...targetNft,
+          swapTargetTokenSymbol: selectedSwapToken?.symbol ?? 'WETH',
+        },
       })
     }
 
     init()
-  }, [checkoutOperation, selectedChain, targetNft])
+  }, [checkoutOperation, selectedChain, targetNft, selectedSwapToken])
 
   useEffect(() => {
     setListeners()
