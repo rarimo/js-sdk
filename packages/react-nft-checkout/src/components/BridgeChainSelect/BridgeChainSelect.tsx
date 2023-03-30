@@ -11,7 +11,6 @@ import { Network } from 'iconoir-react'
 import { useMemo } from 'react'
 
 import { useDappContext } from '@/hooks'
-
 import styles from '@/styles/BridgeChainSelect.module.css'
 
 const BridgeChainSelect = () => {

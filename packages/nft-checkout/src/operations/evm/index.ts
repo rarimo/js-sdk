@@ -156,8 +156,9 @@ export class EVMOperation
       await this.#provider.connect()
     }
 
-    if (this.#provider.chainId != chain?.id) {
-      await this.#switchChain(chain)
+    const targetChain = chain ? chain : this.chainFrom
+    if (this.#provider.chainId != targetChain?.id) {
+      await this.#switchChain(targetChain)
     }
     return await this.#loadTokens()
   }
@@ -174,9 +175,9 @@ export class EVMOperation
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
-
-    if (this.#provider.chainId != chain?.id) {
-      await this.#switchChain(chain)
+    const targetChain = chain ? chain : this.chainFrom
+    if (this.#provider.chainId != targetChain?.id) {
+      await this.#switchChain(targetChain)
     }
 
     return getPaymentTokens(

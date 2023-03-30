@@ -2,7 +2,6 @@ import { Dialog, DialogContent } from '@mui/material'
 import { Cancel } from 'iconoir-react'
 
 import { PaymentWallets } from '@/components'
-
 import styles from '@/styles/RarimoPayDialog.module.css'
 
 const RarimoPayDialog = ({
