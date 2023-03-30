@@ -9,6 +9,14 @@ type Props = {
   estimatedPrice?: EstimatedPrice
 }
 
+/**
+ * @description Information about the fees for converting tokens
+ * @group Components
+ *
+ * @param props The properties for the component, including:
+ * - `isLoading`: True if the component is loading and false if it is ready
+ * - `estimatedPrice`: An {@link @rarimo/nft-checkout!EstimatedPrice} object with information about the transaction price
+ */
 const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
   const { targetNft } = useDappContext()
 

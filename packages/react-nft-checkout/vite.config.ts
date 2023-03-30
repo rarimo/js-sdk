@@ -40,6 +40,8 @@ export default defineConfig(({ mode }) => {
       dedupe: ['react'],
       alias: {
         '@': `${root}/`,
+        'near-api-js': 'near-api-js/dist/near-api-js.js',
+        '@uniswap/router-sdk': '@uniswap/router-sdk/dist/router-sdk.esm.js',
       },
     },
   }

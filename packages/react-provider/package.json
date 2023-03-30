@@ -1,25 +1,28 @@
 {
   "name": "@rarimo/react-provider",
-  "version": "1.4.0",
+  "version": "1.5.0-rc.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-provider"
   },
   "license": "MIT",
+  "sideEffects": false,
   "types": "./dist/index.d.ts",
   "main": "./dist/react-provider.cjs.js",
   "module": "./dist/react-provider.es.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/react-provider.cjs.js",
       "import": "./dist/react-provider.es.js",
-      "require": "./dist/react-provider.cjs.js"
+      "default": "./dist/react-provider.es.js"
     }
   },
   "scripts": {
     "vite-dev-server": "vite",
     "vite-build": "vite build",
     "start": "cross-env VITE_APP_ENVIRONMENT=development yarn vite-dev-server",
-    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production yarn vite-build",
+    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production NODE_ENV=production yarn vite-build",
     "clean": "rm -rf dist"
   },
   "dependencies": {
@@ -33,7 +36,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0",
+    "vite": "^4.2.1",
     "vite-plugin-dts": "^2.0.2",
     "vite-tsconfig-paths": "^4.0.5"
   },

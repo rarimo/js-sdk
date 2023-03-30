@@ -12,7 +12,9 @@ Rarimo is a multichain protocol developed to solve the problems of liquidity, ac
 
 ## Example
 
-For a complete example, see [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html).
+For a complete running example, see [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html).
+
+For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo/js-sdk-examples/) on GitHub.
 
 ## Changelog
 
@@ -31,39 +33,54 @@ The Rarimo SDK is a library that consists of many smaller NPM packages within th
 [@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo.
 Here are the packages in the namespace:
 
-| Package                                | Description                                                                                                                                       | Latest                                                                                                                    |
-|----------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)  | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)       |
-| [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html) | Tools to create cross-train transactions with the Rarimo protocol | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout) |
+| Package                                                                                               | Description                                                                                                                                       | Latest                                                                                                                                  |
+|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)                     | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)                     |
+| [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html)             | Tools to create cross-train transactions with the Rarimo protocol                                                                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout)             |
+| [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)         | React `@rarimo/provider` adapter                                                                                                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)           |
+| [@rarimo/react-nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html) | React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol                                          | [![npm version](https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/react-nft-checkout) |
 
 ## Webpack Configs
 
-With Webpack 4 you don't need to do anything, but for Webpack 5
-you must add the following code to your Webpack config:
+To use such packages as `@rarimo/provider` and `@rarimo/nft-checkout` in React project, created with [create-react-app](https://create-react-app.dev/) you need to add [craco](https://craco.js.org/) package and config to resolve the ESM version:
+
+```shell
+yarn add -D @craco/craco
+```
+
+Next, in the root of your project (where `package.json` is located) create a file named `craco.config.js` with the following content:
 
 ```js
-module.exports = [
-  {
-    // ...
-    plugins: [
-      ...,
-      new webpack.ProvidePlugin({
-        Buffer: ["buffer", "Buffer"],
-      }),
-    ],
-    // ...
-    resolve: {
-      fallback: {
-        buffer: false,
-        crypto: false,
-        events: false,
-        path: false,
-        stream: false,
-        string_decoder: false,
+module.exports = {
+  webpack: {
+    configure: {
+      module: {
+        rules: [
+          {
+            test: /\.m?js$/,
+            resolve: {
+              fullySpecified: false,
+            },
+          },
+        ],
       },
     },
   },
-]
+}
+```
+
+This config disables the breaking change that causes [this error](https://stackoverflow.com/questions/70964723/webpack-5-in-ceate-react-app-cant-resolve-not-fully-specified-routes).
+
+Then change the `start`/`build`/`test` commands in `package.json` replacing react-scripts to `craco`:
+
+```json
+{
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
+  }
+}
 ```
 
 ## Development
@@ -182,6 +199,12 @@ yarn lint
 
 ```bash
 yarn rsc 0.1.0
+```
+
+#### Bump version for all packages
+
+```bash
+yarn apply-version 0.1.0
 ```
 
 ### Resources

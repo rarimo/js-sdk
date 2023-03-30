@@ -13,6 +13,10 @@ import { useMemo } from 'react'
 import { useDappContext } from '@/hooks'
 import styles from '@/styles/BridgeChainSelect.module.css'
 
+/**
+ * @description A drop-down list for selecting the chain to use
+ * @group Components
+ */
 const BridgeChainSelect = () => {
   const { supportedChains, selectedChain, setSelectedChain } = useDappContext()
 
