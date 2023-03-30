@@ -21,6 +21,7 @@ const PaymentTokensList = () => {
     selectedChain,
     loadPaymentTokens,
     selectedPaymentToken,
+    selectedSwapToken,
     setSelectedPaymentToken,
     provider,
   } = useDappContext()
@@ -28,13 +29,13 @@ const PaymentTokensList = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingErrorText, setLoadingErrorText] = useState('')
   const [tokens, setTokens] = useState<PaymentToken[]>([])
-
+  const isDisabled = (token?: PaymentToken) =>
+    token?.symbol === selectedSwapToken?.symbol
   useEffect(() => {
     const fetchPaymentTokens = async () => {
       try {
         setIsLoading(true)
         setLoadingErrorText('')
-
         const paymentTokens = selectedChain
           ? (await loadPaymentTokens?.(selectedChain)) ?? []
           : []
@@ -84,6 +85,7 @@ const PaymentTokensList = () => {
                         }
                         key={paymentToken.symbol}
                         onClick={() => setSelectedPaymentToken(paymentToken)}
+                        disabled={isDisabled(paymentToken)}
                       >
                         <ListItemAvatar>
                           <Avatar>
@@ -104,7 +106,9 @@ const PaymentTokensList = () => {
                             },
                           }}
                         />
-                        {paymentToken.balance}
+                        {paymentToken.isNative
+                          ? paymentToken.balance
+                          : paymentToken.balanceRaw.value}
                       </ListItemButton>
                     )
                   })}

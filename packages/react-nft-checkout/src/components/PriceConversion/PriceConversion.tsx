@@ -18,7 +18,7 @@ type Props = {
  * - `estimatedPrice`: An {@link @rarimo/nft-checkout!EstimatedPrice} object with information about the transaction price
  */
 const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
-  const { targetNft, checkoutOperation } = useDappContext()
+  const { targetNft } = useDappContext()
 
   return (
     <>
@@ -47,7 +47,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
               >
                 <Typography variant="subtitle1">Price conversion</Typography>
                 <Typography variant="subtitle1">
-                  {`${targetNft.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
+                  {`${targetNft.price} ${estimatedPrice.to?.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
                 </Typography>
               </Box>
             </Box>

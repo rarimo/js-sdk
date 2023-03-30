@@ -11,8 +11,7 @@ import { Network } from 'iconoir-react'
 import { useMemo } from 'react'
 
 import { useDappContext } from '@/hooks'
-
-import styles from './BridgeChainSelect.module.css'
+import styles from '@/styles/BridgeChainSelect.module.css'
 
 /**
  * @description A drop-down list for selecting the chain to use

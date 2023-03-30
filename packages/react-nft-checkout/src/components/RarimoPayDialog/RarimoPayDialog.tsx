@@ -2,8 +2,7 @@ import { Dialog, DialogContent } from '@mui/material'
 import { Cancel } from 'iconoir-react'
 
 import { PaymentWallets } from '@/components'
-
-import styles from './RarimoPayDialog.module.css'
+import styles from '@/styles/RarimoPayDialog.module.css'
 
 /**
  * @description A dialog box that prompts the user to select a wallet and token to pay with via the {@link PaymentWallets} component and then the {@link PaymentTokensList} component

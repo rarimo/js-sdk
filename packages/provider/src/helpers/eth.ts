@@ -46,6 +46,8 @@ export function handleEthError(error: EthProviderRpcError): void {
   switch (error.code) {
     case 4001:
       throw new errors.ProviderUserRejectedRequest()
+    case 4902:
+      throw new errors.ProviderChainNotFoundError()
     case 4100:
       throw new errors.ProviderUnauthorized()
     case 4200:

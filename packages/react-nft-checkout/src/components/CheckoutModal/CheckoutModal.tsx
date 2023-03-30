@@ -9,6 +9,7 @@ import {
   ErrorText,
   PaymentTokensList,
   PriceConversion,
+  SwapTokensSelect,
   TransactionSummary,
 } from '@/components'
 import { useDappContext } from '@/hooks'
@@ -21,6 +22,7 @@ const CheckoutModal = () => {
   const {
     isInitialized,
     selectedPaymentToken,
+    selectedSwapToken,
     checkout,
     estimatePrice,
     checkoutTxBundle,
@@ -36,9 +38,11 @@ const CheckoutModal = () => {
   const isEnoughTokensForCheckout = useMemo(() => {
     if (!selectedPaymentToken || !estimatedPrice) return false
 
-    return BN.fromBigInt(
-      selectedPaymentToken.balance,
-      1,
+    return BN.fromRaw(
+      selectedPaymentToken.isNative
+        ? selectedPaymentToken.balance
+        : selectedPaymentToken.balanceRaw.value,
+      selectedPaymentToken.decimals,
     ).isGreaterThanOrEqualTo(
       BN.fromBigInt(estimatedPrice.price.value, estimatedPrice.price.decimals),
     )
@@ -79,8 +83,9 @@ const CheckoutModal = () => {
           <Divider />
 
           <BridgeChainSelect />
+          {isInitialized && <SwapTokensSelect />}
 
-          {isInitialized && <PaymentTokensList />}
+          {isInitialized && selectedSwapToken && <PaymentTokensList />}
 
           {selectedPaymentToken && (
             <>
