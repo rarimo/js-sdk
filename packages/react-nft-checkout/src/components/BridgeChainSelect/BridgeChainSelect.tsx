@@ -12,7 +12,7 @@ import { useMemo } from 'react'
 
 import { useDappContext } from '@/hooks'
 
-import styles from '../../styles/BridgeChainSelect.module.css'
+import styles from '@/styles/BridgeChainSelect.module.css'
 
 const BridgeChainSelect = () => {
   const { supportedChains, selectedChain, setSelectedChain } = useDappContext()

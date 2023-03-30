@@ -48,9 +48,9 @@ const SwapTokensSelect = () => {
 
   useEffect(() => {
     const fetchSupportedTokens = async () => {
+      setLoadingErrorText('')
+      setIsLoading(true)
       try {
-        setLoadingErrorText('')
-        setIsLoading(true)
         const supportedTokens = selectedChain
           ? (await getSupportedTokens?.(selectedChain)) ?? []
           : []

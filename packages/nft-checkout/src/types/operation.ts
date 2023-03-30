@@ -35,7 +35,7 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
   init(args: OperationCreateParams): Promise<void>
 
   supportedChains(): Promise<BridgeChain[]>
-  supportedTokens(chain: BridgeChain): Promise<Token[]>
+  supportedTokens(chain?: BridgeChain): Promise<Token[]>
 
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>

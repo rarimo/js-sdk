@@ -150,13 +150,13 @@ export class EVMOperation
     return this.#chains
   }
 
-  public async supportedTokens(chain: BridgeChain): Promise<Token[]> {
+  public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
 
-    if (this.#provider.chainId != chain.id) {
+    if (this.#provider.chainId != chain?.id) {
       await this.#switchChain(chain)
     }
     return await this.#loadTokens()
