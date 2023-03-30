@@ -168,14 +168,14 @@ export class EVMOperation
    * @param chain A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token
    */
-  public async loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]> {
+  public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
 
-    if (this.#provider.chainId != chain.id) {
+    if (this.#provider.chainId != chain?.id) {
       await this.#switchChain(chain)
     }
 
@@ -356,7 +356,7 @@ export class EVMOperation
     try {
       await this.#provider.switchChain(targetChain!.id)
     } catch (e) {
-      if (e instanceof providerErrors.ProviderChainNotFoundError) {
+      if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
         throw e
       }
       await this.#provider.addChain!(targetChain!)

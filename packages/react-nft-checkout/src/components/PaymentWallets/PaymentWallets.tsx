@@ -16,7 +16,7 @@ import { useCallback } from 'react'
 import { CheckoutModal, ErrorText } from '@/components'
 import { useDappContext } from '@/hooks'
 
-import styles from './PaymentWallets.module.css'
+import styles from '../../styles/PaymentWallets.module.css'
 
 const PROVIDERS_DATA = [
   {

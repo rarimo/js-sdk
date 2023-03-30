@@ -10,12 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/react-nft-checkout`: React implementation of `@rarimo/nft-checkout` package
 - `@rarimo/react-nft-checkout`: Exported UI component `RarimoPayButon`
 - `@rarimo/react-nft-checkout`: Exported context provider `DappContextProvider` with core methods for NFT chekout
-- `@rarimo/nft-checkout`: Added selectable token to swap
-- `@rarimo/nft-checkout`: disabled native token and wrrapped native tokens
+- `@rarimo/nft-checkout`: Selectable token to swap
+- `@rarimo/nft-checkout`: Disabled native token and wrrapped native tokens
 
 ### Fixed
-- `@rarimo/nft-checkout`: Adding chain
-- `@rarimo/provider`: Adding chain
+- `@rarimo/nft-checkout`: Automatic change chain
+- `@rarimo/provider`: Automatic change chain
 - `@rarimo/provider`: load supported tokens
 
 

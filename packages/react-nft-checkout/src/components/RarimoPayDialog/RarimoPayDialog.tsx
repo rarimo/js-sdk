@@ -3,7 +3,7 @@ import { Cancel } from 'iconoir-react'
 
 import { PaymentWallets } from '@/components'
 
-import styles from './RarimoPayDialog.module.css'
+import styles from '../../styles/RarimoPayDialog.module.css'
 
 const RarimoPayDialog = ({
   open,

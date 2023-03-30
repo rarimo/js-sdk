@@ -8,13 +8,12 @@ import {
   SelectChangeEvent,
 } from '@mui/material'
 import { TARGET_TOKEN_SYMBOLS, Token } from '@rarimo/nft-checkout'
-import { EthProviderRpcError } from '@rarimo/provider'
 import { Network } from 'iconoir-react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'
-import styles from '@/components/BridgeChainSelect/BridgeChainSelect.module.css'
 import { useDappContext } from '@/hooks'
+import styles from '@/styles/BridgeChainSelect.module.css'
 
 const SwapTokensSelect = () => {
   const {
@@ -28,10 +27,7 @@ const SwapTokensSelect = () => {
 
   const isDisabled = (token?: Token) => {
     if (token?.isNative) return true
-    for (const key in TARGET_TOKEN_SYMBOLS) {
-      if (TARGET_TOKEN_SYMBOLS[key] === token?.symbol) return true
-    }
-    return false
+    return Object.values(TARGET_TOKEN_SYMBOLS).some(i => i === token?.symbol)
   }
   const handleChange = (event: SelectChangeEvent) => {
     const selectedToken = tokens.find(
@@ -53,15 +49,15 @@ const SwapTokensSelect = () => {
   useEffect(() => {
     const fetchSupportedTokens = async () => {
       try {
-        setIsLoading(true)
         setLoadingErrorText('')
+        setIsLoading(true)
         const supportedTokens = selectedChain
           ? (await getSupportedTokens?.(selectedChain)) ?? []
           : []
         setTokens(supportedTokens)
       } catch (error) {
         setLoadingErrorText(
-          (error as unknown as EthProviderRpcError)?.message ||
+          (error as Error)?.message ||
             'An error occurred while loading tokens. Change the network or try again later.',
         )
       }
