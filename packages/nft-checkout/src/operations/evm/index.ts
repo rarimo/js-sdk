@@ -175,9 +175,8 @@ export class EVMOperation
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
-    const targetChain = chain ? chain : this.chainFrom
-    if (this.#provider.chainId != targetChain?.id) {
-      await this.#switchChain(targetChain)
+    if (this.#provider.chainId != chain?.id) {
+      await this.#switchChain(chain)
     }
 
     return getPaymentTokens(
