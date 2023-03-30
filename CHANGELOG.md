@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `@rarimo/nft-checkout`: Automatic change chain
 - `@rarimo/provider`: Automatic change chain
-- `@rarimo/provider`: load supported tokens
+- `@rarimo/provider`: Load supported tokens
 
 
 ## [1.4.0] - 2023-03-13
