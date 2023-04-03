@@ -46,7 +46,7 @@ export interface ProviderProxyConstructor {
   providerType: Providers
 }
 
-interface ProviderBase extends ProviderSubscriber {
+export interface ProviderBase {
   chainId?: ChainId
   chainType?: ChainTypes
   address?: string
@@ -68,11 +68,11 @@ interface ProviderBase extends ProviderSubscriber {
   getWeb3Provider?: () => providers.Web3Provider
 }
 
-export interface ProviderProxy extends ProviderBase {
+export interface ProviderProxy extends ProviderBase, ProviderSubscriber {
   init: () => Promise<void>
 }
 
-export interface IProvider extends ProviderBase {
+export interface IProvider extends ProviderBase, ProviderSubscriber {
   providerType?: Providers
   init: (provider: ProviderInstance) => Promise<this>
 }

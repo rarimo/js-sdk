@@ -10,6 +10,7 @@ import {
   NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
+  ProviderBase,
   ProviderChainChangedEventPayload,
   ProviderConnectRelatedEventPayload,
   ProviderInitiatedEventPayload,
@@ -53,33 +54,51 @@ type ProviderEventPayload =
  * @param providerProxy The type of provider from the @rarimo/provider package, such as {@link @rarimo/provider!MetamaskProvider}
  * @param createProviderOpts Options for the connection
  */
+
+interface useProviderReturnType extends ProviderBase {
+  provider: IProvider
+}
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
-) => {
-  const [provider, setProvider] = useState<IProvider | null>(null)
+): useProviderReturnType => {
+  const [provider, setProvider] = useState<IProvider>({} as IProvider)
   const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
+      address: provider?.address,
       isConnected: provider?.isConnected,
-      providerType: provider?.providerType,
       chainId: provider?.chainId,
       chainType: provider?.chainType,
-      address: provider?.address,
-      connect: provider?.connect,
-      addChain: provider?.addChain,
-      switchChain: provider?.switchChain,
-      signAndSendTx: provider?.signAndSendTx,
-      signMessage: provider?.signMessage,
-      getHashFromTx: provider?.getHashFromTx,
-      getTxUrl: provider?.getTxUrl,
-      getAddressUrl: provider?.getAddressUrl,
-      getWeb3Provider: provider?.getWeb3Provider,
+      providerType: provider?.providerType,
     }
   })
+  const connect = async (): Promise<void> => provider.connect()
+
+  const addChain = async (chain: Chain): Promise<void> =>
+    provider.addChain?.(chain)
+
+  const switchChain = async (chainId: ChainId): Promise<void> =>
+    provider.switchChain(chainId)
+
+  const signAndSendTx = async (
+    txRequestBody: TxRequestBody,
+  ): Promise<TransactionResponse> =>
+    provider.signAndSendTx?.(txRequestBody) ?? ''
+
+  const signMessage = async (message: string): Promise<string> =>
+    provider.signMessage?.(message) ?? ''
+
+  const getHashFromTx = (txResponse: TransactionResponse): string =>
+    provider.getHashFromTx?.(txResponse) ?? ''
+
+  const getTxUrl = (chain: Chain, txHash: string): string =>
+    provider.getTxUrl?.(chain, txHash) ?? ''
+
+  const getAddressUrl = (chain: Chain, address: string): string =>
+    provider.getAddressUrl?.(chain, address) ?? ''
 
   const setListeners = useCallback(() => {
     if (!provider) return
-
     PROVIDER_EVENTS.forEach(event => {
       const providerEvent = provider[event] as (
         cb: (payload: ProviderEventPayload) => void,
@@ -107,8 +126,16 @@ export const useProvider = (
   }, [providerProxy, createProviderOpts])
 
   useEffect(() => {
+    provider?.clearHandlers()
     setListeners()
-
+    setProviderReactiveState(prev => ({
+      ...prev,
+      address: provider?.address,
+      isConnected: provider?.isConnected,
+      chainId: provider?.chainId,
+      chainType: provider?.chainType,
+      providerType: provider?.providerType,
+    }))
     return () => {
       provider?.clearHandlers()
     }
@@ -117,6 +144,14 @@ export const useProvider = (
   return {
     provider,
     ...providerReactiveState,
+    connect,
+    addChain,
+    switchChain,
+    signMessage,
+    signAndSendTx,
+    getTxUrl,
+    getHashFromTx,
+    getAddressUrl,
   }
 }
 
