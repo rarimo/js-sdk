@@ -55,13 +55,13 @@ type ProviderEventPayload =
  * @param createProviderOpts Options for the connection
  */
 
-interface UseProviderTypes extends ProviderBase{
+interface useProviderReturnType extends ProviderBase {
   provider: IProvider
 }
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
-): UseProviderTypes => {
+): useProviderReturnType => {
   const [provider, setProvider] = useState<IProvider>({} as IProvider)
   const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
