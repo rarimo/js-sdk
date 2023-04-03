@@ -10,6 +10,7 @@ import {
   NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
+  ProviderBase,
   ProviderChainChangedEventPayload,
   ProviderConnectRelatedEventPayload,
   ProviderInitiatedEventPayload,
@@ -40,24 +41,6 @@ type ProviderEventPayload =
   | ProviderChainChangedEventPayload
   | ProviderInitiatedEventPayload
 
-type ProviderType = {
-  provider: IProvider | null
-  address?: string
-  isConnected?: boolean
-  chainId?: ChainId
-  chainType?: ChainTypes
-  providerType?: Providers
-  connect: () => Promise<void>
-  addChain: (chain: Chain) => Promise<void>
-  switchChain: (chainId: ChainId) => Promise<void>
-  signMessage: (message: string) => Promise<string | undefined>
-  signAndSendTx: (
-    txRequestBody: TxRequestBody,
-  ) => Promise<TransactionResponse | undefined>
-  getTxUrl: (chain: Chain, txHash: string) => string | undefined
-  getHashFromTx: (txResponse: TransactionResponse) => string | undefined
-  getAddressUrl: (chain: Chain, address: string) => string | undefined
-}
 /**
  * @description A React hook that creates a provider object with access to the user's wallet
  *
@@ -71,11 +54,15 @@ type ProviderType = {
  * @param providerProxy The type of provider from the @rarimo/provider package, such as {@link @rarimo/provider!MetamaskProvider}
  * @param createProviderOpts Options for the connection
  */
+
+interface UseProviderTypes extends ProviderBase{
+  provider: IProvider
+}
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
-): ProviderType => {
-  const [provider, setProvider] = useState<IProvider | null>(null)
+): UseProviderTypes => {
+  const [provider, setProvider] = useState<IProvider>({} as IProvider)
   const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
       address: provider?.address,
@@ -85,30 +72,30 @@ export const useProvider = (
       providerType: provider?.providerType,
     }
   })
-  const connect = async (): Promise<void> => await provider?.connect()
+  const connect = async (): Promise<void> => provider.connect()
 
   const addChain = async (chain: Chain): Promise<void> =>
-    await provider?.addChain?.(chain)
+    provider.addChain?.(chain)
 
   const switchChain = async (chainId: ChainId): Promise<void> =>
-    await provider?.switchChain(chainId)
+    provider.switchChain(chainId)
 
   const signAndSendTx = async (
     txRequestBody: TxRequestBody,
-  ): Promise<TransactionResponse | undefined> =>
-    await provider?.signAndSendTx?.(txRequestBody)
+  ): Promise<TransactionResponse> =>
+    provider.signAndSendTx?.(txRequestBody) ?? ''
 
-  const signMessage = async (message: string): Promise<string | undefined> =>
-    await provider?.signMessage?.(message)
+  const signMessage = async (message: string): Promise<string> =>
+    provider.signMessage?.(message) ?? ''
 
-  const getHashFromTx = (txResponse: TransactionResponse): string | undefined =>
-    provider?.getHashFromTx?.(txResponse)
+  const getHashFromTx = (txResponse: TransactionResponse): string =>
+    provider.getHashFromTx?.(txResponse) ?? ''
 
-  const getTxUrl = (chain: Chain, txHash: string): string | undefined =>
-    provider?.getTxUrl?.(chain, txHash)
+  const getTxUrl = (chain: Chain, txHash: string): string =>
+    provider.getTxUrl?.(chain, txHash) ?? ''
 
-  const getAddressUrl = (chain: Chain, address: string): string | undefined =>
-    provider?.getAddressUrl?.(chain, address)
+  const getAddressUrl = (chain: Chain, address: string): string =>
+    provider.getAddressUrl?.(chain, address) ?? ''
 
   const setListeners = useCallback(() => {
     if (!provider) return
