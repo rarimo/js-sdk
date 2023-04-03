@@ -40,6 +40,24 @@ type ProviderEventPayload =
   | ProviderChainChangedEventPayload
   | ProviderInitiatedEventPayload
 
+type ProviderType = {
+  provider: IProvider | null
+  address?: string
+  isConnected?: boolean
+  chainId?: ChainId
+  chainType?: ChainTypes
+  providerType?: Providers
+  connect: () => Promise<void>
+  addChain: (chain: Chain) => Promise<void>
+  switchChain: (chainId: ChainId) => Promise<void>
+  signMessage: (message: string) => Promise<string | undefined>
+  signAndSendTx: (
+    txRequestBody: TxRequestBody,
+  ) => Promise<TransactionResponse | undefined>
+  getTxUrl: (chain: Chain, txHash: string) => string | undefined
+  getHashFromTx: (txResponse: TransactionResponse) => string | undefined
+  getAddressUrl: (chain: Chain, address: string) => string | undefined
+}
 /**
  * @description A React hook that creates a provider object with access to the user's wallet
  *
@@ -56,30 +74,44 @@ type ProviderEventPayload =
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
-) => {
+): ProviderType => {
   const [provider, setProvider] = useState<IProvider | null>(null)
   const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
+      address: provider?.address,
       isConnected: provider?.isConnected,
-      providerType: provider?.providerType,
       chainId: provider?.chainId,
       chainType: provider?.chainType,
-      address: provider?.address,
-      connect: provider?.connect,
-      addChain: provider?.addChain,
-      switchChain: provider?.switchChain,
-      signAndSendTx: provider?.signAndSendTx,
-      signMessage: provider?.signMessage,
-      getHashFromTx: provider?.getHashFromTx,
-      getTxUrl: provider?.getTxUrl,
-      getAddressUrl: provider?.getAddressUrl,
-      getWeb3Provider: provider?.getWeb3Provider,
+      providerType: provider?.providerType,
     }
   })
+  const connect = async (): Promise<void> => await provider?.connect()
+
+  const addChain = async (chain: Chain): Promise<void> =>
+    await provider?.addChain?.(chain)
+
+  const switchChain = async (chainId: ChainId): Promise<void> =>
+    await provider?.switchChain(chainId)
+
+  const signAndSendTx = async (
+    txRequestBody: TxRequestBody,
+  ): Promise<TransactionResponse | undefined> =>
+    await provider?.signAndSendTx?.(txRequestBody)
+
+  const signMessage = async (message: string): Promise<string | undefined> =>
+    await provider?.signMessage?.(message)
+
+  const getHashFromTx = (txResponse: TransactionResponse): string | undefined =>
+    provider?.getHashFromTx?.(txResponse)
+
+  const getTxUrl = (chain: Chain, txHash: string): string | undefined =>
+    provider?.getTxUrl?.(chain, txHash)
+
+  const getAddressUrl = (chain: Chain, address: string): string | undefined =>
+    provider?.getAddressUrl?.(chain, address)
 
   const setListeners = useCallback(() => {
     if (!provider) return
-
     PROVIDER_EVENTS.forEach(event => {
       const providerEvent = provider[event] as (
         cb: (payload: ProviderEventPayload) => void,
@@ -107,8 +139,16 @@ export const useProvider = (
   }, [providerProxy, createProviderOpts])
 
   useEffect(() => {
+    provider?.clearHandlers()
     setListeners()
-
+    setProviderReactiveState(prev => ({
+      ...prev,
+      address: provider?.address,
+      isConnected: provider?.isConnected,
+      chainId: provider?.chainId,
+      chainType: provider?.chainType,
+      providerType: provider?.providerType,
+    }))
     return () => {
       provider?.clearHandlers()
     }
@@ -117,6 +157,14 @@ export const useProvider = (
   return {
     provider,
     ...providerReactiveState,
+    connect,
+    addChain,
+    switchChain,
+    signMessage,
+    signAndSendTx,
+    getTxUrl,
+    getHashFromTx,
+    getAddressUrl,
   }
 }
 
