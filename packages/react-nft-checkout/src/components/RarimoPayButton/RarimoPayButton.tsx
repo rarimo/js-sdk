@@ -1,11 +1,12 @@
-import { Theme, ThemeProvider } from '@mui/material'
+import { ThemeOptions, ThemeProvider } from '@mui/material'
+import createTheme from '@mui/material/styles/createTheme'
 import { useState } from 'react'
 
 import { AppButton, AppButtonProps, RarimoPayDialog } from '@/components'
-import { defaultTheme } from '@/theme'
+import { componentsTheme, paletteTheme, typographyTheme } from '@/theme'
 
 interface Props extends AppButtonProps {
-  muiTheme?: Theme
+  theme?: ThemeOptions
 }
 
 // Typedoc does not appear to render these props correctly because of the destructured parameter, so I made them a bulleted list.
@@ -20,12 +21,30 @@ interface Props extends AppButtonProps {
  * - `onClick`: The function to run when the user clicks; by default, the button opens the {@link RarimoPayDialog} component
  * - `muiTheme`: The Material UI theme to apply
  */
-const RarimoPayButton = ({ muiTheme, ...props }: Props) => {
+const RarimoPayButton = ({ theme, ...props }: Props) => {
   const [isVisibleSupportedChains, setIsVisibleSupportedChains] =
     useState(false)
 
+  theme ||= {}
+
+  const muiTheme = createTheme({
+    ...theme,
+    palette: {
+      ...paletteTheme,
+      ...(theme?.palette ?? {}),
+    },
+    components: {
+      ...componentsTheme,
+      ...(theme?.components ?? {}),
+    },
+    typography: {
+      ...typographyTheme,
+      ...(theme?.typography ?? {}),
+    },
+  })
+
   return (
-    <ThemeProvider theme={muiTheme || defaultTheme}>
+    <ThemeProvider theme={muiTheme}>
       <AppButton onClick={() => setIsVisibleSupportedChains(true)} {...props}>
         Buy with Rarimo
       </AppButton>

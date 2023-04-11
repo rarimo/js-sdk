@@ -1,11 +1,5 @@
-import createTheme from '@mui/material/styles/createTheme'
+import { componentsTheme } from './components.theme'
+import { paletteTheme } from './palette.theme'
+import { typographyTheme } from './typography.theme'
 
-import { componentsTheme } from '@/theme/components.theme'
-import { paletteTheme } from '@/theme/palette.theme'
-import { typographyTheme } from '@/theme/typography.theme'
-
-export const defaultTheme = createTheme({
-  palette: paletteTheme,
-  components: componentsTheme,
-  typography: typographyTheme,
-})
+export { componentsTheme, paletteTheme, typographyTheme }
