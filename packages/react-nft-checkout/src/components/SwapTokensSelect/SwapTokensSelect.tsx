@@ -45,10 +45,10 @@ const SwapTokensSelect = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingErrorText, setLoadingErrorText] = useState('')
   const [tokens, setTokens] = useState<Token[]>([])
-  const fetchingTokens = useRef(false)
+  const isLoadingTokens = useRef(false)
   useEffect(() => {
     const fetchSupportedTokens = async () => {
-      fetchingTokens.current = true
+      isLoadingTokens.current = true
       setLoadingErrorText('')
       setIsLoading(true)
       try {
@@ -62,11 +62,11 @@ const SwapTokensSelect = () => {
             'An error occurred while loading tokens. Change the network or try again later.',
         )
       } finally {
-        fetchingTokens.current = false
+        isLoadingTokens.current = false
       }
       setIsLoading(false)
     }
-    if (!fetchingTokens.current) {
+    if (!isLoadingTokens.current) {
       fetchSupportedTokens()
     }
   }, [selectedChain, provider, getSupportedTokens])
