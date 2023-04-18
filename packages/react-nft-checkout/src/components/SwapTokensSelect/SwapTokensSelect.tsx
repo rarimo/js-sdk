@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { TARGET_TOKEN_SYMBOLS, Token } from '@rarimo/nft-checkout'
 import { Network } from 'iconoir-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'
 import { useDappContext } from '@/hooks'
@@ -45,9 +45,10 @@ const SwapTokensSelect = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingErrorText, setLoadingErrorText] = useState('')
   const [tokens, setTokens] = useState<Token[]>([])
-
+  const fetchingTokens = useRef(false)
   useEffect(() => {
     const fetchSupportedTokens = async () => {
+      fetchingTokens.current = true
       setLoadingErrorText('')
       setIsLoading(true)
       try {
@@ -60,11 +61,14 @@ const SwapTokensSelect = () => {
           (error as Error)?.message ||
             'An error occurred while loading tokens. Change the network or try again later.',
         )
+      } finally {
+        fetchingTokens.current = false
       }
       setIsLoading(false)
     }
-
-    fetchSupportedTokens()
+    if (!fetchingTokens.current) {
+      fetchSupportedTokens()
+    }
   }, [selectedChain, provider, getSupportedTokens])
 
   useEffect(() => {
