@@ -2,7 +2,7 @@ import { TransactionRequest } from '@ethersproject/abstract-provider'
 import { Deferrable } from '@ethersproject/properties'
 import { ethers, providers } from 'ethers'
 
-import { ChainTypes, ProviderEvents } from '@/enums'
+import { ChainTypes, ProviderEventBusEvents, ProviderEvents } from '@/enums'
 import {
   connectEthAccounts,
   getEthExplorerAddressUrl,
@@ -61,13 +61,12 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   async init(): Promise<void> {
     await this.#setListeners()
     const currentAccounts = await this.#provider.listAccounts()
-    this.#address = currentAccounts[0]
+    const network = await this.#provider.getNetwork()
 
-    this.emitInitiated({
-      chainId: this.#chainId,
-      address: this.#address,
-      isConnected: this.isConnected,
-    })
+    this.#address = currentAccounts[0]
+    this.#chainId = hexToDecimal(network.chainId as ChainId)
+
+    this.#emitEvent(ProviderEventBusEvents.Initiated)
   }
 
   async switchChain(chainId: ChainId): Promise<void> {
@@ -124,41 +123,29 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   async #setListeners() {
     const stubProvider = this.#provider.provider as providers.BaseProvider
 
-    stubProvider.on(ProviderEvents.Connect, async () => {
-      const currentAccounts = await this.#provider.listAccounts()
-      this.#address = currentAccounts[0] ?? ''
-
-      this.emitConnect({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
-    })
-
-    stubProvider.on(ProviderEvents.Disconnect, () => {
-      this.#address = ''
-
-      this.emitDisconnect({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
-    })
-
     stubProvider.on(ProviderEvents.AccountsChanged, async () => {
       const currentAccounts = await this.#provider.listAccounts()
       this.#address = currentAccounts[0] ?? ''
 
-      this.emitAccountChanged({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+      this.#emitEvent(ProviderEventBusEvents.AccountChanged)
+      this.#emitEvent(
+        this.isConnected
+          ? ProviderEventBusEvents.Connect
+          : ProviderEventBusEvents.Disconnect,
+      )
     })
 
     stubProvider.on(ProviderEvents.ChainChanged, (chainId: ChainId) => {
       this.#chainId = hexToDecimal(chainId)
+      this.#emitEvent(ProviderEventBusEvents.ChainChanged)
+    })
+  }
 
-      this.emitChainChanged({
-        chainId: this.#chainId,
-      })
+  #emitEvent(event: ProviderEventBusEvents) {
+    this.emit(event, {
+      address: this.#address,
+      chainId: this.#chainId,
+      isConnected: this.isConnected,
     })
   }
 }

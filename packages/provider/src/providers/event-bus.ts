@@ -1,12 +1,7 @@
 import { EventEmitter } from '@distributedlab/tools'
 
 import { ProviderEventBusEvents } from '@/enums'
-import {
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderEventMap,
-  ProviderInitiatedEventPayload,
-} from '@/types'
+import { ProviderEventMap, ProviderEventPayload } from '@/types'
 
 export class ProviderEventBus {
   readonly #emitter = new EventEmitter<ProviderEventMap>()
@@ -15,49 +10,30 @@ export class ProviderEventBus {
     return this.#emitter
   }
 
-  public emitInitiated(e: ProviderInitiatedEventPayload): void {
-    this.#emitter.emit(ProviderEventBusEvents.Initiated, e)
+  public emit(
+    event: ProviderEventBusEvents,
+    payload: ProviderEventPayload,
+  ): void {
+    this.#emitter.emit(event, payload)
   }
 
-  public emitConnect(e: ProviderConnectRelatedEventPayload): void {
-    this.#emitter.emit(ProviderEventBusEvents.Connect, e)
-  }
-
-  public emitDisconnect(e: ProviderConnectRelatedEventPayload): void {
-    this.#emitter.emit(ProviderEventBusEvents.Disconnect, e)
-  }
-
-  public emitAccountChanged(e: ProviderConnectRelatedEventPayload): void {
-    this.#emitter.emit(ProviderEventBusEvents.AccountChanged, e)
-  }
-
-  public emitChainChanged(e: ProviderChainChangedEventPayload): void {
-    this.#emitter.emit(ProviderEventBusEvents.ChainChanged, e)
-  }
-
-  public onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void {
+  public onInitiated(cb: (e: ProviderEventPayload) => void): void {
     this.#emitter.once(ProviderEventBusEvents.Initiated, cb)
   }
 
-  public onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void {
+  public onConnect(cb: (e: ProviderEventPayload) => void): void {
     this.#emitter.on(ProviderEventBusEvents.Connect, cb)
   }
 
-  public onDisconnect(
-    cb: (e: ProviderConnectRelatedEventPayload) => void,
-  ): void {
+  public onDisconnect(cb: (e: ProviderEventPayload) => void): void {
     this.#emitter.on(ProviderEventBusEvents.Disconnect, cb)
   }
 
-  public onAccountChanged(
-    cb: (e: ProviderConnectRelatedEventPayload) => void,
-  ): void {
+  public onAccountChanged(cb: (e: ProviderEventPayload) => void): void {
     this.#emitter.on(ProviderEventBusEvents.AccountChanged, cb)
   }
 
-  public onChainChanged(
-    cb: (e: ProviderChainChangedEventPayload) => void,
-  ): void {
+  public onChainChanged(cb: (e: ProviderEventPayload) => void): void {
     this.#emitter.on(ProviderEventBusEvents.ChainChanged, cb)
   }
 

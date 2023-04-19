@@ -11,9 +11,7 @@ import {
   NearTransactionResponse,
   NearTxRequestBody,
   ProviderBase,
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderInitiatedEventPayload,
+  ProviderEventPayload,
   ProviderInstance,
   ProviderProxy,
   ProviderProxyConstructor,
@@ -35,11 +33,6 @@ const PROVIDER_EVENTS: Array<keyof IProvider> = [
   'onChainChanged',
   'onDisconnect',
 ]
-
-type ProviderEventPayload =
-  | ProviderConnectRelatedEventPayload
-  | ProviderChainChangedEventPayload
-  | ProviderInitiatedEventPayload
 
 /**
  * @description A React hook that creates a provider object with access to the user's wallet
@@ -166,9 +159,7 @@ export type {
   NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderInitiatedEventPayload,
+  ProviderEventPayload,
   ProviderInstance,
   ProviderProxy,
   ProviderProxyConstructor,

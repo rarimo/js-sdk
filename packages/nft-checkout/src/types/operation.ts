@@ -9,10 +9,9 @@ import { EstimatedPrice } from './token'
 
 export type Target = {
   chainId: ChainId
-  address: Address
-  recipient: Address
   price: Price
   swapTargetTokenSymbol: TokenSymbol // WETH, USDT, etc
+  recipient?: Address
   slippage?: number // 0.5, 1, 5, 10 etc
 }
 
@@ -39,5 +38,5 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
 
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>
-  checkout(e: EstimatedPrice, bundle: TxBundle): Promise<string>
+  checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string>
 }

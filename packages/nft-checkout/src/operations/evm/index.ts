@@ -9,9 +9,7 @@ import {
   NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderInitiatedEventPayload,
+  ProviderEventPayload,
   ProviderInstance,
   Providers,
   RawProvider,
@@ -210,7 +208,7 @@ export class EVMOperation
    * @param bundle The transaction bundle
    * @returns The hash of the transaction
    */
-  public async checkout(e: EstimatedPrice, bundle: TxBundle): Promise<string> {
+  public async checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string> {
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
@@ -275,10 +273,10 @@ export class EVMOperation
     return [amountOutMinimum, e.price.value]
   }
 
-  #encodeTxData(e: EstimatedPrice, bundle: TxBundle): string {
+  #encodeTxData(e: EstimatedPrice, bundle?: TxBundle): string {
     const chain = e.from.chain
     const functionFragment = this.#getFunctionFragment(e.from, e.to)
-    const receiverAddress = this.#provider.address
+    const receiverAddress = this.#target?.recipient ?? this.#provider.address
     const amounts = this.#getAmounts(e.from, e.to, e)
 
     const network = this.#chains.find(
@@ -286,8 +284,8 @@ export class EVMOperation
     )
 
     const bundleTuple = [
-      bundle.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
-      bundle.bundle,
+      bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
+      bundle?.bundle ?? '',
     ]
 
     return new utils.Interface(
@@ -374,9 +372,7 @@ export type {
   NearProviderType,
   NearTransactionResponse,
   NearTxRequestBody,
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderInitiatedEventPayload,
+  ProviderEventPayload,
   ProviderInstance,
   Providers,
   RawProvider,
