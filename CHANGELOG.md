@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - `@rarimo/react-provider`: `useProvider` hook reactivity
+- `@rarimo/nft-checkout`: Fetching token in the dev mode
 
 ## [1.5.0-rc.5] - 2023-03-30
 ### Added
