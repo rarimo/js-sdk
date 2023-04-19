@@ -1,4 +1,4 @@
-import { NearChains, Providers } from '@/enums'
+import { NearChains, ProviderEventBusEvents, Providers } from '@/enums'
 import {
   getNearExplorerAddressUrl,
   getNearExplorerTxUrl,
@@ -29,9 +29,11 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     super()
     this.#provider = provider as NearProviderType
   }
+
   static get providerType(): Providers {
     return Providers.Near
   }
+
   get isConnected(): boolean {
     return Boolean(this.#chainId && this.#address)
   }
@@ -48,12 +50,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     try {
       await this.#provider.init()
       this.#updateProviderState()
-
-      this.emitInitiated({
-        chainId: this.#chainId,
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+      this.#emitEvent(ProviderEventBusEvents.Initiated)
     } catch (error) {
       handleNearError(error as NearProviderRpcError)
     }
@@ -61,24 +58,20 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
 
   #updateProviderState(): void {
     const networkId = this.#provider.selector?.options.network.networkId
-
     this.#address = this.#provider?.accountId || ''
     this.#chainId = networkId || NearChains.TestNet
   }
 
   async switchChain(chainId: ChainId): Promise<void> {
     this.#chainId = chainId
-    this.emitChainChanged({ chainId })
+    this.#emitEvent(ProviderEventBusEvents.ChainChanged)
   }
 
   async connect(): Promise<void> {
     try {
       await this.#provider.signIn()
       await this.#updateProviderState()
-      this.emitConnect({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+      this.#emitEvent(ProviderEventBusEvents.Connect)
     } catch (error) {
       handleNearError(error as NearProviderRpcError)
     }
@@ -88,6 +81,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     try {
       await this.#provider.signOut()
       this.#updateProviderState()
+      this.#emitEvent(ProviderEventBusEvents.Disconnect)
     } catch (error) {
       handleNearError(error as NearProviderRpcError)
     }
@@ -117,5 +111,13 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     } catch (error) {
       handleNearError(error as NearProviderRpcError)
     }
+  }
+
+  #emitEvent(event: ProviderEventBusEvents) {
+    this.emit(event, {
+      address: this.#address,
+      chainId: this.#chainId,
+      isConnected: this.isConnected,
+    })
   }
 }
