@@ -9,13 +9,23 @@ import {
 } from '@mui/material'
 import { TARGET_TOKEN_SYMBOLS, Token } from '@rarimo/nft-checkout'
 import { Network } from 'iconoir-react'
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'
 import { useDappContext } from '@/hooks'
 import styles from '@/styles/BridgeChainSelect.module.css'
 
 const SwapTokensSelect = () => {
+  const isLoading = useRef(false)
+
+  const isDisabled = (token?: Token) => {
+    if (token?.isNative) return true
+    return Object.values(TARGET_TOKEN_SYMBOLS).some(i => i === token?.symbol)
+  }
+
+  const [loadingErrorText, setLoadingErrorText] = useState('')
+  const [tokens, setTokens] = useState<Token[]>([])
+
   const {
     getSupportedTokens,
     provider,
@@ -25,10 +35,11 @@ const SwapTokensSelect = () => {
     selectedSwapToken,
   } = useDappContext()
 
-  const isDisabled = (token?: Token) => {
-    if (token?.isNative) return true
-    return Object.values(TARGET_TOKEN_SYMBOLS).some(i => i === token?.symbol)
-  }
+  const value = useMemo(
+    () => (selectedSwapToken ? String(selectedSwapToken.symbol) : ''),
+    [selectedSwapToken],
+  )
+
   const handleChange = (event: SelectChangeEvent) => {
     const selectedToken = tokens.find(
       token => token.symbol === event.target.value,
@@ -37,21 +48,11 @@ const SwapTokensSelect = () => {
     setSelectedSwapToken(selectedToken)
   }
 
-  const value = useMemo(
-    () => (selectedSwapToken ? String(selectedSwapToken.symbol) : ''),
-    [selectedSwapToken],
-  )
-
-  const isLoading = useRef(false)
-  const setIsLoading = (value: boolean) => {
-    isLoading.current = value
-  }
-  const [loadingErrorText, setLoadingErrorText] = useState('')
-  const [tokens, setTokens] = useState<Token[]>([])
   useEffect(() => {
     const fetchSupportedTokens = async () => {
       setLoadingErrorText('')
-      setIsLoading(true)
+      isLoading.current = true
+
       try {
         const supportedTokens = selectedChain
           ? (await getSupportedTokens?.(selectedChain)) ?? []
@@ -62,13 +63,12 @@ const SwapTokensSelect = () => {
           (error as Error)?.message ||
             'An error occurred while loading tokens. Change the network or try again later.',
         )
-      } finally {
-        setIsLoading(false)
       }
+
+      isLoading.current = false
     }
-    if (!isLoading.current) {
-      fetchSupportedTokens()
-    }
+
+    if (!isLoading.current) fetchSupportedTokens()
   }, [selectedChain, provider, getSupportedTokens])
 
   useEffect(() => {
