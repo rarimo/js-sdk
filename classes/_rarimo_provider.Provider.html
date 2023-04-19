@@ -21,7 +21,7 @@
 <h3>Description</h3><p>Represents a browser-based wallet.</p>
 <p>To connect to a wallet, create an object to represent the wallet to access with the <code>createProvider()</code> method. These wallet objects implement the <code>Provider</code> interface so you can access different types of wallets in a consistent way.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">createProvider</span><span class="hl-0">, </span><span class="hl-3">MetamaskProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/provider&#39;</span><br/><br/><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-13">getMetamaskWalletAddress</span><span class="hl-0"> = </span><span class="hl-8">async</span><span class="hl-0"> () </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-14">// Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.</span><br/><span class="hl-0">  </span><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-15">provider</span><span class="hl-0"> = </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-13">createProvider</span><span class="hl-0">(</span><span class="hl-3">MetamaskProvider</span><span class="hl-0">)</span><br/><br/><span class="hl-0">  </span><span class="hl-14">// Get the address of the wallet</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-13">log</span><span class="hl-0">(</span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-3">address</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">createProvider</span><span class="hl-0">, </span><span class="hl-3">MetamaskProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/provider&#39;</span><br/><br/><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-15">getMetamaskWalletAddress</span><span class="hl-0"> = </span><span class="hl-8">async</span><span class="hl-0"> () </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-13">// Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.</span><br/><span class="hl-0">  </span><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-14">provider</span><span class="hl-0"> = </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-15">createProvider</span><span class="hl-0">(</span><span class="hl-3">MetamaskProvider</span><span class="hl-0">)</span><br/><br/><span class="hl-0">  </span><span class="hl-13">// Get the address of the wallet</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-15">log</span><span class="hl-0">(</span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-3">address</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -33,7 +33,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/_rarimo_provider.IProvider.html" class="tsd-signature-type" data-tsd-kind="Interface">IProvider</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L41">packages/provider/src/provider.ts:41</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L40">packages/provider/src/provider.ts:40</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -90,24 +90,24 @@
 <h5>proxyConstructor: <a href="../interfaces/_rarimo_provider.ProviderProxyConstructor.html" class="tsd-signature-type" data-tsd-kind="Interface">ProviderProxyConstructor</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="_rarimo_provider.Provider.html" class="tsd-signature-type" data-tsd-kind="Class">Provider</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L46">packages/provider/src/provider.ts:46</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L45">packages/provider/src/provider.ts:45</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_proxy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>#proxy</span><a href="#_proxy" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#proxy<span class="tsd-signature-symbol">?:</span> <a href="../interfaces/_rarimo_provider.ProviderProxy.html" class="tsd-signature-type" data-tsd-kind="Interface">ProviderProxy</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L44">packages/provider/src/provider.ts:44</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L43">packages/provider/src/provider.ts:43</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_proxyConstructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>#proxy<wbr/>Constructor</span><a href="#_proxyConstructor" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#proxy<wbr/>Constructor<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_rarimo_provider.ProviderProxyConstructor.html" class="tsd-signature-type" data-tsd-kind="Interface">ProviderProxyConstructor</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L42">packages/provider/src/provider.ts:42</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L41">packages/provider/src/provider.ts:41</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_selectedProvider" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>#selected<wbr/>Provider</span><a href="#_selectedProvider" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">#selected<wbr/>Provider<span class="tsd-signature-symbol">?:</span> <a href="../enums/_rarimo_provider.Providers.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Providers</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L43">packages/provider/src/provider.ts:43</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L42">packages/provider/src/provider.ts:42</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="address" class="tsd-anchor"></a>
@@ -118,7 +118,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#address">address</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L64">packages/provider/src/provider.ts:64</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L63">packages/provider/src/provider.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="chainId" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>chain<wbr/>Id</span><a href="#chainId" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -127,7 +127,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../types/_rarimo_provider.ChainId.html" class="tsd-signature-type" data-tsd-kind="Type alias">ChainId</a></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#chainId">chainId</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L68">packages/provider/src/provider.ts:68</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L67">packages/provider/src/provider.ts:67</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="chainType" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>chain<wbr/>Type</span><a href="#chainType" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -136,7 +136,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../enums/_rarimo_provider.ChainTypes.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ChainTypes</a></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#chainType">chainType</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L52">packages/provider/src/provider.ts:52</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L51">packages/provider/src/provider.ts:51</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="isConnected" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Connected</span><a href="#isConnected" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -145,7 +145,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#isConnected">isConnected</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L60">packages/provider/src/provider.ts:60</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L59">packages/provider/src/provider.ts:59</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="providerType" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>provider<wbr/>Type</span><a href="#providerType" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -154,7 +154,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../enums/_rarimo_provider.Providers.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Providers</a></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#providerType">providerType</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L56">packages/provider/src/provider.ts:56</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L55">packages/provider/src/provider.ts:55</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="addChain" class="tsd-anchor"></a>
@@ -170,7 +170,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.addChain</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L90">packages/provider/src/provider.ts:90</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L96">packages/provider/src/provider.ts:96</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="clearHandlers" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear<wbr/>Handlers</span><a href="#clearHandlers" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -179,7 +179,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#clearHandlers">clearHandlers</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L150">packages/provider/src/provider.ts:150</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L150">packages/provider/src/provider.ts:150</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="connect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>connect</span><a href="#connect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -188,7 +188,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.connect</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L81">packages/provider/src/provider.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L87">packages/provider/src/provider.ts:87</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getAddressUrl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Address<wbr/>Url</span><a href="#getAddressUrl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -204,7 +204,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.getAddressUrl</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L108">packages/provider/src/provider.ts:108</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L114">packages/provider/src/provider.ts:114</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getHashFromTx" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Hash<wbr/>From<wbr/>Tx</span><a href="#getHashFromTx" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -218,7 +218,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.getHashFromTx</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L100">packages/provider/src/provider.ts:100</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L106">packages/provider/src/provider.ts:106</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getTxUrl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Tx<wbr/>Url</span><a href="#getTxUrl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -234,7 +234,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.getTxUrl</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L104">packages/provider/src/provider.ts:104</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L110">packages/provider/src/provider.ts:110</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getWeb3Provider" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Web3<wbr/>Provider</span><a href="#getWeb3Provider" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -243,146 +243,148 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Web3Provider</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.getWeb3Provider</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L116">packages/provider/src/provider.ts:116</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L122">packages/provider/src/provider.ts:122</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="init" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="init.init-1">init<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderInstance.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInstance</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_rarimo_provider.Provider.html" class="tsd-signature-type" data-tsd-kind="Class">Provider</a><span class="tsd-signature-symbol">&gt;</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="init.init-1">init<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderInstance.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInstance</a>, listeners<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_provider.ProviderListeners.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderListeners</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_rarimo_provider.Provider.html" class="tsd-signature-type" data-tsd-kind="Class">Provider</a><span class="tsd-signature-symbol">&gt;</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>provider: <a href="../types/_rarimo_provider.ProviderInstance.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInstance</a></h5></li></ul></div>
+<h5>provider: <a href="../types/_rarimo_provider.ProviderInstance.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInstance</a></h5></li>
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> listeners: <a href="../types/_rarimo_provider.ProviderListeners.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderListeners</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_rarimo_provider.Provider.html" class="tsd-signature-type" data-tsd-kind="Class">Provider</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.init</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L72">packages/provider/src/provider.ts:72</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L71">packages/provider/src/provider.ts:71</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="onAccountChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Account<wbr/>Changed</span><a href="#onAccountChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="onAccountChanged.onAccountChanged-1">on<wbr/>Account<wbr/>Changed<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onAccountChanged.onAccountChanged-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onAccountChanged.onAccountChanged-1">on<wbr/>Account<wbr/>Changed<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onAccountChanged.onAccountChanged-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a></h5></li></ul></div>
+<h5>e: <a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#onAccountChanged">onAccountChanged</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L124">packages/provider/src/provider.ts:124</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L130">packages/provider/src/provider.ts:130</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="onChainChanged" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Chain<wbr/>Changed</span><a href="#onChainChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="onChainChanged.onChainChanged-1">on<wbr/>Chain<wbr/>Changed<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderChainChangedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderChainChangedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onChainChanged.onChainChanged-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onChainChanged.onChainChanged-1">on<wbr/>Chain<wbr/>Changed<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onChainChanged.onChainChanged-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderChainChangedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderChainChangedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderChainChangedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderChainChangedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_provider.ProviderChainChangedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderChainChangedEventPayload</a></h5></li></ul></div>
+<h5>e: <a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#onChainChanged">onChainChanged</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L130">packages/provider/src/provider.ts:130</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L134">packages/provider/src/provider.ts:134</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="onConnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Connect</span><a href="#onConnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="onConnect.onConnect-1">on<wbr/>Connect<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onConnect.onConnect-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onConnect.onConnect-1">on<wbr/>Connect<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onConnect.onConnect-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a></h5></li></ul></div>
+<h5>e: <a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#onConnect">onConnect</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L136">packages/provider/src/provider.ts:136</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L138">packages/provider/src/provider.ts:138</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="onDisconnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Disconnect</span><a href="#onDisconnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="onDisconnect.onDisconnect-1">on<wbr/>Disconnect<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onDisconnect.onDisconnect-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onDisconnect.onDisconnect-1">on<wbr/>Disconnect<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onDisconnect.onDisconnect-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_provider.ProviderConnectRelatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderConnectRelatedEventPayload</a></h5></li></ul></div>
+<h5>e: <a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#onDisconnect">onDisconnect</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L140">packages/provider/src/provider.ts:140</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L142">packages/provider/src/provider.ts:142</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="onInitiated" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Initiated</span><a href="#onInitiated" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="onInitiated.onInitiated-1">on<wbr/>Initiated<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onInitiated.onInitiated-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onInitiated.onInitiated-1">on<wbr/>Initiated<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onInitiated.onInitiated-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_provider.ProviderInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderInitiatedEventPayload</a></h5></li></ul></div>
+<h5>e: <a href="../types/_rarimo_provider.ProviderEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">ProviderEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/_rarimo_provider.IProvider.html">IProvider</a>.<a href="../interfaces/_rarimo_provider.IProvider.html#onInitiated">onInitiated</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L146">packages/provider/src/provider.ts:146</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L146">packages/provider/src/provider.ts:146</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="signAndSendTx" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>sign<wbr/>And<wbr/>Send<wbr/>Tx</span><a href="#signAndSendTx" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -396,7 +398,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_provider.TransactionResponse.html" class="tsd-signature-type" data-tsd-kind="Type alias">TransactionResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.signAndSendTx</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L94">packages/provider/src/provider.ts:94</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L100">packages/provider/src/provider.ts:100</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="signMessage" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>sign<wbr/>Message</span><a href="#signMessage" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -410,7 +412,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.signMessage</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L112">packages/provider/src/provider.ts:112</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L118">packages/provider/src/provider.ts:118</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="switchChain" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>switch<wbr/>Chain</span><a href="#switchChain" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -424,7 +426,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of IProvider.switchChain</p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/9d93d13/packages/provider/src/provider.ts#L86">packages/provider/src/provider.ts:86</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a00e5c1/packages/provider/src/provider.ts#L92">packages/provider/src/provider.ts:92</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
