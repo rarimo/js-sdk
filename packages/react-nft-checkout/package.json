@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/react-nft-checkout",
-  "version": "1.5.0-rc.5",
+  "version": "1.5.0-rc.6",
   "description": "React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol",
   "license": "MIT",
   "sideEffects": false,
