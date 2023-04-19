@@ -17,6 +17,9 @@ import { createCheckoutOperation, EVMOperation, ChainNames, Price } from '@rarim
 import { createProvider, MetamaskProvider } from '@rarimo/provider'
 import { utils } from "ethers";
 
+// Address of the NFT sale contract
+const CONTRACT_ADDRESS = "0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1"
+
 const sendTransaction = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
   const provider = await createProvider(MetamaskProvider)
@@ -35,8 +38,6 @@ const sendTransaction = async () => {
   const target = {
     // Destination chain id (Sepolia in this case)
     chainId: 11155111,
-    // Address of the NFT sale contract
-    address: "0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1",
     // Recipient's wallet address
     recipient: "0x0000000000000000000000000000000000000000",
     price: Price.fromRaw("0.01", 18, 'ETH'),
@@ -85,7 +86,7 @@ const sendTransaction = async () => {
   const bundle = utils.defaultAbiCoder.encode(
       ["address[]", "uint256[]", "bytes[]"],
       [
-        [target.address],
+        [CONTRACT_ADDRESS],
         [target.price.value],
         [encodedFunctionData],
       ]

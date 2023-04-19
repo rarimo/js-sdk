@@ -3,9 +3,7 @@ import {
   CreateProviderOpts,
   EthProviderRpcError,
   IProvider,
-  ProviderChainChangedEventPayload,
-  ProviderConnectRelatedEventPayload,
-  ProviderInitiatedEventPayload,
+  ProviderEventPayload,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
@@ -17,11 +15,6 @@ const PROVIDER_EVENTS: Array<keyof IProvider> = [
   'onChainChanged',
   'onDisconnect',
 ]
-
-type ProviderEventPayload =
-  | ProviderConnectRelatedEventPayload
-  | ProviderChainChangedEventPayload
-  | ProviderInitiatedEventPayload
 
 export const useProvider = (
   providerProxy?: ProviderProxyConstructor,

@@ -106,7 +106,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://snowtrace.io',
     type: ChainTypes.EVM,
-    contractAddress: '0x2021Fa349Ec57F33F03961E430f54d9b05781E3c',
+    contractAddress: '0xaebaBd54CdD1418b0eb88A5e877EdD6cbC5804f4',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
     contactVersion: SwapContractVersion.TraderJoe,
   },

@@ -7,13 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- `@rarimo/react-provider`: `useProvider` hook reactivity
 - `@rarimo/react-nft-checkout`: Fetching token in the dev mode
+
+## [1.5.0-rc.6] - 2023-04-19
+### Added
+- `@rarimo/provider`: `createProvider` options now accepts listener for provider change state events
+
+### Changed
+- `@rarimo/nft-checkout`: Bundle argument in `NFTCheckoutOperation.checkout` function is now optional
+- `@rarimo/nft-checkout`: Avalanche C-Chain swap contract address
+- `@rarimo/nft-checkout`: `recipient` field from the `Target` interface become optional
+- `@rarimo/provider`: Refactored provider event bus payload to one type for all events
+
+### Fixed
+- `@rarimo/react-provider`: `useProvider` hook reactivity
+- `@rarimo/nft-checkout`: Use of provided recipient address during building swap transaction
+- `@rarimo/provider`: Emit of connect and disconnect events
+
+### Removed
+- `@rarimo/nft-checkout`: `address` field from the `Target` interface
 
 ## [1.5.0-rc.5] - 2023-03-30
 ### Added
 - `@rarimo/nft-checkout`: Selectable token to swap
-- `@rarimo/nft-checkout`: Disabled native token and wrrapped native tokens
+- `@rarimo/nft-checkout`: Disabled native token and wrapped native tokens
 
 ### Fixed
 - `@rarimo/nft-checkout`: Automatic change chain
@@ -137,7 +154,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.5...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.6...HEAD
+[1.5.0-rc.6]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.5...1.5.0-rc.6
 [1.5.0-rc.5]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.4...1.5.0-rc.5
 [1.5.0-rc.4]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.3...1.5.0-rc.4
 [1.5.0-rc.3]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.2...1.5.0-rc.3

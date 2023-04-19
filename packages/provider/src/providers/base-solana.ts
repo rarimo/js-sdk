@@ -1,6 +1,11 @@
 import { PublicKey } from '@solana/web3.js'
 
-import { ChainTypes, ProviderEvents, SolanaChains } from '@/enums'
+import {
+  ChainTypes,
+  ProviderEventBusEvents,
+  ProviderEvents,
+  SolanaChains,
+} from '@/enums'
 import {
   getSolExplorerAddressUrl,
   getSolExplorerTxUrl,
@@ -63,18 +68,13 @@ export class BaseSolanaProvider
     this.#setListeners()
     this.#address = getAddress(this.#provider.publicKey)
     this.#chainId = SolanaChains.DevNet
-
-    this.emitInitiated({
-      chainId: this.#chainId,
-      address: this.#address,
-      isConnected: this.isConnected,
-    })
+    this.#emitEvent(ProviderEventBusEvents.Initiated)
   }
 
   async switchChain(chainId: ChainId) {
     try {
       this.#chainId = chainId
-      this.emitChainChanged({ chainId })
+      this.#emitEvent(ProviderEventBusEvents.ChainChanged)
     } catch (error) {
       handleSolError(error as SolanaProviderRpcError)
     }
@@ -112,29 +112,25 @@ export class BaseSolanaProvider
   #setListeners() {
     this.#provider.on(ProviderEvents.Connect, () => {
       this.#address = getAddress(this.#provider.publicKey)
-
-      this.emitConnect({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+      this.#emitEvent(ProviderEventBusEvents.Connect)
     })
 
     this.#provider.on(ProviderEvents.Disconnect, () => {
       this.#address = getAddress(this.#provider.publicKey)
-
-      this.emitDisconnect({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+      this.#emitEvent(ProviderEventBusEvents.Disconnect)
     })
 
     this.#provider.on(ProviderEvents.AccountChanged, () => {
       this.#address = getAddress(this.#provider.publicKey)
+      this.#emitEvent(ProviderEventBusEvents.AccountChanged)
+    })
+  }
 
-      this.emitAccountChanged({
-        address: this.#address,
-        isConnected: this.isConnected,
-      })
+  #emitEvent(event: ProviderEventBusEvents) {
+    this.emit(event, {
+      address: this.#address,
+      chainId: this.#chainId,
+      isConnected: this.isConnected,
     })
   }
 }

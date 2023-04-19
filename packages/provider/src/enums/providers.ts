@@ -11,10 +11,7 @@ export enum Providers {
 export enum ProviderChecks {
   Fallback = 'isWeb3',
   Metamask = 'isMetaMask',
-
-  // Not implemented yet
   Coinbase = 'isCoinbaseWallet',
-  WalletConnect = 'isWalletConnect',
   Phantom = 'isPhantom',
   Solflare = 'isSolflare',
   Near = 'isNear',
