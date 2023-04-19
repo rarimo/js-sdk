@@ -2,29 +2,35 @@ import { ProviderEventBusEvents } from '@/enums'
 
 import { ChainId } from './chain'
 
-export type ProviderConnectRelatedEventPayload = {
+export type ProviderEventPayload = {
   address?: string
+  chainId?: ChainId
   isConnected: boolean
 }
 
-export type ProviderChainChangedEventPayload = { chainId?: ChainId }
-
-export type ProviderInitiatedEventPayload = ProviderConnectRelatedEventPayload &
-  ProviderChainChangedEventPayload
-
 export type ProviderEventMap = {
-  [ProviderEventBusEvents.Connect]: ProviderConnectRelatedEventPayload
-  [ProviderEventBusEvents.Disconnect]: ProviderConnectRelatedEventPayload
-  [ProviderEventBusEvents.AccountChanged]: ProviderConnectRelatedEventPayload
-  [ProviderEventBusEvents.ChainChanged]: ProviderChainChangedEventPayload
-  [ProviderEventBusEvents.Initiated]: ProviderInitiatedEventPayload
+  [ProviderEventBusEvents.Connect]: ProviderEventPayload
+  [ProviderEventBusEvents.Disconnect]: ProviderEventPayload
+  [ProviderEventBusEvents.AccountChanged]: ProviderEventPayload
+  [ProviderEventBusEvents.ChainChanged]: ProviderEventPayload
+  [ProviderEventBusEvents.Initiated]: ProviderEventPayload
 }
 
+export type ProviderEventCallback = (e: ProviderEventPayload) => void
+
 export interface ProviderSubscriber {
-  onInitiated(cb: (e: ProviderInitiatedEventPayload) => void): void
-  onConnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void
-  onDisconnect(cb: (e: ProviderConnectRelatedEventPayload) => void): void
-  onAccountChanged(cb: (e: ProviderConnectRelatedEventPayload) => void): void
-  onChainChanged?(cb: (e: ProviderChainChangedEventPayload) => void): void
+  onInitiated(cb: ProviderEventCallback): void
+  onConnect(cb: ProviderEventCallback): void
+  onDisconnect(cb: ProviderEventCallback): void
+  onAccountChanged(cb: ProviderEventCallback): void
+  onChainChanged?(cb: ProviderEventCallback): void
   clearHandlers(): void
+}
+
+export type ProviderListeners = {
+  onInitiated?: ProviderEventCallback
+  onConnect?: ProviderEventCallback
+  onDisconnect?: ProviderEventCallback
+  onAccountChanged?: ProviderEventCallback
+  onChainChanged?: ProviderEventCallback
 }
