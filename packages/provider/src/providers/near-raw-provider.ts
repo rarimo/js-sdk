@@ -1,4 +1,5 @@
 import {
+  FunctionCallAction,
   setupWalletSelector,
   Wallet,
   WalletSelector,
@@ -85,6 +86,33 @@ export class NearRawProvider {
     })
 
     return outcome ? providers.getTransactionLastResult(outcome) : null
+  }
+
+  async signAndSendTxs(args: NearTxRequestBody[]) {
+    if (!this.wallet) return
+
+    // Sign a transaction with the "FunctionCall" action
+    const outcomes = await this.wallet.signAndSendTransactions({
+      transactions: args.map(i => ({
+        signerId: this.accountId,
+        receiverId: i.contractId,
+        actions: [
+          {
+            type: NEAR_WALLET_ACTION_TYPE.functionCall,
+            params: {
+              methodName: i.method,
+              args: i.args,
+              gas: i.gas,
+              deposit: i.deposit,
+            },
+          } as FunctionCallAction,
+        ],
+      })),
+    })
+
+    return outcomes?.map(outcome =>
+      outcome ? providers.getTransactionLastResult(outcome) : null,
+    )
   }
 
   // Get transaction result from the network

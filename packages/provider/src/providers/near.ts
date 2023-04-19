@@ -10,7 +10,6 @@ import {
   NearProviderRpcError,
   NearProviderType,
   NearTransactionResponse,
-  NearTxRequestBody,
   ProviderProxy,
   RawProvider,
   TransactionResponse,
@@ -29,9 +28,11 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     super()
     this.#provider = provider as NearProviderType
   }
+
   static get providerType(): Providers {
     return Providers.Near
   }
+
   get isConnected(): boolean {
     return Boolean(this.#chainId && this.#address)
   }
@@ -111,9 +112,17 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     txRequestBody: TxRequestBody,
   ): Promise<TransactionResponse> {
     try {
-      return await this.#provider.signAndSendTx(
-        txRequestBody as NearTxRequestBody,
-      )
+      return this.#provider.signAndSendTx(txRequestBody)
+    } catch (error) {
+      handleNearError(error as NearProviderRpcError)
+    }
+  }
+
+  async signAndSendTxs(
+    txRequestBodies: TxRequestBody[],
+  ): Promise<TransactionResponse[]> {
+    try {
+      return this.#provider.signAndSendTxs(txRequestBodies)
     } catch (error) {
       handleNearError(error as NearProviderRpcError)
     }

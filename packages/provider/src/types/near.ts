@@ -26,6 +26,9 @@ export type NearProviderType = {
   signAndSendTx(
     txRequestBody: TxRequestBody | NearTxRequestBody,
   ): Promise<TransactionResponse>
+  signAndSendTxs(
+    txRequestBodies: TxRequestBody[] | NearTxRequestBody[],
+  ): Promise<TransactionResponse[]>
   getHashFromTxResponse(txResponse: TransactionResponse): string
   connect: () => Promise<void>
 }

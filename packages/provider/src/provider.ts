@@ -97,6 +97,12 @@ export class Provider implements IProvider {
     ) as Promise<TransactionResponse>
   }
 
+  public async signAndSendTxs(txRequestBodies: TxRequestBody[]) {
+    return this.#proxy?.signAndSendTxs?.(txRequestBodies) as Promise<
+      TransactionResponse[]
+    >
+  }
+
   public getHashFromTx(txResponse: TransactionResponse) {
     return this.#proxy?.getHashFromTx?.(txResponse) ?? ''
   }

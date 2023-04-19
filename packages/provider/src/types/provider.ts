@@ -12,7 +12,7 @@ import { ChainTypes, Providers } from '@/enums'
 
 import { Chain, ChainId } from './chain'
 import { EthereumProvider } from './ethereum'
-import { NearProviderType } from './near'
+import { NearProviderType, NearTxRequestBody } from './near'
 import { ProviderSubscriber } from './provider-event-bus'
 import { SolanaProvider } from './solana'
 
@@ -26,6 +26,7 @@ export type ProviderInstance = {
 export type TxRequestBody =
   | Deferrable<TransactionRequest>
   | SolTransaction
+  | NearTxRequestBody
   | string
 
 export type EthTransactionResponse = ethers.providers.TransactionReceipt
@@ -63,6 +64,11 @@ export interface ProviderBase {
   getHashFromTx?: (txResponse: TransactionResponse) => string
   getTxUrl?: (chain: Chain, txHash: string) => string
   getAddressUrl?: (chain: Chain, address: string) => string
+
+  // Near specific method
+  signAndSendTxs?: (
+    txRequestBodies: TxRequestBody[],
+  ) => Promise<TransactionResponse[]>
 
   // EVM specific methods
   getWeb3Provider?: () => providers.Web3Provider
