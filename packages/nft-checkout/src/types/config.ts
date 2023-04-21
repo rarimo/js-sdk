@@ -3,4 +3,5 @@ export type Config = {
   TRADER_JOE_TOKEN_LIST_URL: string
   PANCAKE_SWAP_TOKEN_LIST_URL: string
   QUICK_SWAP_TOKEN_LIST_URL: string
+  CORE_API_BASE_URL: string
 }

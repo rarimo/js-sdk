@@ -8,4 +8,5 @@ export const DEFAULT_CONFIG: Config = {
     'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
   QUICK_SWAP_TOKEN_LIST_URL:
     'https://unpkg.com/quickswap-default-token-list/build/quickswap-default.tokenlist.json',
+  CORE_API_BASE_URL: 'https://api.rarify.tokend.io',
 }

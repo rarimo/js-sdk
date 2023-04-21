@@ -441,6 +441,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@distributedlab/fetcher@npm:^0.2.0-rc.1":
+  version: 0.2.0-rc.1
+  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.1"
+  dependencies:
+    uuid: ^9.0.0
+  checksum: 03bc4b97e1505497e60073f06e51ce5ac79dbcdbaef314f63c5e24ec8a4627c9ec0f56b37ca4c03e00c39f707a4eb3ba3951ad2f92ba5eed4796af9a86a44b33
+  languageName: node
+  linkType: hard
+
+"@distributedlab/jac@npm:^0.2.0-rc.1":
+  version: 0.2.0-rc.1
+  resolution: "@distributedlab/jac@npm:0.2.0-rc.1"
+  dependencies:
+    "@distributedlab/fetcher": ^0.2.0-rc.1
+    "@distributedlab/jsona": ^1.13.0
+    lodash: ^4.17.21
+  checksum: fad7920861bf4e4f52ccbb210fb0b81007f9c5717425e5458efcebaf1a3ef0090292c34a3d10dbb03a4db96e24e4a8a734b60055446d3d938fe4e4df8c67408a
+  languageName: node
+  linkType: hard
+
+"@distributedlab/jsona@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@distributedlab/jsona@npm:1.13.0"
+  dependencies:
+    tslib: ^2.4.1
+  checksum: 1107ea174a504899c16f001c32366282d62e0cbcdd334d2e1d6c4ede29e7f23e5de21c87073681197dac489b626ba8591917e6768481bfa823794a39f9fa2378
+  languageName: node
+  linkType: hard
+
 "@distributedlab/tools@npm:^0.1.6":
   version: 0.1.6
   resolution: "@distributedlab/tools@npm:0.1.6"
@@ -2464,6 +2493,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
+    "@distributedlab/jac": ^0.2.0-rc.1
     "@distributedlab/tools": ^0.1.6
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
@@ -13182,7 +13212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0":
+"tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: ae3ed5f9ce29932d049908ebfdf21b3a003a85653a9a140d614da6b767a93ef94f460e52c3d787f0e4f383546981713f165037dc2274df212ea9f8a4541004e1

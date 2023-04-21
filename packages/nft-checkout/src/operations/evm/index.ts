@@ -1,3 +1,4 @@
+import { JsonApiClient, JsonApiError } from '@distributedlab/jac'
 import { BN } from '@distributedlab/tools'
 import {
   ChainId,
@@ -18,8 +19,10 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '@rarimo/provider'
+import { sleep } from '@rarimo/provider'
 import { Contract, providers, utils } from 'ethers'
 
+import { DEFAULT_CONFIG } from '@/config'
 import {
   BUNDLE_SALT_BYTES,
   CHAINS,
@@ -33,6 +36,8 @@ import { toLow } from '@/helpers'
 import {
   BridgeChain,
   Config,
+  DestinationTransaction,
+  DestinationTransactionResponse,
   EstimatedPrice,
   INFTCheckoutOperation,
   OperationCreateParams,
@@ -53,6 +58,8 @@ export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
+
+const DESTINATION_TX_PULL_INTERVAL = 2000
 
 /**
  * An operation on an EVM chain.
@@ -77,11 +84,20 @@ export class EVMOperation
 
   #chains: BridgeChain[] = []
   #tokens: Token[] = []
+  #api: JsonApiClient
 
   constructor(config: Config, provider: IProvider) {
     super()
     this.#config = config
     this.#provider = provider
+    this.#api = new JsonApiClient({
+      baseUrl: DEFAULT_CONFIG.CORE_API_BASE_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: window?.origin ?? '',
+      },
+      credentials: 'omit',
+    })
   }
 
   public get chainFrom(): BridgeChain | undefined {
@@ -230,6 +246,50 @@ export class EVMOperation
     return typeof result === 'string'
       ? result
       : (result as providers.TransactionReceipt)?.transactionHash
+  }
+
+  public async getDestinationTx(
+    sourceChain: BridgeChain,
+    sourceTxHash: string,
+  ): Promise<DestinationTransaction> {
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
+    const chain = this.#getChainByID(sourceChain.id)
+    if (!chain) {
+      throw new errors.OperationChainNotSupportedError()
+    }
+
+    let transaction: DestinationTransactionResponse | undefined
+
+    while (!transaction) {
+      transaction = await this.#getDestinationTx(chain.name, sourceTxHash)
+      if (!transaction) {
+        await sleep(DESTINATION_TX_PULL_INTERVAL)
+      }
+    }
+
+    return {
+      hash: transaction!.id,
+      status: transaction!.status,
+    }
+  }
+
+  async #getDestinationTx(
+    chainId: string,
+    txHash: string,
+  ): Promise<DestinationTransactionResponse | undefined> {
+    try {
+      const { data } = await this.#api.get<DestinationTransactionResponse>(
+        `/v1/chains/${chainId}/transactions/${txHash}`,
+      )
+      return data
+    } catch (e) {
+      if ((e as JsonApiError).httpStatus === 404) {
+        return undefined
+      }
+
+      throw e
+    }
   }
 
   #getNativeAmountIn(price: Price) {
