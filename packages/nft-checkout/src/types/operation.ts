@@ -1,6 +1,7 @@
 import { Chain, ChainId, IProvider } from '@rarimo/provider'
 
 import { PaymentToken, Price, Token } from '@/entities'
+import { DestinationTransaction } from '@/types/tx'
 
 import { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import { Config } from './config'
@@ -39,4 +40,8 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
   estimatePrice(token: PaymentToken): Promise<EstimatedPrice>
   checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string>
+  getDestinationTx(
+    sourceChain: BridgeChain,
+    sourceTxHash: string,
+  ): Promise<DestinationTransaction>
 }
