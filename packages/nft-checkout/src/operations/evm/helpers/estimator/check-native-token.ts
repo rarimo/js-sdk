@@ -1,6 +1,6 @@
-import { ChainId } from '@rarimo/provider'
+import type { ChainId } from '@rarimo/provider'
 
-import { Token } from '@/entities'
+import type { Token } from '@/entities'
 import { OperatorWrappedTokenNotFound } from '@/errors'
 
 import { TARGET_TOKEN_SYMBOLS } from '../chain'

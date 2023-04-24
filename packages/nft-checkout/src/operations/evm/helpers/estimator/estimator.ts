@@ -1,9 +1,9 @@
-import { IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
 
-import { PaymentToken, Token } from '@/entities'
+import type { PaymentToken, Token } from '@/entities'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
-import { EstimatedPrice, Target } from '@/types'
+import type { EstimatedPrice, Target } from '@/types'
 
 import { estimateTraderJoe } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'

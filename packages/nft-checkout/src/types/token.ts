@@ -1,6 +1,6 @@
-import { Price, Token } from '@/entities'
+import type { Price, Token } from '@/entities'
 
-import { Address, BridgeChain, Decimals, TokenSymbol } from './common'
+import type { Address, BridgeChain, Decimals, TokenSymbol } from './common'
 
 export type EstimatedPrice = {
   path?: string | string[]

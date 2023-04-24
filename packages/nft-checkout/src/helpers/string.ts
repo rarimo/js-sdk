@@ -1,3 +1,1 @@
-export const toLow = (str?: string): string => {
-  return str?.toLowerCase() ?? ''
-}
+export const toLow = (str?: string): string => str?.toLowerCase() ?? ''

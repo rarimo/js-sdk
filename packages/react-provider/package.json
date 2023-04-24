@@ -9,6 +9,7 @@
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "main": "./dist/react-provider.cjs.js",
+  "browser": "./dist/react-provider.es.js",
   "module": "./dist/react-provider.es.js",
   "exports": {
     ".": {

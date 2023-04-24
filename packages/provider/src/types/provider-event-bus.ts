@@ -1,6 +1,6 @@
 import { ProviderEventBusEvents } from '@/enums'
 
-import { ChainId } from './chain'
+import type { ChainId } from './chain'
 
 export type ProviderEventPayload = {
   address?: string

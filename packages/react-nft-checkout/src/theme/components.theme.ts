@@ -1,6 +1,6 @@
-import { Components } from '@mui/material'
+import type { Components } from '@mui/material'
 
-import { BaseTheme } from '@/types'
+import type { BaseTheme } from '@/types'
 
 export const componentsTheme: Components<BaseTheme> = {
   MuiButton: {

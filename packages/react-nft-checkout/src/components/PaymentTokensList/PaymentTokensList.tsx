@@ -5,8 +5,8 @@ import {
   ListItemButton,
   ListItemText,
 } from '@mui/material'
-import { PaymentToken } from '@rarimo/nft-checkout'
-import { EthProviderRpcError } from '@rarimo/provider'
+import type { PaymentToken } from '@rarimo/nft-checkout'
+import type { EthProviderRpcError } from '@rarimo/provider'
 import { useEffect, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'

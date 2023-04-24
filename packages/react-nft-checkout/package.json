@@ -6,6 +6,7 @@
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "main": "./dist/react-nft-checkout.cjs.js",
+  "browser": "./dist/react-nft-checkout.es.js",
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
     ".": {

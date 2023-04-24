@@ -1,4 +1,4 @@
-import { JsonApiRecordBase } from '@distributedlab/jac'
+import type { JsonApiRecordBase } from '@distributedlab/jac'
 
 export enum DestinationTransactionStatus {
   Success = 'success',

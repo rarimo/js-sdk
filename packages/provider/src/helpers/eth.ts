@@ -1,7 +1,7 @@
 import { ethers, providers } from 'ethers'
 
 import { errors } from '@/errors'
-import { Chain, ChainId, EthProviderRpcError } from '@/types'
+import type { Chain, ChainId, EthProviderRpcError } from '@/types'
 
 export const getEthExplorerTxUrl = (chain: Chain, txHash: string): string => {
   return `${chain.explorerUrl}/tx/${txHash}`
@@ -42,7 +42,7 @@ export const connectEthAccounts = async (provider: providers.Web3Provider) => {
   await provider.send('eth_requestAccounts', [])
 }
 
-export function handleEthError(error: EthProviderRpcError): void {
+export const handleEthError = (error: EthProviderRpcError): void => {
   switch (error.code) {
     case 4001:
       throw new errors.ProviderUserRejectedRequest()

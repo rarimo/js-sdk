@@ -6,7 +6,7 @@ import {
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 import { providers } from 'near-api-js'
 
-import { NEAR_WALLET_ACTION_TYPE, NearChains } from '@/enums'
+import { NEAR_ACTIONS, NearChains } from '@/enums'
 import { MAX_GAS_LIMIT, NO_DEPOSIT } from '@/helpers'
 import { ENearWalletId, NearTxRequestBody } from '@/types'
 
@@ -73,7 +73,7 @@ export class NearRawProvider {
       receiverId: contractId,
       actions: [
         {
-          type: NEAR_WALLET_ACTION_TYPE.functionCall,
+          type: NEAR_ACTIONS.functionCall,
           params: {
             methodName: method,
             args,

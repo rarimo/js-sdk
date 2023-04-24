@@ -1,7 +1,7 @@
 import { BN } from '@distributedlab/tools'
 
 import { RARIMO_BRIDGE_FEE } from '@/const'
-import { Price } from '@/entities'
+import type { Price } from '@/entities'
 
 const ONE = 1
 const ONE_HUNDRED = 100

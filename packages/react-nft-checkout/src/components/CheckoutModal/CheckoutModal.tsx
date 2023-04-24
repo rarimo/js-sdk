@@ -1,6 +1,6 @@
 import { BN } from '@distributedlab/tools'
 import { Divider, Typography } from '@mui/material'
-import { EstimatedPrice } from '@rarimo/nft-checkout'
+import type { EstimatedPrice } from '@rarimo/nft-checkout'
 import { useEffect, useMemo, useState } from 'react'
 
 import {

@@ -1,6 +1,6 @@
 import { BN } from '@distributedlab/tools'
 
-import { Decimals } from '@/types'
+import type { Decimals } from '@/types'
 
 export class AmountBase {
   readonly #bn: BN

@@ -30,10 +30,10 @@ import {
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   SWAP_CONTRACT_ABIS,
 } from '@/const'
-import { PaymentToken, Price, Token } from '@/entities'
+import type { PaymentToken, Price, Token } from '@/entities'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
-import {
+import type {
   BridgeChain,
   Config,
   DestinationTransaction,

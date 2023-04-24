@@ -1,4 +1,4 @@
-import { Target } from '@rarimo/nft-checkout'
+import type { Target } from '@rarimo/nft-checkout'
 import { utils } from 'ethers'
 
 export const buildDemoTxBundle = (targetNft: Target, address: string) => {

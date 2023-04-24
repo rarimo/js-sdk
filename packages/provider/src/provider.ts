@@ -1,6 +1,6 @@
-import { Providers } from '@/enums'
+import type { Providers } from '@/enums'
 import { errors } from '@/errors'
-import {
+import type {
   Chain,
   ChainId,
   IProvider,
