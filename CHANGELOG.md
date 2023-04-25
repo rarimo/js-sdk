@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Removed
 - `root` - Unused `tsconfig.eslint.json`
 
+[SWC tsc migration guide]: https://swc.rs/docs/migrating-from-tsc
+
 ## [1.5.0-rc.7] - 2023-04-21
 ### Added
 - `@rarimo/nft-checkout`: `NFTCheckoutOperation.getDestinationTx` method
