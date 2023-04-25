@@ -28,9 +28,8 @@ export interface ProviderSubscriber {
 }
 
 export type ProviderListeners = {
-  onInitiated?: ProviderEventCallback
-  onConnect?: ProviderEventCallback
-  onDisconnect?: ProviderEventCallback
-  onAccountChanged?: ProviderEventCallback
-  onChainChanged?: ProviderEventCallback
+  [key in keyof Omit<
+    ProviderSubscriber,
+    'clearHandlers'
+  >]?: ProviderEventCallback
 }

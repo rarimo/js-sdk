@@ -36,9 +36,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^0.2.0-rc.2",
-    "@distributedlab/jac": "^0.2.0-rc.2",
-    "@distributedlab/tools": "^0.2.0-rc.2",
+    "@distributedlab/fetcher": "^0.2.0-rc.5",
+    "@distributedlab/jac": "^0.2.0-rc.5",
+    "@distributedlab/tools": "^0.2.0-rc.5",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",

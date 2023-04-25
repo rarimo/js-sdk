@@ -15,8 +15,6 @@ export const DEFAULT_CONFIG: Config = {
 
 export const DEFAULT_FETCHER_CONFIG: FetcherConfig = {
   baseUrl: 'https://foo.bar',
-  headers: {
-    'Content-Type': 'application/json',
-  },
   credentials: 'omit',
+  referrerPolicy: 'no-referrer',
 }
