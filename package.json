@@ -28,8 +28,6 @@
     "build:provider": "yarn workspace @rarimo/provider build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn workspaces foreach -pv --no-private run typecheck",
-    "test": "jest --verbose true",
-    "test:watch": "jest --watch",
     "publish-next": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish --tag next",
     "publish-latest": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish",
     "rsc": "node scripts/release-sanity-check.js",

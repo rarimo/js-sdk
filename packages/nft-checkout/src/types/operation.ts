@@ -1,12 +1,12 @@
-import { Chain, ChainId, IProvider } from '@rarimo/provider'
+import type { Chain, ChainId, IProvider } from '@rarimo/provider'
 
-import { PaymentToken, Price, Token } from '@/entities'
-import { DestinationTransaction } from '@/types/tx'
+import type { PaymentToken, Price, Token } from '@/entities'
+import type { DestinationTransaction } from '@/types/tx'
 
-import { Address, BridgeChain, HexString, TokenSymbol } from './common'
-import { Config } from './config'
-import { OperationSubscriber } from './operation-event-bus'
-import { EstimatedPrice } from './token'
+import type { Address, BridgeChain, HexString, TokenSymbol } from './common'
+import type { Config } from './config'
+import type { OperationSubscriber } from './operation-event-bus'
+import type { EstimatedPrice } from './token'
 
 export type Target = {
   chainId: ChainId

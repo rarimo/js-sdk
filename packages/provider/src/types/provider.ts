@@ -1,20 +1,20 @@
-import { TransactionRequest } from '@ethersproject/abstract-provider'
-import { Deferrable } from '@ethersproject/properties'
-import {
+import type { TransactionRequest } from '@ethersproject/abstract-provider'
+import type { Deferrable } from '@ethersproject/properties'
+import type {
   Transaction as SolTransaction,
   TransactionSignature,
 } from '@solana/web3.js'
-import { ethers, providers } from 'ethers'
-import { providers as nearProviders } from 'near-api-js'
-import { TransactionConfig } from 'web3-core'
+import type { providers } from 'ethers'
+import type { providers as nearProviders } from 'near-api-js'
+import type { TransactionConfig } from 'web3-core'
 
-import { ChainTypes, Providers } from '@/enums'
+import type { ChainTypes, Providers } from '@/enums'
 
-import { Chain, ChainId } from './chain'
-import { EthereumProvider } from './ethereum'
-import { NearProviderType } from './near'
-import { ProviderSubscriber } from './provider-event-bus'
-import { SolanaProvider } from './solana'
+import type { Chain, ChainId } from './chain'
+import type { EthereumProvider } from './ethereum'
+import type { NearProviderType } from './near'
+import type { ProviderSubscriber } from './provider-event-bus'
+import type { SolanaProvider } from './solana'
 
 export type RawProvider = EthereumProvider | SolanaProvider | NearProviderType
 
@@ -28,7 +28,7 @@ export type TxRequestBody =
   | SolTransaction
   | string
 
-export type EthTransactionResponse = ethers.providers.TransactionReceipt
+export type EthTransactionResponse = providers.TransactionReceipt
 
 export type EthereumTransaction = TransactionConfig
 

@@ -7,7 +7,7 @@ import {
 
 import { Providers } from '@/enums'
 import { decodeSolanaTx, handleSolError } from '@/helpers'
-import {
+import type {
   ProviderProxy,
   RawProvider,
   SolanaProviderRpcError,

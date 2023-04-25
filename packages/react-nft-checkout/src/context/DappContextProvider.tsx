@@ -1,4 +1,4 @@
-import {
+import type {
   BridgeChain,
   CreateCheckoutOperationParams,
   EstimatedPrice,
@@ -7,7 +7,7 @@ import {
   Target,
   Token,
 } from '@rarimo/nft-checkout'
-import {
+import type {
   CreateProviderOpts,
   IProvider,
   ProviderProxyConstructor,

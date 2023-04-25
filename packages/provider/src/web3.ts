@@ -1,8 +1,8 @@
 import { ProviderChecks, Providers } from '@/enums'
 import { sleep } from '@/helpers'
+import { NearRawProvider } from '@/providers'
 
-import { NearRawProvider } from './providers/near-raw-provider'
-import { EthereumProvider, ProviderInstance, RawProvider } from './types'
+import type { EthereumProvider, ProviderInstance, RawProvider } from './types'
 
 declare global {
   interface Window {

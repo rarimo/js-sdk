@@ -1,4 +1,4 @@
-import { Provider as EtherProvider } from '@ethersproject/providers'
+import type { Provider as EtherProvider } from '@ethersproject/providers'
 import {
   Percent,
   Route,
@@ -8,10 +8,10 @@ import {
 } from '@pancakeswap/sdk'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
-import { IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
 
 import { Price, Token } from '@/entities'
-import { Target } from '@/types'
+import type { Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
 import { getSwapAmount } from './get-swap-amount'

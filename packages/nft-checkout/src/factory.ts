@@ -1,8 +1,8 @@
-import { ChainTypes, IProvider } from '@rarimo/provider'
+import type { ChainTypes, IProvider } from '@rarimo/provider'
 
 import { DEFAULT_CONFIG } from './config'
 import { errors } from './errors'
-import {
+import type {
   Config,
   INFTCheckoutOperation,
   INFTCheckoutOperationConstructor,

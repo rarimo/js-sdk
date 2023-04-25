@@ -1,4 +1,6 @@
-import { Config } from './types'
+import type { FetcherConfig } from '@distributedlab/fetcher'
+
+import type { Config } from './types'
 
 export const DEFAULT_CONFIG: Config = {
   UNISWAP_V3_TOKEN_LIST_URL: 'https://ipfs.io/ipns/tokens.uniswap.org',
@@ -9,4 +11,10 @@ export const DEFAULT_CONFIG: Config = {
   QUICK_SWAP_TOKEN_LIST_URL:
     'https://unpkg.com/quickswap-default-token-list/build/quickswap-default.tokenlist.json',
   CORE_API_BASE_URL: 'https://api.rarify.tokend.io',
+}
+
+export const DEFAULT_FETCHER_CONFIG: FetcherConfig = {
+  baseUrl: 'https://foo.bar',
+  credentials: 'omit',
+  referrerPolicy: 'no-referrer',
 }

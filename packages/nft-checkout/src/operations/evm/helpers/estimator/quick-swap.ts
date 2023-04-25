@@ -1,4 +1,4 @@
-import { IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
 import {
   Fetcher,
   Percent,
@@ -9,7 +9,7 @@ import {
 } from '@rarimo/quickswap-sdk'
 
 import { PaymentToken, Price, Token } from '@/entities'
-import { EstimatedPrice, Target } from '@/types'
+import type { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
 import { getSwapAmount } from './get-swap-amount'

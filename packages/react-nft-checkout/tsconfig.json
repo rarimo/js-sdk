@@ -15,6 +15,5 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext", "scripthost"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

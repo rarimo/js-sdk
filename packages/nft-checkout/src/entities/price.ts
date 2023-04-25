@@ -1,6 +1,6 @@
 import { BN } from '@distributedlab/tools'
 
-import { Decimals, TokenSymbol } from '@/types'
+import type { Decimals, TokenSymbol } from '@/types'
 
 import { AmountBase } from './amount'
 

@@ -1,7 +1,7 @@
 import { OperationEventBusEvents } from '@/enums'
 
-import { BridgeChain } from './common'
-import { Target } from './operation'
+import type { BridgeChain } from './common'
+import type { Target } from './operation'
 
 export type OperationInitiatedEventPayload = {
   isInitiated: boolean
