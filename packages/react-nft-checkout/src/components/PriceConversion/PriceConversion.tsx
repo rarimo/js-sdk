@@ -1,5 +1,5 @@
 import { Box, Card, Divider, Typography } from '@mui/material'
-import { EstimatedPrice } from '@rarimo/nft-checkout'
+import type { EstimatedPrice } from '@rarimo/nft-checkout'
 
 import { LoadingIndicator } from '@/components'
 import { useDappContext } from '@/hooks'

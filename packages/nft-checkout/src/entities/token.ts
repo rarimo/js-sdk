@@ -1,8 +1,8 @@
-import { TokenInfo } from '@uniswap/token-lists'
+import type { TokenInfo } from '@uniswap/token-lists'
 
 import { SwapContractVersion } from '@/enums'
 import { toLow } from '@/helpers'
-import {
+import type {
   Address,
   BridgeChain,
   CreateTokenOpts,

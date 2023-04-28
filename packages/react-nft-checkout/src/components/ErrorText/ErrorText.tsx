@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import { Variant } from '@mui/material/styles/createTypography'
+import type { Variant } from '@mui/material/styles/createTypography'
 
 interface Props {
   text: string

@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `@rarimo/react-nft-checkout` : `RarimoPayButton` accepts prop `theme` which gives an ability to fully customize MUI theme setup
 
+## [1.5.0-rc.8] - 2023-04-25
+### Added
+- `all` - `browser` resolution path in the `package.json`
+
+### Changed
+- `@rarimo/nft-checkout` - Bump all `@distributedlab/web-kit` dependencies to 0.2.0-rc.2
+- `all` - Migrate from `tsc` to `swc` to build packages
+- `all` - Migrate from `ts-jest` to `swc-jest` to run tests
+
+### Fixed
+- `all` - Replace type imports with `import type` syntax according to the [SWC tsc migration guide]
+- `all` - Moved exclude tests to the `tsconfig.build.json` file to make ESLint work in the tests
+
+## Removed
+- `root` - Unused `tsconfig.eslint.json`
+
+[SWC tsc migration guide]: https://swc.rs/docs/migrating-from-tsc
+
+## [1.5.0-rc.7] - 2023-04-21
+### Added
+- `@rarimo/nft-checkout`: `NFTCheckoutOperation.getDestinationTx` method
+- `@rarimo/nft-checkout`: `@distributedlab/jac` dependency to perform JSON API requests
+
+### Changed
+- `root` - SDK now required Node.js version >= 18
+
+### Fixed
+- `@rarimo/react-nft-checkout`: Fetching token in the dev mode
+
 ## [1.5.0-rc.6] - 2023-04-19
 ### Added
 - `@rarimo/provider`: `createProvider` options now accepts listener for provider change state events
@@ -154,7 +183,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.6...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.7...HEAD
+[1.5.0-rc.7]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.6...1.5.0-rc.7
 [1.5.0-rc.6]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.5...1.5.0-rc.6
 [1.5.0-rc.5]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.4...1.5.0-rc.5
 [1.5.0-rc.4]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.3...1.5.0-rc.4

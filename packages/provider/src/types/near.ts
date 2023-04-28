@@ -1,6 +1,11 @@
-import { Wallet, WalletSelector } from '@near-wallet-selector/core'
+import type {
+  Optional,
+  Transaction,
+  Wallet,
+  WalletSelector,
+} from '@near-wallet-selector/core'
 
-import { TransactionResponse, TxRequestBody } from './provider'
+import type { TransactionResponse, TxRequestBody } from './provider'
 
 export enum ENearWalletId {
   MyNearWallet = 'my-near-wallet',
@@ -13,6 +18,8 @@ export type NearTxRequestBody = {
   gas?: string
   deposit?: string
 }
+
+export type NearMultipleTxRequestBody = Array<Optional<Transaction, 'signerId'>>
 
 export type NearProviderType = {
   selector: WalletSelector | null
@@ -27,7 +34,7 @@ export type NearProviderType = {
     txRequestBody: TxRequestBody | NearTxRequestBody,
   ): Promise<TransactionResponse>
   signAndSendTxs(
-    txRequestBodies: TxRequestBody[] | NearTxRequestBody[],
+    txRequestBodies: NearMultipleTxRequestBody,
   ): Promise<TransactionResponse[]>
   getHashFromTxResponse(txResponse: TransactionResponse): string
   connect: () => Promise<void>

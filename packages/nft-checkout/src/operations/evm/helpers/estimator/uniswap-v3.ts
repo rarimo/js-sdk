@@ -1,5 +1,5 @@
 import { BN } from '@distributedlab/tools'
-import { IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
 import {
   Currency,
   CurrencyAmount,
@@ -14,12 +14,12 @@ import {
   RouteWithValidQuote,
 } from '@uniswap/smart-order-router'
 import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
-import { providers } from 'ethers'
+import type { providers } from 'ethers'
 import JSBI from 'jsbi'
 
 import { Price, Token } from '@/entities'
 import { errors } from '@/errors'
-import { EstimatedPrice, Target } from '@/types'
+import type { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
 import { getSwapAmount } from './get-swap-amount'

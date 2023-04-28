@@ -4,9 +4,10 @@ import {
   getNearExplorerTxUrl,
   handleNearError,
 } from '@/helpers'
-import {
+import type {
   Chain,
   ChainId,
+  NearMultipleTxRequestBody,
   NearProviderRpcError,
   NearProviderType,
   NearTransactionResponse,
@@ -111,7 +112,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async signAndSendTxs(
-    txRequestBodies: TxRequestBody[],
+    txRequestBodies: NearMultipleTxRequestBody,
   ): Promise<TransactionResponse[]> {
     try {
       return this.#provider.signAndSendTxs(txRequestBodies)

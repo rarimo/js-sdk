@@ -7,7 +7,7 @@ import {
   Target,
   Token,
 } from '@rarimo/nft-checkout'
-import { IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
 
 type Props = {

@@ -1,5 +1,4 @@
 import {
-  FunctionCallAction,
   setupWalletSelector,
   Wallet,
   WalletSelector,
@@ -7,9 +6,13 @@ import {
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 import { providers } from 'near-api-js'
 
-import { NEAR_WALLET_ACTION_TYPE, NearChains } from '@/enums'
+import { NEAR_ACTIONS, NearChains } from '@/enums'
 import { MAX_GAS_LIMIT, NO_DEPOSIT } from '@/helpers'
-import { ENearWalletId, NearTxRequestBody } from '@/types'
+import {
+  ENearWalletId,
+  NearMultipleTxRequestBody,
+  NearTxRequestBody,
+} from '@/types'
 
 export class NearRawProvider {
   selector: WalletSelector | null = null
@@ -74,7 +77,7 @@ export class NearRawProvider {
       receiverId: contractId,
       actions: [
         {
-          type: NEAR_WALLET_ACTION_TYPE.functionCall,
+          type: NEAR_ACTIONS.functionCall,
           params: {
             methodName: method,
             args,
@@ -88,26 +91,11 @@ export class NearRawProvider {
     return outcome ? providers.getTransactionLastResult(outcome) : null
   }
 
-  async signAndSendTxs(args: NearTxRequestBody[]) {
+  async signAndSendTxs(args: NearMultipleTxRequestBody) {
     if (!this.wallet) return
 
-    // Sign a transaction with the "FunctionCall" action
     const outcomes = await this.wallet.signAndSendTransactions({
-      transactions: args.map(i => ({
-        signerId: this.accountId,
-        receiverId: i.contractId,
-        actions: [
-          {
-            type: NEAR_WALLET_ACTION_TYPE.functionCall,
-            params: {
-              methodName: i.method,
-              args: i.args,
-              gas: i.gas,
-              deposit: i.deposit,
-            },
-          } as FunctionCallAction,
-        ],
-      })),
+      transactions: args,
     })
 
     return outcomes?.map(outcome =>
@@ -115,7 +103,6 @@ export class NearRawProvider {
     )
   }
 
-  // Get transaction result from the network
   async getTransactionResult(txhash: string) {
     if (!this.selector) return
 

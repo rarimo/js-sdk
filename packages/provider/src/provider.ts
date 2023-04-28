@@ -1,9 +1,10 @@
-import { Providers } from '@/enums'
+import type { Providers } from '@/enums'
 import { errors } from '@/errors'
-import {
+import type {
   Chain,
   ChainId,
   IProvider,
+  NearMultipleTxRequestBody,
   ProviderEventPayload,
   ProviderInstance,
   ProviderListeners,
@@ -103,7 +104,7 @@ export class Provider implements IProvider {
     ) as Promise<TransactionResponse>
   }
 
-  public async signAndSendTxs(txRequestBodies: TxRequestBody[]) {
+  public async signAndSendTxs(txRequestBodies: NearMultipleTxRequestBody) {
     return this.#proxy?.signAndSendTxs?.(txRequestBodies) as Promise<
       TransactionResponse[]
     >

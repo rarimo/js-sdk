@@ -1,6 +1,7 @@
-import { TokenInfo } from '@uniswap/token-lists'
-import axios from 'axios'
+import { Fetcher } from '@distributedlab/fetcher'
+import type { TokenInfo } from '@uniswap/token-lists'
 
+import { DEFAULT_FETCHER_CONFIG } from '@/config'
 import {
   PANCAKE_SWAP_TESTNET_TOKEN_LIST,
   TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
@@ -8,7 +9,7 @@ import {
 import { Token } from '@/entities'
 import { ChainNames, SwapContractVersion } from '@/enums'
 import { errors } from '@/errors'
-import { BridgeChain, Config } from '@/types'
+import type { BridgeChain, Config } from '@/types'
 
 export const loadTokens = async (
   config: Config,
@@ -22,14 +23,16 @@ export const loadTokens = async (
     return [Token.fromChain(chain), ...TRADER_JOE_SWAP_TESTNET_TOKEN_LIST]
   }
 
-  const url = getTokenListUrl(chain, config)
+  const rawUrl = getTokenListUrl(chain, config)
+  const url = new URL(rawUrl)
 
   if (!url) {
     throw new errors.OperationChainNotSupportedError()
   }
 
-  const { data }: { data: { tokens: Array<TokenInfo> } | Array<TokenInfo> } =
-    await axios.get(url)
+  const { data } = await new Fetcher(DEFAULT_FETCHER_CONFIG)
+    .withBaseUrl(url.origin)
+    .get<{ tokens: Array<TokenInfo> } | Array<TokenInfo>>(url.pathname)
 
   if (!data) throw new errors.OperationSupportedTokensLoadFailedError()
 
