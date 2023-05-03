@@ -1,7 +1,11 @@
 import { EventEmitter } from '@distributedlab/tools'
 
 import { ProviderEventBusEvents } from '@/enums'
-import type { ProviderEventMap, ProviderEventPayload } from '@/types'
+import type {
+  ProviderEventCallback,
+  ProviderEventMap,
+  ProviderEventPayload,
+} from '@/types'
 
 export class ProviderEventBus {
   readonly #emitter = new EventEmitter<ProviderEventMap>()
@@ -17,23 +21,23 @@ export class ProviderEventBus {
     this.#emitter.emit(event, payload)
   }
 
-  public onInitiated(cb: (e: ProviderEventPayload) => void): void {
+  public onInitiated(cb: ProviderEventCallback): void {
     this.#emitter.once(ProviderEventBusEvents.Initiated, cb)
   }
 
-  public onConnect(cb: (e: ProviderEventPayload) => void): void {
+  public onConnect(cb: ProviderEventCallback): void {
     this.#emitter.on(ProviderEventBusEvents.Connect, cb)
   }
 
-  public onDisconnect(cb: (e: ProviderEventPayload) => void): void {
+  public onDisconnect(cb: ProviderEventCallback): void {
     this.#emitter.on(ProviderEventBusEvents.Disconnect, cb)
   }
 
-  public onAccountChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onAccountChanged(cb: ProviderEventCallback): void {
     this.#emitter.on(ProviderEventBusEvents.AccountChanged, cb)
   }
 
-  public onChainChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onChainChanged(cb: ProviderEventCallback): void {
     this.#emitter.on(ProviderEventBusEvents.ChainChanged, cb)
   }
 

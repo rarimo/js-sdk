@@ -7,11 +7,13 @@
   "types": "./dist/index.d.ts",
   "main": "./dist/react-nft-checkout.cjs.js",
   "browser": "./dist/react-nft-checkout.es.js",
+  "node": "./dist/react-nft-checkout.cjs.js",
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/react-nft-checkout.cjs.js",
+      "node": "./dist/react-nft-checkout.cjs.js",
       "import": "./dist/react-nft-checkout.es.js",
       "default": "./dist/react-nft-checkout.es.js"
     }

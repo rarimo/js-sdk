@@ -18,6 +18,6 @@ export type OperationEventMap = {
 }
 
 export interface OperationSubscriber {
-  onInitiated(cb: (e: OperationInitiatedEventPayload) => void): void
+  onInitiated(cb: (e?: OperationInitiatedEventPayload) => void): void
   clearHandlers(): void
 }

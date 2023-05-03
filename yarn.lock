@@ -441,33 +441,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/fetcher@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.5"
+"@distributedlab/fetcher@npm:0.2.0-rc.9, @distributedlab/fetcher@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.9
+  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.9"
   dependencies:
     uuid: ^9.0.0
-  checksum: 95cb023c49e5a9967f17ba785f9f3d3bfc62f53f5a098c456dbb444ece562d732abe74bd461bc63fd5bef1b8e8b72a8bea43abb5082927655c23688c54872b9e
+  checksum: 72e6753fe9f81ede7211deb2268b56df83e5dda12ed217d22aa8952f3e6fb3107404b89e2f4d8c29b34675920f6a720605dd34378419382731087c921215a3df
   languageName: node
   linkType: hard
 
-"@distributedlab/jac@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/jac@npm:0.2.0-rc.5"
+"@distributedlab/jac@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.9
+  resolution: "@distributedlab/jac@npm:0.2.0-rc.9"
   dependencies:
-    "@distributedlab/fetcher": ^0.2.0-rc.5
+    "@distributedlab/fetcher": 0.2.0-rc.9
     lodash: ^4.17.21
-  checksum: 1c9429a394a1f57fb1171465b0bb0885bae0e634fb6dcbcf9202c7e2020b76709140cd4cec0ec9a2b566b6f9d281deba05a75fc2248d9d4754ac421b025d6ad8
+  checksum: e0ea2116bf73daab9572b0513b3f7e93b8c01398c6507bdde11c1d49baf9796861c3ea7448be4f8fb8a49238252e4b2f9bf92d5fad687b092a8c3fb3f326ec0d
   languageName: node
   linkType: hard
 
-"@distributedlab/tools@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/tools@npm:0.2.0-rc.5"
+"@distributedlab/tools@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.9
+  resolution: "@distributedlab/tools@npm:0.2.0-rc.9"
   dependencies:
     bignumber.js: ^9.1.1
     dayjs: ^1.11.7
     tslib: ^2.5.0
-  checksum: 4d37a2c73b36d0bfe1efd790d0f1568f7cdefcd75cee1b77be79d416e08b0bb2de27fd5dc61747c4d1beec1f7f0019021c9db50254754a197bfce03e71dd36ef
+  checksum: eb424572f1e9c05ef64a10f1beb7c98de1462e42d878950b82aca490e9cb6d7d7e47296989755652faf093a6fe1f72f42e18782fb3c618ec6adb1ea42407f460
   languageName: node
   linkType: hard
 
@@ -2517,13 +2517,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rarimo/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/core@workspace:packages/core"
+  dependencies:
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    tsc-alias: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
 "@rarimo/nft-checkout@workspace:^, @rarimo/nft-checkout@workspace:packages/nft-checkout":
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/fetcher": ^0.2.0-rc.5
-    "@distributedlab/jac": ^0.2.0-rc.5
-    "@distributedlab/tools": ^0.2.0-rc.5
+    "@distributedlab/fetcher": ^0.2.0-rc.9
+    "@distributedlab/jac": ^0.2.0-rc.9
+    "@distributedlab/tools": ^0.2.0-rc.9
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
@@ -2557,12 +2570,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
-    "@distributedlab/tools": ^0.2.0-rc.5
+    "@distributedlab/tools": ^0.2.0-rc.9
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@near-wallet-selector/core": ^7.8.2
     "@near-wallet-selector/my-near-wallet": ^7.8.2
     "@solana/web3.js": ^1.73.2
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     bs58: ^5.0.0

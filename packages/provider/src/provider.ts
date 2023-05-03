@@ -4,7 +4,7 @@ import type {
   Chain,
   ChainId,
   IProvider,
-  ProviderEventPayload,
+  ProviderEventCallback,
   ProviderInstance,
   ProviderListeners,
   ProviderProxy,
@@ -74,7 +74,7 @@ export class Provider implements IProvider {
 
       Object.entries(listeners || {}).forEach(([key, value]) => {
         this.#proxy?.[key as keyof ProviderListeners]?.(
-          value as (e: ProviderEventPayload) => void,
+          value as ProviderEventCallback,
         )
       })
     }
@@ -127,23 +127,23 @@ export class Provider implements IProvider {
     throw new errors.ProviderMethodNotSupported()
   }
 
-  public onAccountChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onAccountChanged(cb: ProviderEventCallback): void {
     this.#proxy?.onAccountChanged(cb)
   }
 
-  public onChainChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onChainChanged(cb: ProviderEventCallback): void {
     this.#proxy?.onChainChanged?.(cb)
   }
 
-  public onConnect(cb: (e: ProviderEventPayload) => void): void {
+  public onConnect(cb: ProviderEventCallback): void {
     this.#proxy?.onConnect(cb)
   }
 
-  public onDisconnect(cb: (e: ProviderEventPayload) => void): void {
+  public onDisconnect(cb: ProviderEventCallback): void {
     this.#proxy?.onDisconnect(cb)
   }
 
-  public onInitiated(cb: (e: ProviderEventPayload) => void): void {
+  public onInitiated(cb: ProviderEventCallback): void {
     this.#proxy?.onInitiated(cb)
   }
 

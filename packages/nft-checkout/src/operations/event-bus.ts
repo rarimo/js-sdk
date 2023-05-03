@@ -14,7 +14,7 @@ export class OperationEventBus {
     this.#emitter.emit(OperationEventBusEvents.Initiated, e)
   }
 
-  public onInitiated(cb: (e: OperationInitiatedEventPayload) => void): void {
+  public onInitiated(cb: (e?: OperationInitiatedEventPayload) => void): void {
     this.#emitter.once(OperationEventBusEvents.Initiated, cb)
   }
 
