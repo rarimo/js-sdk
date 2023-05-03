@@ -10,7 +10,7 @@ export enum ChainNames {
   Chapel = 'Binance Smart Chain Testnet',
 }
 
-export enum SwapContractVersion {
+export enum EVMSwapContractVersion {
   TraderJoe = 'TraderJoe',
   QuickSwap = 'QuickSwap',
   PancakeSwap = 'PancakeSwap',

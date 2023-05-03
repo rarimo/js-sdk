@@ -1,6 +1,13 @@
 import { JsonApiClient, JsonApiError } from '@distributedlab/jac'
 import { BN } from '@distributedlab/tools'
 import {
+  BridgeChain,
+  BUNDLE_SALT_BYTES,
+  CHAINS,
+  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
+  TxBundle,
+} from '@rarimo/core'
+import {
   ChainId,
   ChainTypes,
   errors as providerErrors,
@@ -23,18 +30,11 @@ import { sleep } from '@rarimo/provider'
 import { Contract, providers, utils } from 'ethers'
 
 import { DEFAULT_CONFIG } from '@/config'
-import {
-  BUNDLE_SALT_BYTES,
-  CHAINS,
-  ERC20_ABI,
-  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
-  SWAP_CONTRACT_ABIS,
-} from '@/const'
+import { ERC20_ABI, SWAP_CONTRACT_ABIS } from '@/const'
 import type { PaymentToken, Price, Token } from '@/entities'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import type {
-  BridgeChain,
   Config,
   DestinationTransaction,
   DestinationTransactionResponse,
@@ -42,7 +42,6 @@ import type {
   INFTCheckoutOperation,
   OperationCreateParams,
   Target,
-  TxBundle,
 } from '@/types'
 
 import { OperationEventBus } from '../event-bus'
@@ -349,7 +348,7 @@ export class EVMOperation
     ]
 
     return new utils.Interface(
-      SWAP_CONTRACT_ABIS[chain.contactVersion],
+      SWAP_CONTRACT_ABIS[chain.contractVersion],
     ).encodeFunctionData(functionFragment, [
       ...amounts,
       e.path,

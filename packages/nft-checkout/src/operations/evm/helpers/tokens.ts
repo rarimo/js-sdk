@@ -1,4 +1,5 @@
 import { Fetcher } from '@distributedlab/fetcher'
+import { BridgeChain, ChainNames, EVMSwapContractVersion } from '@rarimo/core'
 import type { TokenInfo } from '@uniswap/token-lists'
 
 import { DEFAULT_FETCHER_CONFIG } from '@/config'
@@ -7,9 +8,8 @@ import {
   TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
 } from '@/const'
 import { Token } from '@/entities'
-import { ChainNames, SwapContractVersion } from '@/enums'
 import { errors } from '@/errors'
-import type { BridgeChain, Config } from '@/types'
+import type { Config } from '@/types'
 
 export const loadTokens = async (
   config: Config,
@@ -54,9 +54,9 @@ export const loadTokens = async (
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
   return {
-    [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
-    [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
-    [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
-    [SwapContractVersion.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
-  }[chain.contactVersion]
+    [EVMSwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
+    [EVMSwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
+    [EVMSwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
+    [EVMSwapContractVersion.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
+  }[chain.contractVersion]
 }

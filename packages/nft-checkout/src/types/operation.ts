@@ -1,12 +1,12 @@
+import type { Address, BridgeChain, TokenSymbol, TxBundle } from '@rarimo/core'
 import type { Chain, ChainId, IProvider } from '@rarimo/provider'
 
 import type { PaymentToken, Price, Token } from '@/entities'
-import type { DestinationTransaction } from '@/types/tx'
 
-import type { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import type { Config } from './config'
 import type { OperationSubscriber } from './operation-event-bus'
 import type { EstimatedPrice } from './token'
+import type { DestinationTransaction } from './tx'
 
 export type Target = {
   chainId: ChainId
@@ -14,11 +14,6 @@ export type Target = {
   swapTargetTokenSymbol: TokenSymbol // WETH, USDT, etc
   recipient?: Address
   slippage?: number // 0.5, 1, 5, 10 etc
-}
-
-export type TxBundle = {
-  bundle: HexString
-  salt?: HexString
 }
 
 export interface INFTCheckoutOperationConstructor {

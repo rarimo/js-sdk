@@ -1,6 +1,7 @@
+import type { Amount } from '@rarimo/core'
+
 import type { CreateTokenOpts } from '@/types'
 
-import type { Amount } from './amount'
 import { Token } from './token'
 
 export class PaymentToken extends Token {

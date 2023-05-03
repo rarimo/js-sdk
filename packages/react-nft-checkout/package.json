@@ -59,6 +59,7 @@
     "iconoir-react": "^6.2.1"
   },
   "dependencies": {
+    "@rarimo/core": "workspace:^",
     "@rarimo/nft-checkout": "workspace:^",
     "jsbi": "^3.2.5"
   },

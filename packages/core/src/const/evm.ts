@@ -1,6 +1,6 @@
 import { ChainTypes } from '@rarimo/provider'
 
-import { ChainNames, SwapContractVersion } from '@/enums'
+import { ChainNames, EVMSwapContractVersion } from '@/enums'
 import type { BridgeChain } from '@/types'
 
 const EVM_CHAIN_IDS = {
@@ -33,7 +33,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
     contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
-    contactVersion: SwapContractVersion.UniswapV3,
+    contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Goerli],
@@ -48,7 +48,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
     contractAddress: '0xe3C6b16AFAB73D836f12252f376613ceF967B5e1',
-    contactVersion: SwapContractVersion.UniswapV3,
+    contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Sepolia],
@@ -63,7 +63,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
     contractAddress: '',
-    contactVersion: SwapContractVersion.UniswapV3,
+    contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Polygon],
@@ -78,7 +78,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
     contractAddress: '',
-    contactVersion: SwapContractVersion.QuickSwap,
+    contractVersion: EVMSwapContractVersion.QuickSwap,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Mumbai],
@@ -93,7 +93,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     contractAddress: '0x24Ae0B9DC81d2E4e9383e283163913BF200a579F',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
-    contactVersion: SwapContractVersion.QuickSwap,
+    contractVersion: EVMSwapContractVersion.QuickSwap,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Avalanche],
@@ -108,7 +108,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     contractAddress: '0xaebaBd54CdD1418b0eb88A5e877EdD6cbC5804f4',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
-    contactVersion: SwapContractVersion.TraderJoe,
+    contractVersion: EVMSwapContractVersion.TraderJoe,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Fuji],
@@ -123,7 +123,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
     contractAddress: '0x13734D554d25EA67DFD45653659e447996a1C9B4',
-    contactVersion: SwapContractVersion.TraderJoe,
+    contractVersion: EVMSwapContractVersion.TraderJoe,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.BinanceSmartChain],
@@ -138,7 +138,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
     contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
-    contactVersion: SwapContractVersion.PancakeSwap,
+    contractVersion: EVMSwapContractVersion.PancakeSwap,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Chapel],
@@ -153,7 +153,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
     contractAddress: '0x08a87595f4423AaF591155aa2cEF31Fb904BcdE8',
-    contactVersion: SwapContractVersion.PancakeSwap,
+    contractVersion: EVMSwapContractVersion.PancakeSwap,
   },
 ]
 
@@ -164,5 +164,7 @@ export const CHAINS: Readonly<{ [key in ChainTypes]?: BridgeChain[] }> = {
 export const CHAIN_IDS = {
   [ChainTypes.EVM]: EVM_CHAIN_IDS,
 }
+
+export const BUNDLE_SALT_BYTES = 32
 
 export { ChainTypes }

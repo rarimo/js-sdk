@@ -1,6 +1,7 @@
+import type { BridgeChain } from '@rarimo/core'
+
 import { OperationEventBusEvents } from '@/enums'
 
-import type { BridgeChain } from './common'
 import type { Target } from './operation'
 
 export type OperationInitiatedEventPayload = {

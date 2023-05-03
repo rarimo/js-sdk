@@ -1,4 +1,6 @@
 import { BN } from '@distributedlab/tools'
+import type { BridgeChain } from '@rarimo/core'
+import { Amount } from '@rarimo/core'
 import type { IProvider } from '@rarimo/provider'
 import {
   BalanceResult,
@@ -6,8 +8,7 @@ import {
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
 
-import { Amount, PaymentToken, Token } from '@/entities'
-import type { BridgeChain } from '@/types'
+import { PaymentToken, Token } from '@/entities'
 
 const mapTokenBalances = (
   supportedTokens: Token[],

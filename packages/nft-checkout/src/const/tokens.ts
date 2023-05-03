@@ -1,7 +1,6 @@
-import { Token } from '@/entities'
-import { ChainNames } from '@/enums'
+import { ChainNames, EVM_CHAINS } from '@rarimo/core'
 
-import { EVM_CHAINS } from './chains'
+import { Token } from '@/entities'
 
 const chapelChain = EVM_CHAINS.find(i => i.name === ChainNames.Chapel)!
 const fujiChain = EVM_CHAINS.find(i => i.name === ChainNames.Fuji)!

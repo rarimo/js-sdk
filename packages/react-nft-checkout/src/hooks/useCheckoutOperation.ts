@@ -1,5 +1,5 @@
+import type { BridgeChain } from '@rarimo/core'
 import {
-  BridgeChain,
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
@@ -38,11 +38,10 @@ export const useCheckoutOperation = ({
   const setListeners = useCallback(() => {
     if (!checkoutOperation) return
 
-    checkoutOperation.onInitiated(({ chainFrom, isInitiated }) => {
+    checkoutOperation.onInitiated(e => {
       setCheckoutOperationReactiveState(prev => ({
         ...prev,
-        chainFrom,
-        isInitiated,
+        ...(e || {}),
       }))
     })
   }, [checkoutOperation])

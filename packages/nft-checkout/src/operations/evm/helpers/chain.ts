@@ -1,7 +1,5 @@
+import { CHAIN_IDS, ChainNames } from '@rarimo/core'
 import { ChainTypes } from '@rarimo/provider'
-
-import { CHAIN_IDS } from '@/const'
-import { ChainNames } from '@/enums'
 
 const chains = CHAIN_IDS[ChainTypes.EVM]
 

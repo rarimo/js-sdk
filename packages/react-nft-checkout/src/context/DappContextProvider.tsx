@@ -1,5 +1,5 @@
+import type { BridgeChain } from '@rarimo/core'
 import type {
-  BridgeChain,
   CreateCheckoutOperationParams,
   EstimatedPrice,
   INFTCheckoutOperation,

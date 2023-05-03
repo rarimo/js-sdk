@@ -1,4 +1,4 @@
-import { SwapContractVersion } from '@/enums'
+import { EVMSwapContractVersion } from '@rarimo/core'
 
 import { SWAP_TRADER_JOE_V2_ABI } from './swap-trader-joe-v2'
 import { SWAP_V2_ABI } from './swap-v2'
@@ -9,8 +9,8 @@ export * from './swap-v2'
 export * from './swap-v3'
 
 export const SWAP_CONTRACT_ABIS = {
-  [SwapContractVersion.TraderJoe]: SWAP_TRADER_JOE_V2_ABI,
-  [SwapContractVersion.PancakeSwap]: SWAP_V2_ABI,
-  [SwapContractVersion.QuickSwap]: SWAP_V2_ABI,
-  [SwapContractVersion.UniswapV3]: SWAP_V3_ABI,
+  [EVMSwapContractVersion.TraderJoe]: SWAP_TRADER_JOE_V2_ABI,
+  [EVMSwapContractVersion.PancakeSwap]: SWAP_V2_ABI,
+  [EVMSwapContractVersion.QuickSwap]: SWAP_V2_ABI,
+  [EVMSwapContractVersion.UniswapV3]: SWAP_V3_ABI,
 }

@@ -1,14 +1,14 @@
-import type { TokenInfo } from '@uniswap/token-lists'
-
-import { SwapContractVersion } from '@/enums'
-import { toLow } from '@/helpers'
-import type {
+import {
   Address,
   BridgeChain,
-  CreateTokenOpts,
   Decimals,
+  EVMSwapContractVersion,
   TokenSymbol,
-} from '@/types'
+} from '@rarimo/core'
+import type { TokenInfo } from '@uniswap/token-lists'
+
+import { toLow } from '@/helpers'
+import type { CreateTokenOpts } from '@/types'
 
 export class Token {
   readonly #chain: BridgeChain
@@ -63,19 +63,19 @@ export class Token {
   }
 
   public get isTraderJoe(): boolean {
-    return this.#chain.contactVersion === SwapContractVersion.TraderJoe
+    return this.#chain.contractVersion === EVMSwapContractVersion.TraderJoe
   }
 
   public get isQuickSwap(): boolean {
-    return this.#chain.contactVersion === SwapContractVersion.QuickSwap
+    return this.#chain.contractVersion === EVMSwapContractVersion.QuickSwap
   }
 
   public get isPancakeSwap(): boolean {
-    return this.#chain.contactVersion === SwapContractVersion.PancakeSwap
+    return this.#chain.contractVersion === EVMSwapContractVersion.PancakeSwap
   }
 
   public get isUniswapV3(): boolean {
-    return this.#chain.contactVersion === SwapContractVersion.UniswapV3
+    return this.#chain.contractVersion === EVMSwapContractVersion.UniswapV3
   }
 
   public get isV2(): boolean {

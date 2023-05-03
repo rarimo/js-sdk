@@ -26,6 +26,7 @@
     "build": "yarn workspaces foreach -pv --topological-dev run build",
     "build:nft-checkout": "yarn workspace @rarimo/nft-checkout build",
     "build:provider": "yarn workspace @rarimo/provider build",
+    "build:core": "yarn workspace @rarimo/core build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn lint:types",
     "lint:types": "yarn workspaces foreach -pv --no-private run typecheck",

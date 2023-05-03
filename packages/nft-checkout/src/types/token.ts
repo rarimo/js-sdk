@@ -1,6 +1,6 @@
-import type { Price, Token } from '@/entities'
+import type { Address, BridgeChain, Decimals, TokenSymbol } from '@rarimo/core'
 
-import type { Address, BridgeChain, Decimals, TokenSymbol } from './common'
+import type { Price, Token } from '@/entities'
 
 export type EstimatedPrice = {
   path?: string | string[]
