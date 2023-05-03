@@ -30,7 +30,10 @@ from the latest release.
 ## Packages
 
 The Rarimo SDK is a library that consists of many smaller NPM packages within the
-[@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo.
+[@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo that are organized like this:.
+
+<h1><p align="center"><img alt="Rarimo | JS SDK Dependency Tree" src="https://raw.githubusercontent.com/rarimo/js-sdk/feature/evm-swap-v2/assets/dep-tree.png" width="600" /></p></h1>
+
 Here are the packages in the namespace:
 
 | Package                                                                                               | Description                                                                                                                                       | Latest                                                                                                                                  |
