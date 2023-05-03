@@ -1,5 +1,6 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
+import type { Chain, ChainId, ChainTypes } from '@rarimo/core'
 import type {
   Transaction as SolTransaction,
   TransactionSignature,
@@ -8,9 +9,8 @@ import type { providers } from 'ethers'
 import type { providers as nearProviders } from 'near-api-js'
 import type { TransactionConfig } from 'web3-core'
 
-import type { ChainTypes, Providers } from '@/enums'
+import type { Providers } from '@/enums'
 
-import type { Chain, ChainId } from './chain'
 import type { EthereumProvider } from './ethereum'
 import type { NearProviderType } from './near'
 import type { ProviderSubscriber } from './provider-event-bus'

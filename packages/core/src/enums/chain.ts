@@ -8,6 +8,13 @@ export enum ChainNames {
   Fuji = 'fuji',
   BinanceSmartChain = 'BSC',
   Chapel = 'Binance Smart Chain Testnet',
+
+  // Not supported yet for nft-checkout
+  NearMainNet = 'Near MainNet',
+  NearTestNet = 'Near TestNet',
+  SolanaMainNet = 'Solana MainNet',
+  SolanaTestNet = 'Solana TestNet',
+  SolanaDevNet = 'Solana DevNet',
 }
 
 export enum EVMSwapContractVersion {
@@ -15,4 +22,10 @@ export enum EVMSwapContractVersion {
   QuickSwap = 'QuickSwap',
   PancakeSwap = 'PancakeSwap',
   UniswapV3 = 'UniswapV3',
+}
+
+export enum ChainTypes {
+  EVM = 1,
+  Solana = 2,
+  Near = 3,
 }

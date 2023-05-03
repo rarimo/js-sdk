@@ -1,12 +1,14 @@
 import {
+  NetworkId,
   setupWalletSelector,
   Wallet,
   WalletSelector,
 } from '@near-wallet-selector/core'
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
+import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/core'
 import { providers } from 'near-api-js'
 
-import { NEAR_ACTIONS, NearChains } from '@/enums'
+import { NEAR_ACTIONS } from '@/enums'
 import { MAX_GAS_LIMIT, NO_DEPOSIT } from '@/helpers'
 import { ENearWalletId, NearTxRequestBody } from '@/types'
 
@@ -23,7 +25,7 @@ export class NearRawProvider {
 
   async init() {
     this.selector = await setupWalletSelector({
-      network: NearChains.TestNet,
+      network: NEAR_CHAIN_IDS[ChainNames.NearTestNet] as NetworkId,
       modules: [setupMyNearWallet()],
     })
 

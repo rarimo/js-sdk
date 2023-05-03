@@ -1,6 +1,6 @@
 export class RuntimeError extends Error {
   public name = 'RuntimeError'
-  constructor(message?: string) {
+  constructor(message = 'Runtime error') {
     super(message)
   }
 }

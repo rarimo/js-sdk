@@ -1,7 +1,5 @@
+import type { Chain, ChainId, ChainTypes } from '@rarimo/core'
 import {
-  Chain,
-  ChainId,
-  ChainTypes,
   createProvider,
   CreateProviderOpts,
   EthereumProvider,

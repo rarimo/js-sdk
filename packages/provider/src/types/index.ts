@@ -1,4 +1,3 @@
-export * from './chain'
 export * from './ethereum'
 export * from './near'
 export * from './provider'

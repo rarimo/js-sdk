@@ -1,5 +1,6 @@
+import { sleep } from '@rarimo/core'
+
 import { ProviderChecks, Providers } from '@/enums'
-import { sleep } from '@/helpers'
 import { NearRawProvider } from '@/providers'
 
 import type { EthereumProvider, ProviderInstance, RawProvider } from './types'

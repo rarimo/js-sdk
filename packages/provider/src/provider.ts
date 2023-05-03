@@ -1,8 +1,8 @@
+import type { Chain, ChainId } from '@rarimo/core'
+
 import type { Providers } from '@/enums'
 import { errors } from '@/errors'
 import type {
-  Chain,
-  ChainId,
   IProvider,
   ProviderEventCallback,
   ProviderInstance,

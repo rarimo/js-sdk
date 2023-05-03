@@ -1,23 +1,31 @@
-import { CHAIN_IDS, ChainNames } from '@rarimo/core'
-import { ChainTypes } from '@rarimo/provider'
+import { CHAIN_IDS, ChainId, ChainNames, ChainTypes } from '@rarimo/core'
 
 const chains = CHAIN_IDS[ChainTypes.EVM]
 
+const mustGetChainId = (name: ChainNames): ChainId => {
+  const chainId = chains[name]
+  if (!chainId) {
+    throw new Error(`Chain ${name} not found`)
+  }
+
+  return chainId
+}
+
 export const TARGET_TOKEN_SYMBOLS = {
   // Ethereum
-  [chains[ChainNames.Ethereum]]: 'WETH',
-  [chains[ChainNames.Goerli]]: 'WETH',
-  [chains[ChainNames.Sepolia]]: 'WETH',
+  [mustGetChainId(ChainNames.Ethereum)]: 'WETH',
+  [mustGetChainId(ChainNames.Goerli)]: 'WETH',
+  [mustGetChainId(ChainNames.Sepolia)]: 'WETH',
 
   // Polygon
-  [chains[ChainNames.Polygon]]: 'WMATIC',
-  [chains[ChainNames.Mumbai]]: 'WMATIC',
+  [mustGetChainId(ChainNames.Polygon)]: 'WMATIC',
+  [mustGetChainId(ChainNames.Mumbai)]: 'WMATIC',
 
   // Avalanche
-  [chains[ChainNames.Avalanche]]: 'WAVAX',
-  [chains[ChainNames.Fuji]]: 'WAVAX',
+  [mustGetChainId(ChainNames.Avalanche)]: 'WAVAX',
+  [mustGetChainId(ChainNames.Fuji)]: 'WAVAX',
 
   // BSC
-  [chains[ChainNames.BinanceSmartChain]]: 'WBNB',
-  [chains[ChainNames.Chapel]]: 'WBNB',
+  [mustGetChainId(ChainNames.BinanceSmartChain)]: 'WBNB',
+  [mustGetChainId(ChainNames.Chapel)]: 'WBNB',
 }

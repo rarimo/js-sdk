@@ -1,5 +1,12 @@
-import type { Address, BridgeChain, TokenSymbol, TxBundle } from '@rarimo/core'
-import type { Chain, ChainId, IProvider } from '@rarimo/provider'
+import type {
+  Address,
+  BridgeChain,
+  Chain,
+  ChainId,
+  TokenSymbol,
+  TxBundle,
+} from '@rarimo/core'
+import type { IProvider } from '@rarimo/provider'
 
 import type { PaymentToken, Price, Token } from '@/entities'
 

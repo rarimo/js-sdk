@@ -1,12 +1,12 @@
-import { NearChains, ProviderEventBusEvents, Providers } from '@/enums'
+import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/core'
+
+import { ProviderEventBusEvents, Providers } from '@/enums'
 import {
   getNearExplorerAddressUrl,
   getNearExplorerTxUrl,
   handleNearError,
 } from '@/helpers'
 import type {
-  Chain,
-  ChainId,
   NearProviderRpcError,
   NearProviderType,
   NearTransactionResponse,
@@ -59,7 +59,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
   #updateProviderState(): void {
     const networkId = this.#provider.selector?.options.network.networkId
     this.#address = this.#provider?.accountId || ''
-    this.#chainId = networkId || NearChains.TestNet
+    this.#chainId = networkId || NEAR_CHAIN_IDS[ChainNames.NearTestNet]
   }
 
   async switchChain(chainId: ChainId): Promise<void> {

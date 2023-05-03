@@ -1,20 +1,18 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
+import { Chain, ChainId, ChainTypes, hexToDecimal } from '@rarimo/core'
 import { ethers, providers } from 'ethers'
 
-import { ChainTypes, ProviderEventBusEvents, ProviderEvents } from '@/enums'
+import { ProviderEventBusEvents, ProviderEvents } from '@/enums'
 import {
   connectEthAccounts,
   getEthExplorerAddressUrl,
   getEthExplorerTxUrl,
   handleEthError,
-  hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
 } from '@/helpers'
 import type {
-  Chain,
-  ChainId,
   EthProviderRpcError,
   ProviderProxy,
   RawProvider,

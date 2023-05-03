@@ -1,11 +1,13 @@
+import {
+  Chain,
+  ChainId,
+  ChainNames,
+  ChainTypes,
+  SOLANA_CHAIN_IDS,
+} from '@rarimo/core'
 import { PublicKey } from '@solana/web3.js'
 
-import {
-  ChainTypes,
-  ProviderEventBusEvents,
-  ProviderEvents,
-  SolanaChains,
-} from '@/enums'
+import { ProviderEventBusEvents, ProviderEvents } from '@/enums'
 import {
   getSolExplorerAddressUrl,
   getSolExplorerTxUrl,
@@ -13,8 +15,6 @@ import {
   handleSolError,
 } from '@/helpers'
 import type {
-  Chain,
-  ChainId,
   EthProviderRpcError,
   ProviderProxy,
   RawProvider,
@@ -67,7 +67,7 @@ export class BaseSolanaProvider
   async init(): Promise<void> {
     this.#setListeners()
     this.#address = getAddress(this.#provider.publicKey)
-    this.#chainId = SolanaChains.DevNet
+    this.#chainId = SOLANA_CHAIN_IDS[ChainNames.SolanaMainNet]
     this.#emitEvent(ProviderEventBusEvents.Initiated)
   }
 

@@ -1,7 +1,8 @@
+import type { Chain, ChainId } from '@rarimo/core'
 import { ethers, providers } from 'ethers'
 
 import { errors } from '@/errors'
-import type { Chain, ChainId, EthProviderRpcError } from '@/types'
+import type { EthProviderRpcError } from '@/types'
 
 export const getEthExplorerTxUrl = (chain: Chain, txHash: string): string => {
   return `${chain.explorerUrl}/tx/${txHash}`

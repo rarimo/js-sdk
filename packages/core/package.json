@@ -54,7 +54,6 @@
     "displayName": "@rarimo/core"
   },
   "dependencies": {
-    "@distributedlab/tools": "^0.2.0-rc.9",
-    "@rarimo/provider": "workspace:^"
+    "@distributedlab/tools": "^0.2.0-rc.9"
   }
 }

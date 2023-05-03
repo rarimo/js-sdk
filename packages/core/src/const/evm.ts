@@ -1,9 +1,7 @@
-import { ChainTypes } from '@rarimo/provider'
+import { ChainNames, ChainTypes, EVMSwapContractVersion } from '@/enums'
+import type { BridgeChain, ChainId, ChainIdMap } from '@/types'
 
-import { ChainNames, EVMSwapContractVersion } from '@/enums'
-import type { BridgeChain } from '@/types'
-
-const EVM_CHAIN_IDS = {
+export const EVM_CHAIN_IDS: ChainIdMap = {
   [ChainNames.Ethereum]: 1,
   [ChainNames.Polygon]: 137,
   [ChainNames.Fuji]: 43113,
@@ -15,13 +13,21 @@ const EVM_CHAIN_IDS = {
   [ChainNames.Chapel]: 97,
 }
 
+const mustGetChainIdByName = (name: ChainNames): ChainId => {
+  const chainId = EVM_CHAIN_IDS[name]
+  if (!chainId) {
+    throw new Error(`Chain ${name} is not supported`)
+  }
+  return chainId
+}
+
 const nativeToken = {
   decimals: 18,
 }
 
 export const EVM_CHAINS: BridgeChain[] = [
   {
-    id: EVM_CHAIN_IDS[ChainNames.Ethereum],
+    id: mustGetChainIdByName(ChainNames.Ethereum),
     name: ChainNames.Ethereum,
     rpcUrl: 'https://mainnet.infura.io/v3/',
     token: {
@@ -36,7 +42,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Goerli],
+    id: mustGetChainIdByName(ChainNames.Goerli),
     name: ChainNames.Goerli,
     rpcUrl: 'https://goerli.infura.io/v3/',
     token: {
@@ -51,7 +57,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Sepolia],
+    id: mustGetChainIdByName(ChainNames.Sepolia),
     name: ChainNames.Sepolia,
     rpcUrl: 'https://sepolia.infura.io/v3/',
     token: {
@@ -66,7 +72,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.UniswapV3,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Polygon],
+    id: mustGetChainIdByName(ChainNames.Polygon),
     name: ChainNames.Polygon,
     rpcUrl: 'https://polygon-rpc.com/',
     token: {
@@ -81,7 +87,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.QuickSwap,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Mumbai],
+    id: mustGetChainIdByName(ChainNames.Mumbai),
     name: ChainNames.Mumbai,
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     token: {
@@ -96,7 +102,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.QuickSwap,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Avalanche],
+    id: mustGetChainIdByName(ChainNames.Avalanche),
     name: ChainNames.Avalanche,
     rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
     token: {
@@ -111,7 +117,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.TraderJoe,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Fuji],
+    id: mustGetChainIdByName(ChainNames.Fuji),
     name: ChainNames.Fuji,
     rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
     token: {
@@ -126,7 +132,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.TraderJoe,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.BinanceSmartChain],
+    id: mustGetChainIdByName(ChainNames.BinanceSmartChain),
     name: ChainNames.BinanceSmartChain,
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     token: {
@@ -141,7 +147,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.PancakeSwap,
   },
   {
-    id: EVM_CHAIN_IDS[ChainNames.Chapel],
+    id: mustGetChainIdByName(ChainNames.Chapel),
     name: ChainNames.Chapel,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
     token: {
@@ -156,15 +162,3 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractVersion: EVMSwapContractVersion.PancakeSwap,
   },
 ]
-
-export const CHAINS: Readonly<{ [key in ChainTypes]?: BridgeChain[] }> = {
-  [ChainTypes.EVM]: EVM_CHAINS,
-}
-
-export const CHAIN_IDS = {
-  [ChainTypes.EVM]: EVM_CHAIN_IDS,
-}
-
-export const BUNDLE_SALT_BYTES = 32
-
-export { ChainTypes }

@@ -3,13 +3,14 @@ import { BN } from '@distributedlab/tools'
 import {
   BridgeChain,
   BUNDLE_SALT_BYTES,
+  ChainId,
   CHAINS,
+  ChainTypes,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   TxBundle,
 } from '@rarimo/core'
+import { sleep } from '@rarimo/core'
 import {
-  ChainId,
-  ChainTypes,
   errors as providerErrors,
   EthereumProvider,
   EthTransactionResponse,
@@ -26,7 +27,6 @@ import {
   TransactionResponse,
   TxRequestBody,
 } from '@rarimo/provider'
-import { sleep } from '@rarimo/provider'
 import { Contract, providers, utils } from 'ethers'
 
 import { DEFAULT_CONFIG } from '@/config'

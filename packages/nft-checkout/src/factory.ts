@@ -1,4 +1,5 @@
-import type { ChainTypes, IProvider } from '@rarimo/provider'
+import type { ChainTypes } from '@rarimo/core'
+import type { IProvider } from '@rarimo/provider'
 
 import { DEFAULT_CONFIG } from './config'
 import { errors } from './errors'

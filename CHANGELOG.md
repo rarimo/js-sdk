@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/core` - Core SDK package
 
 ### Changed
+- `@rarimo/nft-checkout` - Moved some reusable types, const, helpers, enums to the `@rarimo/core` package
+- `@rarimo/provider` - Moved some reusable types, const, helpers, enums to the `@rarimo/core` package
 - `@rarimo/provider` - Bump `@distributedlab/tools` to 0.2.0-rc.9
 - `@rarimo/nft-checkout` - Bump `@distributedlab/tools`, `@distributedlab/fetcher`, `@distributedlab/jac` to 0.2.0-rc.9
 

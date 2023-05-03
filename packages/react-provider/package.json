@@ -29,6 +29,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@rarimo/core": "workspace:^",
     "@rarimo/provider": "workspace:^"
   },
   "devDependencies": {

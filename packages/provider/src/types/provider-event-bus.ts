@@ -1,6 +1,6 @@
-import { ProviderEventBusEvents } from '@/enums'
+import type { ChainId } from '@rarimo/core'
 
-import type { ChainId } from './chain'
+import { ProviderEventBusEvents } from '@/enums'
 
 export type ProviderEventPayload = {
   address?: string
