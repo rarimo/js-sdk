@@ -1,4 +1,4 @@
-import { RuntimeError } from '@rarimo/core'
+import { RuntimeError } from '@rarimo/shared'
 
 export class OperatorNotExistsError extends RuntimeError {
   public name = 'OperatorNotExistsError'

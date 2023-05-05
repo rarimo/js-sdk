@@ -1,43 +1,23 @@
-import { JsonApiClient, JsonApiError } from '@distributedlab/jac'
 import { BN } from '@distributedlab/tools'
+import type { DestinationTransaction, IBridger } from '@rarimo/bridge'
+import { createBridger, createEVMBridger } from '@rarimo/bridge'
+import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
   BridgeChain,
   BUNDLE_SALT_BYTES,
   ChainId,
-  CHAINS,
   ChainTypes,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   TxBundle,
-} from '@rarimo/core'
-import { sleep } from '@rarimo/core'
-import {
-  errors as providerErrors,
-  EthereumProvider,
-  EthTransactionResponse,
-  IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderEventPayload,
-  ProviderInstance,
-  Providers,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
-} from '@rarimo/provider'
+} from '@rarimo/shared'
 import { Contract, providers, utils } from 'ethers'
 
-import { DEFAULT_CONFIG } from '@/config'
 import { ERC20_ABI, SWAP_CONTRACT_ABIS } from '@/const'
 import type { PaymentToken, Price, Token } from '@/entities'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import type {
   Config,
-  DestinationTransaction,
-  DestinationTransactionResponse,
   EstimatedPrice,
   INFTCheckoutOperation,
   OperationCreateParams,
@@ -57,8 +37,6 @@ export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
-
-const DESTINATION_TX_PULL_INTERVAL = 2000
 
 /**
  * An operation on an EVM chain.
@@ -81,22 +59,14 @@ export class EVMOperation
   #chainFrom?: BridgeChain
   #target?: Target
 
-  #chains: BridgeChain[] = []
   #tokens: Token[] = []
-  #api: JsonApiClient
+  #bridger: IBridger
 
   constructor(config: Config, provider: IProvider) {
     super()
     this.#config = config
     this.#provider = provider
-    this.#api = new JsonApiClient({
-      baseUrl: DEFAULT_CONFIG.CORE_API_BASE_URL,
-      headers: {
-        'Content-Type': 'application/json',
-        Origin: window?.origin ?? '',
-      },
-      credentials: 'omit',
-    })
+    this.#bridger = createBridger(createEVMBridger, provider)
   }
 
   public get chainFrom(): BridgeChain | undefined {
@@ -115,14 +85,12 @@ export class EVMOperation
     return this.#target
   }
 
+  /**
+   * Initialize the operation with the source chain and transaction parameters
+   * @param param0 Information about the source chain and the target transaction of the operation
+   */
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
-    /**
-     * Initialize the operation with the source chain and transaction parameters
-     * @param param0 Information about the source chain and the target transaction of the operation
-     */
-    if (!this.#chains.length) {
-      await this.supportedChains()
-    }
+    await this.#bridger.init()
 
     const from = this.#getChainByID(chainIdFrom)
     const to = this.#getChainByID(target.chainId)
@@ -157,10 +125,7 @@ export class EVMOperation
    * @returns A list of supported chains and information about them
    */
   public async supportedChains(): Promise<BridgeChain[]> {
-    // TODO: add backend integration
-    this.#chains = CHAINS[ChainTypes.EVM]!
-
-    return this.#chains
+    return this.#bridger.loadSupportedChains()
   }
 
   public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
@@ -251,44 +216,7 @@ export class EVMOperation
     sourceChain: BridgeChain,
     sourceTxHash: string,
   ): Promise<DestinationTransaction> {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-
-    const chain = this.#getChainByID(sourceChain.id)
-    if (!chain) {
-      throw new errors.OperationChainNotSupportedError()
-    }
-
-    let transaction: DestinationTransactionResponse | undefined
-
-    while (!transaction) {
-      transaction = await this.#getDestinationTx(chain.name, sourceTxHash)
-      if (!transaction) {
-        await sleep(DESTINATION_TX_PULL_INTERVAL)
-      }
-    }
-
-    return {
-      hash: transaction!.id,
-      status: transaction!.status,
-    }
-  }
-
-  async #getDestinationTx(
-    chainId: string,
-    txHash: string,
-  ): Promise<DestinationTransactionResponse | undefined> {
-    try {
-      const { data } = await this.#api.get<DestinationTransactionResponse>(
-        `/v1/chains/${chainId}/transactions/${txHash}`,
-      )
-      return data
-    } catch (e) {
-      if ((e as JsonApiError).httpStatus === 404) {
-        return undefined
-      }
-
-      throw e
-    }
+    return this.#bridger.getDestinationTx(sourceChain, sourceTxHash)
   }
 
   #getNativeAmountIn(price: Price) {
@@ -338,7 +266,7 @@ export class EVMOperation
     const receiverAddress = this.#target?.recipient ?? this.#provider.address
     const amounts = this.#getAmounts(e.from, e.to, e)
 
-    const network = this.#chains.find(
+    const network = this.#bridger.chains.find(
       i => Number(i.id) === Number(this.#target?.chainId),
     )
 
@@ -397,7 +325,7 @@ export class EVMOperation
   }
 
   #getChainByID(id: ChainId) {
-    return this.#chains.find(chain => chain.id === id)
+    return this.#bridger.chains.find(chain => chain.id === id)
   }
 
   async #loadTokens() {
@@ -420,23 +348,4 @@ export class EVMOperation
       await this.#switchChain(targetChain)
     }
   }
-}
-
-// Export for typedoc
-export type {
-  ChainId,
-  EthereumProvider,
-  EthTransactionResponse,
-  IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderEventPayload,
-  ProviderInstance,
-  Providers,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
 }

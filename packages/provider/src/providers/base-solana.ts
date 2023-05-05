@@ -4,7 +4,7 @@ import {
   ChainNames,
   ChainTypes,
   SOLANA_CHAIN_IDS,
-} from '@rarimo/core'
+} from '@rarimo/shared'
 import { PublicKey } from '@solana/web3.js'
 
 import { ProviderEventBusEvents, ProviderEvents } from '@/enums'

@@ -1,4 +1,4 @@
-import type { Chain } from '@rarimo/core'
+import type { Chain } from '@rarimo/shared'
 import { utils } from 'near-api-js'
 
 import { EIP1193, EIP1474 } from '@/enums'

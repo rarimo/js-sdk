@@ -1,7 +1,7 @@
 import { BN } from '@distributedlab/tools'
-import type { BridgeChain } from '@rarimo/core'
-import { Amount } from '@rarimo/core'
 import type { IProvider } from '@rarimo/provider'
+import type { BridgeChain } from '@rarimo/shared'
+import { Amount } from '@rarimo/shared'
 import {
   BalanceResult,
   getBalancesForEthereumAddress,

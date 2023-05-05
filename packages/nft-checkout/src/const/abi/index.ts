@@ -1,4 +1,4 @@
-import { EVMSwapContractVersion } from '@rarimo/core'
+import { EVMSwapContractVersion } from '@rarimo/shared'
 
 import { SWAP_TRADER_JOE_V2_ABI } from './swap-trader-joe-v2'
 import { SWAP_V2_ABI } from './swap-v2'

@@ -43,7 +43,7 @@
     "@ethersproject/properties": "^5.7.0",
     "@near-wallet-selector/core": "^7.8.2",
     "@near-wallet-selector/my-near-wallet": "^7.8.2",
-    "@rarimo/core": "workspace:^",
+    "@rarimo/shared": "workspace:^",
     "@solana/web3.js": "^1.73.2",
     "bs58": "^5.0.0",
     "ethers": "^5.7.2",

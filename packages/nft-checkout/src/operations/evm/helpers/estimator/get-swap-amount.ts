@@ -1,5 +1,5 @@
 import { BN } from '@distributedlab/tools'
-import { RARIMO_BRIDGE_FEE } from '@rarimo/core'
+import { RARIMO_BRIDGE_FEE } from '@rarimo/shared'
 
 import type { Price } from '@/entities'
 

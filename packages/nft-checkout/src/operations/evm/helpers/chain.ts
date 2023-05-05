@@ -1,4 +1,4 @@
-import { CHAIN_IDS, ChainId, ChainNames, ChainTypes } from '@rarimo/core'
+import { CHAIN_IDS, ChainId, ChainNames, ChainTypes } from '@rarimo/shared'
 
 const chains = CHAIN_IDS[ChainTypes.EVM]
 

@@ -4,7 +4,7 @@ import {
   Decimals,
   EVMSwapContractVersion,
   TokenSymbol,
-} from '@rarimo/core'
+} from '@rarimo/shared'
 import type { TokenInfo } from '@uniswap/token-lists'
 
 import { toLow } from '@/helpers'

@@ -1,4 +1,4 @@
-import { sleep } from '@rarimo/core'
+import { sleep } from '@rarimo/shared'
 
 import { ProviderChecks, Providers } from '@/enums'
 import { NearRawProvider } from '@/providers'

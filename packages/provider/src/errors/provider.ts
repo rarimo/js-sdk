@@ -1,4 +1,4 @@
-import { RuntimeError } from '@rarimo/core'
+import { RuntimeError } from '@rarimo/shared'
 
 export class ProviderNotInitializedError extends RuntimeError {
   public name = 'ProviderNotInitializedError'

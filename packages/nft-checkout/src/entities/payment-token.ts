@@ -1,4 +1,4 @@
-import type { Amount } from '@rarimo/core'
+import type { Amount } from '@rarimo/shared'
 
 import type { CreateTokenOpts } from '@/types'
 

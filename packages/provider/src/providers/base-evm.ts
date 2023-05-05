@@ -1,6 +1,6 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
-import { Chain, ChainId, ChainTypes, hexToDecimal } from '@rarimo/core'
+import { Chain, ChainId, ChainTypes, hexToDecimal } from '@rarimo/shared'
 import { ethers, providers } from 'ethers'
 
 import { ProviderEventBusEvents, ProviderEvents } from '@/enums'

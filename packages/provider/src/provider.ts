@@ -1,4 +1,4 @@
-import type { Chain, ChainId } from '@rarimo/core'
+import type { Chain, ChainId } from '@rarimo/shared'
 
 import type { Providers } from '@/enums'
 import { errors } from '@/errors'

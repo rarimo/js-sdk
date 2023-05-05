@@ -29,8 +29,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@rarimo/core": "workspace:^",
-    "@rarimo/provider": "workspace:^"
+    "@rarimo/provider": "workspace:^",
+    "@rarimo/shared": "workspace:^"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

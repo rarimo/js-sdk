@@ -1,4 +1,4 @@
-import type { ChainId } from '@rarimo/core'
+import type { ChainId } from '@rarimo/shared'
 
 import type { Token } from '@/entities'
 import { OperatorWrappedTokenNotFound } from '@/errors'

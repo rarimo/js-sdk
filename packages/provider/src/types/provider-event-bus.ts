@@ -1,4 +1,4 @@
-import type { ChainId } from '@rarimo/core'
+import type { ChainId } from '@rarimo/shared'
 
 import { ProviderEventBusEvents } from '@/enums'
 

@@ -1,6 +1,6 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
-import type { Chain, ChainId, ChainTypes } from '@rarimo/core'
+import type { Chain, ChainId, ChainTypes } from '@rarimo/shared'
 import type {
   Transaction as SolTransaction,
   TransactionSignature,

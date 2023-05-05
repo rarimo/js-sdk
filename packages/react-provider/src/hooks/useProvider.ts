@@ -1,4 +1,3 @@
-import type { Chain, ChainId, ChainTypes } from '@rarimo/core'
 import {
   createProvider,
   CreateProviderOpts,
@@ -22,6 +21,7 @@ import {
   TxRequestBody,
   Web3,
 } from '@rarimo/provider'
+import type { Chain, ChainId, ChainTypes } from '@rarimo/shared'
 import { useCallback, useEffect, useState } from 'react'
 
 const PROVIDER_EVENTS: Array<keyof IProvider> = [

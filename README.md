@@ -30,15 +30,12 @@ from the latest release.
 ## Packages
 
 The Rarimo SDK is a library that consists of many smaller NPM packages within the
-[@rarimo namespace](https://www.npmjs.com/org/rarimo), a so-called monorepo that are organized like this:.
-
-<h1><p align="center"><img alt="Rarimo | JS SDK Dependency Tree" src="https://raw.githubusercontent.com/rarimo/js-sdk/feature/evm-swap-v2/assets/dep-tree.png" width="600" /></p></h1>
-
-Here are the packages in the namespace:
+[@rarimo namespace](https://www.npmjs.com/org/rarimo):
 
 | Package                                                                                               | Description                                                                                                                                       | Latest                                                                                                                                  |
 |-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/core](https://rarimo.github.io/js-sdk/modules/_rarimo_core.html)                             | Rarimo SDK core package                                                                                                                           | [![npm version](https://img.shields.io/npm/v/@rarimo/core.svg)](https://www.npmjs.com/package/@rarimo/core)                             |
+| [@rarimo/shared](https://rarimo.github.io/js-sdk/modules/_rarimo_shared.html)                         | Utility functions, types and constants shared across @rarimo packages.                                                                            | [![npm version](https://img.shields.io/npm/v/@rarimo/shared.svg)](https://www.npmjs.com/package/@rarimo/shared)                         |
+| [@rarimo/bridge](https://rarimo.github.io/js-sdk/modules/_rarimo_bridge.html)                         | All bridge related functionality for the Rarimo Protocol                                                                                          | [![npm version](https://img.shields.io/npm/v/@rarimo/bridge.svg)](https://www.npmjs.com/package/@rarimo/bridge)                         |
 | [@rarimo/provider](https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html)                     | Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use | [![npm version](https://img.shields.io/npm/v/@rarimo/provider.svg)](https://www.npmjs.com/package/@rarimo/provider)                     |
 | [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html)             | Tools to create cross-train transactions with the Rarimo protocol                                                                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout)             |
 | [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)         | React `@rarimo/provider` adapter                                                                                                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)         |

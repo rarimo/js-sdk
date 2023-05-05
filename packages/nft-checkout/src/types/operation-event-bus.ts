@@ -1,4 +1,4 @@
-import type { BridgeChain } from '@rarimo/core'
+import type { BridgeChain } from '@rarimo/shared'
 
 import { OperationEventBusEvents } from '@/enums'
 

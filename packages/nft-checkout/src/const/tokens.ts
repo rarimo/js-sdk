@@ -1,4 +1,4 @@
-import { ChainNames, EVM_CHAINS } from '@rarimo/core'
+import { ChainNames, EVM_CHAINS } from '@rarimo/shared'
 
 import { Token } from '@/entities'
 

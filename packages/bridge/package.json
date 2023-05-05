@@ -1,10 +1,10 @@
 {
-  "name": "@rarimo/core",
+  "name": "@rarimo/bridge",
   "version": "1.5.0-rc.8",
-  "description": "Rarimo SDK core package",
+  "description": "All bridge related functionality for the Rarimo Protocol",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/core"
+    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/bridge"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -51,9 +51,11 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "@rarimo/core"
+    "displayName": "@rarimo/bridge"
   },
   "dependencies": {
-    "@distributedlab/tools": "^0.2.0-rc.9"
+    "@distributedlab/jac": "^0.2.0-rc.9",
+    "@rarimo/provider": "workspace:^",
+    "@rarimo/shared": "workspace:^"
   }
 }

@@ -1,4 +1,3 @@
-import type { BridgeChain } from '@rarimo/core'
 import {
   createCheckoutOperation,
   CreateCheckoutOperationParams,
@@ -8,6 +7,7 @@ import {
   Token,
 } from '@rarimo/nft-checkout'
 import type { IProvider } from '@rarimo/provider'
+import type { BridgeChain } from '@rarimo/shared'
 import { useCallback, useEffect, useState } from 'react'
 
 type Props = {

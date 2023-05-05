@@ -1,4 +1,4 @@
-import { Chain, ChainNames, SOLANA_CHAIN_IDS } from '@rarimo/core'
+import { Chain, ChainNames, SOLANA_CHAIN_IDS } from '@rarimo/shared'
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 

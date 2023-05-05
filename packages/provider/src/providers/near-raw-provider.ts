@@ -5,7 +5,7 @@ import {
   WalletSelector,
 } from '@near-wallet-selector/core'
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
-import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/core'
+import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 import { providers } from 'near-api-js'
 
 import { NEAR_ACTIONS } from '@/enums'

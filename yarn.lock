@@ -2517,11 +2517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rarimo/core@workspace:^, @rarimo/core@workspace:packages/core":
+"@rarimo/bridge@workspace:^, @rarimo/bridge@workspace:packages/bridge":
   version: 0.0.0-use.local
-  resolution: "@rarimo/core@workspace:packages/core"
+  resolution: "@rarimo/bridge@workspace:packages/bridge"
   dependencies:
-    "@distributedlab/tools": ^0.2.0-rc.9
+    "@distributedlab/jac": ^0.2.0-rc.9
+    "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
     "@swc/jest": ^0.2.26
@@ -2544,9 +2546,10 @@ __metadata:
     "@pancakeswap/sdk": ^3.1.4
     "@pancakeswap/smart-router": ^0.6.1
     "@pancakeswap/swap-sdk-core": ^0.0.1
-    "@rarimo/core": "workspace:^"
+    "@rarimo/bridge": "workspace:^"
     "@rarimo/provider": "workspace:^"
     "@rarimo/quickswap-sdk": ^3.0.8
+    "@rarimo/shared": "workspace:^"
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
     "@swc/jest": ^0.2.26
@@ -2577,7 +2580,7 @@ __metadata:
     "@ethersproject/properties": ^5.7.0
     "@near-wallet-selector/core": ^7.8.2
     "@near-wallet-selector/my-near-wallet": ^7.8.2
-    "@rarimo/core": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@solana/web3.js": ^1.73.2
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
@@ -2621,8 +2624,8 @@ __metadata:
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
     "@mui/material": ^5.11.10
-    "@rarimo/core": "workspace:^"
     "@rarimo/nft-checkout": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@types/node": ^18.6.5
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -2658,8 +2661,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/react-provider@workspace:packages/react-provider"
   dependencies:
-    "@rarimo/core": "workspace:^"
     "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@types/react": ^18.0.27
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.1.0
@@ -2673,6 +2676,20 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/shared@workspace:^, @rarimo/shared@workspace:packages/shared":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/shared@workspace:packages/shared"
+  dependencies:
+    "@distributedlab/tools": ^0.2.0-rc.9
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    tsc-alias: ^1.8.2
   languageName: unknown
   linkType: soft
 

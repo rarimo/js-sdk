@@ -1,6 +1,6 @@
 import { BN } from '@distributedlab/tools'
-import type { Decimals, TokenSymbol } from '@rarimo/core'
-import { AmountBase } from '@rarimo/core'
+import type { Decimals, TokenSymbol } from '@rarimo/shared'
+import { AmountBase } from '@rarimo/shared'
 
 export class Price extends AmountBase {
   readonly #symbol: TokenSymbol

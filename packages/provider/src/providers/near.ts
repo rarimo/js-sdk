@@ -1,4 +1,4 @@
-import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/core'
+import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 
 import { ProviderEventBusEvents, Providers } from '@/enums'
 import {

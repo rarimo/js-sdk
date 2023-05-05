@@ -1,4 +1,9 @@
-import type { Address, BridgeChain, Decimals, TokenSymbol } from '@rarimo/core'
+import type {
+  Address,
+  BridgeChain,
+  Decimals,
+  TokenSymbol,
+} from '@rarimo/shared'
 
 import type { Price, Token } from '@/entities'
 

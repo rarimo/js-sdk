@@ -1,4 +1,3 @@
-import type { BridgeChain } from '@rarimo/core'
 import type {
   CreateCheckoutOperationParams,
   EstimatedPrice,
@@ -12,6 +11,7 @@ import type {
   IProvider,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
+import type { BridgeChain } from '@rarimo/shared'
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { useCheckoutOperation, useProvider } from '@/hooks'
