@@ -1,7 +1,7 @@
 {
   "name": "@rarimo/swap",
   "version": "1.5.0-rc.8",
-  "description": "Rarimo NFT Checkout core package",
+  "description": "Rarimo swap package",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk/tree/main/packages/swap"

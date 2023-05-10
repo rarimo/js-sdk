@@ -9,12 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `@rarimo/shared` - Utility functions, types and constants shared across @rarimo packages.
 - `@rarimo/bridge` - All bridge related functionality for the Rarimo Protocol.
+- `@rarimo/swap` - Rarimo swap package.
 
 ### Changed
 - `@rarimo/nft-checkout` - Moved some reusable types, const, helpers, enums to the `@rarimo/shared` package
 - `@rarimo/provider` - Moved some reusable types, const, helpers, enums to the `@rarimo/shared` package
 - `@rarimo/provider` - Bump `@distributedlab/tools` to 0.2.0-rc.9
 - `@rarimo/nft-checkout` - Bump `@distributedlab/tools`, `@distributedlab/fetcher`, `@distributedlab/jac` to 0.2.0-rc.9
+- `@rarimo/nft-checkout` - Move building of the transaction to the `Swapper` from `@rarimo/swap` which implementation based on the `evm-swap-v2` contracts
 
 ### Fixed
 - `all` - Node resolution in the `package.json` files
