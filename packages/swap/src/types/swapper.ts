@@ -23,7 +23,7 @@ export type ExecuteArgs = {
   amountIn: Amount
   amountOut?: Amount // required if swap is required
   receiver?: string // could be another contract, if empty it will be caller by default
-  path?: string[] // required if swap is required
+  path?: string | string[] // required if swap is required
   chainTo?: string // required if bridging is required
   bundle?: TxBundle // required if transaction bundling is required
   isWrapped?: boolean // required if bridging is required

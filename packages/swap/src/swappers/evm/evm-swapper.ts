@@ -40,6 +40,11 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
       from: provider.value.address,
       to: from.chain.contractAddress,
       data: getExecuteData(args),
+      ...(from.isNative
+        ? {
+            value: amountIn.value,
+          }
+        : {}),
     })
   }
 

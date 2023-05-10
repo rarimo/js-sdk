@@ -103,7 +103,7 @@ const getSwapData = (
   to: Token,
   amountIn: Amount,
   amountOut: Amount,
-  path: string[],
+  path: string | string[],
 ): CommandPayload[] => {
   const data = []
 

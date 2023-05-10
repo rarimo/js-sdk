@@ -1,19 +1,19 @@
 import { BN } from '@distributedlab/tools'
-import type { Bridger, DestinationTransaction } from '@rarimo/bridge'
+import type { DestinationTransaction } from '@rarimo/bridge'
 import type { Token } from '@rarimo/bridge'
-import { createBridger, createEVMBridger } from '@rarimo/bridge'
 import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
+  Amount,
   BridgeChain,
-  BUNDLE_SALT_BYTES,
   ChainId,
   ChainTypes,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   TxBundle,
 } from '@rarimo/shared'
-import { Contract, providers, utils } from 'ethers'
+import type { Swapper } from '@rarimo/swap'
+import { createEVMSwapper, createSwapper } from '@rarimo/swap'
+import type { providers } from 'ethers'
 
-import { ERC20_ABI, SWAP_CONTRACT_ABIS } from '@/const'
 import type { Price } from '@/entities'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
@@ -60,13 +60,13 @@ export class EVMOperation
   #target?: Target
 
   #tokens: Token[] = []
-  #bridger: Bridger
+  #swapper: Swapper
 
   constructor(config: Config, provider: IProvider) {
     super()
     this.#config = config
     this.#provider = provider
-    this.#bridger = createBridger(createEVMBridger, provider)
+    this.#swapper = createSwapper(createEVMSwapper, provider)
   }
 
   public get chainFrom(): BridgeChain | undefined {
@@ -90,7 +90,7 @@ export class EVMOperation
    * @param param0 Information about the source chain and the target transaction of the operation
    */
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
-    await this.#bridger.init()
+    await this.#swapper.init()
 
     const from = this.#getChainByID(chainIdFrom)
     const to = this.#getChainByID(target.chainId)
@@ -125,7 +125,7 @@ export class EVMOperation
    * @returns A list of supported chains and information about them
    */
   public async supportedChains(): Promise<BridgeChain[]> {
-    return this.#bridger.loadSupportedChains()
+    return this.#swapper.chains
   }
 
   public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
@@ -172,7 +172,6 @@ export class EVMOperation
    */
   public async estimatePrice(from: PaymentToken) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-
     return estimate(this.#provider, this.#tokens, from, this.#target!)
   }
 
@@ -184,22 +183,28 @@ export class EVMOperation
    * @returns The hash of the transaction
    */
   public async checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string> {
-    const chain = e.from.chain
-    await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
-
-    if (!chain.contractAddress) {
+    if (!e.from.chain.contractAddress) {
       throw new errors.OperationChainNotSupportedError()
     }
 
-    const result = await this.#provider.signAndSendTx({
-      from: this.#provider.address,
-      to: chain.contractAddress,
-      data: this.#encodeTxData(e, bundle),
-      ...(e.from.isNative
-        ? {
-            value: this.#getNativeAmountIn(e.price),
-          }
-        : {}),
+    const chainTo = this.#swapper.chains.find(
+      i => Number(i.id) === Number(this.#target?.chainId),
+    )?.name
+
+    const price = this.#target!.price
+    const amountIn = e.from.isNative ? getNativeAmountIn(e.price) : e.price
+    const amountOut = Amount.fromBigInt(getSwapAmount(price), price.decimals)
+
+    const result = await this.#swapper.execute({
+      from: e.from,
+      to: e.to,
+      amountIn,
+      amountOut,
+      receiver: this.#target!.recipient,
+      path: e.path,
+      chainTo,
+      bundle,
+      isWrapped: IS_TOKEN_WRAPPED,
     })
 
     return typeof result === 'string'
@@ -211,116 +216,11 @@ export class EVMOperation
     sourceChain: BridgeChain,
     sourceTxHash: string,
   ): Promise<DestinationTransaction> {
-    return this.#bridger.getDestinationTx(sourceChain, sourceTxHash)
-  }
-
-  #getNativeAmountIn(price: Price) {
-    return BN.fromBigInt(price.value, price.decimals).mul(
-      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, price.decimals),
-    ).value
-  }
-
-  #getFunctionFragment(from: Token, to: Token) {
-    if (from.isNative && to.isNative) {
-      throw new errors.OperationInvalidTokenPairError()
-    }
-
-    if (from.isNative && from.isV2) {
-      return 'swapExactNativeInputMultiHopThenBridge'
-    }
-
-    if (from.isNative) {
-      return 'swapExactInputMultiHopThenBridge'
-    }
-
-    if (to.isNative && from.isV2) {
-      return 'swapNativeExactOutputMultiHopThenBridge'
-    }
-
-    return 'swapExactOutputMultiHopThenBridge'
-  }
-
-  #getAmounts(from: Token, to: Token, e: EstimatedPrice): string[] {
-    const amountOutMinimum = getSwapAmount(this.#target!.price)
-    const amountIn = this.#getNativeAmountIn(e.price)
-
-    if ((from.isNative || to.isNative) && from.isV2) {
-      return [amountOutMinimum]
-    }
-
-    if (from.isNative) {
-      return [amountIn, amountOutMinimum]
-    }
-
-    return [amountOutMinimum, e.price.value]
-  }
-
-  #encodeTxData(e: EstimatedPrice, bundle?: TxBundle): string {
-    const chain = e.from.chain
-    const functionFragment = this.#getFunctionFragment(e.from, e.to)
-    const receiverAddress = this.#target?.recipient ?? this.#provider.address
-    const amounts = this.#getAmounts(e.from, e.to, e)
-
-    const network = this.#bridger.chains.find(
-      i => Number(i.id) === Number(this.#target?.chainId),
-    )
-
-    const bundleTuple = [
-      bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
-      bundle?.bundle ?? '',
-    ]
-
-    return new utils.Interface(
-      SWAP_CONTRACT_ABIS[chain.contractVersion],
-    ).encodeFunctionData(functionFragment, [
-      ...amounts,
-      e.path,
-      receiverAddress,
-      network?.name ?? '',
-      IS_TOKEN_WRAPPED,
-      bundleTuple,
-    ])
-  }
-
-  async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
-    if (e.from.isNative) return
-
-    const contract = new Contract(
-      e.from.address,
-      ERC20_ABI,
-      this.#provider?.getWeb3Provider?.(),
-    )
-
-    const allowanceRaw = await contract.allowance(
-      this.#provider.address,
-      routerAddress,
-    )
-
-    if (!e.price.value) {
-      throw new errors.OperationEstimatedPriceNotExistError()
-    }
-
-    const allowance = BN.fromBigInt(allowanceRaw.toString(), e.from.decimals)
-    const estimationPrice = BN.fromBigInt(e.price.value, e.price.decimals)
-
-    if (estimationPrice.isLessThan(allowance)) {
-      return
-    }
-
-    const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
-      routerAddress,
-      BN.MAX_UINT256.value,
-    ])
-
-    return this.#provider.signAndSendTx({
-      from: this.#provider.address,
-      to: e.from.address,
-      data,
-    })
+    return this.#swapper.getDestinationTx(sourceChain, sourceTxHash)
   }
 
   #getChainByID(id: ChainId) {
-    return this.#bridger.chains.find(chain => chain.id === id)
+    return this.#swapper.chains.find(chain => chain.id === id)
   }
 
   async #loadTokens() {
@@ -343,4 +243,13 @@ export class EVMOperation
       await this.#switchChain(targetChain)
     }
   }
+}
+
+const getNativeAmountIn = (price: Price) => {
+  return Amount.fromBigInt(
+    BN.fromBigInt(price.value, price.decimals).mul(
+      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, price.decimals),
+    ).value,
+    price.decimals,
+  )
 }
