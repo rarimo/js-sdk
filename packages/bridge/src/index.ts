@@ -1,4 +1,5 @@
 export * from './bridger'
 export * from './bridgers'
+export * from './entities'
 export * from './errors'
 export * from './types'

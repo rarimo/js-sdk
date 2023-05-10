@@ -1,3 +1,4 @@
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
   ChainId,
@@ -9,7 +10,7 @@ import {
   Trade,
 } from '@traderjoe-xyz/sdk'
 
-import { Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import type { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'

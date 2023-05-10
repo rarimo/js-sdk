@@ -1,4 +1,5 @@
 import { BN } from '@distributedlab/tools'
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
   Currency,
@@ -17,7 +18,7 @@ import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import type { providers } from 'ethers'
 import JSBI from 'jsbi'
 
-import { Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import { errors } from '@/errors'
 import type { EstimatedPrice, Target } from '@/types'
 

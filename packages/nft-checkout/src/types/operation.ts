@@ -1,4 +1,4 @@
-import type { DestinationTransaction } from '@rarimo/bridge'
+import type { DestinationTransaction, Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type {
   Address,
@@ -9,11 +9,11 @@ import type {
   TxBundle,
 } from '@rarimo/shared'
 
-import type { PaymentToken, Price, Token } from '@/entities'
+import type { Price } from '@/entities'
 
 import type { Config } from './config'
 import type { OperationSubscriber } from './operation-event-bus'
-import type { EstimatedPrice } from './token'
+import type { EstimatedPrice, PaymentToken } from './token'
 
 export type Target = {
   chainId: ChainId

@@ -1,18 +1,16 @@
+import type { Token } from '@rarimo/bridge'
 import type { ChainId } from '@rarimo/shared'
+import { WRAPPED_CHAIN_TOKEN_SYMBOLS } from '@rarimo/swap'
 
-import type { Token } from '@/entities'
 import { OperatorWrappedTokenNotFound } from '@/errors'
-
-import { TARGET_TOKEN_SYMBOLS } from '../chain'
+import { toLow } from '@/helpers'
 
 export const handleNativeToken = (tokens: Token[], token: Token): Token => {
   const _token = token.isNative
     ? getWrappedToken(tokens, token.chain.id)
     : token
 
-  if (!_token) {
-    throw new OperatorWrappedTokenNotFound()
-  }
+  if (!_token) throw new OperatorWrappedTokenNotFound()
 
   return _token
 }
@@ -31,6 +29,6 @@ const getWrappedToken = (
   tokens: Token[],
   fromChainId: ChainId,
 ): Token | undefined => {
-  const symbol = TARGET_TOKEN_SYMBOLS[Number(fromChainId)] ?? ''
-  return tokens.find(t => t.symbol === symbol)
+  const symbol = WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(fromChainId)] ?? ''
+  return tokens.find(t => toLow(t.symbol) === toLow(symbol))
 }

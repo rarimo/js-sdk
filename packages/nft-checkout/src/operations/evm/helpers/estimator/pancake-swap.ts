@@ -8,9 +8,10 @@ import {
 } from '@pancakeswap/sdk'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 
-import { Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import type { Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
@@ -74,6 +75,7 @@ export const estimatePancakeSwap = async (
     tokenA,
     tokenB,
   )
+
   const trade = new Trade(route, amount, TradeType.EXACT_OUTPUT)
 
   const maximumAmountInRaw = trade

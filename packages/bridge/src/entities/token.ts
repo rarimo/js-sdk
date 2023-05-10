@@ -36,3 +36,14 @@ export const newToken = (
     isV2: raw.isQuickSwap || raw.isPancakeSwap || raw.isTraderJoe,
   }
 }
+
+export const tokenFromChain = (chain: BridgeChain): Token => {
+  return newToken(
+    chain,
+    '',
+    chain.token.name,
+    chain.token.symbol,
+    chain.token.decimals,
+    chain.icon,
+  )
+}

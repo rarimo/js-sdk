@@ -1,10 +1,10 @@
+import type { Token } from '@rarimo/bridge'
 import type {
   CreateCheckoutOperationParams,
   EstimatedPrice,
   INFTCheckoutOperation,
   PaymentToken,
   Target,
-  Token,
 } from '@rarimo/nft-checkout'
 import type {
   CreateProviderOpts,

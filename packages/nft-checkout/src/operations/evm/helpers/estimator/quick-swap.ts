@@ -1,3 +1,4 @@
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
   Fetcher,
@@ -8,7 +9,7 @@ import {
   Trade,
 } from '@rarimo/quickswap-sdk'
 
-import { PaymentToken, Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import type { EstimatedPrice, Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
@@ -30,7 +31,7 @@ const getSlippage = (slippage?: number): Percent => {
 export const estimateQuickSwap = async (
   tokens: Token[],
   provider: IProvider,
-  _from: PaymentToken,
+  _from: Token,
   _to: Token,
   target: Target,
 ): Promise<EstimatedPrice> => {

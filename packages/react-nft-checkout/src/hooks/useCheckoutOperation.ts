@@ -1,10 +1,10 @@
+import type { Token } from '@rarimo/bridge'
 import {
   createCheckoutOperation,
   CreateCheckoutOperationParams,
   EVMOperation,
   INFTCheckoutOperation,
   Target,
-  Token,
 } from '@rarimo/nft-checkout'
 import type { IProvider } from '@rarimo/provider'
 import type { BridgeChain } from '@rarimo/shared'

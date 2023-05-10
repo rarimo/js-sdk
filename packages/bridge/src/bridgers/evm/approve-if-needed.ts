@@ -1,9 +1,9 @@
 import { BN } from '@distributedlab/tools'
 import type { IProvider } from '@rarimo/provider'
 import type { Amount, HexString } from '@rarimo/shared'
+import { ERC20_ABI } from '@rarimo/shared'
 import { Contract, utils } from 'ethers'
 
-import { ERC20_ABI } from '@/const'
 import type { Token } from '@/types'
 
 const getApproveERC20Data = async (

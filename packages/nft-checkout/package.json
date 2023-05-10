@@ -51,6 +51,7 @@
     "@rarimo/provider": "workspace:^",
     "@rarimo/quickswap-sdk": "^3.0.8",
     "@rarimo/shared": "workspace:^",
+    "@rarimo/swap": "workspace:^",
     "@traderjoe-xyz/sdk": "2.0.7",
     "@uniswap/router-sdk": "^1.4.0",
     "@uniswap/sdk-core": "3.1.0",

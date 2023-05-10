@@ -7,7 +7,8 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material'
-import { TARGET_TOKEN_SYMBOLS, Token } from '@rarimo/nft-checkout'
+import type { Token } from '@rarimo/bridge'
+import { WRAPPED_CHAIN_TOKEN_SYMBOLS } from '@rarimo/nft-checkout'
 import { Network } from 'iconoir-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -20,7 +21,9 @@ const SwapTokensSelect = () => {
 
   const isDisabled = (token?: Token) => {
     if (token?.isNative) return true
-    return Object.values(TARGET_TOKEN_SYMBOLS).some(i => i === token?.symbol)
+    return Object.values(WRAPPED_CHAIN_TOKEN_SYMBOLS).some(
+      i => i === token?.symbol,
+    )
   }
 
   const [loadingErrorText, setLoadingErrorText] = useState('')

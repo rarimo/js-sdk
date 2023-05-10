@@ -1,26 +1,32 @@
+import { newToken, Token } from '@rarimo/bridge'
 import type { Amount } from '@rarimo/shared'
+import type {
+  Address,
+  BridgeChain,
+  Decimals,
+  TokenSymbol,
+} from '@rarimo/shared'
 
-import type { CreateTokenOpts } from '@/types'
+import type { PaymentToken } from '@/types'
 
-import { Token } from './token'
-
-export class PaymentToken extends Token {
-  readonly #balance: Amount
-
-  constructor(token: CreateTokenOpts, balance: Amount) {
-    super(token)
-    this.#balance = balance
-  }
-
-  get balance(): string {
-    return this.#balance.toString()
-  }
-
-  get balanceRaw(): Amount {
-    return this.#balance
-  }
-
-  static fromToken(token: Token, balance: Amount): PaymentToken {
-    return new PaymentToken(token, balance)
-  }
+export const newPaymentToken = (
+  chain: BridgeChain,
+  address: Address,
+  name: string,
+  symbol: TokenSymbol,
+  decimals: Decimals,
+  logoURI = '',
+  balance: Amount,
+) => {
+  const token = newToken(chain, address, name, symbol, decimals, logoURI)
+  return paymentTokenFromToken(token, balance)
 }
+
+export const paymentTokenFromToken = (
+  token: Token,
+  balance: Amount,
+): PaymentToken => ({
+  ...token,
+  balance: balance.toString(),
+  balanceRaw: balance,
+})
