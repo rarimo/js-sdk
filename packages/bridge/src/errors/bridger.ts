@@ -13,10 +13,3 @@ export class BridgerChainNotSupportedError extends RuntimeError {
     super(message)
   }
 }
-
-export class BridgerNotInitializedError extends RuntimeError {
-  public name = 'BridgerNotInitializedError'
-  constructor(message = 'Bridger is not initialized') {
-    super(message)
-  }
-}

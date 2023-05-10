@@ -1,9 +1,9 @@
 import type { IProvider } from '@rarimo/provider'
 
 import { errors } from '@/errors'
-import type { IBridger, IBridgerCreateFn } from '@/types'
+import type { Bridger, BridgerCreateFn } from '@/types'
 
-const validateOpts = (bridger: IBridger): IBridger => {
+const validateOpts = (bridger: Bridger): Bridger => {
   if (bridger.chainType !== bridger.provider.chainType!) {
     throw new errors.BridgerInvalidChainTypeError()
   }
@@ -12,6 +12,6 @@ const validateOpts = (bridger: IBridger): IBridger => {
 }
 
 export const createBridger = (
-  bridgerCreateFn: IBridgerCreateFn,
+  bridgerCreateFn: BridgerCreateFn,
   provider: IProvider,
-) => validateOpts(bridgerCreateFn(provider))
+): Bridger => validateOpts(bridgerCreateFn(provider))

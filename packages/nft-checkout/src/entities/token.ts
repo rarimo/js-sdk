@@ -82,15 +82,6 @@ export class Token {
     return this.isQuickSwap || this.isPancakeSwap || this.isTraderJoe
   }
 
-  public isSame(token: Token): boolean {
-    return Boolean(
-      this.#chain.id === token.chain.id &&
-        toLow(this.#symbol) === toLow(token.symbol) &&
-        toLow(this.#address) === toLow(token.address) &&
-        this.#decimals === token.decimals,
-    )
-  }
-
   static fromTokenInfo(token: TokenInfo, chain: BridgeChain): Token {
     return new Token({
       chain,

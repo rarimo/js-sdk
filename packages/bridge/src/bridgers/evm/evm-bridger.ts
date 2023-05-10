@@ -1,5 +1,6 @@
 import type { IProvider } from '@rarimo/provider'
 import {
+  Amount,
   BridgeChain,
   ChainId,
   CHAINS,
@@ -10,15 +11,13 @@ import {
 } from '@rarimo/shared'
 
 import { errors } from '@/errors'
-import type {
-  DestinationTransaction,
-  IBridger,
-  IBridgerCreateFn,
-} from '@/types'
+import type { Bridger, BridgerCreateFn, DestinationTransaction } from '@/types'
+import type { Token } from '@/types'
 
+import { approveIfNeeded as approve } from './approve-if-needed'
 import { getDestinationTx as fetchDestTx } from './get-destination-tx'
 
-export const createEVMBridger: IBridgerCreateFn = (p: IProvider): IBridger => {
+export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
   const provider = ref(p)
   const chains = ref<BridgeChain[]>([])
   const isInitialized = ref(false)
@@ -27,24 +26,23 @@ export const createEVMBridger: IBridgerCreateFn = (p: IProvider): IBridger => {
     return chains.value.find(chain => chain.id === id)
   }
 
-  /**
-   * Get the chains that are supported for the bridging
-   *
-   * @returns A list of supported chains and information about them
-   */
   const loadSupportedChains = async (): Promise<BridgeChain[]> => {
     // TODO: add backend integration
     if (!chains.value.length) chains.value = CHAINS[ChainTypes.EVM]!
     return chains.value
   }
 
+  const init = async () => {
+    if (isInitialized.value) return
+    await loadSupportedChains()
+    isInitialized.value = true
+  }
+
   const getDestinationTx = async (
     sourceChain: BridgeChain,
     sourceTxHash: HexString,
   ): Promise<DestinationTransaction> => {
-    if (!isInitialized.value) {
-      throw new errors.BridgerNotInitializedError()
-    }
+    await init()
 
     if (!getChainById(sourceChain.id)) {
       throw new errors.BridgerInvalidChainTypeError()
@@ -53,10 +51,12 @@ export const createEVMBridger: IBridgerCreateFn = (p: IProvider): IBridger => {
     return fetchDestTx(sourceChain, sourceTxHash)
   }
 
-  const init = async () => {
-    if (isInitialized.value) return
-    await loadSupportedChains()
-    isInitialized.value = true
+  const approveIfNeeded = async (
+    token: Token,
+    operator: HexString,
+    amount?: Amount,
+  ) => {
+    return approve(provider.value, operator, token, amount)
   }
 
   return toRaw({
@@ -67,5 +67,6 @@ export const createEVMBridger: IBridgerCreateFn = (p: IProvider): IBridger => {
     init,
     loadSupportedChains,
     getDestinationTx,
+    approveIfNeeded,
   })
 }

@@ -1,5 +1,5 @@
 import { BN } from '@distributedlab/tools'
-import type { DestinationTransaction, IBridger } from '@rarimo/bridge'
+import type { Bridger, DestinationTransaction } from '@rarimo/bridge'
 import { createBridger, createEVMBridger } from '@rarimo/bridge'
 import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
@@ -60,7 +60,7 @@ export class EVMOperation
   #target?: Target
 
   #tokens: Token[] = []
-  #bridger: IBridger
+  #bridger: Bridger
 
   constructor(config: Config, provider: IProvider) {
     super()

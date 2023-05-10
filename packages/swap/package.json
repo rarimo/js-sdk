@@ -1,10 +1,10 @@
 {
-  "name": "@rarimo/bridge",
+  "name": "@rarimo/swap",
   "version": "1.5.0-rc.8",
-  "description": "All bridge related functionality for the Rarimo Protocol",
+  "description": "Rarimo NFT Checkout core package",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/bridge"
+    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/swap"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -51,13 +51,11 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "@rarimo/bridge"
+    "displayName": "@rarimo/swap"
   },
   "dependencies": {
-    "@distributedlab/jac": "^0.2.0-rc.9",
-    "@distributedlab/tools": "^0.2.0-rc.9",
+    "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
-    "@rarimo/shared": "workspace:^",
-    "ethers": "^5.7.2"
+    "@rarimo/shared": "workspace:^"
   }
 }

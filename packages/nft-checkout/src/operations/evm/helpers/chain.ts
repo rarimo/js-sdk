@@ -11,6 +11,7 @@ const mustGetChainId = (name: ChainNames): ChainId => {
   return chainId
 }
 
+// TODO: remove
 export const TARGET_TOKEN_SYMBOLS = {
   // Ethereum
   [mustGetChainId(ChainNames.Ethereum)]: 'WETH',

@@ -28,6 +28,7 @@
     "build:provider": "yarn workspace @rarimo/provider build",
     "build:shared": "yarn workspace @rarimo/shared build",
     "build:bridge": "yarn workspace @rarimo/bridge build",
+    "build:swap": "yarn workspace @rarimo/swap build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn lint:types",
     "lint:types": "yarn workspaces foreach -pv --no-private run typecheck",
