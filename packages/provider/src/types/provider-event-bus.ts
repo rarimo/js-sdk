@@ -16,7 +16,7 @@ export type ProviderEventMap = {
   [ProviderEventBusEvents.Initiated]: ProviderEventPayload
 }
 
-export type ProviderEventCallback = (e: ProviderEventPayload) => void
+export type ProviderEventCallback = (e?: ProviderEventPayload) => void
 
 export interface ProviderSubscriber {
   onInitiated(cb: ProviderEventCallback): void

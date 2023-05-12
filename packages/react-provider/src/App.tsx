@@ -1,4 +1,4 @@
-import { MetamaskProvider } from '@rarimo/provider'
+import { MetamaskProvider } from '@rarimo/providers-evm'
 
 import { useProvider } from './hooks'
 

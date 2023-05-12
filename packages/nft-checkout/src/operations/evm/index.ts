@@ -4,20 +4,7 @@ import {
   ChainId,
   ChainTypes,
   errors as providerErrors,
-  EthereumProvider,
-  EthTransactionResponse,
   IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderEventPayload,
-  ProviderInstance,
-  Providers,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
 } from '@rarimo/provider'
 import { sleep } from '@rarimo/provider'
 import { Contract, providers, utils } from 'ethers'
@@ -421,23 +408,4 @@ export class EVMOperation
       await this.#switchChain(targetChain)
     }
   }
-}
-
-// Export for typedoc
-export type {
-  ChainId,
-  EthereumProvider,
-  EthTransactionResponse,
-  IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderEventPayload,
-  ProviderInstance,
-  Providers,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
 }

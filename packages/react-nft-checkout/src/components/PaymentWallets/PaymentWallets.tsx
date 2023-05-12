@@ -6,11 +6,8 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import {
-  CoinbaseProvider,
-  MetamaskProvider,
-  ProviderProxyConstructor,
-} from '@rarimo/provider'
+import type { ProviderProxyConstructor } from '@rarimo/provider'
+import { CoinbaseProvider, MetamaskProvider } from '@rarimo/providers-evm'
 import { useCallback } from 'react'
 
 import { CheckoutModal, ErrorText } from '@/components'

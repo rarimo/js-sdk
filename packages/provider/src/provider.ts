@@ -4,13 +4,13 @@ import type {
   Chain,
   ChainId,
   IProvider,
-  ProviderEventPayload,
+  ProviderEventCallback,
   ProviderInstance,
   ProviderListeners,
   ProviderProxy,
   ProviderProxyConstructor,
+  TransactionRequestBody,
   TransactionResponse,
-  TxRequestBody,
 } from '@/types'
 import { Web3 } from '@/web3'
 
@@ -69,15 +69,13 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance, listeners?: ProviderListeners) {
-    if (provider.instance) {
-      this.#proxy = new this.#proxyConstructor(provider.instance)
+    this.#proxy = new this.#proxyConstructor(provider.instance)
 
-      Object.entries(listeners || {}).forEach(([key, value]) => {
-        this.#proxy?.[key as keyof ProviderListeners]?.(
-          value as (e: ProviderEventPayload) => void,
-        )
-      })
-    }
+    Object.entries(listeners || {}).forEach(([key, value]) => {
+      this.#proxy?.[key as keyof ProviderListeners]?.(
+        value as ProviderEventCallback,
+      )
+    })
 
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
@@ -97,7 +95,7 @@ export class Provider implements IProvider {
     await this.#proxy?.addChain?.(chain)
   }
 
-  public async signAndSendTx(txRequestBody: TxRequestBody) {
+  public async signAndSendTx(txRequestBody: TransactionRequestBody) {
     return this.#proxy?.signAndSendTx?.(
       txRequestBody,
     ) as Promise<TransactionResponse>
@@ -127,23 +125,23 @@ export class Provider implements IProvider {
     throw new errors.ProviderMethodNotSupported()
   }
 
-  public onAccountChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onAccountChanged(cb: ProviderEventCallback): void {
     this.#proxy?.onAccountChanged(cb)
   }
 
-  public onChainChanged(cb: (e: ProviderEventPayload) => void): void {
+  public onChainChanged(cb: ProviderEventCallback): void {
     this.#proxy?.onChainChanged?.(cb)
   }
 
-  public onConnect(cb: (e: ProviderEventPayload) => void): void {
+  public onConnect(cb: ProviderEventCallback): void {
     this.#proxy?.onConnect(cb)
   }
 
-  public onDisconnect(cb: (e: ProviderEventPayload) => void): void {
+  public onDisconnect(cb: ProviderEventCallback): void {
     this.#proxy?.onDisconnect(cb)
   }
 
-  public onInitiated(cb: (e: ProviderEventPayload) => void): void {
+  public onInitiated(cb: ProviderEventCallback): void {
     this.#proxy?.onInitiated(cb)
   }
 

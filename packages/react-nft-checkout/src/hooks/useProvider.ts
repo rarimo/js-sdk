@@ -1,11 +1,11 @@
 import {
   createProvider,
   CreateProviderOpts,
-  EthProviderRpcError,
   IProvider,
   ProviderEventPayload,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
+import type { EthProviderRpcError } from '@rarimo/providers-evm'
 import { useCallback, useEffect, useState } from 'react'
 
 const PROVIDER_EVENTS: Array<keyof IProvider> = [

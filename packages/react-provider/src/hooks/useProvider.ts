@@ -1,28 +1,14 @@
 import {
   Chain,
   ChainId,
-  ChainTypes,
   createProvider,
   CreateProviderOpts,
-  EthereumProvider,
-  EthTransactionResponse,
   IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
   ProviderBase,
   ProviderEventPayload,
-  ProviderInstance,
-  ProviderProxy,
   ProviderProxyConstructor,
-  Providers,
-  ProvidersReturnType,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
+  TransactionRequestBody,
   TransactionResponse,
-  TxRequestBody,
-  Web3,
 } from '@rarimo/provider'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -74,7 +60,7 @@ export const useProvider = (
     provider.switchChain(chainId)
 
   const signAndSendTx = async (
-    txRequestBody: TxRequestBody,
+    txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> =>
     provider.signAndSendTx?.(txRequestBody) ?? ''
 
@@ -146,29 +132,4 @@ export const useProvider = (
     getHashFromTx,
     getAddressUrl,
   }
-}
-
-export type {
-  Chain,
-  ChainId,
-  ChainTypes,
-  CreateProviderOpts,
-  EthereumProvider,
-  EthTransactionResponse,
-  IProvider,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderEventPayload,
-  ProviderInstance,
-  ProviderProxy,
-  ProviderProxyConstructor,
-  Providers,
-  ProvidersReturnType,
-  RawProvider,
-  SolanaProvider,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
-  Web3,
 }
