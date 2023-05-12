@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/providers-evm",
-  "version": "1.5.0-rc.8",
+  "version": "1.5.0-rc.9",
   "description": "The EVM wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the EVM compatible blockchains.",
   "repository": {
     "type": "git",
