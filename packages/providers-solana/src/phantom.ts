@@ -22,10 +22,11 @@ import { BaseSolanaProvider } from './base-solana'
  *
  * @example
  * ```js
- * import { createProvider, PhantomProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { PhantomProvider } from '@rarimo/providers-solana
  *
  * const getPhantomWalletAddress = async () => {
- *   // Connect to the Phantom wallet in the browser using Web3.js, using the PhantomProvider interface to limit bundle size.
+ *   // Connect to the Phantom wallet in the browser, using the PhantomProvider interface to limit bundle size.
  *   const provider = await createProvider(PhantomProvider)
  *   await provider.connect()
  *

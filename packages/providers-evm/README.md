@@ -1,9 +1,9 @@
-# @rarimo/provider
-Features of the Rarimo SDK that provide access to users' wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.
+# @rarimo/providers-evm
+The EVM wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the EVM compatible blockchains.
 
-![version (scoped package)](https://badgen.net/npm/v/@rarimo/provider)
-![types](https://badgen.net/npm/types/@rarimo/provider)
-![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@rarimo/provider)
+![version (scoped package)](https://badgen.net/npm/v/@rarimo/providers-evm)
+![types](https://badgen.net/npm/types/@rarimo/providers-evm)
+![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@rarimo/providers-evm)
 ![checks](https://badgen.net/github/checks/rarimo/js-sdk/main)
 
 ## Example
@@ -13,7 +13,8 @@ For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo
 Here is an example that creates a `MetamaskProvider` object for a MetaMask wallet and prints its address:
 
 ```js
-import { createProvider, MetamaskProvider } from '@rarimo/provider'
+import { createProvider } from '@rarimo/provider'
+import { MetamaskProvider } from '@rarimo/providers-evm'
 
 const getMetamaskWalletAddress = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.

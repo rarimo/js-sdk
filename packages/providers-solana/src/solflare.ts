@@ -22,10 +22,11 @@ import { BaseSolanaProvider } from './base-solana'
  *
  * @example
  * ```js
- * import { createProvider, SolflareProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { SolflareProvider } from '@rarimo/providers-solana
  *
  * const getSolflareWalletAddress = async () => {
- *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolflareProvider interface to limit bundle size.
+ *   // Connect to the Solflare wallet in the browser, using the SolflareProvider interface to limit bundle size.
  *   const provider = await createProvider(SolflareProvider)
  *   await provider.connect()
  *

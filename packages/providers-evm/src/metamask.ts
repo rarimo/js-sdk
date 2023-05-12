@@ -7,10 +7,11 @@ import { BaseEVMProvider } from './base-evm'
  *
  * @example
  * ```js
- * import { createProvider, MetamaskProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { MetamaskProvider } from '@rarimo/providers-evm'
  *
  * const getMetamaskWalletAddress = async () => {
- *   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+ *   // Connect to the Metamask wallet in the browser, using the MetamaskProvider interface to limit bundle size.
  *   const provider = await createProvider(MetamaskProvider)
  *   await provider.connect()
  *
