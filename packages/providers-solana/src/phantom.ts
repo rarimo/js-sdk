@@ -1,32 +1,33 @@
 import {
+  ProviderProxy,
+  Providers,
+  RawProvider,
+  TransactionRequestBody,
+  TransactionResponse,
+} from '@rarimo/provider'
+import {
   Cluster,
   clusterApiUrl,
   Connection,
   Transaction as SolTransaction,
 } from '@solana/web3.js'
 
-import { Providers } from '@/enums'
 import { decodeSolanaTx, handleSolError } from '@/helpers'
-import type {
-  ProviderProxy,
-  RawProvider,
-  SolanaProviderRpcError,
-  TransactionResponse,
-  TxRequestBody,
-} from '@/types'
+import type { SolanaProviderRpcError } from '@/types'
 
 import { BaseSolanaProvider } from './base-solana'
 
 /**
- * @description Represents a Solflare wallet.
+ * @description Represents a Phantom wallet.
  *
  * @example
  * ```js
- * import { createProvider, SolflareProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { PhantomProvider } from '@rarimo/providers-solana
  *
- * const getSolflareWalletAddress = async () => {
- *   // Connect to the Solflare wallet in the browser using Web3.js, using the SolflareProvider interface to limit bundle size.
- *   const provider = await createProvider(SolflareProvider)
+ * const getPhantomWalletAddress = async () => {
+ *   // Connect to the Phantom wallet in the browser, using the PhantomProvider interface to limit bundle size.
+ *   const provider = await createProvider(PhantomProvider)
  *   await provider.connect()
  *
  *   // Get the address of the wallet
@@ -34,20 +35,20 @@ import { BaseSolanaProvider } from './base-solana'
  * }
  * ```
  */
-export class SolflareProvider
+export class PhantomProvider
   extends BaseSolanaProvider
   implements ProviderProxy
 {
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
     super(provider)
   }
 
   static get providerType(): Providers {
-    return Providers.Solflare
+    return Providers.Phantom
   }
 
   async signAndSendTx(
-    txRequestBody: TxRequestBody,
+    txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
       const txBody =
@@ -55,14 +56,10 @@ export class SolflareProvider
           ? decodeSolanaTx(txRequestBody)
           : txRequestBody
 
-      const signedTx = await this.provider.signTransaction(
-        txBody as SolTransaction,
-      )
-
       const connection = new Connection(clusterApiUrl(this.chainId as Cluster))
 
-      const signature = await connection.sendRawTransaction(
-        signedTx.serialize(),
+      const { signature } = await this.provider.signAndSendTransaction(
+        txBody as SolTransaction,
       )
       await connection.confirmTransaction(signature)
       return signature

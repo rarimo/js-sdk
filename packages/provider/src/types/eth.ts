@@ -18,9 +18,3 @@ export interface EthereumProvider extends providers.ExternalProvider {
   selectedAddress: string | null
   request: (...args: any[]) => Promise<void>
 }
-
-export type EthProviderRpcError = {
-  message: string
-  code: number | string
-  data?: unknown
-}

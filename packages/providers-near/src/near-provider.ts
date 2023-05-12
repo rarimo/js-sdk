@@ -1,33 +1,34 @@
+import {
+  NearTransactionRequestBody,
+  ProviderProxy,
+  TransactionRequestBody,
+  TransactionResponse,
+  NearTransactionResponse,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  Providers,
+} from '@rarimo/provider'
+
 import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 
-import { ProviderEventBusEvents, Providers } from '@/enums'
 import {
   getNearExplorerAddressUrl,
   getNearExplorerTxUrl,
   handleNearError,
 } from '@/helpers'
-import type {
-  NearProviderRpcError,
-  NearProviderType,
-  NearTransactionResponse,
-  NearTxRequestBody,
-  ProviderProxy,
-  RawProvider,
-  TransactionResponse,
-  TxRequestBody,
-} from '@/types'
+import { NearRawProvider } from '@/near-raw-provider'
+import type { NearProviderRpcError } from '@/types'
 
-import { ProviderEventBus } from './event-bus'
 
 export class NearProvider extends ProviderEventBus implements ProviderProxy {
-  readonly #provider: NearProviderType
+  readonly #provider: NearRawProvider
 
   #chainId?: ChainId
   #address?: string
 
-  constructor(provider: RawProvider) {
+  constructor() {
     super()
-    this.#provider = provider as NearProviderType
+    this.#provider = this.#provider = new NearRawProvider({})
   }
 
   static get providerType(): Providers {
@@ -87,7 +88,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
     }
   }
 
-  getHashFromTxResponse(txResponse: TransactionResponse): string {
+  getHashFromTxResponse(txResponse: NearTransactionResponse): string {
     const transactionResponse = txResponse as NearTransactionResponse
 
     return transactionResponse.transaction.hash
@@ -102,11 +103,11 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async signAndSendTx(
-    txRequestBody: TxRequestBody,
+    txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
       return await this.#provider.signAndSendTx(
-        txRequestBody as NearTxRequestBody,
+        txRequestBody as NearTransactionRequestBody,
       )
     } catch (error) {
       handleNearError(error as NearProviderRpcError)

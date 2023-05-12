@@ -1,26 +1,28 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
-import { Chain, ChainId, ChainTypes, hexToDecimal } from '@rarimo/shared'
+import {
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+  ProviderProxy,
+  RawProvider,
+  TransactionRequestBody,
+  TransactionResponse,
+} from '@rarimo/provider'
+import { Chain, ChainId, ChainTypes } from '@rarimo/shared'
 import { ethers, providers } from 'ethers'
 
-import { ProviderEventBusEvents, ProviderEvents } from '@/enums'
 import {
   connectEthAccounts,
   getEthExplorerAddressUrl,
   getEthExplorerTxUrl,
   handleEthError,
+  hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
 } from '@/helpers'
-import type {
-  EthProviderRpcError,
-  ProviderProxy,
-  RawProvider,
-  TransactionResponse,
-  TxRequestBody,
-} from '@/types'
-
-import { ProviderEventBus } from './event-bus'
+import type { EthProviderRpcError } from '@/types'
 
 export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: providers.Web3Provider
@@ -28,7 +30,8 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   #chainId?: ChainId
   #address?: string
 
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
+    if (!provider) throw new errors.ProviderInjectedInstanceNotFoundError()
     super()
     this.#provider = new ethers.providers.Web3Provider(
       provider as ethers.providers.ExternalProvider,
@@ -104,7 +107,9 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
     return getEthExplorerTxUrl(chain, txHash)
   }
 
-  async signAndSendTx(tx: TxRequestBody): Promise<TransactionResponse> {
+  async signAndSendTx(
+    tx: TransactionRequestBody,
+  ): Promise<TransactionResponse> {
     try {
       const transactionResponse = await this.#provider
         .getSigner()

@@ -1,0 +1,58 @@
+{
+  "name": "@rarimo/providers-evm",
+  "version": "1.5.0-rc.9",
+  "description": "The EVM wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the EVM compatible blockchains.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/providers-evm"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "./dist/types/*"
+      ]
+    }
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/esm/index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "scripts": {
+    "build": "yarn clean && yarn build:types && yarn build:cjs && yarn build:esm && node ./postbuild.js",
+    "build:types": "tsc -p tsconfig.build.json --outDir ./dist/types --declaration --emitDeclarationOnly",
+    "build:cjs": "npx swc src -d ./dist/cjs --config-file ../../.swcrc -C module.type=commonjs",
+    "build:esm": "npx swc src -d ./dist/esm --config-file ../../.swcrc -C module.type=es6 isModule=true",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
+    "@ethersproject/properties": "^5.7.0",
+    "@rarimo/provider": "workspace:^",
+    "ethers": "^5.7.2",
+    "web3-core": "^1.8.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.14.0",
+    "tsc-alias": "^1.8.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "@rarimo/providers-evm"
+  }
+}

@@ -12,8 +12,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "scripthost"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ScriptHost"]
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

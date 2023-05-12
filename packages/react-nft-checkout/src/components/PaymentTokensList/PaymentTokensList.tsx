@@ -6,7 +6,7 @@ import {
   ListItemText,
 } from '@mui/material'
 import type { PaymentToken } from '@rarimo/nft-checkout'
-import type { EthProviderRpcError } from '@rarimo/provider'
+import type { EthProviderRpcError } from '@rarimo/providers-evm'
 import { useEffect, useState } from 'react'
 
 import { ErrorText, LoadingIndicator } from '@/components'

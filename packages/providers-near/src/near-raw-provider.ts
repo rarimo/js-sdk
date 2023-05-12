@@ -5,12 +5,12 @@ import {
   WalletSelector,
 } from '@near-wallet-selector/core'
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
+import type { NearTransactionRequestBody } from '@rarimo/provider'
 import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 import { providers } from 'near-api-js'
 
-import { NEAR_ACTIONS } from '@/enums'
 import { MAX_GAS_LIMIT, NO_DEPOSIT } from '@/helpers'
-import { ENearWalletId, NearTxRequestBody } from '@/types'
+import { ENearWalletId } from '@/types'
 
 export class NearRawProvider {
   selector: WalletSelector | null = null
@@ -66,7 +66,7 @@ export class NearRawProvider {
     args = {},
     gas = MAX_GAS_LIMIT,
     deposit = NO_DEPOSIT,
-  }: NearTxRequestBody) {
+  }: NearTransactionRequestBody) {
     if (!this.wallet) return
 
     // Sign a transaction with the "FunctionCall" action
@@ -75,7 +75,7 @@ export class NearRawProvider {
       receiverId: contractId,
       actions: [
         {
-          type: NEAR_ACTIONS.functionCall,
+          type: 'FunctionCall',
           params: {
             methodName: method,
             args,

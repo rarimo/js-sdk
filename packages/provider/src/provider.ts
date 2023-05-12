@@ -9,8 +9,8 @@ import type {
   ProviderListeners,
   ProviderProxy,
   ProviderProxyConstructor,
+  TransactionRequestBody,
   TransactionResponse,
-  TxRequestBody,
 } from '@/types'
 import { Web3 } from '@/web3'
 
@@ -69,15 +69,13 @@ export class Provider implements IProvider {
   }
 
   public async init(provider: ProviderInstance, listeners?: ProviderListeners) {
-    if (provider.instance) {
-      this.#proxy = new this.#proxyConstructor(provider.instance)
+    this.#proxy = new this.#proxyConstructor(provider.instance)
 
-      Object.entries(listeners || {}).forEach(([key, value]) => {
-        this.#proxy?.[key as keyof ProviderListeners]?.(
-          value as ProviderEventCallback,
-        )
-      })
-    }
+    Object.entries(listeners || {}).forEach(([key, value]) => {
+      this.#proxy?.[key as keyof ProviderListeners]?.(
+        value as ProviderEventCallback,
+      )
+    })
 
     this.#selectedProvider = provider.name
     await this.#proxy?.init()
@@ -97,7 +95,7 @@ export class Provider implements IProvider {
     await this.#proxy?.addChain?.(chain)
   }
 
-  public async signAndSendTx(txRequestBody: TxRequestBody) {
+  public async signAndSendTx(txRequestBody: TransactionRequestBody) {
     return this.#proxy?.signAndSendTx?.(
       txRequestBody,
     ) as Promise<TransactionResponse>

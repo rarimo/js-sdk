@@ -1,5 +1,4 @@
-import { Providers } from '@/enums'
-import type { ProviderProxy, RawProvider } from '@/types'
+import { ProviderProxy, Providers, RawProvider } from '@rarimo/provider'
 
 import { BaseEVMProvider } from './base-evm'
 
@@ -8,10 +7,11 @@ import { BaseEVMProvider } from './base-evm'
  *
  * @example
  * ```js
- * import { createProvider, MetamaskProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { MetamaskProvider } from '@rarimo/providers-evm'
  *
  * const getMetamaskWalletAddress = async () => {
- *   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+ *   // Connect to the Metamask wallet in the browser, using the MetamaskProvider interface to limit bundle size.
  *   const provider = await createProvider(MetamaskProvider)
  *   await provider.connect()
  *
@@ -21,7 +21,7 @@ import { BaseEVMProvider } from './base-evm'
  * ```
  */
 export class MetamaskProvider extends BaseEVMProvider implements ProviderProxy {
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
     super(provider)
   }
 

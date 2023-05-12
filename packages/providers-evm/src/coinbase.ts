@@ -1,5 +1,4 @@
-import { Providers } from '@/enums'
-import type { ProviderProxy, RawProvider } from '@/types'
+import { ProviderProxy, Providers, RawProvider } from '@rarimo/provider'
 
 import { BaseEVMProvider } from './base-evm'
 
@@ -8,10 +7,11 @@ import { BaseEVMProvider } from './base-evm'
  *
  * @example
  * ```js
- * import { createProvider, CoinbaseProvider } from '@rarimo/provider'
+ * import { createProvider } from '@rarimo/provider'
+ * import { CoinbaseProvider } from '@rarimo/providers-evm'
  *
  * const getCoinbaseWalletAddress = async () => {
- *   // Connect to the Coinbase wallet in the browser using Web3.js, using the CoinbaseProvider interface to limit bundle size.
+ *   // Connect to the Coinbase wallet in the browser, using the CoinbaseProvider interface to limit bundle size.
  *   const provider = await createProvider(CoinbaseProvider)
  *   await provider.connect()
  *
@@ -21,7 +21,7 @@ import { BaseEVMProvider } from './base-evm'
  * ```
  */
 export class CoinbaseProvider extends BaseEVMProvider implements ProviderProxy {
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
     super(provider)
   }
 

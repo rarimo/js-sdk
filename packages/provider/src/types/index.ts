@@ -1,5 +1,5 @@
-export * from './ethereum'
-export * from './near'
+export * from './eth'
 export * from './provider'
 export * from './provider-event-bus'
 export * from './solana'
+export * from './tx'

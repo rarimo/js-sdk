@@ -1,7 +1,6 @@
 import { sleep } from '@rarimo/shared'
 
 import { ProviderChecks, Providers } from '@/enums'
-import { NearRawProvider } from '@/providers'
 
 import type { EthereumProvider, ProviderInstance, RawProvider } from './types'
 
@@ -65,11 +64,9 @@ export class Web3 {
       : undefined
     const phantomProvider = window?.solana
     const solflareProvider = window?.solflare
-    const nearProvider = new NearRawProvider({})
 
     this.#rawProviders = [
       ...(ethProviders ? ethProviders : []),
-      ...(nearProvider ? [nearProvider] : []),
       ...(phantomProvider ? [phantomProvider] : []),
       ...(solflareProvider ? [solflareProvider] : []),
     ] as RawProvider[]
@@ -92,15 +89,17 @@ export class Web3 {
   #wrapProviders(): ProviderInstance[] {
     if (!this.#rawProviders.length) return []
 
-    const browserProviders = this.#rawProviders.map(el => {
-      const appropriatedProviderName: Providers =
-        this.#getAppropriateProviderName(el)
+    const browserProviders = this.#rawProviders
+      .map(el => {
+        const appropriatedProviderName: Providers =
+          this.#getAppropriateProviderName(el)
 
-      return {
-        name: appropriatedProviderName,
-        instance: el,
-      } as ProviderInstance
-    })
+        return {
+          name: appropriatedProviderName,
+          instance: el,
+        } as ProviderInstance
+      })
+      .concat({ name: Providers.Near })
 
     return browserProviders.filter(
       (el, idx, arr) => arr.findIndex(sec => sec.name === el.name) === idx,
