@@ -471,6 +471,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@distributedlab/tools@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.10
+  resolution: "@distributedlab/tools@npm:0.2.0-rc.10"
+  dependencies:
+    bignumber.js: ^9.1.1
+    dayjs: ^1.11.7
+    tslib: ^2.5.0
+  checksum: 38cc4ba33e6b81c5f7c5fffb667a1b30bbcddf99176f8a6aab4203baa4b5807354281c904f6ebeafeedfd1b7ffb0878c7a7b92f0f387a745dba7b34619ad9b1c
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.10.6":
   version: 11.10.6
   resolution: "@emotion/babel-plugin@npm:11.10.6"
@@ -2557,20 +2568,58 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
-    "@distributedlab/tools": ^0.2.0-rc.5
+    "@distributedlab/tools": ^0.2.0-rc.9
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
+    "@solana/web3.js": ^1.73.2
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    ethers: ^5.7.2
+    near-api-js: ^1.1.0
+    tsc-alias: ^1.8.2
+    web3-core: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/providers-evm@workspace:^, @rarimo/providers-evm@workspace:packages/providers-evm":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/providers-evm@workspace:packages/providers-evm"
+  dependencies:
+    "@ethersproject/abstract-provider": ^5.7.0
+    "@ethersproject/properties": ^5.7.0
+    "@rarimo/provider": "workspace:^"
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    ethers: ^5.7.2
+    tsc-alias: ^1.8.2
+    web3-core: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/providers-near@workspace:packages/providers-near":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/providers-near@workspace:packages/providers-near"
+  dependencies:
     "@near-wallet-selector/core": ^7.8.2
     "@near-wallet-selector/my-near-wallet": ^7.8.2
+    "@rarimo/provider": "workspace:^"
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    near-api-js: ^1.1.0
+    tsc-alias: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/providers-solana@workspace:packages/providers-solana":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/providers-solana@workspace:packages/providers-solana"
+  dependencies:
+    "@rarimo/provider": "workspace:^"
     "@solana/web3.js": ^1.73.2
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     bs58: ^5.0.0
-    ethers: ^5.7.2
-    near-api-js: ^1.1.0
     tsc-alias: ^1.8.2
-    web3: ^1.7.4
-    web3-core: ^1.8.2
   languageName: unknown
   linkType: soft
 
@@ -2603,6 +2652,7 @@ __metadata:
     "@emotion/styled": ^11.10.6
     "@mui/material": ^5.11.10
     "@rarimo/nft-checkout": "workspace:^"
+    "@rarimo/providers-evm": "workspace:^"
     "@types/node": ^18.6.5
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -15053,7 +15103,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3@npm:^1.2.4, web3@npm:^1.7.4":
+"web3@npm:^1.2.4":
   version: 1.8.2
   resolution: "web3@npm:1.8.2"
   dependencies:

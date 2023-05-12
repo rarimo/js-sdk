@@ -1,5 +1,4 @@
-import { Providers } from '@/enums'
-import type { ProviderProxy, RawProvider } from '@/types'
+import { ProviderProxy, Providers, RawProvider } from '@rarimo/provider'
 
 import { BaseEVMProvider } from './base-evm'
 
@@ -21,7 +20,7 @@ import { BaseEVMProvider } from './base-evm'
  * ```
  */
 export class CoinbaseProvider extends BaseEVMProvider implements ProviderProxy {
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
     super(provider)
   }
 

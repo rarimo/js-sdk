@@ -1,31 +1,27 @@
+import {
+  Chain,
+  ChainId,
+  ChainTypes,
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+  ProviderProxy,
+  RawProvider,
+  SolanaChains,
+  SolanaProvider,
+  SolanaTransactionResponse,
+  TransactionRequestBody,
+  TransactionResponse,
+} from '@rarimo/provider'
 import { PublicKey } from '@solana/web3.js'
 
 import {
-  ChainTypes,
-  ProviderEventBusEvents,
-  ProviderEvents,
-  SolanaChains,
-} from '@/enums'
-import {
   getSolExplorerAddressUrl,
   getSolExplorerTxUrl,
-  handleEthError,
   handleSolError,
 } from '@/helpers'
-import type {
-  Chain,
-  ChainId,
-  EthProviderRpcError,
-  ProviderProxy,
-  RawProvider,
-  SolanaProvider,
-  SolanaProviderRpcError,
-  SolanaTransactionResponse,
-  TransactionResponse,
-  TxRequestBody,
-} from '@/types'
-
-import { ProviderEventBus } from './event-bus'
+import type { SolanaProviderRpcError } from '@/types'
 
 const getAddress = (publicKey: PublicKey | null): string => {
   return publicKey ? new PublicKey(publicKey).toBase58() : ''
@@ -39,7 +35,8 @@ export class BaseSolanaProvider
   #chainId?: ChainId
   #address?: string
 
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
+    if (!provider) throw new errors.ProviderInjectedInstanceNotFoundError()
     super()
     this.#provider = provider as SolanaProvider
   }
@@ -84,7 +81,7 @@ export class BaseSolanaProvider
     try {
       await this.#provider.connect()
     } catch (error) {
-      handleEthError(error as EthProviderRpcError)
+      handleSolError(error as SolanaProviderRpcError)
     }
   }
 
@@ -104,7 +101,7 @@ export class BaseSolanaProvider
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    txRequestBody: TxRequestBody,
+    txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     throw new TypeError('Method should be implemented in extender class')
   }

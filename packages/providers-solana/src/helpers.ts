@@ -1,47 +1,46 @@
+import { Chain, errors, SolanaChains } from '@rarimo/provider'
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
-import { EIP1193, EIP1474, SolanaChains } from '@/enums'
-import { errors } from '@/errors'
-import type { Chain, SolanaProviderRpcError } from '@/types'
+import type { SolanaProviderRpcError } from '@/types'
 
 export function handleSolError(error: SolanaProviderRpcError) {
   const ErrorCode = error?.error?.code || error?.code
 
   switch (ErrorCode) {
-    case EIP1193.userRejectedRequest:
+    case 4001:
       throw new errors.ProviderUserRejectedRequest()
-    case EIP1193.unauthorized:
+    case 4100:
       throw new errors.ProviderUnauthorized()
-    case EIP1193.unsupportedMethod:
+    case 4200:
       throw new errors.ProviderUnsupportedMethod()
-    case EIP1193.disconnected:
+    case 4900:
       throw new errors.ProviderDisconnected()
-    case EIP1193.chainDisconnected:
+    case 4901:
       throw new errors.ProviderChainDisconnected()
-    case EIP1474.parseError:
+    case -32700:
       throw new errors.ProviderParseError()
-    case EIP1474.invalidRequest:
+    case -32600:
       throw new errors.ProviderInvalidRequest()
-    case EIP1474.methodNotFound:
+    case -32601:
       throw new errors.ProviderMethodNotFound()
-    case EIP1474.invalidParams:
+    case -32602:
       throw new errors.ProviderInvalidParams()
-    case EIP1474.internalError:
+    case -32603:
       throw new errors.ProviderInternalError()
-    case EIP1474.invalidInput:
+    case -32000:
       throw new errors.ProviderInvalidInput()
-    case EIP1474.resourceNotFound:
+    case -32001:
       throw new errors.ProviderResourceNotFound()
-    case EIP1474.resourceUnavailable:
+    case -32002:
       throw new errors.ProviderResourceUnavailable()
-    case EIP1474.transactionRejected:
+    case -32003:
       throw new errors.ProviderTransactionRejected()
-    case EIP1474.methodNotSupported:
+    case -32004:
       throw new errors.ProviderMethodNotSupported()
-    case EIP1474.limitExceeded:
+    case -32005:
       throw new errors.ProviderLimitExceeded()
-    case EIP1474.jsonRpcVersionNotSupported:
+    case -32006:
       throw new errors.ProviderJsonRpcVersionNotSupported()
     default:
       throw error

@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@rarimo/nft-checkout": "workspace:^",
+    "@rarimo/providers-evm": "workspace:^",
     "jsbi": "^3.2.5"
   },
   "publishConfig": {

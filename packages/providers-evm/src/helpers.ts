@@ -1,7 +1,12 @@
+import { Chain, ChainId, errors } from '@rarimo/provider'
 import { ethers, providers } from 'ethers'
 
-import { errors } from '@/errors'
-import type { Chain, ChainId, EthProviderRpcError } from '@/types'
+import type { EthProviderRpcError } from '@/types'
+
+export const hexToDecimal = (chainHexOrId: string | number): number => {
+  if (Number.isInteger(chainHexOrId)) return Number(chainHexOrId)
+  return parseInt(String(chainHexOrId), 16)
+}
 
 export const getEthExplorerTxUrl = (chain: Chain, txHash: string): string => {
   return `${chain.explorerUrl}/tx/${txHash}`

@@ -1,19 +1,19 @@
 import {
+  ProviderProxy,
+  Providers,
+  RawProvider,
+  TransactionRequestBody,
+  TransactionResponse,
+} from '@rarimo/provider'
+import {
   Cluster,
   clusterApiUrl,
   Connection,
   Transaction as SolTransaction,
 } from '@solana/web3.js'
 
-import { Providers } from '@/enums'
 import { decodeSolanaTx, handleSolError } from '@/helpers'
-import type {
-  ProviderProxy,
-  RawProvider,
-  SolanaProviderRpcError,
-  TransactionResponse,
-  TxRequestBody,
-} from '@/types'
+import type { SolanaProviderRpcError } from '@/types'
 
 import { BaseSolanaProvider } from './base-solana'
 
@@ -38,7 +38,7 @@ export class SolflareProvider
   extends BaseSolanaProvider
   implements ProviderProxy
 {
-  constructor(provider: RawProvider) {
+  constructor(provider?: RawProvider) {
     super(provider)
   }
 
@@ -47,7 +47,7 @@ export class SolflareProvider
   }
 
   async signAndSendTx(
-    txRequestBody: TxRequestBody,
+    txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
       const txBody =

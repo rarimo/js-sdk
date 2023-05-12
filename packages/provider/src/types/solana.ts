@@ -39,13 +39,3 @@ export type SolanaProvider = {
   request: (method: PhantomRequestMethod, params: any) => Promise<unknown>
 }
 /* eslint-enable */
-
-export type SolanaProviderRpcError = {
-  error: {
-    code: number
-    message: string
-  }
-  name: string
-  code?: number
-  message?: string
-}
