@@ -8,7 +8,7 @@ import {
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
-import type { Chain, ChainId, ChainTypes } from '@rarimo/shared'
+import type { Chain, ChainId } from '@rarimo/shared'
 import { useCallback, useEffect, useState } from 'react'
 
 const PROVIDER_EVENTS: Array<keyof IProvider> = [
@@ -50,6 +50,7 @@ export const useProvider = (
       providerType: provider?.providerType,
     }
   })
+
   const connect = async (): Promise<void> => provider.connect()
 
   const addChain = async (chain: Chain): Promise<void> =>

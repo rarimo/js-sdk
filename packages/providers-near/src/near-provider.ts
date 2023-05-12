@@ -1,14 +1,13 @@
 import {
   NearTransactionRequestBody,
-  ProviderProxy,
-  TransactionRequestBody,
-  TransactionResponse,
   NearTransactionResponse,
   ProviderEventBus,
   ProviderEventBusEvents,
+  ProviderProxy,
   Providers,
+  TransactionRequestBody,
+  TransactionResponse,
 } from '@rarimo/provider'
-
 import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 
 import {
@@ -18,7 +17,6 @@ import {
 } from '@/helpers'
 import { NearRawProvider } from '@/near-raw-provider'
 import type { NearProviderRpcError } from '@/types'
-
 
 export class NearProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: NearRawProvider

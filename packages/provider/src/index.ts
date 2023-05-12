@@ -1,7 +1,6 @@
 export * from './enums'
 export * from './errors'
 export * from './event-bus'
-export * from './helpers'
 export * from './provider'
 export * from './types'
 export * from './web3'

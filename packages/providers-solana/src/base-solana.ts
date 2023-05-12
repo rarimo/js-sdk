@@ -1,12 +1,4 @@
 import {
-  Chain,
-  ChainId,
-  ChainNames,
-  ChainTypes,
-  SOLANA_CHAIN_IDS,
-} from '@rarimo/shared'
-
-import {
   errors,
   ProviderEventBus,
   ProviderEventBusEvents,
@@ -18,6 +10,13 @@ import {
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import {
+  Chain,
+  ChainId,
+  ChainNames,
+  ChainTypes,
+  SOLANA_CHAIN_IDS,
+} from '@rarimo/shared'
 import { PublicKey } from '@solana/web3.js'
 
 import {

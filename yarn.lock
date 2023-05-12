@@ -441,33 +441,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/fetcher@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.5"
+"@distributedlab/fetcher@npm:0.2.0-rc.10, @distributedlab/fetcher@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.10
+  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.10"
   dependencies:
     uuid: ^9.0.0
-  checksum: 95cb023c49e5a9967f17ba785f9f3d3bfc62f53f5a098c456dbb444ece562d732abe74bd461bc63fd5bef1b8e8b72a8bea43abb5082927655c23688c54872b9e
+  checksum: 4125f92bf95cf2f84776112f2734a4637e41d0477f44db6a0311fbc40790f2c3a95e3ca4a200dfaa0dbe1815d9795b55123e72f152f3d5031b1c1510cd7947fa
   languageName: node
   linkType: hard
 
-"@distributedlab/jac@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/jac@npm:0.2.0-rc.5"
+"@distributedlab/jac@npm:^0.2.0-rc.9":
+  version: 0.2.0-rc.10
+  resolution: "@distributedlab/jac@npm:0.2.0-rc.10"
   dependencies:
-    "@distributedlab/fetcher": ^0.2.0-rc.5
+    "@distributedlab/fetcher": 0.2.0-rc.10
     lodash: ^4.17.21
-  checksum: 1c9429a394a1f57fb1171465b0bb0885bae0e634fb6dcbcf9202c7e2020b76709140cd4cec0ec9a2b566b6f9d281deba05a75fc2248d9d4754ac421b025d6ad8
-  languageName: node
-  linkType: hard
-
-"@distributedlab/tools@npm:^0.2.0-rc.5":
-  version: 0.2.0-rc.5
-  resolution: "@distributedlab/tools@npm:0.2.0-rc.5"
-  dependencies:
-    bignumber.js: ^9.1.1
-    dayjs: ^1.11.7
-    tslib: ^2.5.0
-  checksum: 4d37a2c73b36d0bfe1efd790d0f1568f7cdefcd75cee1b77be79d416e08b0bb2de27fd5dc61747c4d1beec1f7f0019021c9db50254754a197bfce03e71dd36ef
+  checksum: 6ad4455a2115cfcc6e79105ec97cd18ee2da0dd8b16843082b51e6fde75878d57d37eee72813575f98b048a4f462875a6b661cc937b1ab21936608775b6ca878
   languageName: node
   linkType: hard
 
@@ -2528,21 +2517,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rarimo/bridge@workspace:^, @rarimo/bridge@workspace:packages/bridge":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/bridge@workspace:packages/bridge"
+  dependencies:
+    "@distributedlab/jac": ^0.2.0-rc.9
+    "@distributedlab/tools": ^0.2.0-rc.9
+    "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    ethers: ^5.7.2
+    tsc-alias: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
 "@rarimo/nft-checkout@workspace:^, @rarimo/nft-checkout@workspace:packages/nft-checkout":
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/fetcher": ^0.2.0-rc.5
-    "@distributedlab/jac": ^0.2.0-rc.5
-    "@distributedlab/tools": ^0.2.0-rc.5
+    "@distributedlab/fetcher": ^0.2.0-rc.9
+    "@distributedlab/jac": ^0.2.0-rc.9
+    "@distributedlab/tools": ^0.2.0-rc.9
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@pancakeswap/sdk": ^3.1.4
     "@pancakeswap/smart-router": ^0.6.1
     "@pancakeswap/swap-sdk-core": ^0.0.1
+    "@rarimo/bridge": "workspace:^"
     "@rarimo/provider": "workspace:^"
     "@rarimo/quickswap-sdk": ^3.0.8
+    "@rarimo/shared": "workspace:^"
+    "@rarimo/swap": "workspace:^"
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
     "@swc/jest": ^0.2.26
@@ -2571,7 +2581,11 @@ __metadata:
     "@distributedlab/tools": ^0.2.0-rc.9
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
+    "@rarimo/shared": "workspace:^"
     "@solana/web3.js": ^1.73.2
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     ethers: ^5.7.2
@@ -2588,6 +2602,10 @@ __metadata:
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     ethers: ^5.7.2
@@ -2603,6 +2621,10 @@ __metadata:
     "@near-wallet-selector/core": ^7.8.2
     "@near-wallet-selector/my-near-wallet": ^7.8.2
     "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     near-api-js: ^1.1.0
@@ -2615,7 +2637,11 @@ __metadata:
   resolution: "@rarimo/providers-solana@workspace:packages/providers-solana"
   dependencies:
     "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@solana/web3.js": ^1.73.2
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.0
     bs58: ^5.0.0
@@ -2651,8 +2677,10 @@ __metadata:
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
     "@mui/material": ^5.11.10
+    "@rarimo/bridge": "workspace:^"
     "@rarimo/nft-checkout": "workspace:^"
     "@rarimo/providers-evm": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@types/node": ^18.6.5
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -2689,6 +2717,7 @@ __metadata:
   resolution: "@rarimo/react-provider@workspace:packages/react-provider"
   dependencies:
     "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@types/react": ^18.0.27
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.1.0
@@ -2702,6 +2731,36 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/shared@workspace:^, @rarimo/shared@workspace:packages/shared":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/shared@workspace:packages/shared"
+  dependencies:
+    "@distributedlab/tools": ^0.2.0-rc.9
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    tsc-alias: ^1.8.2
+  languageName: unknown
+  linkType: soft
+
+"@rarimo/swap@workspace:^, @rarimo/swap@workspace:packages/swap":
+  version: 0.0.0-use.local
+  resolution: "@rarimo/swap@workspace:packages/swap"
+  dependencies:
+    "@rarimo/bridge": "workspace:^"
+    "@rarimo/provider": "workspace:^"
+    "@rarimo/shared": "workspace:^"
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.53
+    "@swc/jest": ^0.2.26
+    "@types/jest": ^29.4.0
+    "@types/node": ^18.14.0
+    tsc-alias: ^1.8.2
   languageName: unknown
   linkType: soft
 
