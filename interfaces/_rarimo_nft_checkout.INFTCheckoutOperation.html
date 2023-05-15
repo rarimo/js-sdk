@@ -27,7 +27,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../classes/_rarimo_nft_checkout.EVMOperation.html" class="tsd-signature-type" data-tsd-kind="Class">EVMOperation</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L30">packages/nft-checkout/src/types/operation.ts:30</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L53">packages/nft-checkout/src/types/operation.ts:53</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -38,6 +38,7 @@
 <div class="tsd-index-list"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#chainFrom" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>chain<wbr/>From</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#isInitialized" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>is<wbr/>Initialized</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#provider" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>provider</span></a>
+<a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#status" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>status</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
@@ -48,6 +49,7 @@
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#init" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>init</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#loadPaymentTokens" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>load<wbr/>Payment<wbr/>Tokens</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#onInitiated" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>on<wbr/>Initiated</span></a>
+<a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#onStatusChanged" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>on<wbr/>Status<wbr/>Changed</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#supportedChains" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>supported<wbr/>Chains</span></a>
 <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#supportedTokens" class="tsd-index-link tsd-kind-method tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>supported<wbr/>Tokens</span></a>
 </div></section></div></details></section></section>
@@ -57,17 +59,22 @@
 <h3 class="tsd-anchor-link"><span>chain<wbr/>From</span><a href="#chainFrom" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
 <div class="tsd-signature">chain<wbr/>From<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../types/_rarimo_nft_checkout.Chain.html" class="tsd-signature-type" data-tsd-kind="Type alias">Chain</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L31">packages/nft-checkout/src/types/operation.ts:31</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L54">packages/nft-checkout/src/types/operation.ts:54</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="isInitialized" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Initialized</span><a href="#isInitialized" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">is<wbr/>Initialized<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L33">packages/nft-checkout/src/types/operation.ts:33</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L56">packages/nft-checkout/src/types/operation.ts:56</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="provider" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>provider</span><a href="#provider" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">provider<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IProvider</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L32">packages/nft-checkout/src/types/operation.ts:32</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L55">packages/nft-checkout/src/types/operation.ts:55</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="status" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>status</span><a href="#status" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">status<span class="tsd-signature-symbol">:</span> <a href="../enums/_rarimo_nft_checkout.CheckoutOperationStatus.html" class="tsd-signature-type" data-tsd-kind="Enumeration">CheckoutOperationStatus</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L57">packages/nft-checkout/src/types/operation.ts:57</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="checkout" class="tsd-anchor"></a>
@@ -75,16 +82,24 @@
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 <li class="tsd-signature tsd-anchor-link" id="checkout.checkout-1">checkout<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a>, bundle<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.TxBundle.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxBundle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#checkout.checkout-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Send a transaction to Rarimo for processing</p>
+
+<h3>Returns</h3><p>The hash of the transaction</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a></h5></li>
+<h5>e: <a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a></h5>
+<div class="tsd-comment tsd-typography"><p>The estimated price of the transaction, from <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#estimatePrice">estimatePrice</a></p>
+</div></li>
 <li>
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> bundle: <a href="../types/_rarimo_nft_checkout.TxBundle.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxBundle</a></h5></li></ul></div>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> bundle: <a href="../types/_rarimo_nft_checkout.TxBundle.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxBundle</a></h5>
+<div class="tsd-comment tsd-typography"><p>The transaction bundle</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L42">packages/nft-checkout/src/types/operation.ts:42</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L92">packages/nft-checkout/src/types/operation.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a id="clearHandlers" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear<wbr/>Handlers</span><a href="#clearHandlers" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
@@ -93,20 +108,26 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="_rarimo_nft_checkout.OperationSubscriber.html">OperationSubscriber</a>.<a href="_rarimo_nft_checkout.OperationSubscriber.html#clearHandlers">clearHandlers</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation-event-bus.ts#L22">packages/nft-checkout/src/types/operation-event-bus.ts:22</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation-event-bus.ts#L22">packages/nft-checkout/src/types/operation-event-bus.ts:22</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="estimatePrice" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>estimate<wbr/>Price</span><a href="#estimatePrice" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-<li class="tsd-signature tsd-anchor-link" id="estimatePrice.estimatePrice-1">estimate<wbr/>Price<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a><span class="tsd-signature-symbol">&gt;</span><a href="#estimatePrice.estimatePrice-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="estimatePrice.estimatePrice-1">estimate<wbr/>Price<span class="tsd-signature-symbol">(</span>from<span class="tsd-signature-symbol">: </span><a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a><span class="tsd-signature-symbol">&gt;</span><a href="#estimatePrice.estimatePrice-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in</p>
+
+<h3>Returns</h3><p>Information about the costs involved in the transaction, including the gas price</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>token: <a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a></h5></li></ul></div>
+<h5>from: <a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a></h5>
+<div class="tsd-comment tsd-typography"><p>The token to use for the transaction</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.EstimatedPrice.html" class="tsd-signature-type" data-tsd-kind="Type alias">EstimatedPrice</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L41">packages/nft-checkout/src/types/operation.ts:41</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L84">packages/nft-checkout/src/types/operation.ts:84</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="getDestinationTx" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Destination<wbr/>Tx</span><a href="#getDestinationTx" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -121,66 +142,105 @@
 <h5>sourceTxHash: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.DestinationTransaction.html" class="tsd-signature-type" data-tsd-kind="Type alias">DestinationTransaction</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L43">packages/nft-checkout/src/types/operation.ts:43</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L93">packages/nft-checkout/src/types/operation.ts:93</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="init" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 <li class="tsd-signature tsd-anchor-link" id="init.init-1">init<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.OperationCreateParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationCreateParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Initialize the operation with the source chain and transaction parameters</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>args: <a href="../types/_rarimo_nft_checkout.OperationCreateParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationCreateParams</a></h5></li></ul></div>
+<h5>args: <a href="../types/_rarimo_nft_checkout.OperationCreateParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationCreateParams</a></h5>
+<div class="tsd-comment tsd-typography"><p>Information about the source chain and the target transaction of the operation</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L35">packages/nft-checkout/src/types/operation.ts:35</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L63">packages/nft-checkout/src/types/operation.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="loadPaymentTokens" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>load<wbr/>Payment<wbr/>Tokens</span><a href="#loadPaymentTokens" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 <li class="tsd-signature tsd-anchor-link" id="loadPaymentTokens.loadPaymentTokens-1">load<wbr/>Payment<wbr/>Tokens<span class="tsd-signature-symbol">(</span>chain<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><a href="#loadPaymentTokens.loadPaymentTokens-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Load the wallet&#39;s balance of payment tokens on the specified chain.</p>
+
+<h3>Returns</h3><p>An array of tokens and the wallet&#39;s balance of each token</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>chain: <a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a></h5></li></ul></div>
+<h5>chain: <a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a></h5>
+<div class="tsd-comment tsd-typography"><p>A chain from <a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#supportedChains">supportedChains</a></p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_rarimo_nft_checkout.PaymentToken.html" class="tsd-signature-type" data-tsd-kind="Class">PaymentToken</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L40">packages/nft-checkout/src/types/operation.ts:40</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L77">packages/nft-checkout/src/types/operation.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a id="onInitiated" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>on<wbr/>Initiated</span><a href="#onInitiated" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-<li class="tsd-signature tsd-anchor-link" id="onInitiated.onInitiated-1">on<wbr/>Initiated<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.OperationInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onInitiated.onInitiated-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="onInitiated.onInitiated-1">on<wbr/>Initiated<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onInitiated.onInitiated-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.OperationInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures tsd-kind-type-literal">
-<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../types/_rarimo_nft_checkout.OperationInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationInitiatedEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>e: <a href="../types/_rarimo_nft_checkout.OperationInitiatedEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationInitiatedEventPayload</a></h5></li></ul></div>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> e: <a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="_rarimo_nft_checkout.OperationSubscriber.html">OperationSubscriber</a>.<a href="_rarimo_nft_checkout.OperationSubscriber.html#onInitiated">onInitiated</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation-event-bus.ts#L21">packages/nft-checkout/src/types/operation-event-bus.ts:21</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation-event-bus.ts#L20">packages/nft-checkout/src/types/operation-event-bus.ts:20</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a id="onStatusChanged" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>on<wbr/>Status<wbr/>Changed</span><a href="#onStatusChanged" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="onStatusChanged.onStatusChanged-1">on<wbr/>Status<wbr/>Changed<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#onStatusChanged.onStatusChanged-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>cb: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures tsd-kind-type-literal">
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">?: </span><a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> e: <a href="../types/_rarimo_nft_checkout.OperationEventPayload.html" class="tsd-signature-type" data-tsd-kind="Type alias">OperationEventPayload</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="_rarimo_nft_checkout.OperationSubscriber.html">OperationSubscriber</a>.<a href="_rarimo_nft_checkout.OperationSubscriber.html#onStatusChanged">onStatusChanged</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation-event-bus.ts#L21">packages/nft-checkout/src/types/operation-event-bus.ts:21</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="supportedChains" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>supported<wbr/>Chains</span><a href="#supportedChains" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 <li class="tsd-signature tsd-anchor-link" id="supportedChains.supportedChains-1">supported<wbr/>Chains<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><a href="#supportedChains.supportedChains-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Get the chains that are supported for the operation type</p>
+
+<h3>Returns</h3><p>A list of supported chains and information about them</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L37">packages/nft-checkout/src/types/operation.ts:37</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L69">packages/nft-checkout/src/types/operation.ts:69</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface"><a id="supportedTokens" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>supported<wbr/>Tokens</span><a href="#supportedTokens" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -193,7 +253,7 @@
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> chain: <a href="../types/_rarimo_nft_checkout.BridgeChain.html" class="tsd-signature-type" data-tsd-kind="Type alias">BridgeChain</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_rarimo_nft_checkout.Token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4423070/packages/nft-checkout/src/types/operation.ts#L38">packages/nft-checkout/src/types/operation.ts:38</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/908da8b/packages/nft-checkout/src/types/operation.ts#L70">packages/nft-checkout/src/types/operation.ts:70</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -229,6 +289,7 @@
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#chainFrom" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>chain<wbr/>From</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#isInitialized" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>is<wbr/>Initialized</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#provider" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>provider</a></li>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#status" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>status</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#checkout" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>checkout</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#clearHandlers" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>clear<wbr/>Handlers</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#estimatePrice" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>estimate<wbr/>Price</a></li>
@@ -236,6 +297,7 @@
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#init" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>init</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#loadPaymentTokens" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>load<wbr/>Payment<wbr/>Tokens</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#onInitiated" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>on<wbr/>Initiated</a></li>
+<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#onStatusChanged" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>on<wbr/>Status<wbr/>Changed</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#supportedChains" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>supported<wbr/>Chains</a></li>
 <li class="tsd-kind-method tsd-parent-kind-interface"><a href="_rarimo_nft_checkout.INFTCheckoutOperation.html#supportedTokens" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>supported<wbr/>Tokens</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
