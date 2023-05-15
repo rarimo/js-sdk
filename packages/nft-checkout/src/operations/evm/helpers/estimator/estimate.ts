@@ -1,8 +1,8 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import { toLowerCase as lc } from '@rarimo/shared'
 
 import { errors } from '@/errors'
-import { toLow } from '@/helpers'
 import type { EstimatedPrice, PaymentToken, Target } from '@/types'
 
 import { estimateTraderJoe } from './joe-trader'
@@ -17,10 +17,10 @@ export const estimate = async (
   target: Target,
 ): Promise<EstimatedPrice> => {
   const targetToken = tokens.find(
-    t => toLow(t.symbol) === toLow(target.swapTargetTokenSymbol),
+    t => lc(t.symbol) === lc(target.swapTargetTokenSymbol),
   )
 
-  if (toLow(from.address) === toLow(targetToken?.address)) {
+  if (lc(from.address) === lc(targetToken?.address)) {
     throw new errors.OperationInvalidSelectedTokenPairError()
   }
 

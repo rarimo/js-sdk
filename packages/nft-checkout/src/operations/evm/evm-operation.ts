@@ -125,6 +125,7 @@ export class EVMOperation
    * @returns A list of supported chains and information about them
    */
   public async supportedChains(): Promise<BridgeChain[]> {
+    if (!this.#swapper.chains.length) return this.#swapper.supportedChains()
     return this.#swapper.chains
   }
 
@@ -189,7 +190,7 @@ export class EVMOperation
 
     const chainTo = this.#swapper.chains.find(
       i => Number(i.id) === Number(this.#target?.chainId),
-    )?.name
+    )
 
     const price = this.#target!.price
     const amountIn = e.from.isNative ? getNativeAmountIn(e.price) : e.price

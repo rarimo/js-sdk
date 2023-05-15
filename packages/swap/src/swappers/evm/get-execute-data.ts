@@ -1,8 +1,11 @@
 import type { Token } from '@rarimo/bridge'
 import {
   Amount,
+  BridgeChain,
   BUNDLE_SALT_BYTES,
+  isUndefined,
   MASTER_ROUTER_ABI,
+  toLowerCase as lc,
   TxBundle,
 } from '@rarimo/shared'
 import { utils } from 'ethers'
@@ -11,54 +14,52 @@ import {
   CALLER_ADDRESS,
   CONTRACT_BALANCE,
   THIS_ADDRESS,
-  WRAPPED_CHAIN_TOKEN_SYMBOLS,
+  WRAPPED_CHAIN_TOKEN_SYMBOLS as wrapped,
 } from '@/const'
-import { SwapCommands } from '@/enums'
+import { SwapCommands as cmds } from '@/enums'
 import type { ExecuteArgs } from '@/types'
 
-import { buildPayload } from './payload-builder'
+import { buildPayload as cmd } from './payload-builder'
 
 type CommandPayload = {
-  command: SwapCommands
+  command: cmds
   skipRevert: boolean
   data: string
 }
 
-const cmds = SwapCommands
-const cmd = buildPayload
-const lc = (str?: string) => str?.toLowerCase() ?? ''
-const wrapped = WRAPPED_CHAIN_TOKEN_SYMBOLS
-
 export const getExecuteData = (args: ExecuteArgs): string => {
-  const { from, to, amountIn, amountOut, receiver = CALLER_ADDRESS } = args
-
-  // We don't cover simple bridge flow here
-  if (lc(from.symbol) == lc(to.symbol)) {
-    throw new Error('Tokens must be different')
-  }
+  const {
+    from,
+    to,
+    amountIn,
+    amountOut,
+    chainTo,
+    receiver = CALLER_ADDRESS,
+  } = args
 
   const data = []
 
-  const isBridgingRequired = from.chain.id != to.chain.id
+  const isBridgingRequired = from.chain.id != chainTo?.id
   // if bridging is required, we need to transfer tokens to the bridge contract
   // from the swap contract after wrap\unwrap. During swapping tokens swap contract
   // will be receiver by default
   const rcvr = isBridgingRequired ? THIS_ADDRESS : receiver
-  const isWrapRequired = lc(wrapped[Number(from.chain.id)]) === lc(to.symbol)
+  const isWrapRequired =
+    from.isNative && lc(wrapped[Number(from.chain.id)]) === lc(to.symbol)
 
   // if wrap of the native token is required
-  if (from.isNative && isWrapRequired) {
+  if (isWrapRequired) {
     data.push(cmd(cmds.WrapNative, [rcvr, amountIn.value]))
   }
 
   // if input not native token transfer erc20 to the contract balance is required
   if (!from.isNative) {
-    data.push(cmd(cmds.TransferErc20, [from.address, amountIn.value]))
+    data.push(cmd(cmds.TransferFromErc20, [from.address, amountIn.value]))
   }
 
   const isUnwrapRequired =
     lc(wrapped[+from.chain.id]) === lc(from.symbol) &&
-    lc(to.symbol) === lc(to.chain.token.symbol)
+    lc(to.symbol) === lc(to.chain.token.symbol) // TODO: recheck this
 
   // if unwrap required and native is the target token
   if (isUnwrapRequired) {
@@ -77,8 +78,8 @@ export const getExecuteData = (args: ExecuteArgs): string => {
     data.push(...getSwapData(from, to, amountIn, amountOut, args.path))
   }
 
-  if (!args.chainTo) {
-    throw new TypeError('chainTo is required for bridging')
+  if (!args.chainTo || isUndefined(args.isWrapped)) {
+    throw new TypeError('chainTo, isWrapped args are required for bridging')
   }
 
   // If token was wrapped\unwrapped thus amount for bridging equals to amountIn
@@ -87,15 +88,26 @@ export const getExecuteData = (args: ExecuteArgs): string => {
   const amount = isWrappedOrUnwrapped ? amountIn : amountOut!
 
   if (isBridgingRequired) {
-    data.push(getBridgeData(to, receiver, amount, args.chainTo, args.bundle))
+    data.push(
+      getBridgeData(
+        to,
+        receiver,
+        amount,
+        args.chainTo,
+        args.isWrapped,
+        args.bundle,
+      ),
+    )
   }
 
   // if token wasn't bridged thus transfer to the receiver is required
   // otherwise we will transfer change after swap operation which should be 0
   // but better to be sure that all tokens was transferred to the receiver
-  data.push(...getTransferData(to, amount, receiver))
+  data.push(...getTransferData(to, amount, receiver, isBridgingRequired))
 
-  return new utils.Interface(MASTER_ROUTER_ABI).encodeFunctionData('swap', data)
+  return new utils.Interface(MASTER_ROUTER_ABI).encodeFunctionData('make', [
+    data,
+  ])
 }
 
 const getSwapData = (
@@ -149,7 +161,8 @@ const getBridgeData = (
   to: Token,
   receiver: string,
   amountOut: Amount,
-  chainTo: string,
+  chainTo: BridgeChain,
+  isWrapped: boolean,
   bundle?: TxBundle,
 ): CommandPayload => {
   const bundleTuple = [
@@ -161,8 +174,9 @@ const getBridgeData = (
     ...(to.isNative ? [] : [to.address]),
     amountOut.value,
     bundleTuple,
-    chainTo,
+    chainTo.name,
     receiver ?? CALLER_ADDRESS,
+    ...(to.isNative ? [] : [isWrapped]),
   ])
 }
 
@@ -170,15 +184,18 @@ const getTransferData = (
   to: Token,
   amount: Amount,
   receiver: string,
+  isBridgingRequired: boolean,
 ): CommandPayload[] => {
   const command = to.isNative ? cmds.TransferNative : cmds.TransferErc20
   const token = to.isNative ? [] : [to.address]
 
-  // first time we transfer required amount of the tokens to the receiver
-  // second time to be sure that swap contract balance is empty we transfer
-  // change to the caller
+  // first time we transfer required amount of the tokens to the receiver is bridging
+  // not required second time to be sure that swap contract balance is empty we
+  // transfer change to the caller
   return [
-    cmd(command, [...token, receiver, amount.value]),
+    ...(isBridgingRequired
+      ? []
+      : [cmd(command, [...token, receiver, amount.value])]),
     cmd(command, [...token, CALLER_ADDRESS, CONTRACT_BALANCE]),
   ]
 }

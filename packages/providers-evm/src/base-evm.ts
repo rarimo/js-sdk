@@ -11,7 +11,7 @@ import {
   TransactionResponse,
 } from '@rarimo/provider'
 import { Chain, ChainId, ChainTypes } from '@rarimo/shared'
-import { ethers, providers } from 'ethers'
+import { providers } from 'ethers'
 
 import {
   connectEthAccounts,
@@ -33,8 +33,8 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   constructor(provider?: RawProvider) {
     if (!provider) throw new errors.ProviderInjectedInstanceNotFoundError()
     super()
-    this.#provider = new ethers.providers.Web3Provider(
-      provider as ethers.providers.ExternalProvider,
+    this.#provider = new providers.Web3Provider(
+      provider as providers.ExternalProvider,
       'any',
     )
   }

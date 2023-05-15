@@ -48,6 +48,8 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     })
   }
 
+  const supportedChains = bridger.value.loadSupportedChains
+
   return toRaw({
     chainType: bridger.value.chainType,
     chains: computed(() => bridger.value.chains),
@@ -55,6 +57,7 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     provider,
     init,
     getDestinationTx,
+    supportedChains,
     execute,
   })
 }

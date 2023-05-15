@@ -49,6 +49,12 @@ export const buildPayload = <I, T extends Array<I>>(
     values,
   )
 
+  console.log({
+    command: cmd,
+    skipRevert: false,
+    data: values,
+  })
+
   return {
     command: cmd,
     skipRevert: false,

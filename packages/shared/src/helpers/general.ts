@@ -24,3 +24,11 @@ export const isObject = (
 export const isPlainObject = (val: unknown): val is object => {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
+
+export const isUndefined = (val: unknown): val is undefined => {
+  return typeof val === 'undefined'
+}
+
+export const toLowerCase = (val?: string): string => {
+  return val?.toLowerCase() ?? ''
+}

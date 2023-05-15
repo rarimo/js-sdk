@@ -15,6 +15,7 @@ export interface Swapper {
     sourceChain: BridgeChain,
     sourceTxHash: string,
   ): Promise<DestinationTransaction>
+  supportedChains(): Promise<BridgeChain[]>
 }
 
 export type ExecuteArgs = {
@@ -24,7 +25,7 @@ export type ExecuteArgs = {
   amountOut?: Amount // required if swap is required
   receiver?: string // could be another contract, if empty it will be caller by default
   path?: string | string[] // required if swap is required
-  chainTo?: string // required if bridging is required
+  chainTo?: BridgeChain // required if bridging is required
   bundle?: TxBundle // required if transaction bundling is required
   isWrapped?: boolean // required if bridging is required
 }
