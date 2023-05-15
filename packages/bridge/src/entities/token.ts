@@ -2,7 +2,7 @@ import {
   Address,
   BridgeChain,
   Decimals,
-  EVMSwapContractVersion,
+  EVMDexType,
   TokenSymbol,
 } from '@rarimo/shared'
 
@@ -16,12 +16,12 @@ export const newToken = (
   decimals: Decimals,
   logoURI = '',
 ): Token => {
-  const v = chain.contractVersion
+  const v = chain.dexType
   const raw = {
-    isTraderJoe: v === EVMSwapContractVersion.TraderJoe,
-    isQuickSwap: v === EVMSwapContractVersion.QuickSwap,
-    isPancakeSwap: v === EVMSwapContractVersion.PancakeSwap,
-    isUniswapV3: v === EVMSwapContractVersion.UniswapV3,
+    isTraderJoe: v === EVMDexType.TraderJoe,
+    isQuickSwap: v === EVMDexType.QuickSwap,
+    isPancakeSwap: v === EVMDexType.PancakeSwap,
+    isUniswapV3: v === EVMDexType.UniswapV3,
     isNative: chain.token.symbol.toLowerCase() === symbol.toLowerCase(),
   }
 

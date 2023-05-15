@@ -1,6 +1,6 @@
 import { Fetcher } from '@distributedlab/fetcher'
 import { newToken, Token, tokenFromChain } from '@rarimo/bridge'
-import { BridgeChain, ChainNames, EVMSwapContractVersion } from '@rarimo/shared'
+import { BridgeChain, ChainNames, EVMDexType } from '@rarimo/shared'
 import type { TokenInfo } from '@uniswap/token-lists'
 
 import { DEFAULT_FETCHER_CONFIG } from '@/config'
@@ -54,11 +54,11 @@ export const loadTokens = async (
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
   return {
-    [EVMSwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
-    [EVMSwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
-    [EVMSwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
-    [EVMSwapContractVersion.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
-  }[chain.contractVersion]
+    [EVMDexType.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
+    [EVMDexType.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
+    [EVMDexType.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
+    [EVMDexType.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
+  }[chain.dexType]
 }
 
 const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => {
