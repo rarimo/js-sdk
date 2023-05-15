@@ -1,5 +1,5 @@
 # @rarimo/providers-near
-The Near wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the Near blockchain.
+Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Near blockchain.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/providers-near)
 ![types](https://badgen.net/npm/types/@rarimo/providers-near)

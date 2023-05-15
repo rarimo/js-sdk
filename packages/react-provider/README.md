@@ -1,5 +1,5 @@
 # @rarimo/react-provider
-Features of the Rarimo SDK that provide access to users' wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.
+Tools to connect to wallets in React applications through the Rarimo SDK.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/react-provider)
 ![types](https://badgen.net/npm/types/@rarimo/react-provider)

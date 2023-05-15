@@ -1,5 +1,5 @@
 # @rarimo/provider
-Features of the Rarimo SDK that provide access to users' wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.
+A common interface for access to wallets (EVM and non-EVM) in the Rarimo SDK, used by packages that provide access to wallets on specific chains such as @rarimo/providers-evm, @rarimo/providers-solana, and @rarimo/providers-near.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/provider)
 ![types](https://badgen.net/npm/types/@rarimo/provider)
