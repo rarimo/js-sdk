@@ -6,7 +6,7 @@ import type { CheckoutOperationStatus } from './operation'
 
 export type OperationEventPayload = {
   isInitiated: boolean
-  chainFrom: BridgeChain
+  chainFrom?: BridgeChain
   target?: Target
   status: CheckoutOperationStatus
 }
@@ -17,7 +17,7 @@ export type OperationEventMap = {
 }
 
 export interface OperationSubscriber {
-  onInitiated(cb: (e: OperationEventPayload) => void): void
-  onStatusChanged(cb: (e: OperationEventPayload) => void): void
+  onInitiated(cb: (e?: OperationEventPayload) => void): void
+  onStatusChanged(cb: (e?: OperationEventPayload) => void): void
   clearHandlers(): void
 }

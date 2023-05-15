@@ -54,6 +54,7 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
   chainFrom: Chain | undefined
   provider: IProvider
   isInitialized: boolean
+  status: CheckoutOperationStatus
 
   /**
    * Initialize the operation with the source chain and transaction parameters
