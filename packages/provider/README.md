@@ -16,10 +16,11 @@ To connect to wallets, use both this package and the specific implementation of 
 
 For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo/js-sdk-examples/) on GitHub.
 
-Here is an example that creates a `MetamaskProvider` object for a MetaMask wallet and prints its address:
+Here is an example that creates a `MetamaskProvider` object from `@rarimo/providers-evm` to represent a MetaMask wallet and prints its address:
 
 ```js
-import { createProvider, MetamaskProvider } from '@rarimo/provider'
+import { createProvider } from '@rarimo/provider'
+import { MetamaskProvider } from '@rarimo/providers-evm'
 
 const getMetamaskWalletAddress = async () => {
   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
