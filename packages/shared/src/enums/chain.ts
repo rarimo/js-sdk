@@ -17,7 +17,7 @@ export enum ChainNames {
   SolanaDevNet = 'Solana DevNet',
 }
 
-export enum EVMSwapContractVersion {
+export enum EVMDexType {
   TraderJoe = 'TraderJoe',
   QuickSwap = 'QuickSwap',
   PancakeSwap = 'PancakeSwap',

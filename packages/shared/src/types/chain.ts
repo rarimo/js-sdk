@@ -1,5 +1,5 @@
 import type { ChainTypes } from '@/enums'
-import type { ChainNames, EVMSwapContractVersion } from '@/enums'
+import type { ChainNames, EVMDexType } from '@/enums'
 
 import type { Address } from './common'
 
@@ -21,7 +21,7 @@ export type Chain = {
 
 export type BridgeChain = Chain & {
   contractAddress: Address
-  contractVersion: EVMSwapContractVersion
+  dexType: EVMDexType
 }
 
 export type ChainIdMap = { [key in ChainNames]?: ChainId }

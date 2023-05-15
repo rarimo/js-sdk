@@ -1,5 +1,5 @@
-import { ChainNames, ChainTypes, EVMSwapContractVersion } from '@/enums'
-import type { BridgeChain, ChainId, ChainIdMap } from '@/types'
+import { ChainNames, ChainTypes, EVMDexType } from '@/enums'
+import type { BridgeChain, ChainIdMap } from '@/types'
 
 export const EVM_CHAIN_IDS: ChainIdMap = {
   [ChainNames.Ethereum]: 1,
@@ -13,21 +13,13 @@ export const EVM_CHAIN_IDS: ChainIdMap = {
   [ChainNames.Chapel]: 97,
 }
 
-const mustGetChainIdByName = (name: ChainNames): ChainId => {
-  const chainId = EVM_CHAIN_IDS[name]
-  if (!chainId) {
-    throw new Error(`Chain ${name} is not supported`)
-  }
-  return chainId
-}
-
 const nativeToken = {
   decimals: 18,
 }
 
 export const EVM_CHAINS: BridgeChain[] = [
   {
-    id: mustGetChainIdByName(ChainNames.Ethereum),
+    id: EVM_CHAIN_IDS[ChainNames.Ethereum]!,
     name: ChainNames.Ethereum,
     rpcUrl: 'https://mainnet.infura.io/v3/',
     token: {
@@ -38,11 +30,11 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://etherscan.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-    contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
-    contractVersion: EVMSwapContractVersion.UniswapV3,
+    contractAddress: '',
+    dexType: EVMDexType.UniswapV3,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Goerli),
+    id: EVM_CHAIN_IDS[ChainNames.Goerli]!,
     name: ChainNames.Goerli,
     rpcUrl: 'https://goerli.infura.io/v3/',
     token: {
@@ -53,11 +45,11 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://goerli.etherscan.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
-    contractAddress: '0xe3C6b16AFAB73D836f12252f376613ceF967B5e1',
-    contractVersion: EVMSwapContractVersion.UniswapV3,
+    contractAddress: '0x10841D7fF0AfF0e40203FC4D0778DD9946D8a91c',
+    dexType: EVMDexType.UniswapV3,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Sepolia),
+    id: EVM_CHAIN_IDS[ChainNames.Sepolia]!,
     name: ChainNames.Sepolia,
     rpcUrl: 'https://sepolia.infura.io/v3/',
     token: {
@@ -69,10 +61,10 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
     contractAddress: '',
-    contractVersion: EVMSwapContractVersion.UniswapV3,
+    dexType: EVMDexType.UniswapV3,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Polygon),
+    id: EVM_CHAIN_IDS[ChainNames.Polygon]!,
     name: ChainNames.Polygon,
     rpcUrl: 'https://polygon-rpc.com/',
     token: {
@@ -84,10 +76,10 @@ export const EVM_CHAINS: BridgeChain[] = [
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
     contractAddress: '',
-    contractVersion: EVMSwapContractVersion.QuickSwap,
+    dexType: EVMDexType.QuickSwap,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Mumbai),
+    id: EVM_CHAIN_IDS[ChainNames.Mumbai]!,
     name: ChainNames.Mumbai,
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     token: {
@@ -97,12 +89,12 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://mumbai.polygonscan.com',
     type: ChainTypes.EVM,
-    contractAddress: '0x24Ae0B9DC81d2E4e9383e283163913BF200a579F',
+    contractAddress: '',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/matic-token.png',
-    contractVersion: EVMSwapContractVersion.QuickSwap,
+    dexType: EVMDexType.QuickSwap,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Avalanche),
+    id: EVM_CHAIN_IDS[ChainNames.Avalanche]!,
     name: ChainNames.Avalanche,
     rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
     token: {
@@ -112,12 +104,12 @@ export const EVM_CHAINS: BridgeChain[] = [
     },
     explorerUrl: 'https://snowtrace.io',
     type: ChainTypes.EVM,
-    contractAddress: '0xaebaBd54CdD1418b0eb88A5e877EdD6cbC5804f4',
+    contractAddress: '',
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
-    contractVersion: EVMSwapContractVersion.TraderJoe,
+    dexType: EVMDexType.TraderJoe,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Fuji),
+    id: EVM_CHAIN_IDS[ChainNames.Fuji]!,
     name: ChainNames.Fuji,
     rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
     token: {
@@ -128,11 +120,11 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://testnet.snowtrace.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/avax-token.png',
-    contractAddress: '0x13734D554d25EA67DFD45653659e447996a1C9B4',
-    contractVersion: EVMSwapContractVersion.TraderJoe,
+    contractAddress: '0xFE634aBe3950534B24bBA247aE04ABD9cBCAD90D',
+    dexType: EVMDexType.TraderJoe,
   },
   {
-    id: mustGetChainIdByName(ChainNames.BinanceSmartChain),
+    id: EVM_CHAIN_IDS[ChainNames.BinanceSmartChain]!,
     name: ChainNames.BinanceSmartChain,
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     token: {
@@ -143,11 +135,11 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://bscscan.com',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
-    contractAddress: '0x85718348D854CE2768e96D87a2ed6d12d619b67B',
-    contractVersion: EVMSwapContractVersion.PancakeSwap,
+    contractAddress: '',
+    dexType: EVMDexType.PancakeSwap,
   },
   {
-    id: mustGetChainIdByName(ChainNames.Chapel),
+    id: EVM_CHAIN_IDS[ChainNames.Chapel]!,
     name: ChainNames.Chapel,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
     token: {
@@ -158,7 +150,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://testnet.bscscan.com',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
-    contractAddress: '0x08a87595f4423AaF591155aa2cEF31Fb904BcdE8',
-    contractVersion: EVMSwapContractVersion.PancakeSwap,
+    contractAddress: '0xd6c576B4f6Ab3d70b49FA2a1F73711943f3a14f2',
+    dexType: EVMDexType.PancakeSwap,
   },
 ]
