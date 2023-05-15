@@ -39,6 +39,9 @@ export class PhantomProvider
   extends BaseSolanaProvider
   implements ProviderProxy
 {
+  /**
+   * @description In most cases, instead of using this constructor, pass the PhantomProvider class to {@link @rarimo/provider!createProvider}.
+   */
   constructor(provider?: RawProvider) {
     super(provider)
   }
