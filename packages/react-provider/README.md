@@ -14,6 +14,7 @@ Here is an example that creates a `MetamaskProvider` object for a MetaMask walle
 
 ```js
 import { MetamaskProvider } from '@rarimo/provider'
+import { useProvider } from '@rarimo/react-provider'
 
 const { provider, ...rest } = useProvider(MetamaskProvider)
 
