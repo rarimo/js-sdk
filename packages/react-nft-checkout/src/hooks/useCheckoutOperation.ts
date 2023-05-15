@@ -32,17 +32,27 @@ export const useCheckoutOperation = ({
       return {
         isInitiated: checkoutOperation?.isInitialized,
         chainFrom: checkoutOperation?.chainFrom,
+        status: checkoutOperation?.status,
       }
     })
 
   const setListeners = useCallback(() => {
     if (!checkoutOperation) return
 
-    checkoutOperation.onInitiated(({ chainFrom, isInitiated }) => {
+    checkoutOperation.onInitiated(payload => {
+      const { isInitiated, chainFrom } = payload ?? {}
+
       setCheckoutOperationReactiveState(prev => ({
         ...prev,
         chainFrom,
         isInitiated,
+      }))
+    })
+
+    checkoutOperation.onStatusChanged(payload => {
+      setCheckoutOperationReactiveState(prev => ({
+        ...prev,
+        status: payload?.status,
       }))
     })
   }, [checkoutOperation])

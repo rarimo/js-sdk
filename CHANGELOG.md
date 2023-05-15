@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0-rc.10] - 2023-05-15
+### Added
+- `@rarimo/nft-checkout`: `NFTCheckoutOperation` status to track the operation status during the flow
+
 ## [1.5.0-rc.9] - 2023-05-12
 ### Added
 - `root`: `@rarimo/providers-evm` package
@@ -193,7 +197,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.9...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.10...HEAD
+[1.5.0-rc.10]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.9...1.5.0-rc.10
 [1.5.0-rc.9]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.8...1.5.0-rc.9
 [1.5.0-rc.8]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.7...1.5.0-rc.8
 [1.5.0-rc.7]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.6...1.5.0-rc.7

@@ -18,6 +18,7 @@ import {
   SWAP_CONTRACT_ABIS,
 } from '@/const'
 import type { PaymentToken, Price, Token } from '@/entities'
+import { OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import type {
@@ -31,6 +32,7 @@ import type {
   Target,
   TxBundle,
 } from '@/types'
+import { CheckoutOperationStatus, DestinationTransactionStatus } from '@/types'
 
 import { OperationEventBus } from '../event-bus'
 import {
@@ -72,6 +74,7 @@ export class EVMOperation
   #chains: BridgeChain[] = []
   #tokens: Token[] = []
   #api: JsonApiClient
+  #status: CheckoutOperationStatus = CheckoutOperationStatus.Created
 
   constructor(config: Config, provider: IProvider) {
     super()
@@ -85,6 +88,10 @@ export class EVMOperation
       },
       credentials: 'omit',
     })
+  }
+
+  public get status(): CheckoutOperationStatus {
+    return this.#status
   }
 
   public get chainFrom(): BridgeChain | undefined {
@@ -104,10 +111,8 @@ export class EVMOperation
   }
 
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
-    /**
-     * Initialize the operation with the source chain and transaction parameters
-     * @param param0 Information about the source chain and the target transaction of the operation
-     */
+    this.#setStatus(CheckoutOperationStatus.Initializing)
+
     if (!this.#chains.length) {
       await this.supportedChains()
     }
@@ -132,27 +137,24 @@ export class EVMOperation
 
     this.#isInitialized = true
 
-    this.emitInitiated({
-      isInitiated: this.#isInitialized,
-      chainFrom: this.#chainFrom,
-      target: this.#target,
-    })
+    this.#emitEvent(OperationEventBusEvents.Initiated)
+    this.#setStatus(CheckoutOperationStatus.Initialized)
   }
 
-  /**
-   * Get the chains that are supported for the operation type
-   *
-   * @returns A list of supported chains and information about them
-   */
   public async supportedChains(): Promise<BridgeChain[]> {
     // TODO: add backend integration
+    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoading)
     this.#chains = CHAINS[ChainTypes.EVM]!
+    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
 
     return this.#chains
   }
 
   public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
+    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoading)
+
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
@@ -161,17 +163,17 @@ export class EVMOperation
     if (this.#provider.chainId != targetChain?.id) {
       await this.#switchChain(targetChain)
     }
-    return await this.#loadTokens()
+
+    const result = await this.#loadTokens()
+
+    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoaded)
+
+    return result
   }
 
-  /**
-   * Load the wallet's balance of payment tokens on the specified chain.
-   *
-   * @param chain A chain from {@link supportedChains}
-   * @returns An array of tokens and the wallet's balance of each token
-   */
   public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoading)
 
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
@@ -180,44 +182,44 @@ export class EVMOperation
       await this.#switchChain(chain)
     }
 
-    return getPaymentTokens(
+    const result = await getPaymentTokens(
       this.#chainFrom!,
       this.#provider,
       await this.#loadTokens(),
     )
+
+    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
+
+    return result
   }
 
-  /**
-   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
-   *
-   * @param from The token to use for the transaction
-   * @returns Information about the costs involved in the transaction, including the gas price
-   */
   public async estimatePrice(from: PaymentToken) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
 
-    return new Estimator(
+    const price = new Estimator(
       this.#provider,
       this.#tokens,
       from,
       this.#target!,
     ).estimate()
+
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
+
+    return price
   }
 
-  /**
-   * Send a transaction to Rarimo for processing
-   *
-   * @param e The estimated price of the transaction, from {@link estimatePrice}
-   * @param bundle The transaction bundle
-   * @returns The hash of the transaction
-   */
   public async checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string> {
+    this.#setStatus(CheckoutOperationStatus.CheckoutStarted)
+
     const chain = e.from.chain
     await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
 
     if (!chain.contractAddress) {
       throw new errors.OperationChainNotSupportedError()
     }
+
+    this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
 
     const result = await this.#provider.signAndSendTx({
       from: this.#provider.address,
@@ -230,6 +232,8 @@ export class EVMOperation
         : {}),
     })
 
+    this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
+
     return typeof result === 'string'
       ? result
       : (result as providers.TransactionReceipt)?.transactionHash
@@ -240,6 +244,7 @@ export class EVMOperation
     sourceTxHash: string,
   ): Promise<DestinationTransaction> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+    this.#setStatus(CheckoutOperationStatus.DestinationTxPending)
 
     const chain = this.#getChainByID(sourceChain.id)
     if (!chain) {
@@ -254,6 +259,13 @@ export class EVMOperation
         await sleep(DESTINATION_TX_PULL_INTERVAL)
       }
     }
+
+    const status =
+      transaction!.status === DestinationTransactionStatus.Success
+        ? CheckoutOperationStatus.DestinationTxSuccess
+        : CheckoutOperationStatus.DestinationTxFailed
+
+    this.#setStatus(status)
 
     return {
       hash: transaction!.id,
@@ -350,6 +362,8 @@ export class EVMOperation
   async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
     if (e.from.isNative) return
 
+    this.#setStatus(CheckoutOperationStatus.CheckAllowance)
+
     const contract = new Contract(
       e.from.address,
       ERC20_ABI,
@@ -372,16 +386,22 @@ export class EVMOperation
       return
     }
 
+    this.#setStatus(CheckoutOperationStatus.Approve)
+
     const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
       routerAddress,
       BN.MAX_UINT256.value,
     ])
 
-    return this.#provider.signAndSendTx({
+    const result = this.#provider.signAndSendTx({
       from: this.#provider.address,
       to: e.from.address,
       data,
     })
+
+    this.#setStatus(CheckoutOperationStatus.Approved)
+
+    return result
   }
 
   #getChainByID(id: ChainId) {
@@ -407,5 +427,19 @@ export class EVMOperation
       await this.#provider.addChain!(targetChain!)
       await this.#switchChain(targetChain)
     }
+  }
+
+  #setStatus(status: CheckoutOperationStatus) {
+    this.#status = status
+    this.#emitEvent(OperationEventBusEvents.StatusChanged)
+  }
+
+  #emitEvent(event: OperationEventBusEvents) {
+    this.emit(event, {
+      isInitiated: this.#isInitialized,
+      chainFrom: this.#chainFrom,
+      target: this.#target,
+      status: this.#status,
+    })
   }
 }
