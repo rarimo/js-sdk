@@ -1,5 +1,5 @@
 # @rarimo/providers-near
-Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Near blockchain.
+Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the NEAR blockchain.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/providers-near)
 ![types](https://badgen.net/npm/types/@rarimo/providers-near)
