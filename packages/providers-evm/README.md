@@ -1,5 +1,5 @@
 # @rarimo/providers-evm
-The EVM wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the EVM compatible blockchains.
+Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on EVM-compatible blockchains.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/providers-evm)
 ![types](https://badgen.net/npm/types/@rarimo/providers-evm)
