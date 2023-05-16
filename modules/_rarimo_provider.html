@@ -16,13 +16,19 @@
 <li><a href="_rarimo_provider.html">@rarimo/provider</a></li></ul>
 <h1>Module @rarimo/provider</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/29d40a9/packages/provider/src/index.ts#L1">packages/provider/src/index.ts:1</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/a60a544/packages/provider/src/index.ts#L1">packages/provider/src/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
 <a href="#rarimoprovider" id="rarimoprovider" style="color: inherit; text-decoration: none;">
   <h1>@rarimo/provider</h1>
 </a>
-<p>Features of the Rarimo SDK that provide access to users&#39; wallets and map extensions for multiple types of wallets (EVM and non-EVM) to a common wallet interface.</p>
+<p>A common interface for access to wallets (EVM and non-EVM) in the Rarimo SDK, used by packages that provide access to wallets on specific chains such as @rarimo/providers-evm, @rarimo/providers-solana, and @rarimo/providers-near.</p>
+<p>To connect to wallets, use both this package and the specific implementation of a wallet provider from one of these packages:</p>
+<ul>
+<li><code>@rarimo/providers-evm</code>: access to Metamask and Coinbase wallets on EVM-compatible chains</li>
+<li><code>@rarimo/providers-near</code>: access to NEAR wallets on the NEAR chain</li>
+<li><code>@rarimo/providers-solana</code>: access to Phantom and Solflare wallets on the Solana chain</li>
+</ul>
 <p><img src="https://badgen.net/npm/v/@rarimo/provider" alt="version (scoped package)">
 <img src="https://badgen.net/npm/types/@rarimo/provider" alt="types">
 <img src="https://badgen.net/bundlephobia/tree-shaking/@rarimo/provider" alt="tree-shaking">
@@ -32,8 +38,8 @@
   <h2>Example</h2>
 </a>
 <p>For example applications, see <a href="https://github.com/rarimo/js-sdk-examples/">rarimo/js-sdk-examples</a> on GitHub.</p>
-<p>Here is an example that creates a <code>MetamaskProvider</code> object for a MetaMask wallet and prints its address:</p>
-<pre><code class="language-js"><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">createProvider</span><span class="hl-0">, </span><span class="hl-3">MetamaskProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/provider&#39;</span><br/><br/><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-15">getMetamaskWalletAddress</span><span class="hl-0"> = </span><span class="hl-8">async</span><span class="hl-0"> () </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-13">// Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.</span><br/><span class="hl-0">  </span><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-14">provider</span><span class="hl-0"> = </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-15">createProvider</span><span class="hl-0">(</span><span class="hl-3">MetamaskProvider</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-15">connect</span><span class="hl-0">()</span><br/><br/><span class="hl-0">  </span><span class="hl-13">// Get the address of the wallet</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-15">log</span><span class="hl-0">(</span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-3">address</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
+<p>Here is an example that creates a <code>MetamaskProvider</code> object from <code>@rarimo/providers-evm</code> to represent a MetaMask wallet and prints its address:</p>
+<pre><code class="language-js"><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">createProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/provider&#39;</span><br/><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">MetamaskProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/providers-evm&#39;</span><br/><br/><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-15">getMetamaskWalletAddress</span><span class="hl-0"> = </span><span class="hl-8">async</span><span class="hl-0"> () </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-13">// Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.</span><br/><span class="hl-0">  </span><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-14">provider</span><span class="hl-0"> = </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-15">createProvider</span><span class="hl-0">(</span><span class="hl-3">MetamaskProvider</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-15">connect</span><span class="hl-0">()</span><br/><br/><span class="hl-0">  </span><span class="hl-13">// Get the address of the wallet</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-15">log</span><span class="hl-0">(</span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-3">address</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
 </code></pre>
 
 <a href="#changelog" id="changelog" style="color: inherit; text-decoration: none;">
