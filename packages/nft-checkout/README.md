@@ -14,7 +14,8 @@ Here is an example of creating a transaction on the Goerli test chain:
 
 ```ts
 import { createCheckoutOperation, EVMOperation, ChainNames, Price } from '@rarimo/nft-checkout'
-import { createProvider, MetamaskProvider } from '@rarimo/provider'
+import { createProvider } from '@rarimo/provider'
+import { MetamaskProvider } from '@rarimo/providers-evm'
 import { utils } from "ethers";
 
 // Address of the NFT sale contract
