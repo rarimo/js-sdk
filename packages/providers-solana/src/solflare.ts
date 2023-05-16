@@ -39,6 +39,9 @@ export class SolflareProvider
   extends BaseSolanaProvider
   implements ProviderProxy
 {
+  /**
+   * @description In most cases, instead of using this constructor, pass the SolflareProvider class to {@link @rarimo/provider!createProvider}.
+   */
   constructor(provider?: RawProvider) {
     super(provider)
   }
