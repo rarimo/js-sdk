@@ -21,6 +21,9 @@ import { BaseEVMProvider } from './base-evm'
  * ```
  */
 export class CoinbaseProvider extends BaseEVMProvider implements ProviderProxy {
+  /**
+   * @description In most cases, instead of using this constructor, pass the CoinbaseProvider class to {@link @rarimo/provider!createProvider}.
+   */
   constructor(provider?: RawProvider) {
     super(provider)
   }

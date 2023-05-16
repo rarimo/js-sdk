@@ -1,5 +1,5 @@
 # @rarimo/providers-solana
-The Solana wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the Solana blockchain.
+Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Solana blockchain.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/providers-solana)
 ![types](https://badgen.net/npm/types/@rarimo/providers-solana)

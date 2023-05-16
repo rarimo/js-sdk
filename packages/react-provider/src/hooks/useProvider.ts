@@ -20,6 +20,9 @@ const PROVIDER_EVENTS: Array<keyof IProvider> = [
   'onDisconnect',
 ]
 
+interface useProviderReturnType extends ProviderBase {
+  provider: IProvider
+}
 /**
  * @description A React hook that creates a provider object with access to the user's wallet
  *
@@ -30,13 +33,9 @@ const PROVIDER_EVENTS: Array<keyof IProvider> = [
  * console.log(provider?.address)
  * ```
  *
- * @param providerProxy The type of provider from the @rarimo/provider package, such as {@link @rarimo/provider!MetamaskProvider}
+ * @param providerProxy The type of provider from the appropriate package, such as {@link @rarimo/providers-evm!MetamaskProvider}
  * @param createProviderOpts Options for the connection
  */
-
-interface useProviderReturnType extends ProviderBase {
-  provider: IProvider
-}
 export const useProvider = (
   providerProxy: ProviderProxyConstructor,
   createProviderOpts?: CreateProviderOpts,
