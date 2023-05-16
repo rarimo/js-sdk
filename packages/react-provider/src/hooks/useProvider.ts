@@ -20,7 +20,6 @@ const PROVIDER_EVENTS: Array<keyof IProvider> = [
   'onDisconnect',
 ]
 
-
 interface useProviderReturnType extends ProviderBase {
   provider: IProvider
 }

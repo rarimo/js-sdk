@@ -16,15 +16,15 @@ export const App = () => {
     swapTargetTokenSymbol: 'WETH',
   }).current
 
-  const checkoutTxBundle = useRef(
-    buildDemoTxBundle(targetNft, CONTRACT_ADDRESS),
+  const createCheckoutTxBundleCb = useRef((recipient: string) =>
+    buildDemoTxBundle(recipient, targetNft, CONTRACT_ADDRESS),
   ).current
 
   return (
     <div className="app">
       <DappContextProvider
         targetNft={targetNft}
-        checkoutTxBundle={checkoutTxBundle}
+        createCheckoutTxBundleCb={createCheckoutTxBundleCb}
       >
         <RarimoPayButton />
       </DappContextProvider>
