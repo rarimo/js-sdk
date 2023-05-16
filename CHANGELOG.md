@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0-rc.11] - 2023-05-16
+### Added
+- `@rarimo/react-nft-checkout`: getDestinationTx method into `DappContextProvider`
+
+### Changed
+- `@rarimo/nft-checkout`: Chain and token logos are stored locally
+
 ## [1.5.0-rc.10] - 2023-05-15
 ### Added
 - `@rarimo/nft-checkout`: `NFTCheckoutOperation` status to track the operation status during the flow
@@ -197,7 +204,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.10...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.11...HEAD
+[1.5.0-rc.11]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.10...1.5.0-rc.11
 [1.5.0-rc.10]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.9...1.5.0-rc.10
 [1.5.0-rc.9]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.8...1.5.0-rc.9
 [1.5.0-rc.8]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.7...1.5.0-rc.8

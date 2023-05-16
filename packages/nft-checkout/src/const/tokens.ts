@@ -14,7 +14,7 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     symbol: 'ETH',
     decimals: 18,
     logoURI:
-      'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/eth_logo.svg',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/eth-logo.png',
   }),
   new Token({
     chain: chapelChain,
@@ -23,7 +23,7 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     symbol: 'WBNB',
     decimals: 18,
     logoURI:
-      'https://raw.githubusercontent.com/MetaMask/metamask-extension/develop/app/images/bnb.png',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/bnb-logo.png',
   }),
   new Token({
     chain: chapelChain,
@@ -32,7 +32,7 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     symbol: 'USDC',
     decimals: 18,
     logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/usdc-logo.png',
   }),
   new Token({
     chain: chapelChain,
@@ -41,7 +41,7 @@ export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     symbol: 'USDT',
     decimals: 18,
     logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/usdt-logo.png',
   }),
 ]
 
@@ -53,7 +53,7 @@ export const TRADER_JOE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     name: 'Wrapped AVAX',
     symbol: 'WAVAX',
     logoURI:
-      'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xd00ae08403B9bbb9124bB305C09058E32C39A48c/logo.png',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/wavax-logo.png',
   }),
   new Token({
     chain: fujiChain,
@@ -62,6 +62,6 @@ export const TRADER_JOE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
     name: 'USD Coin',
     symbol: 'USDC',
     logoURI:
-      'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xB6076C93701D6a07266c31066B298AeC6dd65c2d/logo.png',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/usdc-logo.png',
   }),
 ]
