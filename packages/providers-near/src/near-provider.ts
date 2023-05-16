@@ -24,6 +24,9 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
   #chainId?: ChainId
   #address?: string
 
+  /**
+   * @description In most cases, instead of using this constructor, pass the NearProvider class to {@link @rarimo/provider!createProvider}.
+   */
   constructor() {
     super()
     this.#provider = this.#provider = new NearRawProvider({})

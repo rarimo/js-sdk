@@ -1,7 +1,7 @@
 import { EventEmitter } from '@distributedlab/tools'
 
 import { OperationEventBusEvents } from '@/enums'
-import type { OperationEventMap, OperationInitiatedEventPayload } from '@/types'
+import type { OperationEventMap, OperationEventPayload } from '@/types'
 
 export class OperationEventBus {
   readonly #emitter = new EventEmitter<OperationEventMap>()
@@ -10,12 +10,16 @@ export class OperationEventBus {
     return this.#emitter
   }
 
-  public emitInitiated(e: OperationInitiatedEventPayload): void {
-    this.#emitter.emit(OperationEventBusEvents.Initiated, e)
+  public emit(event: OperationEventBusEvents, e: OperationEventPayload): void {
+    this.#emitter.emit(event, e)
   }
 
-  public onInitiated(cb: (e?: OperationInitiatedEventPayload) => void): void {
+  public onInitiated(cb: (e?: OperationEventPayload) => void): void {
     this.#emitter.once(OperationEventBusEvents.Initiated, cb)
+  }
+
+  public onStatusChanged(cb: (e?: OperationEventPayload) => void): void {
+    this.#emitter.on(OperationEventBusEvents.StatusChanged, cb)
   }
 
   public clearHandlers(): void {

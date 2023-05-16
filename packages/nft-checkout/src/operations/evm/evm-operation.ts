@@ -1,6 +1,7 @@
 import { BN } from '@distributedlab/tools'
 import type { DestinationTransaction } from '@rarimo/bridge'
 import type { Token } from '@rarimo/bridge'
+import { DestinationTransactionStatus } from '@rarimo/bridge/src'
 import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
   Amount,
@@ -15,6 +16,7 @@ import { createEVMSwapper, createSwapper } from '@rarimo/swap'
 import type { providers } from 'ethers'
 
 import type { Price } from '@/entities'
+import { OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import type {
@@ -25,6 +27,7 @@ import type {
   PaymentToken,
   Target,
 } from '@/types'
+import { CheckoutOperationStatus } from '@/types'
 
 import { OperationEventBus } from '../event-bus'
 import {
@@ -55,6 +58,7 @@ export class EVMOperation
   readonly #config: Config
 
   #isInitialized = false
+  #status: CheckoutOperationStatus = CheckoutOperationStatus.Created
 
   #chainFrom?: BridgeChain
   #target?: Target
@@ -67,6 +71,10 @@ export class EVMOperation
     this.#config = config
     this.#provider = provider
     this.#swapper = createSwapper(createEVMSwapper, provider)
+  }
+
+  public get status(): CheckoutOperationStatus {
+    return this.#status
   }
 
   public get chainFrom(): BridgeChain | undefined {
@@ -90,6 +98,8 @@ export class EVMOperation
    * @param param0 Information about the source chain and the target transaction of the operation
    */
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
+    this.#setStatus(CheckoutOperationStatus.Initializing)
+
     await this.#swapper.init()
 
     const from = this.#getChainByID(chainIdFrom)
@@ -112,11 +122,8 @@ export class EVMOperation
 
     this.#isInitialized = true
 
-    this.emitInitiated({
-      isInitiated: this.#isInitialized,
-      chainFrom: this.#chainFrom,
-      target: this.#target,
-    })
+    this.#emitEvent(OperationEventBusEvents.Initiated)
+    this.#setStatus(CheckoutOperationStatus.Initialized)
   }
 
   /**
@@ -125,12 +132,22 @@ export class EVMOperation
    * @returns A list of supported chains and information about them
    */
   public async supportedChains(): Promise<BridgeChain[]> {
-    if (!this.#swapper.chains.length) return this.#swapper.supportedChains()
-    return this.#swapper.chains
+    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoading)
+
+    const chains = this.#swapper.chains.length
+      ? this.#swapper.chains
+      : await this.#swapper.supportedChains()
+
+    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
+
+    return chains
   }
 
   public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
+    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoading)
+
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
@@ -139,7 +156,12 @@ export class EVMOperation
     if (this.#provider.chainId != targetChain?.id) {
       await this.#switchChain(targetChain)
     }
-    return await this.#loadTokens()
+
+    const result = await this.#loadTokens()
+
+    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoaded)
+
+    return result
   }
 
   /**
@@ -151,18 +173,25 @@ export class EVMOperation
   public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
+    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoading)
+
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
+
     if (this.#provider.chainId != chain?.id) {
       await this.#switchChain(chain)
     }
 
-    return getPaymentTokens(
+    const result = await getPaymentTokens(
       this.#chainFrom!,
       this.#provider,
       await this.#loadTokens(),
     )
+
+    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
+
+    return result
   }
 
   /**
@@ -173,7 +202,19 @@ export class EVMOperation
    */
   public async estimatePrice(from: PaymentToken) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-    return estimate(this.#provider, this.#tokens, from, this.#target!)
+
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
+
+    const price = await estimate(
+      this.#provider,
+      this.#tokens,
+      from,
+      this.#target!,
+    )
+
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
+
+    return price
   }
 
   /**
@@ -188,6 +229,8 @@ export class EVMOperation
       throw new errors.OperationChainNotSupportedError()
     }
 
+    this.#setStatus(CheckoutOperationStatus.CheckoutStarted)
+
     const chainTo = this.#swapper.chains.find(
       i => Number(i.id) === Number(this.#target?.chainId),
     )
@@ -196,6 +239,9 @@ export class EVMOperation
     const amountIn = e.from.isNative ? getNativeAmountIn(e.price) : e.price
     const amountOut = Amount.fromBigInt(getSwapAmount(price), price.decimals)
 
+    this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
+
+    // TODO: check allowance status
     const result = await this.#swapper.execute({
       from: e.from,
       to: e.to,
@@ -208,6 +254,8 @@ export class EVMOperation
       isWrapped: IS_TOKEN_WRAPPED,
     })
 
+    this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
+
     return typeof result === 'string'
       ? result
       : (result as providers.TransactionReceipt)?.transactionHash
@@ -217,7 +265,20 @@ export class EVMOperation
     sourceChain: BridgeChain,
     sourceTxHash: string,
   ): Promise<DestinationTransaction> {
-    return this.#swapper.getDestinationTx(sourceChain, sourceTxHash)
+    this.#setStatus(CheckoutOperationStatus.DestinationTxPending)
+
+    const result = await this.#swapper.getDestinationTx(
+      sourceChain,
+      sourceTxHash,
+    )
+    const status =
+      result!.status === DestinationTransactionStatus.Success
+        ? CheckoutOperationStatus.DestinationTxSuccess
+        : CheckoutOperationStatus.DestinationTxFailed
+
+    this.#setStatus(status)
+
+    return result
   }
 
   #getChainByID(id: ChainId) {
@@ -243,6 +304,20 @@ export class EVMOperation
       await this.#provider.addChain!(targetChain!)
       await this.#switchChain(targetChain)
     }
+  }
+
+  #setStatus(status: CheckoutOperationStatus) {
+    this.#status = status
+    this.#emitEvent(OperationEventBusEvents.StatusChanged)
+  }
+
+  #emitEvent(event: OperationEventBusEvents) {
+    this.emit(event, {
+      isInitiated: this.#isInitialized,
+      chainFrom: this.#chainFrom,
+      target: this.#target,
+      status: this.#status,
+    })
   }
 }
 

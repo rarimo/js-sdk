@@ -21,6 +21,9 @@ import { BaseEVMProvider } from './base-evm'
  * ```
  */
 export class MetamaskProvider extends BaseEVMProvider implements ProviderProxy {
+  /**
+   * @description In most cases, instead of using this constructor, pass the MetamaskProvider class to {@link @rarimo/provider!createProvider}.
+   */
   constructor(provider?: RawProvider) {
     super(provider)
   }

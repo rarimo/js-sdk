@@ -24,8 +24,9 @@ const CheckoutModal = () => {
     selectedPaymentToken,
     selectedSwapToken,
     checkout,
+    provider,
     estimatePrice,
-    checkoutTxBundle,
+    createCheckoutTxBundleCb,
   } = useDappContext()
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
@@ -49,11 +50,12 @@ const CheckoutModal = () => {
   }, [estimatedPrice, selectedPaymentToken])
 
   const onCheckoutHandler = async () => {
-    if (!estimatedPrice || !checkoutTxBundle) return
+    const bundle = createCheckoutTxBundleCb?.(provider?.address ?? '')
+    if (!estimatedPrice || !bundle) return
 
     setIsTransactionProcessing(true)
 
-    const hash = await checkout?.(estimatedPrice, { bundle: checkoutTxBundle })
+    const hash = await checkout?.(estimatedPrice, { bundle })
     if (hash) {
       setTxHash(hash)
     }
