@@ -1,4 +1,5 @@
 # @rarimo/react-nft-checkout
+
 Features of the Rarimo SDK that provide React components to manage cross-train transactions with the Rarimo protocol.
 
 # Examples
@@ -29,7 +30,7 @@ npm install @rarimo/react-nft-checkout --no-optional
 or
 
 ```bash
-yarn add @rarimo/react-nft-checkout --no-optional
+yarn add @rarimo/react-nft-checkout --ignore-optional
 ```
 
 ## Changelog
