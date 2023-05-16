@@ -17,10 +17,13 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
 import { useCheckoutOperation, useProvider } from '@/hooks'
 
 export type DappContextType = {
+  targetNft?: Target
+  checkoutTxBundle?: string
+  isInitialized: boolean
+  provider: IProvider | null
   setSelectedProviderProxy: React.Dispatch<
     React.SetStateAction<ProviderProxyConstructor | undefined>
   >
-  provider: IProvider | null
   createProviderError: string
   checkoutOperation: INFTCheckoutOperation | null
   supportedChains: BridgeChain[]
@@ -28,20 +31,21 @@ export type DappContextType = {
   setSelectedChain: React.Dispatch<
     React.SetStateAction<BridgeChain | undefined>
   >
-  targetNft?: Target
-  checkoutTxBundle?: string
-  isInitialized: boolean
-  loadPaymentTokens?: INFTCheckoutOperation['loadPaymentTokens']
-  getSupportedTokens?: INFTCheckoutOperation['supportedTokens']
-  estimatePrice?: INFTCheckoutOperation['estimatePrice']
-  estimatedPrice?: EstimatedPrice
-  checkout?: INFTCheckoutOperation['checkout']
+  selectedSwapToken?: Token
+  setSelectedSwapToken: React.Dispatch<React.SetStateAction<Token | undefined>>
   selectedPaymentToken?: PaymentToken | null
   setSelectedPaymentToken: React.Dispatch<
     React.SetStateAction<PaymentToken | undefined | null>
   >
-  selectedSwapToken?: Token
-  setSelectedSwapToken: React.Dispatch<React.SetStateAction<Token | undefined>>
+  estimatedPrice?: EstimatedPrice
+  setEstimatedPrice: React.Dispatch<
+    React.SetStateAction<EstimatedPrice | undefined>
+  >
+  loadPaymentTokens?: INFTCheckoutOperation['loadPaymentTokens']
+  getSupportedTokens?: INFTCheckoutOperation['supportedTokens']
+  estimatePrice?: INFTCheckoutOperation['estimatePrice']
+  checkout?: INFTCheckoutOperation['checkout']
+  getDestinationTx?: INFTCheckoutOperation['getDestinationTx']
 }
 
 export type DappContextProviderPropsType = {
@@ -68,17 +72,15 @@ export const DappContextProvider = ({
   createProviderOpts,
   createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
+  const [selectedProviderProxy, setSelectedProviderProxy] =
+    useState<ProviderProxyConstructor>()
   const [supportedChains, setSupportedChains] = useState<BridgeChain[]>([])
-  const [selectedChain, setSelectedChain] = useState<BridgeChain | undefined>()
-
-  const [selectedPaymentToken, setSelectedPaymentToken] =
-    useState<PaymentToken | null>()
+  const [selectedChain, setSelectedChain] = useState<BridgeChain>()
 
   const [selectedSwapToken, setSelectedSwapToken] = useState<Token>()
-
-  const [selectedProviderProxy, setSelectedProviderProxy] = useState<
-    ProviderProxyConstructor | undefined
-  >()
+  const [selectedPaymentToken, setSelectedPaymentToken] =
+    useState<PaymentToken | null>()
+  const [estimatedPrice, setEstimatedPrice] = useState<EstimatedPrice>()
 
   const { provider, providerReactiveState, createProviderError } = useProvider(
     selectedProviderProxy,
@@ -131,6 +133,11 @@ export const DappContextProvider = ({
     [checkoutOperation],
   )
 
+  const getDestinationTx = useMemo(
+    () => checkoutOperation?.getDestinationTx.bind(checkoutOperation),
+    [checkoutOperation],
+  )
+
   const memoizedContextValue = useMemo(() => {
     const ctx: DappContextType = {
       isInitialized,
@@ -146,32 +153,36 @@ export const DappContextProvider = ({
       checkoutTxBundle,
       loadPaymentTokens,
       estimatePrice,
+      estimatedPrice,
+      setEstimatedPrice,
       checkout,
+      getDestinationTx,
       selectedPaymentToken,
       setSelectedPaymentToken,
-      selectedSwapToken: selectedSwapToken,
-      setSelectedSwapToken: setSelectedSwapToken,
+      selectedSwapToken,
+      setSelectedSwapToken,
     }
     return ctx
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    isInitialized,
-    provider,
-    providerReactiveState,
-    createProviderError,
+    checkout,
     checkoutOperation,
     checkoutOperationReactiveState,
-    supportedChains,
-    selectedChain,
-    targetNft,
     checkoutTxBundle,
-    loadPaymentTokens,
+    createProviderError,
     estimatePrice,
-    checkout,
-    selectedPaymentToken,
+    estimatedPrice,
+    getDestinationTx,
     getSupportedTokens,
+    isInitialized,
+    loadPaymentTokens,
+    provider,
+    providerReactiveState,
+    selectedChain,
+    selectedPaymentToken,
     selectedSwapToken,
-    setSelectedSwapToken,
+    supportedChains,
+    targetNft,
   ])
 
   return (
