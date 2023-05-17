@@ -6,7 +6,7 @@ import {
   isUndefined,
   MASTER_ROUTER_ABI,
   toLowerCase as lc,
-  TxBundle,
+  TransactionBundle,
 } from '@rarimo/shared'
 import { utils } from 'ethers'
 
@@ -163,7 +163,7 @@ const getBridgeData = (
   amountOut: Amount,
   chainTo: BridgeChain,
   isWrapped: boolean,
-  bundle?: TxBundle,
+  bundle?: TransactionBundle,
 ): CommandPayload => {
   const bundleTuple = [
     bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),

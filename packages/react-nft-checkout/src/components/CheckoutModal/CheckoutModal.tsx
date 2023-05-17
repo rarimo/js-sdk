@@ -26,7 +26,7 @@ const CheckoutModal = () => {
     checkout,
     provider,
     estimatePrice,
-    createCheckoutTxBundleCb,
+    createCheckoutTransactionBundleCb,
   } = useDappContext()
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
@@ -50,7 +50,7 @@ const CheckoutModal = () => {
   }, [estimatedPrice, selectedPaymentToken])
 
   const onCheckoutHandler = async () => {
-    const bundle = createCheckoutTxBundleCb?.(provider?.address ?? '')
+    const bundle = createCheckoutTransactionBundleCb?.(provider?.address ?? '')
     if (!estimatedPrice || !bundle) return
 
     setIsTransactionProcessing(true)

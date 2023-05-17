@@ -14,7 +14,11 @@ import { errors } from '@/errors'
 import type { Bridger, BridgerCreateFn, DestinationTransaction } from '@/types'
 import type { Token } from '@/types'
 
-import { approveIfNeeded as approve } from './approve-if-needed'
+import {
+  approve as _approve,
+  approveIfNeeded as _approveIfNeeded,
+  isApproveERC20Required,
+} from './approve-if-needed'
 import { getDestinationTx as fetchDestTx } from './get-destination-tx'
 
 export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
@@ -56,7 +60,19 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     operator: HexString,
     amount?: Amount,
   ) => {
-    return approve(provider.value, operator, token, amount)
+    return _approveIfNeeded(provider.value, operator, token, amount)
+  }
+
+  const approve = async (token: Token, operator: HexString) => {
+    return _approve(provider.value, operator, token)
+  }
+
+  const isApproveRequired = async (
+    token: Token,
+    operator: HexString,
+    amount?: Amount,
+  ) => {
+    return isApproveERC20Required(provider.value, operator, token, amount)
   }
 
   return toRaw({
@@ -67,6 +83,8 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     init,
     loadSupportedChains,
     getDestinationTx,
+    isApproveRequired,
+    approve,
     approveIfNeeded,
   })
 }

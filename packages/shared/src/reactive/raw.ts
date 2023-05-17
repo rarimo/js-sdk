@@ -4,15 +4,13 @@ import { Computed, isComputed } from './computed'
 import { isRef, Ref } from './ref'
 
 export type ComputedOrRef<T = unknown> = Ref<T> | Computed<T>
-
-export type Raw<T extends object> = {
-  readonly [K in keyof T]: T[K] extends ComputedOrRef
-    ? ComputedOrRef<T[K]['value']>['value']
-    : T[K]
+export type Unwrap<T> = T extends ComputedOrRef<infer V> ? V : T
+export type Raw<T> = {
+  [K in keyof T]: Unwrap<T[K]>
 }
 
 export const toRaw = <T extends object>(target: T): Raw<T> => {
-  const obj = {}
+  const obj = {} as Raw<T>
 
   const descriptors = Object.entries(target).reduce<
     PropertyDescriptorMap & ThisType<T>
@@ -31,5 +29,5 @@ export const toRaw = <T extends object>(target: T): Raw<T> => {
 
   Object.defineProperties(obj, descriptors)
 
-  return obj as Raw<T>
+  return obj
 }

@@ -1,7 +1,7 @@
 import type { Target } from '@rarimo/nft-checkout'
 import { utils } from 'ethers'
 
-export const buildDemoTxBundle = (
+export const buildDemoTransactionBundle = (
   recipient: string,
   targetNft: Target,
   address: string,

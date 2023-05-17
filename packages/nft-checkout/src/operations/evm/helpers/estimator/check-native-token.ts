@@ -1,5 +1,5 @@
 import type { Token } from '@rarimo/bridge'
-import type { ChainId, toLowerCase as lc } from '@rarimo/shared'
+import { ChainId, toLowerCase as lc } from '@rarimo/shared'
 import { WRAPPED_CHAIN_TOKEN_SYMBOLS } from '@rarimo/swap'
 
 import { OperatorWrappedTokenNotFound } from '@/errors'

@@ -6,12 +6,12 @@ import { Contract, utils } from 'ethers'
 
 import type { Token } from '@/types'
 
-const getApproveERC20Data = async (
+export const isApproveERC20Required = async (
   provider: IProvider,
   operator: HexString,
   token: Token,
   amount?: Amount,
-) => {
+): Promise<boolean> => {
   const contract = new Contract(
     token.address,
     ERC20_ABI,
@@ -27,14 +27,7 @@ const getApproveERC20Data = async (
   const allowance = BN.fromBigInt(allowanceRaw.toString(), token.decimals)
   const estimationPrice = BN.fromBigInt(amount.value, amount.decimals)
 
-  if (estimationPrice.isLessThan(allowance)) {
-    return
-  }
-
-  return new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
-    operator,
-    BN.MAX_UINT256.value,
-  ])
+  return estimationPrice.isGreaterThan(allowance)
 }
 
 export const approveIfNeeded = async (
@@ -45,9 +38,27 @@ export const approveIfNeeded = async (
 ) => {
   if (token.isNative) return
 
-  const data = await getApproveERC20Data(provider, operator, token, amount)
+  const isRequired = await isApproveERC20Required(
+    provider,
+    operator,
+    token,
+    amount,
+  )
 
-  if (!data) return
+  if (!isRequired) return
+
+  return approve(provider, operator, token)
+}
+
+export const approve = async (
+  provider: IProvider,
+  operator: HexString,
+  token: Token,
+) => {
+  const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
+    operator,
+    BN.MAX_UINT256.value,
+  ])
 
   return provider.signAndSendTx({
     from: provider.address,

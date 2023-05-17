@@ -3,7 +3,7 @@ export type HexString = string // Ethereum hex-string
 export type Address = HexString // Ethereum hex-string address
 export type TokenSymbol = string // Token symbol, e.g. ETH, USDT, etc
 
-export type TxBundle = {
+export type TransactionBundle = {
   bundle: HexString
   salt?: HexString
 }

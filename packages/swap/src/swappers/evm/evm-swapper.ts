@@ -1,6 +1,6 @@
 import { createBridger, createEVMBridger } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import { BridgeChain, computed, ref, toRaw } from '@rarimo/shared'
+import { computed, ref, toRaw } from '@rarimo/shared'
 
 import type { ExecuteArgs, Swapper } from '@/types'
 
@@ -17,24 +17,18 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     isInitialized.value = true
   }
 
-  const getDestinationTx = async (
-    sourceChain: BridgeChain,
-    sourceTxHash: string,
-  ) => {
-    await init()
-    return bridger.value.getDestinationTx(sourceChain, sourceTxHash)
-  }
-
   const execute = async (args: ExecuteArgs) => {
     await init()
 
-    const { from, amountIn } = args
+    const { from, amountIn, handleAllowance } = args
 
-    await bridger.value.approveIfNeeded(
-      from,
-      from.chain.contractAddress,
-      amountIn,
-    )
+    if (handleAllowance) {
+      await bridger.value.approveIfNeeded(
+        from,
+        from.chain.contractAddress,
+        amountIn,
+      )
+    }
 
     return provider.value.signAndSendTx({
       from: provider.value.address,
@@ -48,16 +42,17 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     })
   }
 
-  const supportedChains = bridger.value.loadSupportedChains
-
   return toRaw({
-    chainType: bridger.value.chainType,
     chains: computed(() => bridger.value.chains),
     isInitialized,
     provider,
     init,
-    getDestinationTx,
-    supportedChains,
     execute,
+    chainType: bridger.value.chainType,
+    isApproveRequired: bridger.value.isApproveRequired.bind(bridger.value),
+    getDestinationTx: bridger.value.getDestinationTx.bind(bridger.value),
+    supportedChains: bridger.value.loadSupportedChains.bind(bridger.value),
+    approveIfNeeded: bridger.value.approveIfNeeded.bind(bridger.value),
+    approve: bridger.value.approve.bind(bridger.value),
   })
 }

@@ -6,7 +6,7 @@ import type {
   Chain,
   ChainId,
   TokenSymbol,
-  TxBundle,
+  TransactionBundle,
 } from '@rarimo/shared'
 
 import type { Price } from '@/entities'
@@ -88,10 +88,10 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
    * Send a transaction to Rarimo for processing
    *
    * @param e The estimated price of the transaction, from {@link estimatePrice}
-   * @param bundle The transaction bundle
+   * @param {TransactionBundle} [bundle] The transaction bundle
    * @returns The hash of the transaction
    */
-  checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string>
+  checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>
   getDestinationTx(
     sourceChain: BridgeChain,
     sourceTxHash: string,

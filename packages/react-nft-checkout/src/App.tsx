@@ -3,7 +3,7 @@ import { useRef } from 'react'
 
 import { RarimoPayButton } from '@/components'
 import { DappContextProvider } from '@/context/DappContextProvider'
-import { buildDemoTxBundle } from '@/helpers/build-demo-tx-bundle'
+import { buildDemoTransactionBundle } from '@/helpers/build-demo-tx-bundle'
 
 const CONTRACT_ADDRESS = '0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1'
 
@@ -16,15 +16,15 @@ export const App = () => {
     swapTargetTokenSymbol: 'WETH',
   }).current
 
-  const createCheckoutTxBundleCb = useRef((recipient: string) =>
-    buildDemoTxBundle(recipient, targetNft, CONTRACT_ADDRESS),
+  const createCheckoutTransactionBundleCb = useRef((recipient: string) =>
+    buildDemoTransactionBundle(recipient, targetNft, CONTRACT_ADDRESS),
   ).current
 
   return (
     <div className="app">
       <DappContextProvider
         targetNft={targetNft}
-        createCheckoutTxBundleCb={createCheckoutTxBundleCb}
+        createCheckoutTransactionBundleCb={createCheckoutTransactionBundleCb}
       >
         <RarimoPayButton />
       </DappContextProvider>

@@ -1,7 +1,9 @@
 import { BN } from '@distributedlab/tools'
-import type { DestinationTransaction } from '@rarimo/bridge'
 import type { Token } from '@rarimo/bridge'
-import { DestinationTransactionStatus } from '@rarimo/bridge/src'
+import {
+  DestinationTransaction,
+  DestinationTransactionStatus,
+} from '@rarimo/bridge'
 import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
   Amount,
@@ -9,7 +11,8 @@ import {
   ChainId,
   ChainTypes,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
-  TxBundle,
+  toLowerCase as lc,
+  TransactionBundle,
 } from '@rarimo/shared'
 import type { Swapper } from '@rarimo/swap'
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'
@@ -18,7 +21,6 @@ import type { providers } from 'ethers'
 import type { Price } from '@/entities'
 import { OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
-import { toLow } from '@/helpers'
 import type {
   Config,
   EstimatedPrice,
@@ -93,10 +95,6 @@ export class EVMOperation
     return this.#target
   }
 
-  /**
-   * Initialize the operation with the source chain and transaction parameters
-   * @param param0 Information about the source chain and the target transaction of the operation
-   */
   async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
     this.#setStatus(CheckoutOperationStatus.Initializing)
 
@@ -109,7 +107,7 @@ export class EVMOperation
       throw new errors.OperationInvalidChainPairError()
     }
 
-    if (toLow(target.swapTargetTokenSymbol) === toLow(from.token.symbol)) {
+    if (lc(target.swapTargetTokenSymbol) === lc(from.token.symbol)) {
       throw new errors.OperationSwapIntoNativeNotSupported()
     }
 
@@ -126,11 +124,6 @@ export class EVMOperation
     this.#setStatus(CheckoutOperationStatus.Initialized)
   }
 
-  /**
-   * Get the chains that are supported for the operation type
-   *
-   * @returns A list of supported chains and information about them
-   */
   public async supportedChains(): Promise<BridgeChain[]> {
     this.#setStatus(CheckoutOperationStatus.SupportedChainsLoading)
 
@@ -164,12 +157,6 @@ export class EVMOperation
     return result
   }
 
-  /**
-   * Load the wallet's balance of payment tokens on the specified chain.
-   *
-   * @param chain A chain from {@link supportedChains}
-   * @returns An array of tokens and the wallet's balance of each token
-   */
   public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
@@ -194,12 +181,6 @@ export class EVMOperation
     return result
   }
 
-  /**
-   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
-   *
-   * @param from The token to use for the transaction
-   * @returns Information about the costs involved in the transaction, including the gas price
-   */
   public async estimatePrice(from: PaymentToken) {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
 
@@ -217,14 +198,10 @@ export class EVMOperation
     return price
   }
 
-  /**
-   * Send a transaction to Rarimo for processing
-   *
-   * @param e The estimated price of the transaction, from {@link estimatePrice}
-   * @param bundle The transaction bundle
-   * @returns The hash of the transaction
-   */
-  public async checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string> {
+  public async checkout(
+    e: EstimatedPrice,
+    bundle?: TransactionBundle,
+  ): Promise<string> {
     if (!e.from.chain.contractAddress) {
       throw new errors.OperationChainNotSupportedError()
     }
@@ -239,9 +216,10 @@ export class EVMOperation
     const amountIn = e.from.isNative ? getNativeAmountIn(e.price) : e.price
     const amountOut = Amount.fromBigInt(getSwapAmount(price), price.decimals)
 
+    await this.#approveIfRequired(e.from, amountIn)
+
     this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
 
-    // TODO: check allowance status
     const result = await this.#swapper.execute({
       from: e.from,
       to: e.to,
@@ -252,6 +230,7 @@ export class EVMOperation
       chainTo,
       bundle,
       isWrapped: IS_TOKEN_WRAPPED,
+      handleAllowance: false,
     })
 
     this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
@@ -279,6 +258,22 @@ export class EVMOperation
     this.#setStatus(status)
 
     return result
+  }
+
+  async #approveIfRequired(token: Token, amount: Amount) {
+    this.#setStatus(CheckoutOperationStatus.CheckAllowance)
+
+    const isApproveRequired = await this.#swapper.isApproveRequired(
+      token,
+      token.chain.contractAddress,
+      amount,
+    )
+
+    if (!isApproveRequired) return
+
+    this.#setStatus(CheckoutOperationStatus.Approve)
+    await this.#swapper.approve(token, token.chain.contractAddress)
+    this.#setStatus(CheckoutOperationStatus.Approved)
   }
 
   #getChainByID(id: ChainId) {

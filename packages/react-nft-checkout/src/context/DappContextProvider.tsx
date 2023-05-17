@@ -18,7 +18,7 @@ import { useCheckoutOperation, useProvider } from '@/hooks'
 
 export type DappContextType = {
   targetNft?: Target
-  createCheckoutTxBundleCb?: (caller: string) => string
+  createCheckoutTransactionBundleCb?: (caller: string) => string
   isInitialized: boolean
   provider: IProvider | null
   setSelectedProviderProxy: React.Dispatch<
@@ -51,7 +51,7 @@ export type DappContextType = {
 export type DappContextProviderPropsType = {
   children: ReactNode
   targetNft?: Target
-  createCheckoutTxBundleCb?: (caller: string) => string
+  createCheckoutTransactionBundleCb?: (caller: string) => string
   createProviderOpts?: CreateProviderOpts
   createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
@@ -61,14 +61,14 @@ export const DappContext = createContext({} as DappContextType)
 /**
  * @description A container for other components such as RarimoPayButton
  * @param {Target} props.targetNft An object that represents the final NFT transaction
- * @param props.createCheckoutTxBundleCb A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
+ * @param props.createCheckoutTransactionBundleCb A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
  * @param props.createProviderOpts Parameters to pass to the provider; see {@link createProviderOpts}
  * @param props.createCheckoutOperationParams Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
  */
 export const DappContextProvider = ({
   children,
   targetNft,
-  createCheckoutTxBundleCb,
+  createCheckoutTransactionBundleCb,
   createProviderOpts,
   createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
@@ -150,7 +150,7 @@ export const DappContextProvider = ({
       selectedChain,
       setSelectedChain,
       targetNft,
-      createCheckoutTxBundleCb,
+      createCheckoutTransactionBundleCb,
       loadPaymentTokens,
       estimatePrice,
       estimatedPrice,
@@ -168,7 +168,7 @@ export const DappContextProvider = ({
     checkout,
     checkoutOperation,
     checkoutOperationReactiveState,
-    createCheckoutTxBundleCb,
+    createCheckoutTransactionBundleCb,
     createProviderError,
     estimatePrice,
     estimatedPrice,
