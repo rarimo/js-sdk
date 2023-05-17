@@ -104,7 +104,7 @@ export const useProvider = (
   }, [providerProxy, createProviderOpts])
 
   useEffect(() => {
-    provider?.clearHandlers()
+    provider?.clearHandlers?.()
     setListeners()
     setProviderReactiveState(prev => ({
       ...prev,
@@ -115,7 +115,7 @@ export const useProvider = (
       providerType: provider?.providerType,
     }))
     return () => {
-      provider?.clearHandlers()
+      provider?.clearHandlers?.()
     }
   }, [provider, setListeners])
 
