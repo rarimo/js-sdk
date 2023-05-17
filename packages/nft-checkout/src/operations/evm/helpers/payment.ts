@@ -62,6 +62,7 @@ export const getPaymentTokens = async (
       }, []),
       ethereumAddress: provider.address!,
       providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
+      formatBalances: false,
     }),
   )
 
