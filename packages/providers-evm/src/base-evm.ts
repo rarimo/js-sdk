@@ -19,12 +19,11 @@ import {
   connectEthAccounts,
   getEthExplorerAddressUrl,
   getEthExplorerTxUrl,
-  handleEthError,
   hexToDecimal,
   requestAddEthChain,
   requestSwitchEthChain,
+  wrapExternalEthProvider,
 } from '@/helpers'
-import type { EthProviderRpcError } from '@/types'
 
 export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   readonly #provider: providers.Web3Provider
@@ -36,7 +35,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
     if (!provider) throw new errors.ProviderInjectedInstanceNotFoundError()
     super()
     this.#provider = new ethers.providers.Web3Provider(
-      provider as ethers.providers.ExternalProvider,
+      wrapExternalEthProvider(provider as ethers.providers.ExternalProvider),
       'any',
     )
   }
@@ -73,32 +72,20 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   }
 
   async switchChain(chainId: ChainId): Promise<void> {
-    try {
-      await requestSwitchEthChain(this.#provider, chainId)
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
+    await requestSwitchEthChain(this.#provider, chainId)
   }
 
   async addChain(chain: Chain): Promise<void> {
-    try {
-      await requestAddEthChain(
-        this.#provider,
-        Number(chain.id),
-        chain.name,
-        chain.rpcUrl,
-      )
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
+    await requestAddEthChain(
+      this.#provider,
+      Number(chain.id),
+      chain.name,
+      chain.rpcUrl,
+    )
   }
 
   async connect(): Promise<void> {
-    try {
-      await connectEthAccounts(this.#provider)
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
+    await connectEthAccounts(this.#provider)
   }
 
   getAddressUrl(chain: Chain, address: string): string {
@@ -112,17 +99,11 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   async signAndSendTx(
     tx: TransactionRequestBody,
   ): Promise<TransactionResponse> {
-    try {
-      const transactionResponse = await this.#provider
-        .getSigner()
-        .sendTransaction(tx as Deferrable<TransactionRequest>)
+    const transactionResponse = await this.#provider
+      .getSigner()
+      .sendTransaction(tx as Deferrable<TransactionRequest>)
 
-      return transactionResponse.wait()
-    } catch (error) {
-      handleEthError(error as EthProviderRpcError)
-    }
-
-    return ''
+    return transactionResponse.wait()
   }
 
   async #setListeners() {

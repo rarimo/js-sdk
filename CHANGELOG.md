@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.5.0-rc.13] - 2023-05-22
 ### Fixed
 - `@rarimo/react-provider` - Calling clear handlers on non-existent provider
+- `@rarimo/provider` - Extended `RuntimeError` with `orginalError` field
 
 ## [1.5.0-rc.12] - 2023-05-17
 ### Fixed
@@ -210,7 +211,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.12...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.13...HEAD
+[1.5.0-rc.13]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.12...1.5.0-rc.13
 [1.5.0-rc.12]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.11...1.5.0-rc.12
 [1.5.0-rc.11]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.10...1.5.0-rc.11
 [1.5.0-rc.10]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.9...1.5.0-rc.10

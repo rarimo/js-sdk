@@ -1,5 +1,4 @@
-export type EthProviderRpcError = {
-  message: string
+export interface EthProviderRpcError extends Error {
   code: number | string
   data?: unknown
 }
