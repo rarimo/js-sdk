@@ -73,7 +73,7 @@ export class Estimator {
   }
 
   #checkTokens(from?: string, to?: string) {
-    if (toLow(from) === toLow(to)) {
+    if (from && to && toLow(from) === toLow(to)) {
       throw new errors.OperationInvalidSelectedTokenPairError()
     }
   }
