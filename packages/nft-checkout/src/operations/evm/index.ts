@@ -1,4 +1,8 @@
-import { JsonApiClient, JsonApiError } from '@distributedlab/jac'
+import {
+  JsonApiClient,
+  JsonApiError,
+  JsonApiRecordBase,
+} from '@distributedlab/jac'
 import { BN } from '@distributedlab/tools'
 import {
   ChainId,
@@ -49,6 +53,21 @@ export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
 const IS_TOKEN_WRAPPED = false
 
 const DESTINATION_TX_PULL_INTERVAL = 2000
+
+type InternalChain = JsonApiRecordBase<'chain'> & {
+  bridge_contract: string
+  chain_params: string | null
+  chain_type: string
+  name: string
+  token_address: string
+}
+
+type InternalToken = JsonApiRecordBase<'token'> & {
+  name: string
+  symbol: string
+  token_type: string
+  chains: InternalChain[]
+}
 
 /**
  * An operation on an EVM chain.
@@ -188,7 +207,67 @@ export class EVMOperation
       await this.#loadTokens(),
     )
 
+    const withPairs = this.#getPaymentTokensWithPairs(result)
+
     this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
+
+    return withPairs
+  }
+
+  async #getPaymentTokensWithPairs(
+    result: PaymentToken[],
+  ): Promise<PaymentToken[]> {
+    const internalToken = await this.getInternalTokenMapping(
+      this.#target?.swapTargetTokenSymbol ?? '',
+    )
+
+    if (!internalToken) return []
+
+    const chain = internalToken?.chains.find(
+      i => toLow(i.id) === toLow(this.#chainFrom?.name),
+    )
+
+    if (!chain) return []
+
+    const targetTokenSymbol = this.#tokens.find(
+      i => toLow(i.address) === toLow(chain.token_address),
+    )?.symbol
+
+    if (!targetTokenSymbol) return []
+
+    const estimatedPrices = await Promise.allSettled(
+      result.map(i =>
+        new Estimator(this.#provider, this.#tokens, i, {
+          ...this.#target!,
+          swapTargetTokenSymbol: targetTokenSymbol,
+        }).estimate(),
+      ),
+    )
+
+    return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
+      if (i.status === 'fulfilled') {
+        const paymentToken = result.find(
+          t => toLow(t.symbol) === toLow(i.value.from.symbol),
+        )
+        if (paymentToken) acc.push(paymentToken)
+      }
+
+      return acc
+    }, [])
+  }
+
+  async getInternalTokenMapping(
+    targetTokenSymbol: string,
+  ): Promise<InternalToken | undefined> {
+    let result: InternalToken | undefined
+    try {
+      const { data } = await this.#api.get<InternalToken>(
+        `/v1/tokens/${targetTokenSymbol}`,
+      )
+      result = data
+    } catch (e) {
+      console.error(e)
+    }
 
     return result
   }
