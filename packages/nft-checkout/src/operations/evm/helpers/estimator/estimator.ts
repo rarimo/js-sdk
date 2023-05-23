@@ -15,30 +15,31 @@ export class Estimator {
   readonly #tokens: Token[]
   readonly #from: PaymentToken
   readonly #provider: IProvider
+  readonly #targetToken: Token
 
   constructor(
     provider: IProvider,
     tokens: Token[],
     from: PaymentToken,
     target: Target,
+    targetToken: Token,
   ) {
     this.#tokens = tokens
     this.#from = from
     this.#target = target
     this.#provider = provider
+    this.#targetToken = targetToken
   }
 
   async estimate(): Promise<EstimatedPrice> {
-    const targetToken = this.#getTargetToken()
-
-    this.#checkTokens(this.#from.address, targetToken?.address)
+    this.#checkTokens(this.#from.address, this.#targetToken?.address)
 
     if (this.#from.isTraderJoe) {
       return estimateTraderJoe(
         this.#tokens,
         this.#provider,
         this.#from,
-        targetToken!,
+        this.#targetToken!,
         this.#target,
       )
     }
@@ -48,7 +49,7 @@ export class Estimator {
         this.#tokens,
         this.#provider,
         this.#from,
-        targetToken!,
+        this.#targetToken!,
         this.#target,
       )
     }
@@ -58,7 +59,7 @@ export class Estimator {
         this.#tokens,
         this.#provider,
         this.#from,
-        targetToken!,
+        this.#targetToken!,
         this.#target,
       )
     }
@@ -67,7 +68,7 @@ export class Estimator {
       this.#tokens,
       this.#provider,
       this.#from,
-      targetToken!,
+      this.#targetToken!,
       this.#target,
     )
   }
@@ -76,11 +77,5 @@ export class Estimator {
     if (from && to && toLow(from) === toLow(to)) {
       throw new errors.OperationInvalidSelectedTokenPairError()
     }
-  }
-
-  #getTargetToken() {
-    return this.#tokens.find(
-      t => toLow(t.symbol) === toLow(this.#target.swapTargetTokenSymbol),
-    )
   }
 }

@@ -5,6 +5,32 @@ import { EVM_CHAINS } from './chains'
 
 const chapelChain = EVM_CHAINS.find(i => i.name === ChainNames.Chapel)!
 const fujiChain = EVM_CHAINS.find(i => i.name === ChainNames.Fuji)!
+const ethChain = EVM_CHAINS.find(i => i.name === ChainNames.Ethereum)!
+const bscChain = EVM_CHAINS.find(i => i.name === ChainNames.BinanceSmartChain)!
+
+export const ETH_TOKEN_LIST: Token[] = [
+  new Token({
+    chain: ethChain,
+    address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+    name: 'Binance Coin',
+    symbol: 'BNB',
+    decimals: 18,
+    logoURI:
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/bnb-logo.png',
+  }),
+]
+
+export const BINANCE_TOKEN_LIST: Token[] = [
+  new Token({
+    chain: bscChain,
+    address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+    name: 'USD Coin',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI:
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/usdc-logo.png',
+  }),
+]
 
 export const PANCAKE_SWAP_TESTNET_TOKEN_LIST: Token[] = [
   new Token({

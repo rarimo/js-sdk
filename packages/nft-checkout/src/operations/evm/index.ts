@@ -89,6 +89,7 @@ export class EVMOperation
 
   #chainFrom?: BridgeChain
   #target?: Target
+  #targetToken?: Token
 
   #chains: BridgeChain[] = []
   #tokens: Token[] = []
@@ -229,18 +230,23 @@ export class EVMOperation
 
     if (!chain) return []
 
-    const targetTokenSymbol = this.#tokens.find(
+    const targetToken = this.#tokens.find(
       i => toLow(i.address) === toLow(chain.token_address),
-    )?.symbol
+    )
 
-    if (!targetTokenSymbol) return []
+    if (!targetToken) return []
+
+    this.#targetToken = targetToken
 
     const estimatedPrices = await Promise.allSettled(
       result.map(i =>
-        new Estimator(this.#provider, this.#tokens, i, {
-          ...this.#target!,
-          swapTargetTokenSymbol: targetTokenSymbol,
-        }).estimate(),
+        new Estimator(
+          this.#provider,
+          this.#tokens,
+          i,
+          this.#target!,
+          targetToken,
+        ).estimate(),
       ),
     )
 
@@ -281,6 +287,7 @@ export class EVMOperation
       this.#tokens,
       from,
       this.#target!,
+      this.#targetToken!,
     ).estimate()
 
     this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)

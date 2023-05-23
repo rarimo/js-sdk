@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0-rc.16] - 2023-05-23
+### Changed
+- `@rarimo/nft-checkout` - Extend token list for Ethereum, Binance Smart Chain to resolve target token by address got from backend
+
 ## [1.5.0-rc.15] - 2023-05-23
 ### Fixed
 - `@rarimo/nft-checkout` - Checking decimals for non-zero for the payment token
@@ -219,7 +223,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.15...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.16...HEAD
+[1.5.0-rc.16]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.15...1.5.0-rc.16
 [1.5.0-rc.15]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.14...1.5.0-rc.15
 [1.5.0-rc.14]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.13...1.5.0-rc.14
 [1.5.0-rc.13]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.12...1.5.0-rc.13

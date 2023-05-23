@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/react-provider",
-  "version": "1.5.0-rc.15",
+  "version": "1.5.0-rc.16",
   "description": "Tools to connect to wallets in React applications through the Rarimo SDK.",
   "repository": {
     "type": "git",
