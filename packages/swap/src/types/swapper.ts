@@ -1,4 +1,8 @@
-import type { DestinationTransaction, Token } from '@rarimo/bridge'
+import type {
+  DestinationTransaction,
+  InternalToken,
+  Token,
+} from '@rarimo/bridge'
 import type { IProvider, TransactionResponse } from '@rarimo/provider'
 import type {
   Amount,
@@ -73,6 +77,12 @@ export type Swapper = Raw<{
     operator: HexString,
     amount?: Amount,
   ): Promise<TransactionResponse | undefined>
+  /**
+   * Proxy function of {@link Bridger.getInternalTokenMapping}
+   */
+  getInternalTokenMapping(
+    targetTokenSymbol: string,
+  ): Promise<InternalToken | undefined>
 }>
 
 export type ExecuteArgs = {

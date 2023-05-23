@@ -7,15 +7,15 @@ export class RuntimeError extends Error {
   public constructor(errorOrMessage: Error | string)
   public constructor(message: string, error: Error)
   public constructor(errorOrMessage: Error | string, error?: Error) {
-    const isErrorOrMessageIsString = isString(errorOrMessage)
+    const isErrorOrMessageString = isString(errorOrMessage)
 
-    const message = isErrorOrMessageIsString
+    const message = isErrorOrMessageString
       ? errorOrMessage
       : errorOrMessage?.message
 
-    super(message || 'Runtime error occurred')
+    super(message)
 
     this.originalError =
-      error || isErrorOrMessageIsString ? undefined : errorOrMessage
+      error || isErrorOrMessageString ? undefined : errorOrMessage
   }
 }

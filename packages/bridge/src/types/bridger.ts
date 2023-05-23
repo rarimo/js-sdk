@@ -2,7 +2,7 @@ import type { IProvider, TransactionResponse } from '@rarimo/provider'
 import type { BridgeChain, ChainTypes, HexString, Raw } from '@rarimo/shared'
 import type { Amount, Computed, Ref } from '@rarimo/shared'
 
-import type { DestinationTransaction } from '@/types'
+import type { DestinationTransaction, InternalToken } from '@/types'
 import type { Token } from '@/types'
 
 export type Bridger = Raw<{
@@ -62,6 +62,13 @@ export type Bridger = Raw<{
     operator: HexString,
     amount?: Amount,
   ): Promise<TransactionResponse | undefined>
+
+  /**
+   * @returns Rarimo backend token mapping for the provided token symbol
+   */
+  getInternalTokenMapping(
+    targetTokenSymbol: string,
+  ): Promise<InternalToken | undefined>
 }>
 
 export type BridgerCreateFn = (p: IProvider) => Bridger

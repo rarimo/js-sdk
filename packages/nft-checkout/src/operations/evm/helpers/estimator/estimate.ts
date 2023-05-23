@@ -15,11 +15,8 @@ export const estimate = async (
   tokens: Token[],
   from: PaymentToken,
   target: Target,
+  targetToken: Token,
 ): Promise<EstimatedPrice> => {
-  const targetToken = tokens.find(
-    t => lc(t.symbol) === lc(target.swapTargetTokenSymbol),
-  )
-
   if (lc(from.address) === lc(targetToken?.address)) {
     throw new errors.OperationInvalidSelectedTokenPairError()
   }

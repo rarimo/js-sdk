@@ -13,7 +13,7 @@ For example applications, see [rarimo/js-sdk-examples](https://github.com/rarimo
 Here is an example that creates a `MetamaskProvider` object for a MetaMask wallet and prints its address:
 
 ```js
-import { MetamaskProvider } from '@rarimo/provider'
+import { MetamaskProvider } from '@rarimo/providers-evm'
 import { useProvider } from '@rarimo/react-provider'
 
 const { provider, ...rest } = useProvider(MetamaskProvider)

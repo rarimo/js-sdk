@@ -5,6 +5,8 @@ import type { TokenInfo } from '@uniswap/token-lists'
 
 import { DEFAULT_FETCHER_CONFIG } from '@/config'
 import {
+  BINANCE_TOKEN_LIST,
+  ETH_TOKEN_LIST,
   PANCAKE_SWAP_TESTNET_TOKEN_LIST,
   TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
 } from '@/const'
@@ -42,6 +44,7 @@ export const loadTokens = async (
 
   return [
     tokenFromChain(chain),
+    ...appendExternalTokens(chain),
     ...tokens.reduce((acc, token) => {
       if (Number(token.chainId) === Number(chain.id)) {
         acc.push(tokenFromTokenInfo(token, chain))
@@ -50,6 +53,18 @@ export const loadTokens = async (
       return acc
     }, [] as Token[]),
   ]
+}
+
+const appendExternalTokens = (chain: BridgeChain): Token[] => {
+  if (chain.name === ChainNames.Ethereum) {
+    return ETH_TOKEN_LIST
+  }
+
+  if (chain.name === ChainNames.BinanceSmartChain) {
+    return BINANCE_TOKEN_LIST
+  }
+
+  return []
 }
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {

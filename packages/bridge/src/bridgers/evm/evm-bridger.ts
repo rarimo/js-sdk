@@ -19,7 +19,10 @@ import {
   approveIfNeeded as _approveIfNeeded,
   isApproveERC20Required,
 } from './approve-if-needed'
-import { getDestinationTx as fetchDestTx } from './get-destination-tx'
+import {
+  fetchInternalTokenMapping,
+  getDestinationTx as fetchDestTx,
+} from './get-destination-tx'
 
 export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
   const provider = ref(p)
@@ -55,6 +58,10 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     return fetchDestTx(sourceChain, sourceTxHash)
   }
 
+  const getInternalTokenMapping = (targetTokenSymbol: string) => {
+    return fetchInternalTokenMapping(targetTokenSymbol)
+  }
+
   const approveIfNeeded = async (
     token: Token,
     operator: HexString,
@@ -83,6 +90,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     init,
     loadSupportedChains,
     getDestinationTx,
+    getInternalTokenMapping,
     isApproveRequired,
     approve,
     approveIfNeeded,

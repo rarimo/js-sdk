@@ -41,7 +41,7 @@ const createPaymentToken = (
     token.contractAddress,
   )
 
-  if (!internalToken) return
+  if (!internalToken || !token.decimals) return
 
   if (BN.fromBigInt(token.balance, token.decimals).isZero) return
 
@@ -65,6 +65,7 @@ export const getPaymentTokens = async (
       }, []),
       ethereumAddress: provider.address!,
       providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
+      formatBalances: false,
     }),
   )
 

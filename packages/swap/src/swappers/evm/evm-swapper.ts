@@ -54,5 +54,8 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     supportedChains: bridger.value.loadSupportedChains.bind(bridger.value),
     approveIfNeeded: bridger.value.approveIfNeeded.bind(bridger.value),
     approve: bridger.value.approve.bind(bridger.value),
+    getInternalTokenMapping: bridger.value.getInternalTokenMapping.bind(
+      bridger.value,
+    ),
   })
 }

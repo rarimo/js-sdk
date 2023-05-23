@@ -65,6 +65,7 @@ export class EVMOperation
 
   #chainFrom?: BridgeChain
   #target?: Target
+  #targetToken?: Token
 
   #tokens: Token[] = []
   #swapper: Swapper
@@ -177,9 +178,52 @@ export class EVMOperation
       await this.#loadTokens(),
     )
 
+    const withPairs = this.#getPaymentTokensWithPairs(result)
+
     this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
 
-    return result
+    return withPairs
+  }
+
+  async #getPaymentTokensWithPairs(
+    result: PaymentToken[],
+  ): Promise<PaymentToken[]> {
+    const internalToken = await this.#swapper.getInternalTokenMapping(
+      this.#target?.swapTargetTokenSymbol ?? '',
+    )
+
+    if (!internalToken) return []
+
+    const chain = internalToken?.chains.find(
+      i => lc(i.id) === lc(this.#chainFrom?.name),
+    )
+
+    if (!chain) return []
+
+    const targetToken = this.#tokens.find(
+      i => lc(i.address) === lc(chain.token_address),
+    )
+
+    if (!targetToken) return []
+
+    this.#targetToken = targetToken
+
+    const estimatedPrices = await Promise.allSettled(
+      result.map(i =>
+        estimate(this.#provider, this.#tokens, i, this.#target!, targetToken),
+      ),
+    )
+
+    return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
+      if (i.status === 'fulfilled') {
+        const paymentToken = result.find(
+          t => lc(t.symbol) === lc(i.value.from.symbol),
+        )
+        if (paymentToken) acc.push(paymentToken)
+      }
+
+      return acc
+    }, [])
   }
 
   public async estimatePrice(from: PaymentToken) {
@@ -192,6 +236,7 @@ export class EVMOperation
       this.#tokens,
       from,
       this.#target!,
+      this.#targetToken!,
     )
 
     this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)

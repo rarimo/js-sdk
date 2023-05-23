@@ -9,6 +9,7 @@ import { CONFIG } from '@/config'
 import type {
   DestinationTransaction,
   DestinationTransactionResponse,
+  InternalToken,
 } from '@/types'
 
 const DESTINATION_TX_PULL_INTERVAL = 2000
@@ -57,4 +58,20 @@ const fetchDestinationTx = async (
 
     throw e
   }
+}
+
+export const fetchInternalTokenMapping = async (
+  targetTokenSymbol: string,
+): Promise<InternalToken | undefined> => {
+  let result: InternalToken | undefined
+  try {
+    const { data } = await api.get<InternalToken>(
+      `/v1/tokens/${targetTokenSymbol}`,
+    )
+    result = data
+  } catch (e) {
+    console.error(e)
+  }
+
+  return result
 }
