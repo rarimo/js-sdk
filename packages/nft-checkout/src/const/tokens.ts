@@ -23,12 +23,21 @@ export const ETH_TOKEN_LIST: Token[] = [
 export const BINANCE_TOKEN_LIST: Token[] = [
   new Token({
     chain: bscChain,
-    address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+    address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
     name: 'USD Coin',
     symbol: 'USDC',
     decimals: 18,
     logoURI:
       'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/usdc-logo.png',
+  }),
+  new Token({
+    chain: bscChain,
+    address: '0x1CE0c2827e2eF14D5C4f29a091d735A204794041',
+    name: 'Avalanche Coin',
+    symbol: 'AVAX',
+    decimals: 18,
+    logoURI:
+      'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/avax-logo.png',
   }),
 ]
 
