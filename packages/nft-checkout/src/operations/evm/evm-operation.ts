@@ -10,6 +10,7 @@ import {
   BridgeChain,
   ChainId,
   ChainTypes,
+  isString,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   toLowerCase as lc,
   TransactionBundle,
@@ -235,7 +236,7 @@ export class EVMOperation
 
     this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
 
-    return typeof result === 'string'
+    return isString(result)
       ? result
       : (result as providers.TransactionReceipt)?.transactionHash
   }

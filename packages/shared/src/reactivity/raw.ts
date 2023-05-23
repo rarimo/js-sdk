@@ -17,6 +17,7 @@ export const toRaw = <T extends object>(target: T): Raw<T> => {
   >((acc, [k, v]) => {
     let result: PropertyDescriptor = {
       get: () => (isRef(v) || isComputed(v) ? v.value : v),
+      enumerable: true,
     }
 
     if (isFunction(v)) {

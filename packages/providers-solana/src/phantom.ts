@@ -5,6 +5,7 @@ import {
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import { isString } from '@rarimo/shared'
 import {
   Cluster,
   clusterApiUrl,
@@ -54,10 +55,9 @@ export class PhantomProvider
     txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
-      const txBody =
-        typeof txRequestBody === 'string'
-          ? decodeSolanaTx(txRequestBody)
-          : txRequestBody
+      const txBody = isString(txRequestBody)
+        ? decodeSolanaTx(txRequestBody)
+        : txRequestBody
 
       const connection = new Connection(clusterApiUrl(this.chainId as Cluster))
 

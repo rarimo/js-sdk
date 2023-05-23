@@ -48,45 +48,68 @@ export const connectEthAccounts = async (provider: providers.Web3Provider) => {
   await provider.send('eth_requestAccounts', [])
 }
 
-export const handleEthError = (error: EthProviderRpcError): void => {
-  switch (error.code) {
+export const handleEthError = (e: EthProviderRpcError): never => {
+  switch (e.code) {
     case 4001:
-      throw new errors.ProviderUserRejectedRequest()
+      throw new errors.ProviderUserRejectedRequest(e)
     case 4902:
-      throw new errors.ProviderChainNotFoundError()
+      throw new errors.ProviderChainNotFoundError(e)
     case 4100:
-      throw new errors.ProviderUnauthorized()
+      throw new errors.ProviderUnauthorized(e)
     case 4200:
-      throw new errors.ProviderUnsupportedMethod()
+      throw new errors.ProviderUnsupportedMethod(e)
     case 4900:
-      throw new errors.ProviderDisconnected()
+      throw new errors.ProviderDisconnected(e)
     case 4901:
-      throw new errors.ProviderChainDisconnected()
+      throw new errors.ProviderChainDisconnected(e)
     case -32700:
-      throw new errors.ProviderParseError()
+      throw new errors.ProviderParseError(e)
     case -32600:
-      throw new errors.ProviderInvalidRequest()
+      throw new errors.ProviderInvalidRequest(e)
     case -32601:
-      throw new errors.ProviderMethodNotFound()
+      throw new errors.ProviderMethodNotFound(e)
     case -32602:
-      throw new errors.ProviderInvalidParams()
+      throw new errors.ProviderInvalidParams(e)
     case -32603:
-      throw new errors.ProviderInternalError()
+      throw new errors.ProviderInternalError(e)
     case -32000:
-      throw new errors.ProviderInvalidInput()
+      throw new errors.ProviderInvalidInput(e)
     case -32001:
-      throw new errors.ProviderResourceNotFound()
+      throw new errors.ProviderResourceNotFound(e)
     case -32002:
-      throw new errors.ProviderResourceUnavailable()
+      throw new errors.ProviderResourceUnavailable(e)
     case -32003:
-      throw new errors.ProviderTransactionRejected()
+      throw new errors.ProviderTransactionRejected(e)
     case -32004:
-      throw new errors.ProviderMethodNotSupported()
+      throw new errors.ProviderMethodNotSupported(e)
     case -32005:
-      throw new errors.ProviderLimitExceeded()
+      throw new errors.ProviderLimitExceeded(e)
     case -32006:
-      throw new errors.ProviderJsonRpcVersionNotSupported()
+      throw new errors.ProviderJsonRpcVersionNotSupported(e)
     default:
-      throw error
+      throw e
   }
+}
+
+export const wrapExternalEthProvider = (
+  provider: providers.ExternalProvider,
+) => {
+  const _baseRequest = provider.request?.bind(provider)
+
+  provider.request = async (request: {
+    method: string
+    params?: Array<unknown>
+  }) => {
+    let result: unknown
+
+    try {
+      result = await _baseRequest?.(request)
+    } catch (error) {
+      handleEthError(error as EthProviderRpcError)
+    }
+
+    return result
+  }
+
+  return provider
 }

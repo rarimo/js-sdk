@@ -5,6 +5,7 @@ import {
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import { isString } from '@rarimo/shared'
 import {
   Cluster,
   clusterApiUrl,
@@ -54,10 +55,9 @@ export class SolflareProvider
     txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
-      const txBody =
-        typeof txRequestBody === 'string'
-          ? decodeSolanaTx(txRequestBody)
-          : txRequestBody
+      const txBody = isString(txRequestBody)
+        ? decodeSolanaTx(txRequestBody)
+        : txRequestBody
 
       const signedTx = await this.provider.signTransaction(
         txBody as SolTransaction,
