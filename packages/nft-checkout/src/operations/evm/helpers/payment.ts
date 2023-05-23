@@ -38,7 +38,7 @@ const createPaymentToken = (
     token.contractAddress,
   )
 
-  if (!internalToken) return
+  if (!internalToken || !token.decimals) return
 
   if (BN.fromBigInt(token.balance, token.decimals).isZero) return
 
