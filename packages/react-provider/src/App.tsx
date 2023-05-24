@@ -8,7 +8,7 @@ function App() {
   // eslint-disable-next-line no-console
   console.log({ provider, ...rest })
 
-  return <div className="App">React Provider</div>
+  return <div className="App">Wallet address: {provider?.address}</div>
 }
 
 export default App

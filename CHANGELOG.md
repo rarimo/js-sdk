@@ -21,6 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `all` - Node resolution in the `package.json` files
 
+## [1.5.0-rc.18] - 2023-05-24
+### Changed
+- `@rarimo/nft-checkout` - Use multi hop routes for the swap price estimating on BSC instead of direct routes
+
+## [1.5.0-rc.17] - 2023-05-23
+### Fixed
+- `@rarimo/nft-checkout` - Extended USDC token address for the Binance Smart Chain
+
 ## [1.5.0-rc.16] - 2023-05-23
 ### Changed
 - `@rarimo/nft-checkout` - Extend token list for Ethereum, Binance Smart Chain to resolve target token by address got from backend
@@ -239,7 +247,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.16...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.18...HEAD
+[1.5.0-rc.18]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.17...1.5.0-rc.18
+[1.5.0-rc.17]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.16...1.5.0-rc.17
 [1.5.0-rc.16]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.15...1.5.0-rc.16
 [1.5.0-rc.15]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.14...1.5.0-rc.15
 [1.5.0-rc.14]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.13...1.5.0-rc.14

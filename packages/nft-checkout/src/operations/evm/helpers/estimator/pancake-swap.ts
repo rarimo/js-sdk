@@ -1,17 +1,12 @@
 import type { Provider as EtherProvider } from '@ethersproject/providers'
-import {
-  Percent,
-  Route,
-  Token as PCToken,
-  Trade,
-  TradeType,
-} from '@pancakeswap/sdk'
+import { Percent, Token as PCToken, Trade } from '@pancakeswap/sdk'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 
 import { Price } from '@/entities'
+import { errors } from '@/errors'
 import type { Target } from '@/types'
 
 import { handleNativeTokens } from './check-native-token'
@@ -64,19 +59,12 @@ export const estimatePancakeSwap = async (
     provider: () => provider?.getWeb3Provider?.() as EtherProvider,
   })
 
-  const route = new Route(
-    pairs.filter(
-      p =>
-        (p.token0.address === tokenA.address ||
-          p.token1.address === tokenA.address) &&
-        (p.token0.address === tokenB.address ||
-          p.token1.address === tokenB.address),
-    ),
-    tokenA,
-    tokenB,
-  )
+  const [trade] = Trade.bestTradeExactOut(pairs, tokenA, amount, {
+    maxNumResults: 1,
+    maxHops: 3,
+  })
 
-  const trade = new Trade(route, amount, TradeType.EXACT_OUTPUT)
+  if (!trade) throw new errors.OperationSwapRouteNotFound()
 
   const maximumAmountInRaw = trade
     .maximumAmountIn(getSlippage(target.slippage))
