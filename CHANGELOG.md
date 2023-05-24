@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Added
+- `@rarimo/provider-evm` - EthersProvider which takes as its argument Web3 provider
+
 ## [1.5.0-rc.16] - 2023-05-23
 ### Changed
 - `@rarimo/nft-checkout` - Extend token list for Ethereum, Binance Smart Chain to resolve target token by address got from backend

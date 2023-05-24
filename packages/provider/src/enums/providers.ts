@@ -6,6 +6,7 @@ export enum Providers {
   Coinbase = 'coinbase',
   Solflare = 'solflare',
   Near = 'near',
+  Ethers = 'ethers',
 }
 
 export enum ProviderChecks {

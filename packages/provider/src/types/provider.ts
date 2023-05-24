@@ -8,10 +8,7 @@ import type { ProviderSubscriber } from './provider-event-bus'
 import type { SolanaProvider } from './solana'
 import type { TransactionRequestBody, TransactionResponse } from './tx'
 
-export type RawProvider =
-  | EthereumProvider
-  | SolanaProvider
-  | providers.Web3Provider
+export type RawProvider = EthereumProvider | SolanaProvider
 
 export type ProviderInstance = {
   name: Providers
