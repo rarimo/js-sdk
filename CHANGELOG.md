@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- `@rarimo/provider-evm` - EthersProvider which takes as its argument Web3 provider
+- `@rarimo/provider-evm` - EthersProvider class is specifically designed to handle ethers.provider.Web3Provider instead of injected provider
 
 ## [1.5.0-rc.16] - 2023-05-23
 ### Changed
