@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0-rc.18] - 2023-05-24
+### Changed
+- `@rarimo/nft-checkout` - Use multi hop routes for the swap price estimating on BSC instead of direct routes
+
 ## [1.5.0-rc.17] - 2023-05-23
 ### Fixed
 - `@rarimo/nft-checkout` - Extended USDC token address for the Binance Smart Chain
@@ -227,7 +231,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.17...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.18...HEAD
+[1.5.0-rc.18]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.17...1.5.0-rc.18
 [1.5.0-rc.17]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.16...1.5.0-rc.17
 [1.5.0-rc.16]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.15...1.5.0-rc.16
 [1.5.0-rc.15]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.14...1.5.0-rc.15
