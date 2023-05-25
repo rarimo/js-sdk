@@ -2384,7 +2384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pancakeswap/sdk@npm:^3.1.4":
+"@pancakeswap/sdk@npm:3.1.4":
   version: 3.1.4
   resolution: "@pancakeswap/sdk@npm:3.1.4"
   dependencies:
@@ -2405,7 +2405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pancakeswap/smart-router@npm:^0.6.1":
+"@pancakeswap/smart-router@npm:0.6.1":
   version: 0.6.1
   resolution: "@pancakeswap/smart-router@npm:0.6.1"
   dependencies:
@@ -2420,7 +2420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pancakeswap/swap-sdk-core@npm:*, @pancakeswap/swap-sdk-core@npm:^0.0.1":
+"@pancakeswap/swap-sdk-core@npm:0.0.1":
   version: 0.0.1
   resolution: "@pancakeswap/swap-sdk-core@npm:0.0.1"
   dependencies:
@@ -2538,9 +2538,9 @@ __metadata:
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
-    "@pancakeswap/sdk": ^3.1.4
-    "@pancakeswap/smart-router": ^0.6.1
-    "@pancakeswap/swap-sdk-core": ^0.0.1
+    "@pancakeswap/sdk": 3.1.4
+    "@pancakeswap/smart-router": 0.6.1
+    "@pancakeswap/swap-sdk-core": 0.0.1
     "@rarimo/provider": "workspace:^"
     "@rarimo/quickswap-sdk": ^3.0.8
     "@swc/cli": ^0.1.62
