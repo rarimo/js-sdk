@@ -75,5 +75,10 @@
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
     "tsc-alias": "^1.8.2"
+  },
+  "overrides": {
+    "@pancakeswap/sdk": {
+      "@pancakeswap/swap-sdk-core": "$@pancakeswap/swap-sdk-core"
+    }
   }
 }
