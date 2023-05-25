@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0-rc.23] - 2023-05-25
+### Changed
+- `@rarimo/nft-checkout` - Replace `resolutions` `@pancakeswap/swap-sdk-core` to `overrides`
+
 ## [1.5.0-rc.22] - 2023-05-25
 ### Fixed
 - `@rarimo/nft-checkout` - `@pancakeswap/swap-sdk-core` version resolution
@@ -249,7 +253,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.22...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.23...HEAD
+[1.5.0-rc.23]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.22...1.5.0-rc.23
 [1.5.0-rc.22]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.21...1.5.0-rc.22
 [1.5.0-rc.21]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.20...1.5.0-rc.21
 [1.5.0-rc.20]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.19...1.5.0-rc.20

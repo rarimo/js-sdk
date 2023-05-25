@@ -43,8 +43,9 @@ Here are the packages in the namespace:
 | [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)         | React `@rarimo/provider` adapter                                                                                                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)         |
 | [@rarimo/react-nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html) | React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol                                          | [![npm version](https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/react-nft-checkout) |
 
-## Webpack Configs
+## Known issues
 
+### React
 To use such packages as `@rarimo/provider` and `@rarimo/nft-checkout` in React project, created with [create-react-app](https://create-react-app.dev/) you need to add [craco](https://craco.js.org/) package and config to resolve the ESM version:
 
 ```shell
@@ -85,6 +86,43 @@ Then change the `start`/`build`/`test` commands in `package.json` replacing reac
   }
 }
 ```
+
+### Next.js
+
+To use such packages as `@rarimo/provider` and `@rarimo/nft-checkout` in Next.js projects version `10.0.5` or any upper version which uses webpack 4 you need to add the following config to `next.config.js`:
+
+```js
+const path = require('path');
+
+module.exports = {
+  webpack: (config, { isServer }) => {
+    config.module.rules.push({
+      test: /\.m?js$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+      resolve: {
+        alias: {
+          '@pancakeswap/multicall': path.resolve(__dirname, './node_modules/@pancakeswap/multicall/dist/index.mjs'),
+        }
+      },
+    });
+
+    return config;
+  },
+};
+```
+
+### Package managers
+To use `@rarimo/nft-checkout` in project which uses `yarn` as package manager you need to add the following config to `package.json`:
+
+```json
+{
+  "resolutions": {
+    "@rarimo/nft-checkout/@pancakeswap/sdk/@pancakeswap/swap-sdk-core": "0.0.1"
+  }
+}
+```
+
 
 ## Development
 
