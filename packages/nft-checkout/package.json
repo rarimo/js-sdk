@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/nft-checkout",
-  "version": "1.5.0-rc.21",
+  "version": "1.5.0-rc.22",
   "description": "Tools to create cross-train transactions with the Rarimo Protocol",
   "repository": {
     "type": "git",
@@ -75,5 +75,8 @@
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
     "tsc-alias": "^1.8.2"
+  },
+  "resolutions": {
+    "@pancakeswap/sdk/@pancakeswap/swap-sdk-core": "0.0.1"
   }
 }
