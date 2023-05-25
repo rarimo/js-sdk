@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/providers-near",
-  "version": "1.5.0-rc.23",
+  "version": "1.5.0-rc.24",
   "description": "Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the NEAR blockchain.",
   "repository": {
     "type": "git",
