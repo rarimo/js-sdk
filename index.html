@@ -96,8 +96,12 @@ Here are the packages in the namespace:</p>
 </tr>
 </tbody></table>
 
-<a href="#webpack-configs" id="webpack-configs" style="color: inherit; text-decoration: none;">
-  <h2>Webpack Configs</h2>
+<a href="#known-issues" id="known-issues" style="color: inherit; text-decoration: none;">
+  <h2>Known issues</h2>
+</a>
+
+<a href="#react" id="react" style="color: inherit; text-decoration: none;">
+  <h3>React</h3>
 </a>
 <p>To use such packages as <code>@rarimo/provider</code> and <code>@rarimo/nft-checkout</code> in React project, created with <a href="https://create-react-app.dev/">create-react-app</a> you need to add <a href="https://craco.js.org/">craco</a> package and config to resolve the ESM version:</p>
 <pre><code class="language-shell"><span class="hl-0">yarn </span><span class="hl-1">add</span><span class="hl-0"> </span><span class="hl-1">-D</span><span class="hl-0"> </span><span class="hl-1">@craco/craco</span>
@@ -108,6 +112,20 @@ Here are the packages in the namespace:</p>
 <p>This config disables the breaking change that causes <a href="https://stackoverflow.com/questions/70964723/webpack-5-in-ceate-react-app-cant-resolve-not-fully-specified-routes">this error</a>.</p>
 <p>Then change the <code>start</code>/<code>build</code>/<code>test</code> commands in <code>package.json</code> replacing react-scripts to <code>craco</code>:</p>
 <pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;scripts&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;start&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;craco start&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;build&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;craco build&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;test&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;craco test&quot;</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#nextjs" id="nextjs" style="color: inherit; text-decoration: none;">
+  <h3>Next.js</h3>
+</a>
+<p>To use such packages as <code>@rarimo/provider</code> and <code>@rarimo/nft-checkout</code> in Next.js projects version <code>10.0.5</code> or any upper version which uses webpack 4 you need to add the following config to <code>next.config.js</code>:</p>
+<pre><code class="language-js"><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-10">path</span><span class="hl-0"> = </span><span class="hl-11">require</span><span class="hl-0">(</span><span class="hl-1">&#39;path&#39;</span><span class="hl-0">);</span><br/><br/><span class="hl-2">module</span><span class="hl-0">.</span><span class="hl-2">exports</span><span class="hl-0"> = {</span><br/><span class="hl-0">  </span><span class="hl-11">webpack</span><span class="hl-3">:</span><span class="hl-0"> (</span><span class="hl-3">config</span><span class="hl-0">, { </span><span class="hl-3">isServer</span><span class="hl-0"> }) </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-3">config</span><span class="hl-0">.</span><span class="hl-3">module</span><span class="hl-0">.</span><span class="hl-3">rules</span><span class="hl-0">.</span><span class="hl-11">push</span><span class="hl-0">({</span><br/><span class="hl-0">      </span><span class="hl-3">test:</span><span class="hl-4"> /</span><span class="hl-5">\.</span><span class="hl-4">m</span><span class="hl-6">?</span><span class="hl-4">js</span><span class="hl-7">$</span><span class="hl-4">/</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">include:</span><span class="hl-4"> /node_modules/</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">type:</span><span class="hl-0"> </span><span class="hl-1">&#39;javascript/auto&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">resolve:</span><span class="hl-0"> {</span><br/><span class="hl-0">        </span><span class="hl-3">alias:</span><span class="hl-0"> {</span><br/><span class="hl-0">          </span><span class="hl-1">&#39;@pancakeswap/multicall&#39;</span><span class="hl-3">:</span><span class="hl-0"> </span><span class="hl-3">path</span><span class="hl-0">.</span><span class="hl-11">resolve</span><span class="hl-0">(</span><span class="hl-3">__dirname</span><span class="hl-0">, </span><span class="hl-1">&#39;./node_modules/@pancakeswap/multicall/dist/index.mjs&#39;</span><span class="hl-0">),</span><br/><span class="hl-0">        }</span><br/><span class="hl-0">      },</span><br/><span class="hl-0">    });</span><br/><br/><span class="hl-0">    </span><span class="hl-12">return</span><span class="hl-0"> </span><span class="hl-3">config</span><span class="hl-0">;</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">};</span>
+</code></pre>
+
+<a href="#package-managers" id="package-managers" style="color: inherit; text-decoration: none;">
+  <h3>Package managers</h3>
+</a>
+<p>To use <code>@rarimo/nft-checkout</code> in project which uses <code>yarn</code> as package manager you need to add the following config to <code>package.json</code>:</p>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;resolutions&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;@rarimo/nft-checkout/@pancakeswap/sdk/@pancakeswap/swap-sdk-core&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;0.0.1&quot;</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span>
 </code></pre>
 
 <a href="#development" id="development" style="color: inherit; text-decoration: none;">
@@ -166,7 +184,7 @@ Here are the packages in the namespace:</p>
 </code></pre>
 </li>
 <li><p>Add this to the <code>.yarnrc.yml</code> file:</p>
-<pre><code class="language-yaml"><span class="hl-10">nodeLinker</span><span class="hl-0">: </span><span class="hl-11">node-modules</span>
+<pre><code class="language-yaml"><span class="hl-13">nodeLinker</span><span class="hl-0">: </span><span class="hl-14">node-modules</span>
 </code></pre>
 </li>
 <li><p>Link the packages to the project:</p>
