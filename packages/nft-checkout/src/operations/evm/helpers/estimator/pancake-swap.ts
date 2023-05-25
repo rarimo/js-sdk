@@ -1,6 +1,6 @@
 import type { Provider as EtherProvider } from '@ethersproject/providers'
 import { Percent, Token as PCToken, Trade } from '@pancakeswap/sdk'
-import { LegacyRouter } from '@pancakeswap/smart-router/evm'
+import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import type { IProvider } from '@rarimo/provider'
 
@@ -54,7 +54,7 @@ export const estimatePancakeSwap = async (
     getSwapAmount(target.price),
   )
 
-  const pairs = await LegacyRouter.getAllCommonPairs(tokenA, tokenB, {
+  const pairs = await getAllCommonPairs(tokenA, tokenB, {
     provider: () => provider?.getWeb3Provider?.() as EtherProvider,
   })
 
