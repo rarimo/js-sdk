@@ -4,8 +4,20 @@
   "description": "Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Solana blockchain.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/providers-solana"
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/providers-solana"
   },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "typesVersions": {

@@ -4,8 +4,20 @@
   "description": "Tools to create cross-train transactions with the Rarimo Protocol",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/nft-checkout"
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/nft-checkout"
   },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "typesVersions": {

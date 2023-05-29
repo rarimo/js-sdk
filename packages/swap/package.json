@@ -1,11 +1,23 @@
 {
   "name": "@rarimo/swap",
-  "version": "1.5.0-rc.8",
+  "version": "1.5.0-rc.25",
   "description": "Rarimo swap package",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/swap"
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/swap"
   },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "typesVersions": {
