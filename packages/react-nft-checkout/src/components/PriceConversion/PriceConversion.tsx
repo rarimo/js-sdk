@@ -18,7 +18,7 @@ type Props = {
  * - `estimatedPrice`: An {@link @rarimo/nft-checkout!EstimatedPrice} object with information about the transaction price
  */
 const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
-  const { targetNft } = useDappContext()
+  const { params } = useDappContext()
 
   return (
     <>
@@ -26,7 +26,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
         <LoadingIndicator text="Fetching best price" />
       ) : (
         estimatedPrice &&
-        targetNft && (
+        params && (
           <Card
             sx={{
               display: 'flex',
@@ -47,7 +47,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
               >
                 <Typography variant="subtitle1">Price conversion</Typography>
                 <Typography variant="subtitle1">
-                  {`${targetNft.price} ${estimatedPrice.to?.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
+                  {`${params.price} ${estimatedPrice.to?.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
                 </Typography>
               </Box>
             </Box>

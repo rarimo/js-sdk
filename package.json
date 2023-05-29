@@ -29,12 +29,8 @@
     "build:providers-evm": "yarn workspace @rarimo/providers-evm build",
     "build:providers-solana": "yarn workspace @rarimo/providers-solana build",
     "build:providers-near": "yarn workspace @rarimo/providers-near build",
-    "build:shared": "yarn workspace @rarimo/shared build",
-    "build:bridge": "yarn workspace @rarimo/bridge build",
-    "build:swap": "yarn workspace @rarimo/swap build",
     "docs": "typedoc --options typedoc.json",
-    "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn lint:types",
-    "lint:types": "yarn workspaces foreach -pv --no-private run typecheck",
+    "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn workspaces foreach -pv --no-private run typecheck",
     "publish-next": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish --tag next",
     "publish-latest": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish",
     "rsc": "node scripts/release-sanity-check.js",
@@ -68,5 +64,8 @@
   },
   "peerDependencies": {
     "@types/react": "^18"
+  },
+  "resolutions": {
+    "@pancakeswap/sdk/@pancakeswap/swap-sdk-core": "0.0.1"
   }
 }

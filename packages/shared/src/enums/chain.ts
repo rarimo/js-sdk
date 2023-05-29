@@ -7,7 +7,7 @@ export enum ChainNames {
   Mumbai = 'Mumbai',
   Fuji = 'fuji',
   BinanceSmartChain = 'BSC',
-  Chapel = 'Binance Smart Chain Testnet',
+  Chapel = 'bsc_testnet',
 
   // Not supported yet for nft-checkout
   NearMainNet = 'Near MainNet',

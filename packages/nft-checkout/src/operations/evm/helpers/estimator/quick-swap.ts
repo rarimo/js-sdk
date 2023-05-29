@@ -10,11 +10,15 @@ import {
 } from '@rarimo/quickswap-sdk'
 
 import { Price } from '@/entities'
-import type { EstimatedPrice, Target } from '@/types'
+import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import { handleNativeTokens } from './check-native-token'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import {
+  createWrapEstimate,
+  getSwapAmount,
+  handleNativeTokens,
+  isWrapOnly,
+  validateSlippage,
+} from './helpers'
 
 const QUICK_SWAP_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -33,9 +37,13 @@ export const estimateQuickSwap = async (
   provider: IProvider,
   _from: Token,
   _to: Token,
-  target: Target,
+  params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
+
+  if (isWrapOnly(_from, from, to)) {
+    return createWrapEstimate(_from, from, params)
+  }
 
   const tokenA = new QSToken(
     Number(from.chain.id),
@@ -53,7 +61,7 @@ export const estimateQuickSwap = async (
     to.name,
   )
 
-  const amount = new TokenAmount(tokenB, getSwapAmount(target.price))
+  const amount = new TokenAmount(tokenB, getSwapAmount(params).value)
 
   const pair = await Fetcher.fetchPairData(
     tokenA,
@@ -70,7 +78,7 @@ export const estimateQuickSwap = async (
     from: _from,
     to: _to,
     price: Price.fromBigInt(
-      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
+      trade.maximumAmountIn(getSlippage(params.slippage)).numerator.toString(),
       _from.decimals,
       _from.symbol,
     ),

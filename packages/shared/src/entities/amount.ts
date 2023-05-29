@@ -9,15 +9,39 @@ export class AmountBase {
     this.#bn = value
   }
 
-  get value(): string {
+  public get value(): string {
     return this.#bn.value
   }
 
-  get decimals(): Decimals {
+  public get decimals(): Decimals {
     return this.#bn.decimals
   }
 
-  toString(): string {
+  public isLessThan(amount: AmountBase): boolean {
+    return BN.fromBigInt(this.value, this.decimals).isLessThan(
+      BN.fromBigInt(amount.value, amount.decimals),
+    )
+  }
+
+  public isLessThanOrEqualTo(amount: AmountBase): boolean {
+    return BN.fromBigInt(this.value, this.decimals).isLessThanOrEqualTo(
+      BN.fromBigInt(amount.value, amount.decimals),
+    )
+  }
+
+  public isGreaterThan(amount: AmountBase): boolean {
+    return BN.fromBigInt(this.value, this.decimals).isGreaterThan(
+      BN.fromBigInt(amount.value, amount.decimals),
+    )
+  }
+
+  public isGreaterThanOrEqualTo(amount: AmountBase): boolean {
+    return BN.fromBigInt(this.value, this.decimals).isGreaterThanOrEqualTo(
+      BN.fromBigInt(amount.value, amount.decimals),
+    )
+  }
+
+  public toString(): string {
     return this.#bn.toString()
   }
 }
@@ -27,11 +51,11 @@ export class Amount extends AmountBase {
     super(value)
   }
 
-  static fromBigInt(value: string, decimals: Decimals): Amount {
+  public static fromBigInt(value: string, decimals: Decimals): Amount {
     return new Amount(BN.fromBigInt(value, decimals))
   }
 
-  static fromRaw(value: string, decimals: Decimals): Amount {
+  public static fromRaw(value: string, decimals: Decimals): Amount {
     return new Amount(BN.fromRaw(value, decimals))
   }
 }

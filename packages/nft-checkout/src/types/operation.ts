@@ -1,11 +1,10 @@
-import type { DestinationTransaction, Token } from '@rarimo/bridge'
+import type { DestinationTransaction } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type {
   Address,
   BridgeChain,
   Chain,
   ChainId,
-  TokenSymbol,
   TransactionBundle,
 } from '@rarimo/shared'
 
@@ -21,8 +20,6 @@ export enum CheckoutOperationStatus {
   SupportedChainsLoading,
   SupportedChainsLoaded,
   Initialized,
-  SupportedTokensLoading,
-  SupportedTokensLoaded,
   PaymentTokensLoading,
   PaymentTokensLoaded,
   EstimatedPriceCalculating,
@@ -38,21 +35,19 @@ export enum CheckoutOperationStatus {
   DestinationTxFailed,
 }
 
-export type Target = {
-  chainId: ChainId
+export type CheckoutOperationParams = {
+  chainIdTo: ChainId
+  chainIdFrom: ChainId
   price: Price
-  swapTargetTokenSymbol: TokenSymbol // WETH, USDT, etc
   recipient?: Address
   slippage?: number // 0.5, 1, 5, 10 etc
 }
 
-export interface INFTCheckoutOperationConstructor {
-  new (config: Config, provider: IProvider): INFTCheckoutOperation
+export interface CheckoutOperationConstructor {
+  new (config: Config, provider: IProvider): CheckoutOperation
 }
 
-export type OperationCreateParams = { chainIdFrom: ChainId; target: Target }
-
-export interface INFTCheckoutOperation extends OperationSubscriber {
+export interface CheckoutOperation extends OperationSubscriber {
   chainFrom: Chain | undefined
   provider: IProvider
   isInitialized: boolean
@@ -62,14 +57,13 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
    * Initialize the operation with the source chain and transaction parameters
    * @param args Information about the source chain and the target transaction of the operation
    */
-  init(args: OperationCreateParams): Promise<void>
+  init(args: CheckoutOperationParams): Promise<void>
   /**
    * Get the chains that are supported for the operation type
    *
    * @returns A list of supported chains and information about them
    */
   supportedChains(): Promise<BridgeChain[]>
-  supportedTokens(chain?: BridgeChain): Promise<Token[]>
   /**
    * Load the wallet's balance of payment tokens on the specified chain.
    *
@@ -92,6 +86,11 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
    * @returns The hash of the transaction
    */
   checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>
+  /**
+   * Get the destination chain transaction hash as the result of the bridging
+   *
+   * @returns Destination transaction hash and transaction status
+   */
   getDestinationTx(
     sourceChain: BridgeChain,
     sourceTxHash: string,

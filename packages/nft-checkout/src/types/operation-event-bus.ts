@@ -2,13 +2,13 @@ import type { BridgeChain } from '@rarimo/shared'
 
 import { OperationEventBusEvents } from '@/enums'
 
-import type { Target } from './operation'
+import type { CheckoutOperationParams } from './operation'
 import type { CheckoutOperationStatus } from './operation'
 
 export type OperationEventPayload = {
   isInitiated: boolean
   chainFrom?: BridgeChain
-  target?: Target
+  params?: CheckoutOperationParams
   status: CheckoutOperationStatus
 }
 

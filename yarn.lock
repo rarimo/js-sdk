@@ -2409,7 +2409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pancakeswap/swap-sdk-core@npm:*, @pancakeswap/swap-sdk-core@npm:^0.0.1":
+"@pancakeswap/swap-sdk-core@npm:0.0.1, @pancakeswap/swap-sdk-core@npm:^0.0.1":
   version: 0.0.1
   resolution: "@pancakeswap/swap-sdk-core@npm:0.0.1"
   dependencies:

@@ -1,7 +1,6 @@
 import type { Token } from '@rarimo/bridge'
 import {
   Amount,
-  BridgeChain,
   BUNDLE_SALT_BYTES,
   isUndefined,
   MASTER_ROUTER_ABI,
@@ -44,6 +43,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
   // from the swap contract after wrap\unwrap. During swapping tokens swap contract
   // will be receiver by default
   const rcvr = isBridgingRequired ? THIS_ADDRESS : receiver
+
   const isWrapRequired =
     from.isNative && lc(wrapped[Number(from.chain.id)]) === lc(to.symbol)
 
@@ -78,27 +78,16 @@ export const getExecuteData = (args: ExecuteArgs): string => {
     data.push(...getSwapData(from, to, amountIn, amountOut, args.path))
   }
 
-  if (!args.chainTo || isUndefined(args.isWrapped)) {
-    throw new TypeError('chainTo, isWrapped args are required for bridging')
-  }
-
   // If token was wrapped\unwrapped thus amount for bridging equals to amountIn
   // and amountOut could be undefined otherwise if token was swapped we need
   // to take amountOut as amount for bridging\transferring
   const amount = isWrappedOrUnwrapped ? amountIn : amountOut!
 
-  if (isBridgingRequired) {
-    data.push(
-      getBridgeData(
-        to,
-        receiver,
-        amount,
-        args.chainTo,
-        args.isWrapped,
-        args.bundle,
-      ),
-    )
-  }
+  data.push(...getBridgeData(isBridgingRequired, args, to, receiver, amount))
+
+  // if bridging is not required and bundle is provided, thus we need to execute
+  // bundle on the same chain
+  data.push(...getSameChainBundleData(isBridgingRequired, args.bundle))
 
   // if token wasn't bridged thus transfer to the receiver is required
   // otherwise we will transfer change after swap operation which should be 0
@@ -158,26 +147,33 @@ const getSwapData = (
 }
 
 const getBridgeData = (
+  isBridgingRequired: boolean,
+  args: ExecuteArgs,
   to: Token,
   receiver: string,
   amountOut: Amount,
-  chainTo: BridgeChain,
-  isWrapped: boolean,
-  bundle?: TransactionBundle,
-): CommandPayload => {
+): CommandPayload[] => {
+  if (!isBridgingRequired) return []
+
+  if (!args.chainTo || isUndefined(args.isWrapped)) {
+    throw new TypeError('chainTo, isWrapped args are required for bridging')
+  }
+
   const bundleTuple = [
-    bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
-    bundle?.bundle ?? '',
+    args.bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
+    args.bundle?.bundle ?? '',
   ]
 
-  return cmd(to.isNative ? cmds.BridgeNative : cmds.BridgeErc20, [
-    ...(to.isNative ? [] : [to.address]),
-    amountOut.value,
-    bundleTuple,
-    chainTo.name,
-    receiver ?? CALLER_ADDRESS,
-    ...(to.isNative ? [] : [isWrapped]),
-  ])
+  return [
+    cmd(to.isNative ? cmds.BridgeNative : cmds.BridgeErc20, [
+      ...(to.isNative ? [] : [to.address]),
+      amountOut.value,
+      bundleTuple,
+      args.chainTo.name,
+      receiver ?? CALLER_ADDRESS,
+      ...(to.isNative ? [] : [args.isWrapped]),
+    ]),
+  ]
 }
 
 const getTransferData = (
@@ -197,5 +193,21 @@ const getTransferData = (
       ? []
       : [cmd(command, [...token, receiver, amount.value])]),
     cmd(command, [...token, CALLER_ADDRESS, CONTRACT_BALANCE]),
+  ]
+}
+
+const getSameChainBundleData = (
+  isBridgingRequired: boolean,
+  { bundle } = {} as TransactionBundle,
+): CommandPayload[] => {
+  if (isBridgingRequired || !bundle) return []
+
+  // to execute transaction bundle on the same chain we need to use multicall
+  return [
+    {
+      command: cmds.Multicall,
+      skipRevert: false,
+      data: bundle,
+    },
   ]
 }

@@ -1,9 +1,13 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import { toLowerCase as lc } from '@rarimo/shared'
 
+// import { toLowerCase as lc } from '@rarimo/shared'
 import { errors } from '@/errors'
-import type { EstimatedPrice, PaymentToken, Target } from '@/types'
+import type {
+  CheckoutOperationParams,
+  EstimatedPrice,
+  PaymentToken,
+} from '@/types'
 
 import { estimateTraderJoe } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'
@@ -14,32 +18,32 @@ export const estimate = async (
   provider: IProvider,
   tokens: Token[],
   from: PaymentToken,
-  target: Target,
+  params: CheckoutOperationParams,
   targetToken: Token,
 ): Promise<EstimatedPrice> => {
-  if (lc(from.address) === lc(targetToken?.address)) {
+  if (!from || !targetToken) {
     throw new errors.OperationInvalidSelectedTokenPairError()
   }
 
-  const params: [Token[], IProvider, Token, Token, Target] = [
+  const opts: [Token[], IProvider, Token, Token, CheckoutOperationParams] = [
     tokens,
     provider,
     from,
     targetToken!,
-    target,
+    params,
   ]
 
   if (from.isTraderJoe) {
-    return estimateTraderJoe(...params)
+    return estimateTraderJoe(...opts)
   }
 
   if (from.isPancakeSwap) {
-    return estimatePancakeSwap(...params)
+    return estimatePancakeSwap(...opts)
   }
 
   if (from.isQuickSwap) {
-    return estimateQuickSwap(...params)
+    return estimateQuickSwap(...opts)
   }
 
-  return estimateUniswapV3(...params)
+  return estimateUniswapV3(...opts)
 }

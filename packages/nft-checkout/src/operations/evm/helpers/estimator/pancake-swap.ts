@@ -7,11 +7,15 @@ import type { IProvider } from '@rarimo/provider'
 
 import { Price } from '@/entities'
 import { errors } from '@/errors'
-import type { Target } from '@/types'
+import type { CheckoutOperationParams } from '@/types'
 
-import { handleNativeTokens } from './check-native-token'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import {
+  createWrapEstimate,
+  getSwapAmount,
+  handleNativeTokens,
+  isWrapOnly,
+  validateSlippage,
+} from './helpers'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -30,9 +34,13 @@ export const estimatePancakeSwap = async (
   provider: IProvider,
   _from: Token,
   _to: Token,
-  target: Target,
+  params: CheckoutOperationParams,
 ) => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
+
+  if (isWrapOnly(_from, from, to)) {
+    return createWrapEstimate(_from, from, params)
+  }
 
   const tokenA = new PCToken(
     Number(from.chain.id),
@@ -52,7 +60,7 @@ export const estimatePancakeSwap = async (
 
   const amount = CurrencyAmount.fromRawAmount(
     tokenB,
-    getSwapAmount(target.price),
+    getSwapAmount(params).value,
   )
 
   const pairs = await getAllCommonPairs(tokenA, tokenB, {
@@ -67,7 +75,7 @@ export const estimatePancakeSwap = async (
   if (!trade) throw new errors.OperationSwapRouteNotFound()
 
   const maximumAmountInRaw = trade
-    .maximumAmountIn(getSlippage(target.slippage))
+    .maximumAmountIn(getSlippage(params.slippage))
     .quotient.toString()
 
   return {

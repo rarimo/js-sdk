@@ -70,6 +70,9 @@ export const fetchInternalTokenMapping = async (
     )
     result = data
   } catch (e) {
+    if ((e as JsonApiError).httpStatus === HTTP_STATUS_CODES.NOT_FOUND) {
+      return
+    }
     console.error(e)
   }
 
