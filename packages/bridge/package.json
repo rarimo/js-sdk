@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/bridge",
-  "version": "1.5.0-rc.25",
+  "version": "2.0.0-rc.0",
   "description": "All bridge related functionality for the Rarimo Protocol",
   "repository": {
     "type": "git",
