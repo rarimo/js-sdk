@@ -24,6 +24,9 @@
   },
   "scripts": {
     "build": "yarn workspaces foreach -pv --topological-dev run build",
+    "build:shared": "yarn workspace @rarimo/shared build",
+    "build:bridge": "yarn workspace @rarimo/bridge build",
+    "build:swap": "yarn workspace @rarimo/swap build",
     "build:nft-checkout": "yarn workspace @rarimo/nft-checkout build",
     "build:provider": "yarn workspace @rarimo/provider build",
     "build:providers-evm": "yarn workspace @rarimo/providers-evm build",
