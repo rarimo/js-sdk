@@ -22,7 +22,7 @@ import { utils } from "ethers";
 const CONTRACT_ADDRESS = "0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1"
 
 const sendTransaction = async () => {
-  // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+  // Connect to the Metamask wallet in the browser, using the MetamaskProvider interface to limit bundle size.
   const provider = await createProvider(MetamaskProvider)
 
   // Initialize the object that represents the transaction operation, in this case on EVM.

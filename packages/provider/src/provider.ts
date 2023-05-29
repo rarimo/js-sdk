@@ -30,7 +30,7 @@ export type CreateProviderOpts = {
  * import { MetamaskProvider } from '@rarimo/providers-evm'
  *
  * const getMetamaskWalletAddress = async () => {
- *   // Connect to the Metamask wallet in the browser using Web3.js, using the MetamaskProvider interface to limit bundle size.
+ *   // Connect to the Metamask wallet in the browser, using the MetamaskProvider interface to limit bundle size.
  *   const provider = await createProvider(MetamaskProvider)
  *
  *   // Get the address of the wallet
