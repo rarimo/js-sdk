@@ -34,6 +34,7 @@ import {
   getNativeAmountIn,
   getPaymentTokens,
   getSwapAmount,
+  isSameChainOperation,
   loadTokens,
 } from './helpers'
 
@@ -144,80 +145,17 @@ export class EVMOperation
       await this.#switchChain(chain)
     }
 
-    const result = await getPaymentTokens(
-      this.#chainFrom!,
-      this.#provider,
-      await this.#loadTokens(),
+    const withPairs = await this.#getPaymentTokensWithPairs(
+      await getPaymentTokens(
+        this.#chainFrom!,
+        this.#provider,
+        await this.#loadTokens(),
+      ),
     )
-
-    const withPairs = this.#getPaymentTokensWithPairs(result)
 
     this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
 
     return withPairs
-  }
-
-  async #getPaymentTokensWithPairs(
-    result: PaymentToken[],
-  ): Promise<PaymentToken[]> {
-    // TODO: revert this, it was used only for testing purposes
-    // FIXME: Do I need this for the same chain?
-
-    // const internalToken = await this.#swapper.getInternalTokenMapping(
-    //   this.#target?.swapTargetTokenSymbol ?? '',
-    // )
-    //
-    // if (!internalToken) return []
-    //
-    // const chain = internalToken?.chains.find(
-    //   i => lc(i.id) === lc(this.#chainFrom?.name),
-    // )
-    //
-    // if (!chain) return []
-    //
-    // const targetToken = this.#tokens.find(
-    //   i => lc(i.address) === lc(chain.token_address),
-    // )
-
-    const targetToken = this.#tokens.find(
-      i => lc(i.symbol) === lc(this.#params!.price.symbol),
-    )
-
-    if (!targetToken) return []
-
-    this.#targetToken = targetToken
-
-    const tokens = result.filter(
-      i => lc(i.symbol) !== lc(this.#targetToken?.symbol),
-    )
-
-    const estimatedPrices = await Promise.allSettled(
-      tokens.map(i =>
-        estimate(this.#provider, this.#tokens, i, this.#params!, targetToken),
-      ),
-    )
-
-    return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
-      if (i.status === 'fulfilled') {
-        const paymentToken = result.find(
-          t => lc(t.symbol) === lc(i.value.from.symbol),
-        )
-
-        if (paymentToken) {
-          const amountIn = i.value.from.isNative
-            ? getNativeAmountIn(this.#params!, i.value.price)
-            : i.value.price
-
-          const isEnoughBalance = amountIn.isLessThanOrEqualTo(
-            paymentToken.balanceRaw,
-          )
-
-          if (isEnoughBalance) acc.push(paymentToken)
-        }
-      }
-
-      return acc
-    }, [])
   }
 
   public async estimatePrice(from: PaymentToken) {
@@ -296,6 +234,78 @@ export class EVMOperation
     this.#setStatus(status)
 
     return result
+  }
+
+  async #getPaymentTokensWithPairs(
+    result: PaymentToken[],
+  ): Promise<PaymentToken[]> {
+    this.#targetToken = await this.#getTargetToken()
+
+    if (!this.#targetToken) return []
+
+    const tokens = result.filter(
+      i => lc(i.symbol) !== lc(this.#targetToken?.symbol),
+    )
+
+    const estimatedPrices = await Promise.allSettled(
+      tokens.map(i =>
+        estimate(
+          this.#provider,
+          this.#tokens,
+          i,
+          this.#params!,
+          this.#targetToken!,
+        ),
+      ),
+    )
+
+    return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
+      if (i.status === 'fulfilled') {
+        const paymentToken = result.find(
+          t => lc(t.symbol) === lc(i.value.from.symbol),
+        )
+
+        if (paymentToken) {
+          const amountIn = i.value.from.isNative
+            ? getNativeAmountIn(this.#params!, i.value.price)
+            : i.value.price
+
+          const isEnoughBalance = amountIn.isLessThanOrEqualTo(
+            paymentToken.balanceRaw,
+          )
+
+          if (isEnoughBalance) acc.push(paymentToken)
+        }
+      }
+
+      return acc
+    }, [])
+  }
+
+  async #getTargetToken(): Promise<Token | undefined> {
+    const params = this.#params!
+    const isSameChain = isSameChainOperation(params)
+    const targetTokenAddress = params.price.address
+
+    // get target token from params if it's the same chain operation,
+    // otherwise we will get it from internal mappings
+    if (isSameChain && targetTokenAddress) {
+      return this.#tokens.find(i => lc(i.address) === lc(targetTokenAddress))
+    }
+
+    const internalToken = await this.#swapper.getInternalTokenMapping(
+      params.price.symbol ?? '',
+    )
+
+    if (!internalToken) return
+
+    const chain = internalToken?.chains.find(
+      i => lc(i.id) === lc(this.#chainFrom?.name),
+    )
+
+    if (!chain) return
+
+    return this.#tokens.find(i => lc(i.address) === lc(chain.token_address))
   }
 
   async #approveIfRequired(token: Token, amount: Amount) {
