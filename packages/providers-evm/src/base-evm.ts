@@ -32,10 +32,13 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
   constructor(provider?: RawProvider) {
     if (!provider) throw new errors.ProviderInjectedInstanceNotFoundError()
     super()
-    this.#provider = new providers.Web3Provider(
-      wrapExternalEthProvider(provider as providers.ExternalProvider),
-      'any',
+    const rawProvider = wrapExternalEthProvider(
+      provider instanceof providers.Web3Provider
+        ? provider.provider
+        : (provider as providers.ExternalProvider),
     )
+
+    this.#provider = new providers.Web3Provider(rawProvider, 'any')
   }
 
   get chainType(): ChainTypes {

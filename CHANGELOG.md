@@ -21,6 +21,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `all` - Node resolution in the `package.json` files
 
+## [1.5.0-rc.25] - 2023-05-25
+### Added
+- `@rarimo/provider` - Fix `RawProvider` type
+
+## [1.5.0-rc.24] - 2023-05-25
+### Added
+- `@rarimo/providers-evm` - EthersProvider class is specifically designed to handle ethers.provider.Web3Provider instead of injected provider
+
+## [1.5.0-rc.23] - 2023-05-25
+### Changed
+- `@rarimo/nft-checkout` - Replace `resolutions` `@pancakeswap/swap-sdk-core` to `overrides`
+
+## [1.5.0-rc.22] - 2023-05-25
+### Fixed
+- `@rarimo/nft-checkout` - `@pancakeswap/swap-sdk-core` version resolution
+
+## [1.5.0-rc.21] - 2023-05-25
+### Fixed
+- `root` - `@pancakeswap/swap-sdk-core` version resolution
+
+## [1.5.0-rc.20] - 2023-05-25
+### Added
+- `@rarimo/nft-checkout` - Lock `@pancakeswap/swap-sdk-core` version to `0.0.1`
+### Changed
+- `@rarimo/nft-checkout` - Revert bump `@pancakeswap` packages versions
+
+## [1.5.0-rc.19] - 2023-05-24
+### Changed
+- `@rarimo/nft-checkout` - Bump `@pancakeswap` packages versions
+
 ## [1.5.0-rc.18] - 2023-05-24
 ### Changed
 - `@rarimo/nft-checkout` - Use multi hop routes for the swap price estimating on BSC instead of direct routes
@@ -247,7 +277,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.18...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.25...HEAD
+[1.5.0-rc.25]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.24...1.5.0-rc.25
+[1.5.0-rc.24]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.23...1.5.0-rc.24
+[1.5.0-rc.23]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.22...1.5.0-rc.23
+[1.5.0-rc.22]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.21...1.5.0-rc.22
+[1.5.0-rc.21]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.20...1.5.0-rc.21
+[1.5.0-rc.20]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.19...1.5.0-rc.20
+[1.5.0-rc.19]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.18...1.5.0-rc.19
 [1.5.0-rc.18]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.17...1.5.0-rc.18
 [1.5.0-rc.17]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.16...1.5.0-rc.17
 [1.5.0-rc.16]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.15...1.5.0-rc.16
