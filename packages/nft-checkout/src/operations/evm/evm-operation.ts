@@ -2,14 +2,17 @@ import type { Token } from '@rarimo/bridge'
 import {
   DestinationTransaction,
   DestinationTransactionStatus,
+  tokenFromChain,
 } from '@rarimo/bridge'
 import { errors as providerErrors, IProvider } from '@rarimo/provider'
 import {
   Amount,
   BridgeChain,
   ChainId,
+  ChainNames,
   ChainTypes,
   isString,
+  TokenSymbol,
   toLowerCase as lc,
   TransactionBundle,
 } from '@rarimo/shared'
@@ -41,6 +44,7 @@ import {
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
+const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 /**
  * An operation on an EVM chain.
@@ -289,12 +293,21 @@ export class EVMOperation
 
     // get target token from params if it's the same chain operation,
     // otherwise we will get it from internal mappings
-    if (isSameChain && targetTokenAddress) {
-      return this.#tokens.find(i => lc(i.address) === lc(targetTokenAddress))
+    if (isSameChain) {
+      return targetTokenAddress
+        ? this.#tokens.find(i => lc(i.address) === lc(targetTokenAddress))
+        : tokenFromChain(this.#chainFrom!)
     }
 
+    const targetTokenSymbol = getTargetTokenSymbol(
+      this.#getChainByID(params.chainIdTo)!,
+      params.price.symbol,
+    )
+
+    if (!targetTokenSymbol) return
+
     const internalToken = await this.#swapper.getInternalTokenMapping(
-      params.price.symbol ?? '',
+      targetTokenSymbol,
     )
 
     if (!internalToken) return
@@ -305,7 +318,9 @@ export class EVMOperation
 
     if (!chain) return
 
-    return this.#tokens.find(i => lc(i.address) === lc(chain.token_address))
+    return chain.token_address === NATIVE_TOKEN_ADDRESS
+      ? tokenFromChain(this.#chainFrom!)
+      : this.#tokens.find(i => lc(i.address) === lc(chain.token_address))
   }
 
   async #approveIfRequired(token: Token, amount: Amount) {
@@ -375,4 +390,17 @@ const getAmounts = (
   const amountOut = getSwapAmount(params)
 
   return { amountIn, amountOut }
+}
+
+const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
+  if (!chain.isTestnet) return symbol
+
+  return (
+    {
+      [ChainNames.Goerli]: '2',
+      [ChainNames.Sepolia]: '3',
+      [ChainNames.Fuji]: '4',
+      [ChainNames.Chapel]: '5',
+    }[chain.name] ?? ''
+  )
 }

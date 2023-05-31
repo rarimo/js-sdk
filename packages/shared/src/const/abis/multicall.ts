@@ -7,14 +7,14 @@ export const MULTICALL_ROUTER_ABI = [
         type: 'address[]',
       },
       {
-        internalType: 'bytes[]',
-        name: 'data_',
-        type: 'bytes[]',
-      },
-      {
         internalType: 'uint256[]',
         name: 'values_',
         type: 'uint256[]',
+      },
+      {
+        internalType: 'bytes[]',
+        name: 'data_',
+        type: 'bytes[]',
       },
     ],
     name: 'multicall',

@@ -32,6 +32,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/eth-logo.png',
     contractAddress: '',
     dexType: EVMDexType.UniswapV3,
+    isTestnet: false,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Goerli]!,
@@ -45,8 +46,9 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://goerli.etherscan.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/eth-logo.png',
-    contractAddress: '0x10841D7fF0AfF0e40203FC4D0778DD9946D8a91c',
+    contractAddress: '0xa10093a0D0970Fc1De02faF8e1884f414dC05Dbe',
     dexType: EVMDexType.UniswapV3,
+    isTestnet: true,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Sepolia]!,
@@ -62,6 +64,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/eth-logo.png',
     contractAddress: '',
     dexType: EVMDexType.UniswapV3,
+    isTestnet: true,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Polygon]!,
@@ -77,6 +80,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/matic-logo.png',
     contractAddress: '',
     dexType: EVMDexType.QuickSwap,
+    isTestnet: false,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Mumbai]!,
@@ -92,6 +96,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractAddress: '',
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/matic-logo.png',
     dexType: EVMDexType.QuickSwap,
+    isTestnet: true,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Avalanche]!,
@@ -107,6 +112,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     contractAddress: '',
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/avax-logo.png',
     dexType: EVMDexType.TraderJoe,
+    isTestnet: false,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Fuji]!,
@@ -120,8 +126,9 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://testnet.snowtrace.io',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/avax-logo.png',
-    contractAddress: '0xFE634aBe3950534B24bBA247aE04ABD9cBCAD90D',
+    contractAddress: '0xad3C3F305FDcA1f2028d63000453a25ffFF4e289',
     dexType: EVMDexType.TraderJoe,
+    isTestnet: true,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.BinanceSmartChain]!,
@@ -137,6 +144,7 @@ export const EVM_CHAINS: BridgeChain[] = [
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/bnb-logo.png',
     contractAddress: '',
     dexType: EVMDexType.PancakeSwap,
+    isTestnet: false,
   },
   {
     id: EVM_CHAIN_IDS[ChainNames.Chapel]!,
@@ -150,7 +158,8 @@ export const EVM_CHAINS: BridgeChain[] = [
     explorerUrl: 'https://testnet.bscscan.com',
     type: ChainTypes.EVM,
     icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/bnb-logo.png',
-    contractAddress: '0xd6c576B4f6Ab3d70b49FA2a1F73711943f3a14f2',
+    contractAddress: '0xcb62bBC9F6360276B2e326F27023e565D638967A',
     dexType: EVMDexType.PancakeSwap,
+    isTestnet: true,
   },
 ]

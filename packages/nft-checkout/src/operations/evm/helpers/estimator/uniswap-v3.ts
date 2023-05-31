@@ -22,13 +22,7 @@ import { Price } from '@/entities'
 import { errors } from '@/errors'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import {
-  createWrapEstimate,
-  getSwapAmount,
-  handleNativeTokens,
-  isWrapOnly,
-  validateSlippage,
-} from './helpers'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
@@ -67,10 +61,6 @@ export const estimateUniswapV3 = async (
   params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
-
-  if (isWrapOnly(_from, from, to)) {
-    return createWrapEstimate(_from, from, params)
-  }
 
   const tokenA = new UNIToken(
     Number(from.chain.id),

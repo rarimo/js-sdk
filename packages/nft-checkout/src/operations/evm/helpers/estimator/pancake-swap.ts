@@ -9,13 +9,7 @@ import { Price } from '@/entities'
 import { errors } from '@/errors'
 import type { CheckoutOperationParams } from '@/types'
 
-import {
-  createWrapEstimate,
-  getSwapAmount,
-  handleNativeTokens,
-  isWrapOnly,
-  validateSlippage,
-} from './helpers'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -37,10 +31,6 @@ export const estimatePancakeSwap = async (
   params: CheckoutOperationParams,
 ) => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
-
-  if (isWrapOnly(_from, from, to)) {
-    return createWrapEstimate(_from, from, params)
-  }
 
   const tokenA = new PCToken(
     Number(from.chain.id),

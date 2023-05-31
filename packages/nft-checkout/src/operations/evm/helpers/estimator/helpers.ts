@@ -88,14 +88,22 @@ export const isWrapOnly = (
   return fromRaw.isNative && lc(fromHandled.address) === lc(to.address)
 }
 
-export const createWrapEstimate = (
-  native: Token,
-  wrapped: Token,
+export const isUnwrapOnly = (
+  toRaw: Token,
+  toHandled: Token,
+  from: Token,
+): boolean => {
+  return toRaw.isNative && lc(toHandled.address) === lc(from.address)
+}
+
+export const createWrapUnwrapEstimate = (
+  from: Token,
+  to: Token,
   params: CheckoutOperationParams,
 ): EstimatedPrice => ({
   impact: '0',
-  from: native,
-  to: wrapped,
+  from,
+  to,
   price: createWrapPrice(params),
 })
 

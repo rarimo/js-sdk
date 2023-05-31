@@ -17,6 +17,7 @@ export type Chain = {
   }
   type: ChainTypes
   icon: string
+  isTestnet: boolean
 }
 
 export type BridgeChain = Chain & {
