@@ -22,6 +22,7 @@ export type Chain = {
 export type BridgeChain = Chain & {
   contractAddress: Address
   dexType: EVMDexType
+  isTestnet: boolean
 }
 
 export type ChainIdMap = { [key in ChainNames]?: ChainId }

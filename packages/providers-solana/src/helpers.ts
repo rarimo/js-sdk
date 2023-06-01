@@ -1,5 +1,6 @@
 import { errors } from '@rarimo/provider'
-import { Chain, ChainNames, SOLANA_CHAIN_IDS } from '@rarimo/shared'
+import type { Chain } from '@rarimo/shared'
+import { ChainNames, SOLANA_CHAIN_IDS } from '@rarimo/shared'
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 

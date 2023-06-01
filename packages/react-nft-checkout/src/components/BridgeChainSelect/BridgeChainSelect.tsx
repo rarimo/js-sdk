@@ -1,3 +1,4 @@
+import type { SelectChangeEvent } from '@mui/material'
 import {
   FormControl,
   InputLabel,
@@ -5,7 +6,6 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
 } from '@mui/material'
 import { Network } from 'iconoir-react'
 import { useMemo } from 'react'

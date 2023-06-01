@@ -1,13 +1,14 @@
 import { BN } from '@distributedlab/tools'
-import { Token, tokenFromChain } from '@rarimo/bridge'
+import type { Token } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type { BridgeChain } from '@rarimo/shared'
 import { Amount } from '@rarimo/shared'
-import {
+import type {
   BalanceResult,
-  getBalancesForEthereumAddress,
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
+import { getBalancesForEthereumAddress } from 'ethereum-erc20-token-balances-multicall'
 
 import { paymentTokenFromToken } from '@/entities'
 import type { PaymentToken } from '@/types'

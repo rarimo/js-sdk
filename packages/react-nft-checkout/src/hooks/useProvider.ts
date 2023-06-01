@@ -1,10 +1,10 @@
-import {
-  createProvider,
+import type {
   CreateProviderOpts,
   IProvider,
   ProviderEventPayload,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
+import { createProvider } from '@rarimo/provider'
 import type { EthProviderRpcError } from '@rarimo/providers-evm'
 import { useCallback, useEffect, useState } from 'react'
 

@@ -17,7 +17,7 @@ export interface Token {
   isQuickSwap: boolean
   isPancakeSwap: boolean
   isUniswapV3: boolean
-  isV2: boolean
+  isUniswapV2: boolean
 
   isNative: boolean
 }

@@ -13,7 +13,7 @@ import { Price } from '@/entities'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
 import {
-  createWrapEstimate,
+  createWrapUnwrapEstimate,
   getSwapAmount,
   handleNativeTokens,
   isWrapOnly,
@@ -42,7 +42,7 @@ export const estimateQuickSwap = async (
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
   if (isWrapOnly(_from, from, to)) {
-    return createWrapEstimate(_from, from, params)
+    return createWrapUnwrapEstimate(_from, from, params)
   }
 
   const tokenA = new QSToken(

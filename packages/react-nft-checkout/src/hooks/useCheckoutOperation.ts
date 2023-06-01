@@ -1,9 +1,11 @@
 import type { Token } from '@rarimo/bridge'
-import {
+import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  createCheckoutOperation,
   CreateCheckoutOperationParams,
+} from '@rarimo/nft-checkout'
+import {
+  createCheckoutOperation,
   EVMOperation,
   Price,
 } from '@rarimo/nft-checkout'
@@ -75,11 +77,10 @@ export const useCheckoutOperation = ({
       await checkoutOperation.init({
         ...params,
         chainIdFrom: selectedChain.id,
-        // FIXME: not sure that it will work correctly
         price: Price.fromBigInt(
           params.price.value,
           params.price.decimals,
-          selectedSwapToken?.symbol ?? 'WETH',
+          selectedSwapToken?.symbol ?? 'ETH',
         ),
       })
     }

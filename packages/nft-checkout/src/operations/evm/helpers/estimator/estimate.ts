@@ -1,8 +1,13 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 
-// import { toLowerCase as lc } from '@rarimo/shared'
 import { errors } from '@/errors'
+import {
+  createWrapUnwrapEstimate,
+  handleNativeTokens,
+  isUnwrapOnly,
+  isWrapOnly,
+} from '@/operations/evm/helpers'
 import type {
   CheckoutOperationParams,
   EstimatedPrice,
@@ -29,9 +34,27 @@ export const estimate = async (
     tokens,
     provider,
     from,
-    targetToken!,
+    targetToken,
     params,
   ]
+
+  const { from: fromHandled, to: targetTokenHandled } = handleNativeTokens(
+    tokens,
+    from,
+    targetToken,
+  )
+
+  const isUnwrap = isUnwrapOnly(targetToken, targetTokenHandled, fromHandled)
+
+  // If this is only wrap\unwrap operation thus we don't need to estimate price,
+  // because wrap\unwrap price is always 1:1
+  if (isWrapOnly(from, fromHandled, targetTokenHandled) || isUnwrap) {
+    return createWrapUnwrapEstimate(
+      from,
+      isUnwrap ? targetToken : fromHandled,
+      params,
+    )
+  }
 
   if (from.isTraderJoe) {
     return estimateTraderJoe(...opts)

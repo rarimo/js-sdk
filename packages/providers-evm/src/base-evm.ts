@@ -1,16 +1,19 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
-import {
-  errors,
-  ProviderEventBus,
-  ProviderEventBusEvents,
-  ProviderEvents,
+import type {
   ProviderProxy,
   RawProvider,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
-import { Chain, ChainId, ChainTypes } from '@rarimo/shared'
+import {
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+} from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainTypes } from '@rarimo/shared'
 import { providers } from 'ethers'
 
 import {

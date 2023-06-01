@@ -1,19 +1,16 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import type { Currency } from '@uniswap/sdk-core'
 import {
-  Currency,
   CurrencyAmount,
   Fraction,
   Percent,
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
-import {
-  AlphaRouter,
-  ChainId as UNIChainId,
-  RouteWithValidQuote,
-} from '@uniswap/smart-order-router'
+import type { RouteWithValidQuote } from '@uniswap/smart-order-router'
+import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
 import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import type { providers } from 'ethers'
 import JSBI from 'jsbi'
@@ -22,13 +19,7 @@ import { Price } from '@/entities'
 import { errors } from '@/errors'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import {
-  createWrapEstimate,
-  getSwapAmount,
-  handleNativeTokens,
-  isWrapOnly,
-  validateSlippage,
-} from './helpers'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
@@ -67,10 +58,6 @@ export const estimateUniswapV3 = async (
   params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
-
-  if (isWrapOnly(_from, from, to)) {
-    return createWrapEstimate(_from, from, params)
-  }
 
   const tokenA = new UNIToken(
     Number(from.chain.id),

@@ -1,4 +1,5 @@
-import { isComputed, MaybeComputed } from './computed'
+import type { MaybeComputed } from './computed'
+import { isComputed } from './computed'
 
 export type Ref<T = unknown> = {
   value: T

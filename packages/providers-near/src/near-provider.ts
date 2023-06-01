@@ -1,14 +1,17 @@
-import {
+import type {
   NearTransactionRequestBody,
   NearTransactionResponse,
-  ProviderEventBus,
-  ProviderEventBusEvents,
   ProviderProxy,
-  Providers,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
-import { Chain, ChainId, ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
+import {
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  Providers,
+} from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 
 import {
   getNearExplorerAddressUrl,

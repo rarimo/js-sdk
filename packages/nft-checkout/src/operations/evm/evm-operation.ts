@@ -1,17 +1,20 @@
-import type { Token } from '@rarimo/bridge'
-import {
-  DestinationTransaction,
-  DestinationTransactionStatus,
-} from '@rarimo/bridge'
-import { errors as providerErrors, IProvider } from '@rarimo/provider'
-import {
-  Amount,
+import type { DestinationTransaction, Token } from '@rarimo/bridge'
+import { DestinationTransactionStatus } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
+import type { IProvider } from '@rarimo/provider'
+import { errors as providerErrors } from '@rarimo/provider'
+import type {
   BridgeChain,
   ChainId,
+  TokenSymbol,
+  TransactionBundle,
+} from '@rarimo/shared'
+import {
+  Amount,
+  ChainNames,
   ChainTypes,
   isString,
-  toLowerCase as lc,
-  TransactionBundle,
+  toLowerCase,
 } from '@rarimo/shared'
 import type { Swapper } from '@rarimo/swap'
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'
@@ -41,6 +44,7 @@ import {
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
+const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 /**
  * An operation on an EVM chain.
@@ -244,7 +248,7 @@ export class EVMOperation
     if (!this.#targetToken) return []
 
     const tokens = result.filter(
-      i => lc(i.symbol) !== lc(this.#targetToken?.symbol),
+      i => toLowerCase(i.symbol) !== toLowerCase(this.#targetToken?.symbol),
     )
 
     const estimatedPrices = await Promise.allSettled(
@@ -262,7 +266,7 @@ export class EVMOperation
     return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
       if (i.status === 'fulfilled') {
         const paymentToken = result.find(
-          t => lc(t.symbol) === lc(i.value.from.symbol),
+          t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
         )
 
         if (paymentToken) {
@@ -289,23 +293,38 @@ export class EVMOperation
 
     // get target token from params if it's the same chain operation,
     // otherwise we will get it from internal mappings
-    if (isSameChain && targetTokenAddress) {
-      return this.#tokens.find(i => lc(i.address) === lc(targetTokenAddress))
+    if (isSameChain) {
+      return targetTokenAddress
+        ? this.#tokens.find(
+            i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
+          )
+        : tokenFromChain(this.#chainFrom!)
     }
 
+    const targetTokenSymbol = getTargetTokenSymbol(
+      this.#getChainByID(params.chainIdTo)!,
+      params.price.symbol,
+    )
+
+    if (!targetTokenSymbol) return
+
     const internalToken = await this.#swapper.getInternalTokenMapping(
-      params.price.symbol ?? '',
+      targetTokenSymbol,
     )
 
     if (!internalToken) return
 
     const chain = internalToken?.chains.find(
-      i => lc(i.id) === lc(this.#chainFrom?.name),
+      i => toLowerCase(i.id) === toLowerCase(this.#chainFrom?.name),
     )
 
     if (!chain) return
 
-    return this.#tokens.find(i => lc(i.address) === lc(chain.token_address))
+    return chain.token_address === NATIVE_TOKEN_ADDRESS
+      ? tokenFromChain(this.#chainFrom!)
+      : this.#tokens.find(
+          i => toLowerCase(i.address) === toLowerCase(chain.token_address),
+        )
   }
 
   async #approveIfRequired(token: Token, amount: Amount) {
@@ -375,4 +394,17 @@ const getAmounts = (
   const amountOut = getSwapAmount(params)
 
   return { amountIn, amountOut }
+}
+
+const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
+  if (!chain.isTestnet) return symbol
+
+  return (
+    {
+      [ChainNames.Goerli]: '2',
+      [ChainNames.Sepolia]: '3',
+      [ChainNames.Fuji]: '4',
+      [ChainNames.Chapel]: '5',
+    }[chain.name] ?? ''
+  )
 }

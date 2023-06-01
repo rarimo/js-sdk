@@ -1,11 +1,11 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
+import type { ChainId } from '@rarimo/shared'
 import {
   Amount,
-  ChainId,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   RARIMO_BRIDGE_FEE,
-  toLowerCase as lc,
+  toLowerCase,
 } from '@rarimo/shared'
 import { WRAPPED_CHAIN_TOKEN_SYMBOLS } from '@rarimo/swap'
 
@@ -41,7 +41,7 @@ const getWrappedToken = (
   fromChainId: ChainId,
 ): Token | undefined => {
   const symbol = WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(fromChainId)] ?? ''
-  return tokens.find(t => lc(t.symbol) === lc(symbol))
+  return tokens.find(t => toLowerCase(t.symbol) === toLowerCase(symbol))
 }
 
 export const validateSlippage = (slippage: number) => {
@@ -85,17 +85,31 @@ export const isWrapOnly = (
   fromHandled: Token,
   to: Token,
 ): boolean => {
-  return fromRaw.isNative && lc(fromHandled.address) === lc(to.address)
+  return (
+    fromRaw.isNative &&
+    toLowerCase(fromHandled.address) === toLowerCase(to.address)
+  )
 }
 
-export const createWrapEstimate = (
-  native: Token,
-  wrapped: Token,
+export const isUnwrapOnly = (
+  toRaw: Token,
+  toHandled: Token,
+  from: Token,
+): boolean => {
+  return (
+    toRaw.isNative &&
+    toLowerCase(toHandled.address) === toLowerCase(from.address)
+  )
+}
+
+export const createWrapUnwrapEstimate = (
+  from: Token,
+  to: Token,
   params: CheckoutOperationParams,
 ): EstimatedPrice => ({
   impact: '0',
-  from: native,
-  to: wrapped,
+  from,
+  to,
   price: createWrapPrice(params),
 })
 

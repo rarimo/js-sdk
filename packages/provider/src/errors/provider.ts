@@ -47,7 +47,7 @@ export class ProviderUnauthorized extends RuntimeError {
 
 export class ProviderUnsupportedMethod extends RuntimeError {
   public name = 'ProviderUnsupportedMethod'
-  constructor(e = new TypeError('Provider not support this method')) {
+  constructor(e = new TypeError('Provider does not support this method')) {
     super(e)
   }
 }

@@ -1,13 +1,13 @@
-import {
+import type {
   ProviderProxy,
-  Providers,
   RawProvider,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import { Providers } from '@rarimo/provider'
 import { isString } from '@rarimo/shared'
+import type { Cluster } from '@solana/web3.js'
 import {
-  Cluster,
   clusterApiUrl,
   Connection,
   Transaction as SolTransaction,

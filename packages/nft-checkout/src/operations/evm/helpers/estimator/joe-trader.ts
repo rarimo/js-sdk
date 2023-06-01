@@ -13,13 +13,7 @@ import {
 import { Price } from '@/entities'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import {
-  createWrapEstimate,
-  getSwapAmount,
-  handleNativeTokens,
-  isWrapOnly,
-  validateSlippage,
-} from './helpers'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 
 const TRADER_JOE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -41,10 +35,6 @@ export const estimateTraderJoe = async (
   params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
-
-  if (isWrapOnly(_from, from, to)) {
-    return createWrapEstimate(_from, from, params)
-  }
 
   const tokenA = new TJToken(
     Number(from.chain.id),
