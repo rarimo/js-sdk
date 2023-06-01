@@ -21,8 +21,8 @@ import {
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   SWAP_CONTRACT_ABIS,
 } from '@/const'
-import type { PaymentToken, Price, Token } from '@/entities'
-import { OperationEventBusEvents } from '@/enums'
+import { PaymentToken, Price, Token } from '@/entities'
+import { ChainNames, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import { toLow } from '@/helpers'
 import type {
@@ -34,6 +34,7 @@ import type {
   INFTCheckoutOperation,
   OperationCreateParams,
   Target,
+  TokenSymbol,
   TxBundle,
 } from '@/types'
 import { CheckoutOperationStatus, DestinationTransactionStatus } from '@/types'
@@ -51,7 +52,7 @@ export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
-
+const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
 const DESTINATION_TX_PULL_INTERVAL = 2000
 
 type InternalChain = JsonApiRecordBase<'chain'> & {
@@ -144,10 +145,6 @@ export class EVMOperation
       throw new errors.OperationInvalidChainPairError()
     }
 
-    if (toLow(target.swapTargetTokenSymbol) === toLow(from.token.symbol)) {
-      throw new errors.OperationSwapIntoNativeNotSupported()
-    }
-
     this.#chainFrom = from
     this.#target = target
 
@@ -218,34 +215,22 @@ export class EVMOperation
   async #getPaymentTokensWithPairs(
     result: PaymentToken[],
   ): Promise<PaymentToken[]> {
-    const internalToken = await this.getInternalTokenMapping(
-      this.#target?.swapTargetTokenSymbol ?? '',
+    this.#targetToken = await this.#getTargetToken()
+
+    if (!this.#targetToken) return []
+
+    const tokens = result.filter(
+      i => toLow(i.symbol) !== toLow(this.#targetToken?.symbol),
     )
-
-    if (!internalToken) return []
-
-    const chain = internalToken?.chains.find(
-      i => toLow(i.id) === toLow(this.#chainFrom?.name),
-    )
-
-    if (!chain) return []
-
-    const targetToken = this.#tokens.find(
-      i => toLow(i.address) === toLow(chain.token_address),
-    )
-
-    if (!targetToken) return []
-
-    this.#targetToken = targetToken
 
     const estimatedPrices = await Promise.allSettled(
-      result.map(i =>
+      tokens.map(i =>
         new Estimator(
           this.#provider,
           this.#tokens,
           i,
           this.#target!,
-          targetToken,
+          this.#targetToken!,
         ).estimate(),
       ),
     )
@@ -260,6 +245,31 @@ export class EVMOperation
 
       return acc
     }, [])
+  }
+
+  async #getTargetToken(): Promise<Token | undefined> {
+    const params = this.#target!
+
+    const targetTokenSymbol = getTargetTokenSymbol(
+      this.#getChainByID(params.chainId)!,
+      params.price.symbol,
+    )
+
+    if (!targetTokenSymbol) return
+
+    const internalToken = await this.getInternalTokenMapping(targetTokenSymbol)
+
+    if (!internalToken) return
+
+    const chain = internalToken?.chains.find(
+      i => toLow(i.id) === toLow(this.#chainFrom?.name),
+    )
+
+    if (!chain) return
+
+    return chain.token_address === NATIVE_TOKEN_ADDRESS
+      ? Token.fromChain(this.#chainFrom!)
+      : this.#tokens.find(i => toLow(i.address) === toLow(chain.token_address))
   }
 
   async getInternalTokenMapping(
@@ -528,4 +538,17 @@ export class EVMOperation
       status: this.#status,
     })
   }
+}
+
+const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
+  if (!chain.isTestnet) return symbol
+
+  return (
+    {
+      [ChainNames.Goerli]: '2',
+      [ChainNames.Sepolia]: '3',
+      [ChainNames.Fuji]: '4',
+      [ChainNames.Chapel]: '5',
+    }[chain.name] ?? ''
+  )
 }

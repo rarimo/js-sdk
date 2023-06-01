@@ -10,6 +10,7 @@ export type TokenSymbol = string // Token symbol, e.g. ETH, USDT, etc
 export type BridgeChain = Chain & {
   contractAddress: Address
   contactVersion: SwapContractVersion
+  isTestnet: boolean
 }
 
 export { Chain }
