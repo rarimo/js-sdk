@@ -13,7 +13,7 @@ import {
   ChainTypes,
   isString,
   TokenSymbol,
-  toLowerCase as lc,
+  toLowerCase,
   TransactionBundle,
 } from '@rarimo/shared'
 import type { Swapper } from '@rarimo/swap'
@@ -248,7 +248,7 @@ export class EVMOperation
     if (!this.#targetToken) return []
 
     const tokens = result.filter(
-      i => lc(i.symbol) !== lc(this.#targetToken?.symbol),
+      i => toLowerCase(i.symbol) !== toLowerCase(this.#targetToken?.symbol),
     )
 
     const estimatedPrices = await Promise.allSettled(
@@ -266,7 +266,7 @@ export class EVMOperation
     return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
       if (i.status === 'fulfilled') {
         const paymentToken = result.find(
-          t => lc(t.symbol) === lc(i.value.from.symbol),
+          t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
         )
 
         if (paymentToken) {
@@ -295,7 +295,9 @@ export class EVMOperation
     // otherwise we will get it from internal mappings
     if (isSameChain) {
       return targetTokenAddress
-        ? this.#tokens.find(i => lc(i.address) === lc(targetTokenAddress))
+        ? this.#tokens.find(
+            i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
+          )
         : tokenFromChain(this.#chainFrom!)
     }
 
@@ -313,14 +315,16 @@ export class EVMOperation
     if (!internalToken) return
 
     const chain = internalToken?.chains.find(
-      i => lc(i.id) === lc(this.#chainFrom?.name),
+      i => toLowerCase(i.id) === toLowerCase(this.#chainFrom?.name),
     )
 
     if (!chain) return
 
     return chain.token_address === NATIVE_TOKEN_ADDRESS
       ? tokenFromChain(this.#chainFrom!)
-      : this.#tokens.find(i => lc(i.address) === lc(chain.token_address))
+      : this.#tokens.find(
+          i => toLowerCase(i.address) === toLowerCase(chain.token_address),
+        )
   }
 
   async #approveIfRequired(token: Token, amount: Amount) {

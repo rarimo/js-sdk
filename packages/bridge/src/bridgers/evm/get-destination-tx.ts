@@ -27,7 +27,7 @@ export const getDestinationTx = async (
   sourceChain: BridgeChain,
   sourceTxHash: HexString,
 ): Promise<DestinationTransaction> => {
-  let transaction: DestinationTransactionResponse | undefined
+  let transaction: DestinationTransactionResponse | null = null
 
   while (!transaction) {
     transaction = await fetchDestinationTx(sourceChain.name, sourceTxHash)
@@ -37,15 +37,15 @@ export const getDestinationTx = async (
   }
 
   return {
-    hash: transaction!.id,
-    status: transaction!.status,
+    hash: transaction.id,
+    status: transaction.status,
   }
 }
 
 const fetchDestinationTx = async (
   chainId: ChainId,
   txHash: HexString,
-): Promise<DestinationTransactionResponse | undefined> => {
+): Promise<DestinationTransactionResponse | null> => {
   try {
     const { data } = await api.get<DestinationTransactionResponse>(
       `/v1/chains/${chainId}/transactions/${txHash}`,
@@ -53,7 +53,7 @@ const fetchDestinationTx = async (
     return data
   } catch (e) {
     if ((e as JsonApiError).httpStatus === HTTP_STATUS_CODES.NOT_FOUND) {
-      return undefined
+      return null
     }
 
     throw e

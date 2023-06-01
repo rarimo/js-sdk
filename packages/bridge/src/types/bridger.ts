@@ -2,8 +2,7 @@ import type { IProvider, TransactionResponse } from '@rarimo/provider'
 import type { BridgeChain, ChainTypes, HexString, Raw } from '@rarimo/shared'
 import type { Amount, Computed, Ref } from '@rarimo/shared'
 
-import type { DestinationTransaction, InternalToken } from '@/types'
-import type { Token } from '@/types'
+import type { DestinationTransaction, InternalToken, Token } from '@/types'
 
 export type Bridger = Raw<{
   provider: Ref<IProvider>

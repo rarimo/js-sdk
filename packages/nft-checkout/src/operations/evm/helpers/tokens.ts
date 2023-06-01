@@ -77,12 +77,12 @@ const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
 }
 
 const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => {
-  return newToken(
+  return newToken({
     chain,
-    token.address,
-    token.name,
-    token.symbol,
-    token.decimals,
-    token.logoURI,
-  )
+    address: token.address,
+    name: token.name,
+    symbol: token.symbol,
+    decimals: token.decimals,
+    logoURI: token.logoURI,
+  })
 }

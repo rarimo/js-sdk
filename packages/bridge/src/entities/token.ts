@@ -8,42 +8,39 @@ import {
 
 import type { Token } from '@/types'
 
-export const newToken = (
-  chain: BridgeChain,
-  address: Address,
-  name: string,
-  symbol: TokenSymbol,
-  decimals: Decimals,
-  logoURI = '',
-): Token => {
-  const v = chain.dexType
+export type NewTokenOpts = {
+  chain: BridgeChain
+  address: Address
+  name: string
+  symbol: TokenSymbol
+  decimals: Decimals
+  logoURI?: string
+}
+
+export const newToken = (t: NewTokenOpts): Token => {
+  const v = t.chain.dexType
   const raw = {
     isTraderJoe: v === EVMDexType.TraderJoe,
     isQuickSwap: v === EVMDexType.QuickSwap,
     isPancakeSwap: v === EVMDexType.PancakeSwap,
     isUniswapV3: v === EVMDexType.UniswapV3,
-    isNative: chain.token.symbol.toLowerCase() === symbol.toLowerCase(),
+    isNative: t.chain.token.symbol.toLowerCase() === t.symbol.toLowerCase(),
   }
 
   return {
     ...raw,
-    chain,
-    address,
-    name,
-    symbol,
-    decimals,
-    logoURI,
+    ...t,
     isUniswapV2: raw.isQuickSwap || raw.isPancakeSwap || raw.isTraderJoe,
   }
 }
 
 export const tokenFromChain = (chain: BridgeChain): Token => {
-  return newToken(
+  return newToken({
     chain,
-    '',
-    chain.token.name,
-    chain.token.symbol,
-    chain.token.decimals,
-    chain.icon,
-  )
+    address: '',
+    name: chain.token.name,
+    symbol: chain.token.symbol,
+    decimals: chain.token.decimals,
+    logoURI: chain.icon,
+  })
 }

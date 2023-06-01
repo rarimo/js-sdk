@@ -5,7 +5,7 @@ import {
   ChainId,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   RARIMO_BRIDGE_FEE,
-  toLowerCase as lc,
+  toLowerCase,
 } from '@rarimo/shared'
 import { WRAPPED_CHAIN_TOKEN_SYMBOLS } from '@rarimo/swap'
 
@@ -41,7 +41,7 @@ const getWrappedToken = (
   fromChainId: ChainId,
 ): Token | undefined => {
   const symbol = WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(fromChainId)] ?? ''
-  return tokens.find(t => lc(t.symbol) === lc(symbol))
+  return tokens.find(t => toLowerCase(t.symbol) === toLowerCase(symbol))
 }
 
 export const validateSlippage = (slippage: number) => {
@@ -85,7 +85,10 @@ export const isWrapOnly = (
   fromHandled: Token,
   to: Token,
 ): boolean => {
-  return fromRaw.isNative && lc(fromHandled.address) === lc(to.address)
+  return (
+    fromRaw.isNative &&
+    toLowerCase(fromHandled.address) === toLowerCase(to.address)
+  )
 }
 
 export const isUnwrapOnly = (
@@ -93,7 +96,10 @@ export const isUnwrapOnly = (
   toHandled: Token,
   from: Token,
 ): boolean => {
-  return toRaw.isNative && lc(toHandled.address) === lc(from.address)
+  return (
+    toRaw.isNative &&
+    toLowerCase(toHandled.address) === toLowerCase(from.address)
+  )
 }
 
 export const createWrapUnwrapEstimate = (
