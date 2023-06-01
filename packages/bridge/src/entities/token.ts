@@ -33,7 +33,7 @@ export const newToken = (
     symbol,
     decimals,
     logoURI,
-    isV2: raw.isQuickSwap || raw.isPancakeSwap || raw.isTraderJoe,
+    isUniswapV2: raw.isQuickSwap || raw.isPancakeSwap || raw.isTraderJoe,
   }
 }
 

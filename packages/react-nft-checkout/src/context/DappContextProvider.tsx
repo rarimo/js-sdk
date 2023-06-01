@@ -59,10 +59,11 @@ export const DappContext = createContext({} as DappContextType)
 
 /**
  * @description A container for other components such as RarimoPayButton
- * @param {CheckoutOperationParams} props.params An object that represents the final NFT transaction
- * @param props.createCheckoutTransactionBundleCb A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
- * @param props.createProviderOpts Parameters to pass to the provider; see {@link createProviderOpts}
- * @param props.createCheckoutOperationParams Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
+ * @param children
+ * @param params - An object that represents the final NFT transaction
+ * @param createCheckoutTransactionBundleCb - A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
+ * @param createProviderOpts - Parameters to pass to the provider; see {@link createProviderOpts}
+ * @param createCheckoutOperationParams - Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
  */
 export const DappContextProvider = ({
   children,

@@ -49,7 +49,7 @@ export type Bridger = Raw<{
   approve(
     token: Token,
     operator: HexString,
-  ): Promise<TransactionResponse | undefined>
+  ): Promise<TransactionResponse | void>
 
   /**
    * Sets allowance for the provided operator address to spend the token if
@@ -61,14 +61,14 @@ export type Bridger = Raw<{
     token: Token,
     operator: HexString,
     amount?: Amount,
-  ): Promise<TransactionResponse | undefined>
+  ): Promise<TransactionResponse | void>
 
   /**
    * @returns Rarimo backend token mapping for the provided token symbol
    */
   getInternalTokenMapping(
     targetTokenSymbol: string,
-  ): Promise<InternalToken | undefined>
+  ): Promise<InternalToken | void>
 }>
 
 export type BridgerCreateFn = (p: IProvider) => Bridger

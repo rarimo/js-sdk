@@ -55,7 +55,7 @@ export interface CheckoutOperation extends OperationSubscriber {
 
   /**
    * Initialize the operation with the source chain and transaction parameters
-   * @param args Information about the source chain and the target transaction of the operation
+   * @param args - Information about the source chain and the target transaction of the operation
    */
   init(args: CheckoutOperationParams): Promise<void>
   /**
@@ -67,7 +67,7 @@ export interface CheckoutOperation extends OperationSubscriber {
   /**
    * Load the wallet's balance of payment tokens on the specified chain.
    *
-   * @param chain A chain from {@link supportedChains}
+   * @param chain - A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token
    */
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
@@ -81,8 +81,8 @@ export interface CheckoutOperation extends OperationSubscriber {
   /**
    * Send a transaction to Rarimo for processing
    *
-   * @param e The estimated price of the transaction, from {@link estimatePrice}
-   * @param {TransactionBundle} [bundle] The transaction bundle
+   * @param e - The estimated price of the transaction, from {@link estimatePrice}
+   * @param bundle - The transaction bundle
    * @returns The hash of the transaction
    */
   checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>

@@ -45,7 +45,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
     from.isNative && lc(wrapped[Number(from.chain.id)]) === lc(to.symbol)
 
   const isUnwrapRequired =
-    lc(wrapped[+from.chain.id]) === lc(from.symbol) &&
+    lc(wrapped[Number(from.chain.id)]) === lc(from.symbol) &&
     lc(to.symbol) === lc(to.chain.token.symbol)
 
   const isWrappedOrUnwrapped = isUnwrapRequired || isWrapRequired
@@ -132,24 +132,21 @@ const getSwapData = (
     path,
   ]
 
-  if (from.isV2) {
-    const fromNativeCommand = from.isTraderJoe
-      ? cmds.SwapExactAvaxForTokens
-      : cmds.SwapExactEthForTokens
-
-    const toNativeCommand = from.isTraderJoe
-      ? cmds.SwapTokensForExactAvax
-      : cmds.SwapTokensForExactEth
-
-    const tokensCommand = from.isTraderJoe
+  if (from.isUniswapV2) {
+    let command = from.isTraderJoe
       ? cmds.SwapTokensForExactTokensTj
       : cmds.SwapTokensForExactTokensV2
 
-    const command = from.isNative
-      ? fromNativeCommand
-      : to.isNative
-      ? toNativeCommand
-      : tokensCommand
+    if (from.isNative) {
+      command = from.isTraderJoe
+        ? cmds.SwapExactAvaxForTokens
+        : cmds.SwapExactEthForTokens
+    }
+    if (to.isNative) {
+      command = from.isTraderJoe
+        ? cmds.SwapTokensForExactAvax
+        : cmds.SwapTokensForExactEth
+    }
 
     data.push(cmd(command, swapValues))
   }
