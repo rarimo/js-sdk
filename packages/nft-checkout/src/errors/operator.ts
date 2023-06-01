@@ -87,12 +87,3 @@ export class OperatorWrappedTokenNotFound extends RuntimeError {
     super(message)
   }
 }
-
-export class OperationSwapIntoNativeNotSupported extends RuntimeError {
-  public name = 'OperationSwapIntoNativeNotSupported'
-  constructor(
-    message = 'NFT Checkout now not supports swapping into native tokens',
-  ) {
-    super(message)
-  }
-}

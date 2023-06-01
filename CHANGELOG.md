@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2023-06-01
+### Fixed
+- `@rarimo/nft-checkout` - Pulling internal tokens mapping for testnets
+
 ## [1.5.0-rc.25] - 2023-05-25
 ### Added
-- `@rarimo/provider` - Fix `RawProvider` type
+- `@rarimo/provider` - `RawProvider` type
 
 ## [1.5.0-rc.24] - 2023-05-25
 ### Added
@@ -261,7 +265,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.25...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.25...1.5.0
 [1.5.0-rc.25]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.24...1.5.0-rc.25
 [1.5.0-rc.24]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.23...1.5.0-rc.24
 [1.5.0-rc.23]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.22...1.5.0-rc.23
