@@ -1,74 +1,50 @@
-import {
-  JsonApiClient,
-  JsonApiError,
-  JsonApiRecordBase,
-} from '@distributedlab/jac'
-import { BN } from '@distributedlab/tools'
-import {
-  ChainId,
-  ChainTypes,
-  errors as providerErrors,
-  IProvider,
-} from '@rarimo/provider'
-import { sleep } from '@rarimo/provider'
-import { Contract, providers, utils } from 'ethers'
-
-import { DEFAULT_CONFIG } from '@/config'
-import {
-  BUNDLE_SALT_BYTES,
-  CHAINS,
-  ERC20_ABI,
-  NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
-  SWAP_CONTRACT_ABIS,
-} from '@/const'
-import { PaymentToken, Price, Token } from '@/entities'
-import { ChainNames, OperationEventBusEvents } from '@/enums'
-import { errors } from '@/errors'
-import { toLow } from '@/helpers'
+import type { DestinationTransaction, Token } from '@rarimo/bridge'
+import { DestinationTransactionStatus } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
+import type { IProvider } from '@rarimo/provider'
+import { errors as providerErrors } from '@rarimo/provider'
 import type {
   BridgeChain,
-  Config,
-  DestinationTransaction,
-  DestinationTransactionResponse,
-  EstimatedPrice,
-  INFTCheckoutOperation,
-  OperationCreateParams,
-  Target,
+  ChainId,
   TokenSymbol,
-  TxBundle,
+  TransactionBundle,
+} from '@rarimo/shared'
+import {
+  Amount,
+  ChainNames,
+  ChainTypes,
+  isString,
+  toLowerCase,
+} from '@rarimo/shared'
+import type { Swapper } from '@rarimo/swap'
+import { createEVMSwapper, createSwapper } from '@rarimo/swap'
+import type { providers } from 'ethers'
+
+import { OperationEventBusEvents } from '@/enums'
+import { errors } from '@/errors'
+import type {
+  CheckoutOperation,
+  CheckoutOperationParams,
+  Config,
+  EstimatedPrice,
+  PaymentToken,
 } from '@/types'
-import { CheckoutOperationStatus, DestinationTransactionStatus } from '@/types'
+import { CheckoutOperationStatus } from '@/types'
 
 import { OperationEventBus } from '../event-bus'
 import {
-  Estimator,
+  estimate,
+  getNativeAmountIn,
   getPaymentTokens,
   getSwapAmount,
+  isSameChainOperation,
   loadTokens,
 } from './helpers'
-
-export { TARGET_TOKEN_SYMBOLS } from './helpers/chain'
 
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
 const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
-const DESTINATION_TX_PULL_INTERVAL = 2000
-
-type InternalChain = JsonApiRecordBase<'chain'> & {
-  bridge_contract: string
-  chain_params: string | null
-  chain_type: string
-  name: string
-  token_address: string
-}
-
-type InternalToken = JsonApiRecordBase<'token'> & {
-  name: string
-  symbol: string
-  token_type: string
-  chains: InternalChain[]
-}
 
 /**
  * An operation on an EVM chain.
@@ -81,34 +57,26 @@ type InternalToken = JsonApiRecordBase<'token'> & {
  */
 export class EVMOperation
   extends OperationEventBus
-  implements INFTCheckoutOperation
+  implements CheckoutOperation
 {
   readonly #provider: IProvider
   readonly #config: Config
 
   #isInitialized = false
+  #status: CheckoutOperationStatus = CheckoutOperationStatus.Created
 
   #chainFrom?: BridgeChain
-  #target?: Target
+  #params?: CheckoutOperationParams
   #targetToken?: Token
 
-  #chains: BridgeChain[] = []
   #tokens: Token[] = []
-  #api: JsonApiClient
-  #status: CheckoutOperationStatus = CheckoutOperationStatus.Created
+  #swapper: Swapper
 
   constructor(config: Config, provider: IProvider) {
     super()
     this.#config = config
     this.#provider = provider
-    this.#api = new JsonApiClient({
-      baseUrl: DEFAULT_CONFIG.CORE_API_BASE_URL,
-      headers: {
-        'Content-Type': 'application/json',
-        Origin: window?.origin ?? '',
-      },
-      credentials: 'omit',
-    })
+    this.#swapper = createSwapper(createEVMSwapper, provider)
   }
 
   public get status(): CheckoutOperationStatus {
@@ -127,26 +95,24 @@ export class EVMOperation
     return this.#isInitialized
   }
 
-  public get target() {
-    return this.#target
+  public get params() {
+    return this.#params
   }
 
-  async init({ chainIdFrom, target }: OperationCreateParams): Promise<void> {
+  async init(params: CheckoutOperationParams): Promise<void> {
     this.#setStatus(CheckoutOperationStatus.Initializing)
 
-    if (!this.#chains.length) {
-      await this.supportedChains()
-    }
+    await this.#swapper.init()
 
-    const from = this.#getChainByID(chainIdFrom)
-    const to = this.#getChainByID(target.chainId)
+    const from = this.#getChainByID(params.chainIdFrom)
+    const to = this.#getChainByID(params.chainIdTo)
 
     if (!from || !to) {
       throw new errors.OperationInvalidChainPairError()
     }
 
     this.#chainFrom = from
-    this.#target = target
+    this.#params = params
 
     if (this.#provider.chainType !== ChainTypes.EVM) {
       throw new errors.OperationInvalidProviderChainTypeError()
@@ -159,57 +125,119 @@ export class EVMOperation
   }
 
   public async supportedChains(): Promise<BridgeChain[]> {
-    // TODO: add backend integration
     this.#setStatus(CheckoutOperationStatus.SupportedChainsLoading)
-    this.#chains = CHAINS[ChainTypes.EVM]!
+
+    const chains = this.#swapper.chains.length
+      ? this.#swapper.chains
+      : await this.#swapper.supportedChains()
+
     this.#setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
 
-    return this.#chains
-  }
-
-  public async supportedTokens(chain?: BridgeChain): Promise<Token[]> {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-
-    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoading)
-
-    if (!this.#provider.isConnected) {
-      await this.#provider.connect()
-    }
-
-    const targetChain = chain ? chain : this.chainFrom
-    if (this.#provider.chainId != targetChain?.id) {
-      await this.#switchChain(targetChain)
-    }
-
-    const result = await this.#loadTokens()
-
-    this.#setStatus(CheckoutOperationStatus.SupportedTokensLoaded)
-
-    return result
+    return chains
   }
 
   public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
     if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
     this.#setStatus(CheckoutOperationStatus.PaymentTokensLoading)
 
     if (!this.#provider.isConnected) {
       await this.#provider.connect()
     }
+
     if (this.#provider.chainId != chain?.id) {
       await this.#switchChain(chain)
     }
 
-    const result = await getPaymentTokens(
-      this.#chainFrom!,
-      this.#provider,
-      await this.#loadTokens(),
+    const withPairs = await this.#getPaymentTokensWithPairs(
+      await getPaymentTokens(
+        this.#chainFrom!,
+        this.#provider,
+        await this.#loadTokens(),
+      ),
     )
-
-    const withPairs = this.#getPaymentTokensWithPairs(result)
 
     this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
 
     return withPairs
+  }
+
+  public async estimatePrice(from: PaymentToken) {
+    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
+
+    const price = await estimate(
+      this.#provider,
+      this.#tokens,
+      from,
+      this.#params!,
+      this.#targetToken!,
+    )
+
+    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
+
+    return price
+  }
+
+  public async checkout(
+    e: EstimatedPrice,
+    bundle?: TransactionBundle,
+  ): Promise<string> {
+    if (!e.from.chain.contractAddress) {
+      throw new errors.OperationChainNotSupportedError()
+    }
+
+    this.#setStatus(CheckoutOperationStatus.CheckoutStarted)
+
+    const chainTo = this.#swapper.chains.find(
+      i => Number(i.id) === Number(this.#params?.chainIdTo),
+    )
+
+    const { amountIn, amountOut } = getAmounts(this.#params!, e)
+
+    if (!e.from.isNative) await this.#approveIfRequired(e.from, amountIn)
+
+    this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
+
+    const result = await this.#swapper.execute({
+      from: e.from,
+      to: e.to,
+      amountIn,
+      amountOut,
+      receiver: this.#params!.recipient,
+      path: e.path,
+      chainTo,
+      bundle,
+      isWrapped: IS_TOKEN_WRAPPED,
+      handleAllowance: false,
+    })
+
+    this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
+
+    return isString(result)
+      ? result
+      : (result as providers.TransactionReceipt)?.transactionHash
+  }
+
+  public async getDestinationTx(
+    sourceChain: BridgeChain,
+    sourceTxHash: string,
+  ): Promise<DestinationTransaction> {
+    this.#setStatus(CheckoutOperationStatus.DestinationTxPending)
+
+    const result = await this.#swapper.getDestinationTx(
+      sourceChain,
+      sourceTxHash,
+    )
+    const status =
+      result!.status === DestinationTransactionStatus.Success
+        ? CheckoutOperationStatus.DestinationTxSuccess
+        : CheckoutOperationStatus.DestinationTxFailed
+
+    this.#setStatus(status)
+
+    return result
   }
 
   async #getPaymentTokensWithPairs(
@@ -220,27 +248,38 @@ export class EVMOperation
     if (!this.#targetToken) return []
 
     const tokens = result.filter(
-      i => toLow(i.symbol) !== toLow(this.#targetToken?.symbol),
+      i => toLowerCase(i.symbol) !== toLowerCase(this.#targetToken?.symbol),
     )
 
     const estimatedPrices = await Promise.allSettled(
       tokens.map(i =>
-        new Estimator(
+        estimate(
           this.#provider,
           this.#tokens,
           i,
-          this.#target!,
+          this.#params!,
           this.#targetToken!,
-        ).estimate(),
+        ),
       ),
     )
 
     return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
       if (i.status === 'fulfilled') {
         const paymentToken = result.find(
-          t => toLow(t.symbol) === toLow(i.value.from.symbol),
+          t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
         )
-        if (paymentToken) acc.push(paymentToken)
+
+        if (paymentToken) {
+          const amountIn = i.value.from.isNative
+            ? getNativeAmountIn(this.#params!, i.value.price)
+            : i.value.price
+
+          const isEnoughBalance = amountIn.isLessThanOrEqualTo(
+            paymentToken.balanceRaw,
+          )
+
+          if (isEnoughBalance) acc.push(paymentToken)
+        }
       }
 
       return acc
@@ -248,260 +287,64 @@ export class EVMOperation
   }
 
   async #getTargetToken(): Promise<Token | undefined> {
-    const params = this.#target!
+    const params = this.#params!
+    const isSameChain = isSameChainOperation(params)
+    const targetTokenAddress = params.price.address
+
+    // get target token from params if it's the same chain operation,
+    // otherwise we will get it from internal mappings
+    if (isSameChain) {
+      return targetTokenAddress
+        ? this.#tokens.find(
+            i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
+          )
+        : tokenFromChain(this.#chainFrom!)
+    }
 
     const targetTokenSymbol = getTargetTokenSymbol(
-      this.#getChainByID(params.chainId)!,
+      this.#getChainByID(params.chainIdTo)!,
       params.price.symbol,
     )
 
     if (!targetTokenSymbol) return
 
-    const internalToken = await this.getInternalTokenMapping(targetTokenSymbol)
+    const internalToken = await this.#swapper.getInternalTokenMapping(
+      targetTokenSymbol,
+    )
 
     if (!internalToken) return
 
     const chain = internalToken?.chains.find(
-      i => toLow(i.id) === toLow(this.#chainFrom?.name),
+      i => toLowerCase(i.id) === toLowerCase(this.#chainFrom?.name),
     )
 
     if (!chain) return
 
     return chain.token_address === NATIVE_TOKEN_ADDRESS
-      ? Token.fromChain(this.#chainFrom!)
-      : this.#tokens.find(i => toLow(i.address) === toLow(chain.token_address))
+      ? tokenFromChain(this.#chainFrom!)
+      : this.#tokens.find(
+          i => toLowerCase(i.address) === toLowerCase(chain.token_address),
+        )
   }
 
-  async getInternalTokenMapping(
-    targetTokenSymbol: string,
-  ): Promise<InternalToken | undefined> {
-    let result: InternalToken | undefined
-    try {
-      const { data } = await this.#api.get<InternalToken>(
-        `/v1/tokens/${targetTokenSymbol}`,
-      )
-      result = data
-    } catch (e) {
-      console.error(e)
-    }
-
-    return result
-  }
-
-  public async estimatePrice(from: PaymentToken) {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
-
-    const price = new Estimator(
-      this.#provider,
-      this.#tokens,
-      from,
-      this.#target!,
-      this.#targetToken!,
-    ).estimate()
-
-    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
-
-    return price
-  }
-
-  public async checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string> {
-    this.#setStatus(CheckoutOperationStatus.CheckoutStarted)
-
-    const chain = e.from.chain
-    await this.#sendApproveTxIfNeeded(String(chain.contractAddress), e)
-
-    if (!chain.contractAddress) {
-      throw new errors.OperationChainNotSupportedError()
-    }
-
-    this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
-
-    const result = await this.#provider.signAndSendTx({
-      from: this.#provider.address,
-      to: chain.contractAddress,
-      data: this.#encodeTxData(e, bundle),
-      ...(e.from.isNative
-        ? {
-            value: this.#getNativeAmountIn(e.price),
-          }
-        : {}),
-    })
-
-    this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
-
-    return typeof result === 'string'
-      ? result
-      : (result as providers.TransactionReceipt)?.transactionHash
-  }
-
-  public async getDestinationTx(
-    sourceChain: BridgeChain,
-    sourceTxHash: string,
-  ): Promise<DestinationTransaction> {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-    this.#setStatus(CheckoutOperationStatus.DestinationTxPending)
-
-    const chain = this.#getChainByID(sourceChain.id)
-    if (!chain) {
-      throw new errors.OperationChainNotSupportedError()
-    }
-
-    let transaction: DestinationTransactionResponse | undefined
-
-    while (!transaction) {
-      transaction = await this.#getDestinationTx(chain.name, sourceTxHash)
-      if (!transaction) {
-        await sleep(DESTINATION_TX_PULL_INTERVAL)
-      }
-    }
-
-    const status =
-      transaction!.status === DestinationTransactionStatus.Success
-        ? CheckoutOperationStatus.DestinationTxSuccess
-        : CheckoutOperationStatus.DestinationTxFailed
-
-    this.#setStatus(status)
-
-    return {
-      hash: transaction!.id,
-      status: transaction!.status,
-    }
-  }
-
-  async #getDestinationTx(
-    chainId: string,
-    txHash: string,
-  ): Promise<DestinationTransactionResponse | undefined> {
-    try {
-      const { data } = await this.#api.get<DestinationTransactionResponse>(
-        `/v1/chains/${chainId}/transactions/${txHash}`,
-      )
-      return data
-    } catch (e) {
-      if ((e as JsonApiError).httpStatus === 404) {
-        return undefined
-      }
-
-      throw e
-    }
-  }
-
-  #getNativeAmountIn(price: Price) {
-    return BN.fromBigInt(price.value, price.decimals).mul(
-      BN.fromRaw(NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER, price.decimals),
-    ).value
-  }
-
-  #getFunctionFragment(from: Token, to: Token) {
-    if (from.isNative && to.isNative) {
-      throw new errors.OperationInvalidTokenPairError()
-    }
-
-    if (from.isNative && from.isV2) {
-      return 'swapExactNativeInputMultiHopThenBridge'
-    }
-
-    if (from.isNative) {
-      return 'swapExactInputMultiHopThenBridge'
-    }
-
-    if (to.isNative && from.isV2) {
-      return 'swapNativeExactOutputMultiHopThenBridge'
-    }
-
-    return 'swapExactOutputMultiHopThenBridge'
-  }
-
-  #getAmounts(from: Token, to: Token, e: EstimatedPrice): string[] {
-    const amountOutMinimum = getSwapAmount(this.#target!.price)
-    const amountIn = this.#getNativeAmountIn(e.price)
-
-    if ((from.isNative || to.isNative) && from.isV2) {
-      return [amountOutMinimum]
-    }
-
-    if (from.isNative) {
-      return [amountIn, amountOutMinimum]
-    }
-
-    return [amountOutMinimum, e.price.value]
-  }
-
-  #encodeTxData(e: EstimatedPrice, bundle?: TxBundle): string {
-    const chain = e.from.chain
-    const functionFragment = this.#getFunctionFragment(e.from, e.to)
-    const receiverAddress = this.#target?.recipient ?? this.#provider.address
-    const amounts = this.#getAmounts(e.from, e.to, e)
-
-    const network = this.#chains.find(
-      i => Number(i.id) === Number(this.#target?.chainId),
-    )
-
-    const bundleTuple = [
-      bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
-      bundle?.bundle ?? '',
-    ]
-
-    return new utils.Interface(
-      SWAP_CONTRACT_ABIS[chain.contactVersion],
-    ).encodeFunctionData(functionFragment, [
-      ...amounts,
-      e.path,
-      receiverAddress,
-      network?.name ?? '',
-      IS_TOKEN_WRAPPED,
-      bundleTuple,
-    ])
-  }
-
-  async #sendApproveTxIfNeeded(routerAddress: string, e: EstimatedPrice) {
-    if (e.from.isNative) return
-
+  async #approveIfRequired(token: Token, amount: Amount) {
     this.#setStatus(CheckoutOperationStatus.CheckAllowance)
 
-    const contract = new Contract(
-      e.from.address,
-      ERC20_ABI,
-      this.#provider?.getWeb3Provider?.(),
+    const isApproveRequired = await this.#swapper.isApproveRequired(
+      token,
+      token.chain.contractAddress,
+      amount,
     )
 
-    const allowanceRaw = await contract.allowance(
-      this.#provider.address,
-      routerAddress,
-    )
-
-    if (!e.price.value) {
-      throw new errors.OperationEstimatedPriceNotExistError()
-    }
-
-    const allowance = BN.fromBigInt(allowanceRaw.toString(), e.from.decimals)
-    const estimationPrice = BN.fromBigInt(e.price.value, e.price.decimals)
-
-    if (estimationPrice.isLessThan(allowance)) {
-      return
-    }
+    if (!isApproveRequired) return
 
     this.#setStatus(CheckoutOperationStatus.Approve)
-
-    const data = new utils.Interface(ERC20_ABI).encodeFunctionData('approve', [
-      routerAddress,
-      BN.MAX_UINT256.value,
-    ])
-
-    const result = this.#provider.signAndSendTx({
-      from: this.#provider.address,
-      to: e.from.address,
-      data,
-    })
-
+    await this.#swapper.approve(token, token.chain.contractAddress)
     this.#setStatus(CheckoutOperationStatus.Approved)
-
-    return result
   }
 
   #getChainByID(id: ChainId) {
-    return this.#chains.find(chain => chain.id === id)
+    return this.#swapper.chains.find(chain => chain.id === id)
   }
 
   async #loadTokens() {
@@ -534,10 +377,23 @@ export class EVMOperation
     this.emit(event, {
       isInitiated: this.#isInitialized,
       chainFrom: this.#chainFrom,
-      target: this.#target,
+      params: this.#params,
       status: this.#status,
     })
   }
+}
+
+const getAmounts = (
+  params: CheckoutOperationParams,
+  e: EstimatedPrice,
+): { amountIn: Amount; amountOut: Amount } => {
+  const amountIn = e.from.isNative
+    ? getNativeAmountIn(params, e.price)
+    : e.price
+
+  const amountOut = getSwapAmount(params)
+
+  return { amountIn, amountOut }
 }
 
 const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {

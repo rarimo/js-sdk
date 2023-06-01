@@ -1,8 +1,8 @@
+import type { Chain, ChainId, ChainTypes } from '@rarimo/shared'
 import type { providers } from 'ethers'
 
-import type { ChainTypes, Providers } from '@/enums'
+import type { Providers } from '@/enums'
 
-import type { Chain, ChainId } from './chain'
 import type { EthereumProvider } from './eth'
 import type { ProviderSubscriber } from './provider-event-bus'
 import type { SolanaProvider } from './solana'

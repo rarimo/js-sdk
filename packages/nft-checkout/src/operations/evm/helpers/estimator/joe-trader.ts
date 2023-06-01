@@ -1,3 +1,4 @@
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
   ChainId,
@@ -9,12 +10,10 @@ import {
   Trade,
 } from '@traderjoe-xyz/sdk'
 
-import { Price, Token } from '@/entities'
-import type { EstimatedPrice, Target } from '@/types'
+import { Price } from '@/entities'
+import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import { handleNativeTokens } from './check-native-token'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 
 const TRADER_JOE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -33,7 +32,7 @@ export const estimateTraderJoe = async (
   provider: IProvider,
   _from: Token,
   _to: Token,
-  target: Target,
+  params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -53,7 +52,7 @@ export const estimateTraderJoe = async (
     to.name,
   )
 
-  const amount = new TokenAmount(tokenB, getSwapAmount(target.price))
+  const amount = new TokenAmount(tokenB, getSwapAmount(params).value)
 
   const pair = await Fetcher.fetchPairData(
     tokenA,
@@ -70,7 +69,7 @@ export const estimateTraderJoe = async (
     from: _from,
     to: _to,
     price: Price.fromBigInt(
-      trade.maximumAmountIn(getSlippage(target.slippage)).numerator.toString(),
+      trade.maximumAmountIn(getSlippage(params.slippage)).numerator.toString(),
       _from.decimals,
       _from.symbol,
     ),

@@ -1,11 +1,23 @@
 {
   "name": "@rarimo/providers-near",
-  "version": "1.5.0",
+  "version": "2.0.0-rc.0",
   "description": "Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the NEAR blockchain.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/near-providers"
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/providers-near"
   },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "typesVersions": {
@@ -18,11 +30,13 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "browser": "./dist/esm/index.js",
+  "node": "./dist/cjs/index.js",
   "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
       "require": "./dist/cjs/index.js",
+      "node": "./dist/cjs/index.js",
       "import": "./dist/esm/index.js",
       "default": "./dist/esm/index.js"
     }
@@ -39,9 +53,13 @@
     "@near-wallet-selector/core": "^7.8.2",
     "@near-wallet-selector/my-near-wallet": "^7.8.2",
     "@rarimo/provider": "workspace:^",
+    "@rarimo/shared": "workspace:^",
     "near-api-js": "^1.1.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.53",
+    "@swc/jest": "^0.2.26",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
     "tsc-alias": "^1.8.2"

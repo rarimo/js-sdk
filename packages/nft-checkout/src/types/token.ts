@@ -1,6 +1,7 @@
-import type { Price, Token } from '@/entities'
+import type { Token } from '@rarimo/bridge'
+import type { Amount } from '@rarimo/shared'
 
-import type { Address, BridgeChain, Decimals, TokenSymbol } from './common'
+import type { Price } from '@/entities'
 
 export type EstimatedPrice = {
   path?: string | string[]
@@ -12,11 +13,7 @@ export type EstimatedPrice = {
   price: Price
 }
 
-export type CreateTokenOpts = {
-  chain: BridgeChain
-  address: Address
-  name: string
-  symbol: TokenSymbol
-  decimals: Decimals
-  logoURI?: string
+export type PaymentToken = Token & {
+  balance: string
+  balanceRaw: Amount
 }

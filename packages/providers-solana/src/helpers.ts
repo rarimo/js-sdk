@@ -1,4 +1,6 @@
-import { Chain, errors, SolanaChains } from '@rarimo/provider'
+import { errors } from '@rarimo/provider'
+import type { Chain } from '@rarimo/shared'
+import { ChainNames, SOLANA_CHAIN_IDS } from '@rarimo/shared'
 import { Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
@@ -54,10 +56,14 @@ export function decodeSolanaTx(tx: string) {
 
 export function getSolExplorerTxUrl(chain: Chain, txHash: string) {
   const url = `${chain.explorerUrl}/tx/${txHash}`
-  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SOLANA_CHAIN_IDS[ChainNames.SolanaMainNet]
+    ? url
+    : `${url}?cluster=${chain.id}`
 }
 
 export function getSolExplorerAddressUrl(chain: Chain, address: string) {
   const url = `${chain.explorerUrl}/address/${address}`
-  return chain.id === SolanaChains.MainNet ? url : `${url}?cluster=${chain.id}`
+  return chain.id === SOLANA_CHAIN_IDS[ChainNames.SolanaMainNet]
+    ? url
+    : `${url}?cluster=${chain.id}`
 }

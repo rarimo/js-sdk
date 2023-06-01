@@ -1,12 +1,13 @@
-import {
+import type {
   ProviderProxy,
-  Providers,
   RawProvider,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import { Providers } from '@rarimo/provider'
+import { isString } from '@rarimo/shared'
+import type { Cluster } from '@solana/web3.js'
 import {
-  Cluster,
   clusterApiUrl,
   Connection,
   Transaction as SolTransaction,
@@ -54,10 +55,9 @@ export class PhantomProvider
     txRequestBody: TransactionRequestBody,
   ): Promise<TransactionResponse> {
     try {
-      const txBody =
-        typeof txRequestBody === 'string'
-          ? decodeSolanaTx(txRequestBody)
-          : txRequestBody
+      const txBody = isString(txRequestBody)
+        ? decodeSolanaTx(txRequestBody)
+        : txRequestBody
 
       const connection = new Connection(clusterApiUrl(this.chainId as Cluster))
 

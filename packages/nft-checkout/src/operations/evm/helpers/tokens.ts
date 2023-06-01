@@ -1,4 +1,8 @@
 import { Fetcher } from '@distributedlab/fetcher'
+import type { Token } from '@rarimo/bridge'
+import { newToken, tokenFromChain } from '@rarimo/bridge'
+import type { BridgeChain } from '@rarimo/shared'
+import { ChainNames, EVMDexType } from '@rarimo/shared'
 import type { TokenInfo } from '@uniswap/token-lists'
 
 import { DEFAULT_FETCHER_CONFIG } from '@/config'
@@ -8,21 +12,19 @@ import {
   PANCAKE_SWAP_TESTNET_TOKEN_LIST,
   TRADER_JOE_SWAP_TESTNET_TOKEN_LIST,
 } from '@/const'
-import { Token } from '@/entities'
-import { ChainNames, SwapContractVersion } from '@/enums'
 import { errors } from '@/errors'
-import type { BridgeChain, Config } from '@/types'
+import type { Config } from '@/types'
 
 export const loadTokens = async (
   config: Config,
   chain: BridgeChain,
 ): Promise<Token[]> => {
   if (chain.name === ChainNames.Chapel) {
-    return [Token.fromChain(chain), ...PANCAKE_SWAP_TESTNET_TOKEN_LIST]
+    return [tokenFromChain(chain), ...PANCAKE_SWAP_TESTNET_TOKEN_LIST]
   }
 
   if (chain.name === ChainNames.Fuji) {
-    return [Token.fromChain(chain), ...TRADER_JOE_SWAP_TESTNET_TOKEN_LIST]
+    return [tokenFromChain(chain), ...TRADER_JOE_SWAP_TESTNET_TOKEN_LIST]
   }
 
   const rawUrl = getTokenListUrl(chain, config)
@@ -43,11 +45,11 @@ export const loadTokens = async (
   if (!tokens.length) return []
 
   return [
-    Token.fromChain(chain),
+    tokenFromChain(chain),
     ...appendExternalTokens(chain),
     ...tokens.reduce((acc, token) => {
       if (Number(token.chainId) === Number(chain.id)) {
-        acc.push(Token.fromTokenInfo(token, chain))
+        acc.push(tokenFromTokenInfo(token, chain))
       }
 
       return acc
@@ -69,9 +71,20 @@ const appendExternalTokens = (chain: BridgeChain): Token[] => {
 
 const getTokenListUrl = (chain: BridgeChain, config: Config): string => {
   return {
-    [SwapContractVersion.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
-    [SwapContractVersion.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
-    [SwapContractVersion.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
-    [SwapContractVersion.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
-  }[chain.contactVersion]
+    [EVMDexType.PancakeSwap]: config.PANCAKE_SWAP_TOKEN_LIST_URL,
+    [EVMDexType.TraderJoe]: config.TRADER_JOE_TOKEN_LIST_URL,
+    [EVMDexType.UniswapV3]: config.UNISWAP_V3_TOKEN_LIST_URL,
+    [EVMDexType.QuickSwap]: config.QUICK_SWAP_TOKEN_LIST_URL,
+  }[chain.dexType]
+}
+
+const tokenFromTokenInfo = (token: TokenInfo, chain: BridgeChain): Token => {
+  return newToken({
+    chain,
+    address: token.address,
+    name: token.name,
+    symbol: token.symbol,
+    decimals: token.decimals,
+    logoURI: token.logoURI,
+  })
 }

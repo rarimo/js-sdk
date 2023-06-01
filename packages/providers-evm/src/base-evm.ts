@@ -1,19 +1,20 @@
 import type { TransactionRequest } from '@ethersproject/abstract-provider'
 import type { Deferrable } from '@ethersproject/properties'
-import {
-  Chain,
-  ChainId,
-  ChainTypes,
-  errors,
-  ProviderEventBus,
-  ProviderEventBusEvents,
-  ProviderEvents,
+import type {
   ProviderProxy,
   RawProvider,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
-import { ethers, providers } from 'ethers'
+import {
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+} from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainTypes } from '@rarimo/shared'
+import { providers } from 'ethers'
 
 import {
   connectEthAccounts,
@@ -40,7 +41,7 @@ export class BaseEVMProvider extends ProviderEventBus implements ProviderProxy {
         : (provider as providers.ExternalProvider),
     )
 
-    this.#provider = new ethers.providers.Web3Provider(rawProvider, 'any')
+    this.#provider = new providers.Web3Provider(rawProvider, 'any')
   }
 
   get chainType(): ChainTypes {

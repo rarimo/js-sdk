@@ -1,19 +1,19 @@
-import {
-  Chain,
-  ChainId,
-  ChainTypes,
-  errors,
-  ProviderEventBus,
-  ProviderEventBusEvents,
-  ProviderEvents,
+import type {
   ProviderProxy,
   RawProvider,
-  SolanaChains,
   SolanaProvider,
   SolanaTransactionResponse,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import {
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+} from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainNames, ChainTypes, SOLANA_CHAIN_IDS } from '@rarimo/shared'
 import { PublicKey } from '@solana/web3.js'
 
 import {
@@ -64,7 +64,7 @@ export class BaseSolanaProvider
   async init(): Promise<void> {
     this.#setListeners()
     this.#address = getAddress(this.#provider.publicKey)
-    this.#chainId = SolanaChains.DevNet
+    this.#chainId = SOLANA_CHAIN_IDS[ChainNames.SolanaMainNet]
     this.#emitEvent(ProviderEventBusEvents.Initiated)
   }
 

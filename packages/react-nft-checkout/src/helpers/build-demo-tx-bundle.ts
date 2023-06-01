@@ -1,9 +1,9 @@
-import type { Target } from '@rarimo/nft-checkout'
+import type { CheckoutOperationParams } from '@rarimo/nft-checkout'
 import { utils } from 'ethers'
 
-export const buildDemoTxBundle = (
+export const buildDemoTransactionBundle = (
   recipient: string,
-  targetNft: Target,
+  params: CheckoutOperationParams,
   address: string,
 ) => {
   const encodedFunctionData = new utils.Interface([
@@ -12,6 +12,6 @@ export const buildDemoTxBundle = (
 
   return utils.defaultAbiCoder.encode(
     ['address[]', 'uint256[]', 'bytes[]'],
-    [[address], [targetNft.price.value], [encodedFunctionData]],
+    [[address], [params.price.value], [encodedFunctionData]],
   )
 }

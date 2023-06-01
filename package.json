@@ -24,6 +24,9 @@
   },
   "scripts": {
     "build": "yarn workspaces foreach -pv --topological-dev run build",
+    "build:shared": "yarn workspace @rarimo/shared build",
+    "build:bridge": "yarn workspace @rarimo/bridge build",
+    "build:swap": "yarn workspace @rarimo/swap build",
     "build:nft-checkout": "yarn workspace @rarimo/nft-checkout build",
     "build:provider": "yarn workspace @rarimo/provider build",
     "build:providers-evm": "yarn workspace @rarimo/providers-evm build",
@@ -54,7 +57,7 @@
     "ts-jest": "^29.0.3",
     "tsc-alias": "^1.8.2",
     "typedoc": "^0.23.8",
-    "typescript": "^4.9.5",
+    "typescript": "^5.0.4",
     "yorkie": "^2.0.0"
   },
   "packageManager": "yarn@3.4.1",

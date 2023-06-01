@@ -1,13 +1,17 @@
 import { BN } from '@distributedlab/tools'
+import type { Token } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import {
+import type { BridgeChain } from '@rarimo/shared'
+import { Amount } from '@rarimo/shared'
+import type {
   BalanceResult,
-  getBalancesForEthereumAddress,
   Token as TokenInfo,
 } from 'ethereum-erc20-token-balances-multicall'
+import { getBalancesForEthereumAddress } from 'ethereum-erc20-token-balances-multicall'
 
-import { Amount, PaymentToken, Token } from '@/entities'
-import type { BridgeChain } from '@/types'
+import { paymentTokenFromToken } from '@/entities'
+import type { PaymentToken } from '@/types'
 
 const mapTokenBalances = (
   supportedTokens: Token[],
@@ -42,7 +46,7 @@ const createPaymentToken = (
 
   if (BN.fromBigInt(token.balance, token.decimals).isZero) return
 
-  return PaymentToken.fromToken(
+  return paymentTokenFromToken(
     internalToken,
     Amount.fromBigInt(token.balance, token.decimals),
   )
@@ -73,8 +77,8 @@ export const getPaymentTokens = async (
     ...erc20,
     ...(nativeBalance && nativeBalance.gt(0)
       ? [
-          PaymentToken.fromToken(
-            Token.fromChain(chain),
+          paymentTokenFromToken(
+            tokenFromChain(chain),
             Amount.fromBigInt(nativeBalance.toString(), chain.token.decimals),
           ),
         ]

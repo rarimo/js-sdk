@@ -1,18 +1,17 @@
 import type {
-  Chain,
-  ChainId,
   NearTransactionRequestBody,
+  NearTransactionResponse,
   ProviderProxy,
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
 import {
-  NearChains,
-  NearTransactionResponse,
   ProviderEventBus,
   ProviderEventBusEvents,
   Providers,
 } from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'
 
 import {
   getNearExplorerAddressUrl,
@@ -65,7 +64,7 @@ export class NearProvider extends ProviderEventBus implements ProviderProxy {
   #updateProviderState(): void {
     const networkId = this.#provider.selector?.options.network.networkId
     this.#address = this.#provider?.accountId || ''
-    this.#chainId = networkId || NearChains.TestNet
+    this.#chainId = networkId || NEAR_CHAIN_IDS[ChainNames.NearTestNet]
   }
 
   async switchChain(chainId: ChainId): Promise<void> {

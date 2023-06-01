@@ -1,20 +1,23 @@
-import {
-  BridgeChain,
-  createCheckoutOperation,
+import type { Token } from '@rarimo/bridge'
+import type {
+  CheckoutOperation,
+  CheckoutOperationParams,
   CreateCheckoutOperationParams,
+} from '@rarimo/nft-checkout'
+import {
+  createCheckoutOperation,
   EVMOperation,
-  INFTCheckoutOperation,
-  Target,
-  Token,
+  Price,
 } from '@rarimo/nft-checkout'
 import type { IProvider } from '@rarimo/provider'
+import type { BridgeChain } from '@rarimo/shared'
 import { useCallback, useEffect, useState } from 'react'
 
 type Props = {
   provider: IProvider | null
   createCheckoutOperationParams?: CreateCheckoutOperationParams
   selectedChain?: BridgeChain
-  targetNft?: Target
+  params?: CheckoutOperationParams
   selectedSwapToken?: Token
 }
 
@@ -22,11 +25,11 @@ export const useCheckoutOperation = ({
   provider,
   createCheckoutOperationParams,
   selectedChain,
-  targetNft,
+  params,
   selectedSwapToken,
 }: Props) => {
   const [checkoutOperation, setCheckoutOperation] =
-    useState<INFTCheckoutOperation | null>(null)
+    useState<CheckoutOperation | null>(null)
   const [checkoutOperationReactiveState, setCheckoutOperationReactiveState] =
     useState(() => {
       return {
@@ -69,19 +72,21 @@ export const useCheckoutOperation = ({
   }, [createCheckoutOperationParams, provider])
 
   useEffect(() => {
-    if (!checkoutOperation || !targetNft || !selectedChain) return
+    if (!checkoutOperation || !params || !selectedChain) return
     const init = async () => {
       await checkoutOperation.init({
+        ...params,
         chainIdFrom: selectedChain.id,
-        target: {
-          ...targetNft,
-          swapTargetTokenSymbol: selectedSwapToken?.symbol ?? 'WETH',
-        },
+        price: Price.fromBigInt(
+          params.price.value,
+          params.price.decimals,
+          selectedSwapToken?.symbol ?? 'ETH',
+        ),
       })
     }
 
     init()
-  }, [checkoutOperation, selectedChain, targetNft, selectedSwapToken])
+  }, [checkoutOperation, selectedChain, params, selectedSwapToken])
 
   useEffect(() => {
     setListeners()

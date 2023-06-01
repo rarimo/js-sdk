@@ -1,7 +1,9 @@
-import { Theme, ThemeProvider } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { useState } from 'react'
 
-import { AppButton, AppButtonProps, RarimoPayDialog } from '@/components'
+import type { AppButtonProps } from '@/components'
+import { AppButton, RarimoPayDialog } from '@/components'
 import { defaultTheme } from '@/theme'
 
 interface Props extends AppButtonProps {

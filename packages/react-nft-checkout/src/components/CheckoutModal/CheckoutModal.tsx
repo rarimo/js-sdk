@@ -9,7 +9,6 @@ import {
   ErrorText,
   PaymentTokensList,
   PriceConversion,
-  SwapTokensSelect,
   TransactionSummary,
 } from '@/components'
 import { useDappContext } from '@/hooks'
@@ -26,7 +25,7 @@ const CheckoutModal = () => {
     checkout,
     provider,
     estimatePrice,
-    createCheckoutTxBundleCb,
+    createCheckoutTransactionBundleCb,
   } = useDappContext()
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
@@ -50,7 +49,7 @@ const CheckoutModal = () => {
   }, [estimatedPrice, selectedPaymentToken])
 
   const onCheckoutHandler = async () => {
-    const bundle = createCheckoutTxBundleCb?.(provider?.address ?? '')
+    const bundle = createCheckoutTransactionBundleCb?.(provider?.address ?? '')
     if (!estimatedPrice || !bundle) return
 
     setIsTransactionProcessing(true)
@@ -85,7 +84,6 @@ const CheckoutModal = () => {
           <Divider />
 
           <BridgeChainSelect />
-          {isInitialized && <SwapTokensSelect />}
 
           {isInitialized && selectedSwapToken && <PaymentTokensList />}
 

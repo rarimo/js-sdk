@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["esnext", "dom"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
     "types": [
       "@types/node",
       "@types/jest"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "declaration": false,
     "strict": true,
     "noImplicitAny": true,
@@ -21,12 +21,10 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "sourceMap": true,
     "newLine": "lf",
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true
   }
 }

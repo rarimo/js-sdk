@@ -2,15 +2,14 @@ import type { Provider as EtherProvider } from '@ethersproject/providers'
 import { Percent, Token as PCToken, Trade } from '@pancakeswap/sdk'
 import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 
-import { Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import { errors } from '@/errors'
-import type { Target } from '@/types'
+import type { CheckoutOperationParams } from '@/types'
 
-import { handleNativeTokens } from './check-native-token'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 
 const PANCAKE_DEFAULT_SLIPPAGE = new Percent('5', '100')
 
@@ -29,7 +28,7 @@ export const estimatePancakeSwap = async (
   provider: IProvider,
   _from: Token,
   _to: Token,
-  target: Target,
+  params: CheckoutOperationParams,
 ) => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -51,7 +50,7 @@ export const estimatePancakeSwap = async (
 
   const amount = CurrencyAmount.fromRawAmount(
     tokenB,
-    getSwapAmount(target.price),
+    getSwapAmount(params).value,
   )
 
   const pairs = await getAllCommonPairs(tokenA, tokenB, {
@@ -66,7 +65,7 @@ export const estimatePancakeSwap = async (
   if (!trade) throw new errors.OperationSwapRouteNotFound()
 
   const maximumAmountInRaw = trade
-    .maximumAmountIn(getSlippage(target.slippage))
+    .maximumAmountIn(getSlippage(params.slippage))
     .quotient.toString()
 
   return {

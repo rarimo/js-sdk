@@ -1,5 +1,6 @@
 import { Trade } from '@uniswap/router-sdk'
-import { Currency, Fraction, Percent, TradeType } from '@uniswap/sdk-core'
+import type { Currency } from '@uniswap/sdk-core'
+import { Fraction, Percent, TradeType } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { FeeAmount, Pool } from '@uniswap/v3-sdk'
 

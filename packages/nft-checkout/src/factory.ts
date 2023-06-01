@@ -1,15 +1,16 @@
-import type { ChainTypes, IProvider } from '@rarimo/provider'
+import type { IProvider } from '@rarimo/provider'
+import type { ChainTypes } from '@rarimo/shared'
 
 import { DEFAULT_CONFIG } from './config'
 import { errors } from './errors'
 import type {
+  CheckoutOperation,
+  CheckoutOperationConstructor,
   Config,
-  INFTCheckoutOperation,
-  INFTCheckoutOperationConstructor,
 } from './types'
 
 export type Operators = {
-  [key in ChainTypes]?: INFTCheckoutOperationConstructor
+  [key in ChainTypes]?: CheckoutOperationConstructor
 }
 
 export type CreateCheckoutOperationParams = {
@@ -28,7 +29,7 @@ export class NFTCheckoutFactory {
     }
   }
 
-  create(chainType: ChainTypes, provider: IProvider): INFTCheckoutOperation {
+  create(chainType: ChainTypes, provider: IProvider): CheckoutOperation {
     if (!this.#operators[chainType]) {
       throw new errors.OperatorNotExistsError()
     }
@@ -49,10 +50,10 @@ export class NFTCheckoutFactory {
  * const op = createCheckoutOperation(EVMCheckoutOperation, provider)
  */
 export const createCheckoutOperation = (
-  operator: INFTCheckoutOperationConstructor,
+  operator: CheckoutOperationConstructor,
   provider: IProvider,
   params?: CreateCheckoutOperationParams,
-): INFTCheckoutOperation => {
+): CheckoutOperation => {
   const config = {
     ...DEFAULT_CONFIG,
     ...(params?.config || {}),

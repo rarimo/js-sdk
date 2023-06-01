@@ -1,29 +1,25 @@
 import { BN } from '@distributedlab/tools'
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import type { Currency } from '@uniswap/sdk-core'
 import {
-  Currency,
   CurrencyAmount,
   Fraction,
   Percent,
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
-import {
-  AlphaRouter,
-  ChainId as UNIChainId,
-  RouteWithValidQuote,
-} from '@uniswap/smart-order-router'
+import type { RouteWithValidQuote } from '@uniswap/smart-order-router'
+import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
 import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import type { providers } from 'ethers'
 import JSBI from 'jsbi'
 
-import { Price, Token } from '@/entities'
+import { Price } from '@/entities'
 import { errors } from '@/errors'
-import type { EstimatedPrice, Target } from '@/types'
+import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
-import { handleNativeTokens } from './check-native-token'
-import { getSwapAmount } from './get-swap-amount'
-import { validateSlippage } from './slippage'
+import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'
 import { computeRealizedPriceImpact } from './uniswap-impact'
 
 const V3_SWAP_DEFAULT_SLIPPAGE = new Percent(250, 10_000)
@@ -37,8 +33,11 @@ const getRoutePath = (route: RouteWithValidQuote[], isNative: boolean) => {
   }, '')
 }
 
-const getSwapCurrencyAmount = (token: UNIToken, price: Price) => {
-  return CurrencyAmount.fromRawAmount(token, getSwapAmount(price))
+const getSwapCurrencyAmount = (
+  params: CheckoutOperationParams,
+  token: UNIToken,
+) => {
+  return CurrencyAmount.fromRawAmount(token, getSwapAmount(params).value)
 }
 
 const getSlippage = (slippage?: number): Percent => {
@@ -56,7 +55,7 @@ export const estimateUniswapV3 = async (
   provider: IProvider,
   _from: Token,
   _to: Token,
-  target: Target,
+  params: CheckoutOperationParams,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -77,7 +76,7 @@ export const estimateUniswapV3 = async (
   )
 
   // Input amount is the original price of nft.
-  const swapAmount = getSwapCurrencyAmount(tokenB, target.price)
+  const swapAmount = getSwapCurrencyAmount(params, tokenB)
 
   const router = new AlphaRouter({
     chainId: from.chain.id as UNIChainId,
@@ -97,7 +96,7 @@ export const estimateUniswapV3 = async (
   const amount = CurrencyAmount.fromRawAmount(
     trade?.inputAmount.currency,
     new Fraction(JSBI.BigInt(1))
-      .add(getSlippage(target.slippage))
+      .add(getSlippage(params.slippage))
       .multiply(trade?.inputAmount?.quotient).quotient,
   )
 

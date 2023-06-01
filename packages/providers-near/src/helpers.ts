@@ -1,4 +1,4 @@
-import type { Chain } from '@rarimo/provider'
+import type { Chain } from '@rarimo/shared'
 import { utils } from 'near-api-js'
 
 export const MAX_GAS_LIMIT = '300000000000000'

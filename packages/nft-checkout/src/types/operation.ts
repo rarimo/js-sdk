@@ -1,12 +1,18 @@
-import type { Chain, ChainId, IProvider } from '@rarimo/provider'
+import type { DestinationTransaction } from '@rarimo/bridge'
+import type { IProvider } from '@rarimo/provider'
+import type {
+  Address,
+  BridgeChain,
+  Chain,
+  ChainId,
+  TransactionBundle,
+} from '@rarimo/shared'
 
-import type { PaymentToken, Price, Token } from '@/entities'
-import type { DestinationTransaction } from '@/types/tx'
+import type { Price } from '@/entities'
 
-import type { Address, BridgeChain, HexString, TokenSymbol } from './common'
 import type { Config } from './config'
 import type { OperationSubscriber } from './operation-event-bus'
-import type { EstimatedPrice } from './token'
+import type { EstimatedPrice, PaymentToken } from './token'
 
 export enum CheckoutOperationStatus {
   Created,
@@ -14,8 +20,6 @@ export enum CheckoutOperationStatus {
   SupportedChainsLoading,
   SupportedChainsLoaded,
   Initialized,
-  SupportedTokensLoading,
-  SupportedTokensLoaded,
   PaymentTokensLoading,
   PaymentTokensLoaded,
   EstimatedPriceCalculating,
@@ -31,26 +35,19 @@ export enum CheckoutOperationStatus {
   DestinationTxFailed,
 }
 
-export type Target = {
-  chainId: ChainId
+export type CheckoutOperationParams = {
+  chainIdTo: ChainId
+  chainIdFrom: ChainId
   price: Price
-  swapTargetTokenSymbol: TokenSymbol // WETH, USDT, etc
   recipient?: Address
   slippage?: number // 0.5, 1, 5, 10 etc
 }
 
-export type TxBundle = {
-  bundle: HexString
-  salt?: HexString
+export interface CheckoutOperationConstructor {
+  new (config: Config, provider: IProvider): CheckoutOperation
 }
 
-export interface INFTCheckoutOperationConstructor {
-  new (config: Config, provider: IProvider): INFTCheckoutOperation
-}
-
-export type OperationCreateParams = { chainIdFrom: ChainId; target: Target }
-
-export interface INFTCheckoutOperation extends OperationSubscriber {
+export interface CheckoutOperation extends OperationSubscriber {
   chainFrom: Chain | undefined
   provider: IProvider
   isInitialized: boolean
@@ -58,20 +55,19 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
 
   /**
    * Initialize the operation with the source chain and transaction parameters
-   * @param args Information about the source chain and the target transaction of the operation
+   * @param args - Information about the source chain and the target transaction of the operation
    */
-  init(args: OperationCreateParams): Promise<void>
+  init(args: CheckoutOperationParams): Promise<void>
   /**
    * Get the chains that are supported for the operation type
    *
    * @returns A list of supported chains and information about them
    */
   supportedChains(): Promise<BridgeChain[]>
-  supportedTokens(chain?: BridgeChain): Promise<Token[]>
   /**
    * Load the wallet's balance of payment tokens on the specified chain.
    *
-   * @param chain A chain from {@link supportedChains}
+   * @param chain - A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token
    */
   loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
@@ -85,11 +81,16 @@ export interface INFTCheckoutOperation extends OperationSubscriber {
   /**
    * Send a transaction to Rarimo for processing
    *
-   * @param e The estimated price of the transaction, from {@link estimatePrice}
-   * @param bundle The transaction bundle
+   * @param e - The estimated price of the transaction, from {@link estimatePrice}
+   * @param bundle - The transaction bundle
    * @returns The hash of the transaction
    */
-  checkout(e: EstimatedPrice, bundle?: TxBundle): Promise<string>
+  checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>
+  /**
+   * Get the destination chain transaction hash as the result of the bridging
+   *
+   * @returns Destination transaction hash and transaction status
+   */
   getDestinationTx(
     sourceChain: BridgeChain,
     sourceTxHash: string,

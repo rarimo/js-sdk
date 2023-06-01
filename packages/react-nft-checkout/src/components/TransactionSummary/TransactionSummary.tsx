@@ -23,7 +23,7 @@ const TransactionSummary = ({
   txHash,
   estimatedPrice,
 }: Props) => {
-  const { targetNft, checkoutOperation, provider } = useDappContext()
+  const { params, checkoutOperation, provider } = useDappContext()
 
   return (
     <>
@@ -43,7 +43,7 @@ const TransactionSummary = ({
           <Typography>Transaction processing</Typography>
         </Box>
       )}
-      {txHash && targetNft && estimatedPrice && (
+      {txHash && params && estimatedPrice && (
         <Box
           display="flex"
           flexDirection="column"
@@ -56,7 +56,7 @@ const TransactionSummary = ({
             <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">Spent:</Typography>
               <Typography variant="subtitle1">
-                {`${targetNft.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
+                {`${params.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
               </Typography>
             </Card>
           </Box>

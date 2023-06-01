@@ -1,38 +1,39 @@
+import type { Token } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
 import type {
-  BridgeChain,
+  CheckoutOperation,
+  CheckoutOperationParams,
   CreateCheckoutOperationParams,
   EstimatedPrice,
-  INFTCheckoutOperation,
   PaymentToken,
-  Target,
-  Token,
 } from '@rarimo/nft-checkout'
 import type {
   CreateProviderOpts,
   IProvider,
   ProviderProxyConstructor,
 } from '@rarimo/provider'
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
+import type { BridgeChain } from '@rarimo/shared'
+import type { ReactNode } from 'react'
+import { createContext, useEffect, useMemo, useState } from 'react'
 
 import { useCheckoutOperation, useProvider } from '@/hooks'
 
 export type DappContextType = {
-  targetNft?: Target
-  createCheckoutTxBundleCb?: (caller: string) => string
+  params?: CheckoutOperationParams
+  createCheckoutTransactionBundleCb?: (caller: string) => string
   isInitialized: boolean
   provider: IProvider | null
   setSelectedProviderProxy: React.Dispatch<
     React.SetStateAction<ProviderProxyConstructor | undefined>
   >
   createProviderError: string
-  checkoutOperation: INFTCheckoutOperation | null
+  checkoutOperation: CheckoutOperation | null
   supportedChains: BridgeChain[]
   selectedChain?: BridgeChain
   setSelectedChain: React.Dispatch<
     React.SetStateAction<BridgeChain | undefined>
   >
   selectedSwapToken?: Token
-  setSelectedSwapToken: React.Dispatch<React.SetStateAction<Token | undefined>>
   selectedPaymentToken?: PaymentToken | null
   setSelectedPaymentToken: React.Dispatch<
     React.SetStateAction<PaymentToken | undefined | null>
@@ -41,17 +42,16 @@ export type DappContextType = {
   setEstimatedPrice: React.Dispatch<
     React.SetStateAction<EstimatedPrice | undefined>
   >
-  loadPaymentTokens?: INFTCheckoutOperation['loadPaymentTokens']
-  getSupportedTokens?: INFTCheckoutOperation['supportedTokens']
-  estimatePrice?: INFTCheckoutOperation['estimatePrice']
-  checkout?: INFTCheckoutOperation['checkout']
-  getDestinationTx?: INFTCheckoutOperation['getDestinationTx']
+  loadPaymentTokens?: CheckoutOperation['loadPaymentTokens']
+  estimatePrice?: CheckoutOperation['estimatePrice']
+  checkout?: CheckoutOperation['checkout']
+  getDestinationTx?: CheckoutOperation['getDestinationTx']
 }
 
 export type DappContextProviderPropsType = {
   children: ReactNode
-  targetNft?: Target
-  createCheckoutTxBundleCb?: (caller: string) => string
+  params?: CheckoutOperationParams
+  createCheckoutTransactionBundleCb?: (caller: string) => string
   createProviderOpts?: CreateProviderOpts
   createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
@@ -60,15 +60,16 @@ export const DappContext = createContext({} as DappContextType)
 
 /**
  * @description A container for other components such as RarimoPayButton
- * @param {Target} props.targetNft An object that represents the final NFT transaction
- * @param props.createCheckoutTxBundleCb A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
- * @param props.createProviderOpts Parameters to pass to the provider; see {@link createProviderOpts}
- * @param props.createCheckoutOperationParams Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
+ * @param children
+ * @param params - An object that represents the final NFT transaction
+ * @param createCheckoutTransactionBundleCb - A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
+ * @param createProviderOpts - Parameters to pass to the provider; see {@link createProviderOpts}
+ * @param createCheckoutOperationParams - Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
  */
 export const DappContextProvider = ({
   children,
-  targetNft,
-  createCheckoutTxBundleCb,
+  params,
+  createCheckoutTransactionBundleCb,
   createProviderOpts,
   createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
@@ -76,8 +77,6 @@ export const DappContextProvider = ({
     useState<ProviderProxyConstructor>()
   const [supportedChains, setSupportedChains] = useState<BridgeChain[]>([])
   const [selectedChain, setSelectedChain] = useState<BridgeChain>()
-
-  const [selectedSwapToken, setSelectedSwapToken] = useState<Token>()
   const [selectedPaymentToken, setSelectedPaymentToken] =
     useState<PaymentToken | null>()
   const [estimatedPrice, setEstimatedPrice] = useState<EstimatedPrice>()
@@ -87,12 +86,19 @@ export const DappContextProvider = ({
     createProviderOpts,
   )
 
+  const selectedSwapToken = useMemo(() => {
+    const chain = supportedChains.find(
+      chain => Number(chain.id) === Number(params?.chainIdTo),
+    )
+    return chain ? tokenFromChain(chain) : undefined
+  }, [params?.chainIdTo, supportedChains])
+
   const { checkoutOperation, checkoutOperationReactiveState } =
     useCheckoutOperation({
       provider,
       createCheckoutOperationParams,
       selectedChain,
-      targetNft,
+      params,
       selectedSwapToken,
     })
 
@@ -118,11 +124,6 @@ export const DappContextProvider = ({
     [checkoutOperation],
   )
 
-  const getSupportedTokens = useMemo(
-    () => checkoutOperation?.supportedTokens.bind(checkoutOperation),
-    [checkoutOperation],
-  )
-
   const estimatePrice = useMemo(
     () => checkoutOperation?.estimatePrice.bind(checkoutOperation),
     [checkoutOperation],
@@ -142,15 +143,14 @@ export const DappContextProvider = ({
     const ctx: DappContextType = {
       isInitialized,
       setSelectedProviderProxy,
-      getSupportedTokens,
       provider,
       createProviderError,
       checkoutOperation,
       supportedChains,
       selectedChain,
       setSelectedChain,
-      targetNft,
-      createCheckoutTxBundleCb,
+      params,
+      createCheckoutTransactionBundleCb,
       loadPaymentTokens,
       estimatePrice,
       estimatedPrice,
@@ -160,7 +160,6 @@ export const DappContextProvider = ({
       selectedPaymentToken,
       setSelectedPaymentToken,
       selectedSwapToken,
-      setSelectedSwapToken,
     }
     return ctx
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,12 +167,11 @@ export const DappContextProvider = ({
     checkout,
     checkoutOperation,
     checkoutOperationReactiveState,
-    createCheckoutTxBundleCb,
+    createCheckoutTransactionBundleCb,
     createProviderError,
     estimatePrice,
     estimatedPrice,
     getDestinationTx,
-    getSupportedTokens,
     isInitialized,
     loadPaymentTokens,
     provider,
@@ -182,7 +180,7 @@ export const DappContextProvider = ({
     selectedPaymentToken,
     selectedSwapToken,
     supportedChains,
-    targetNft,
+    params,
   ])
 
   return (

@@ -1,21 +1,35 @@
 {
   "name": "@rarimo/react-provider",
-  "version": "1.5.0",
+  "version": "2.0.0-rc.0",
   "description": "Tools to connect to wallets in React applications through the Rarimo SDK.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-provider"
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/react-provider"
   },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "main": "./dist/react-provider.cjs.js",
   "browser": "./dist/react-provider.es.js",
+  "node": "./dist/react-provider.cjs.js",
   "module": "./dist/react-provider.es.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/react-provider.cjs.js",
+      "node": "./dist/react-provider.cjs.js",
       "import": "./dist/react-provider.es.js",
       "default": "./dist/react-provider.es.js"
     }
@@ -28,7 +42,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@rarimo/provider": "workspace:^"
+    "@rarimo/provider": "workspace:^",
+    "@rarimo/shared": "workspace:^"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

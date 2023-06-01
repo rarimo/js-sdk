@@ -1,30 +1,42 @@
 {
   "name": "@rarimo/react-nft-checkout",
-  "version": "1.5.0",
+  "version": "2.0.0-rc.0",
   "description": "React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rarimo/js-sdk.git",
+    "directory": "packages/react-nft-checkout"
+  },
+  "keywords": [
+    "sdk",
+    "rarimo",
+    "multi-chain",
+    "bridging",
+    "ethereum",
+    "near",
+    "polygon",
+    "solana",
+    "web3"
+  ],
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "main": "./dist/react-nft-checkout.cjs.js",
   "browser": "./dist/react-nft-checkout.es.js",
+  "node": "./dist/react-nft-checkout.cjs.js",
   "module": "./dist/react-nft-checkout.es.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/react-nft-checkout.cjs.js",
+      "node": "./dist/react-nft-checkout.cjs.js",
       "import": "./dist/react-nft-checkout.es.js",
       "default": "./dist/react-nft-checkout.es.js"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rarimo/js-sdk/tree/main/packages/react-nft-checkout"
-  },
   "scripts": {
-    "vite-dev-server": "vite",
-    "vite-build": "vite build",
-    "start": "cross-env VITE_APP_ENVIRONMENT=development yarn vite-dev-server",
-    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production NODE_ENV=production  yarn vite-build",
+    "start": "cross-env VITE_APP_ENVIRONMENT=development vite",
+    "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production NODE_ENV=production vite build",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
@@ -57,8 +69,10 @@
     "iconoir-react": "^6.2.1"
   },
   "dependencies": {
+    "@rarimo/bridge": "workspace:^",
     "@rarimo/nft-checkout": "workspace:^",
     "@rarimo/providers-evm": "workspace:^",
+    "@rarimo/shared": "workspace:^",
     "jsbi": "^3.2.5"
   },
   "publishConfig": {
