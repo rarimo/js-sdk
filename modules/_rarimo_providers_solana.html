@@ -16,7 +16,7 @@
 <li><a href="_rarimo_providers_solana.html">@rarimo/providers-solana</a></li></ul>
 <h1>Module @rarimo/providers-solana</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/5a9c212/packages/providers-solana/src/index.ts#L1">packages/providers-solana/src/index.ts:1</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/ad2f297/packages/providers-solana/src/index.ts#L1">packages/providers-solana/src/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
 <a href="#rarimoproviders-solana" id="rarimoproviders-solana" style="color: inherit; text-decoration: none;">
@@ -33,7 +33,7 @@
 </a>
 <p>For example applications, see <a href="https://github.com/rarimo/js-sdk-examples/">rarimo/js-sdk-examples</a> on GitHub.</p>
 <p>Here is an example that creates a <code>PhantomProvider</code> object for a Phantom wallet and prints its address:</p>
-<pre><code class="language-js"><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">createProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/provider&#39;</span><br/><span class="hl-12">import</span><span class="hl-0"> { </span><span class="hl-3">PhantomProvider</span><span class="hl-0"> } </span><span class="hl-12">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@rarimo/providers-solana&#39;</span><br/><br/><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-11">getPhantomWalletAddress</span><span class="hl-0"> = </span><span class="hl-8">async</span><span class="hl-0"> () </span><span class="hl-8">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-15">// Connect to the Phantom wallet in the browser using the PhantomProvider interface to limit bundle size.</span><br/><span class="hl-0">  </span><span class="hl-8">const</span><span class="hl-0"> </span><span class="hl-10">provider</span><span class="hl-0"> = </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-11">createProvider</span><span class="hl-0">(</span><span class="hl-3">PhantomProvider</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-12">await</span><span class="hl-0"> </span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-11">connect</span><span class="hl-0">()</span><br/><br/><span class="hl-0">  </span><span class="hl-15">// Get the address of the wallet</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-11">log</span><span class="hl-0">(</span><span class="hl-3">provider</span><span class="hl-0">.</span><span class="hl-3">address</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
+<pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">createProvider</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;@rarimo/provider&#39;</span><br/><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">PhantomProvider</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;@rarimo/providers-solana&#39;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-7">getPhantomWalletAddress</span><span class="hl-1"> = </span><span class="hl-5">async</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">// Connect to the Phantom wallet in the browser using the PhantomProvider interface to limit bundle size.</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">provider</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-7">createProvider</span><span class="hl-1">(</span><span class="hl-2">PhantomProvider</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">provider</span><span class="hl-1">.</span><span class="hl-7">connect</span><span class="hl-1">()</span><br/><br/><span class="hl-1">  </span><span class="hl-4">// Get the address of the wallet</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-2">provider</span><span class="hl-1">.</span><span class="hl-2">address</span><span class="hl-1">)</span><br/><span class="hl-1">}</span>
 </code></pre>
 
 <a href="#changelog" id="changelog" style="color: inherit; text-decoration: none;">
@@ -74,13 +74,16 @@
 <ul>
 <li class="current"><a href="../modules.html">Rarimo <wbr/>Java<wbr/>Script/<wbr/>Typescript SDK</a>
 <ul>
+<li class="tsd-kind-module"><a href="_rarimo_bridge.html">@rarimo/bridge</a></li>
 <li class="tsd-kind-module"><a href="_rarimo_nft_checkout.html">@rarimo/nft-<wbr/>checkout</a></li>
 <li class="tsd-kind-module"><a href="_rarimo_provider.html">@rarimo/provider</a></li>
 <li class="tsd-kind-module"><a href="_rarimo_providers_evm.html">@rarimo/providers-<wbr/>evm</a></li>
 <li class="tsd-kind-module"><a href="_rarimo_providers_near.html">@rarimo/providers-<wbr/>near</a></li>
 <li class="current selected tsd-kind-module"><a href="_rarimo_providers_solana.html">@rarimo/providers-<wbr/>solana</a></li>
 <li class="tsd-kind-module"><a href="_rarimo_react_nft_checkout.html">@rarimo/react-<wbr/>nft-<wbr/>checkout</a></li>
-<li class="tsd-kind-module"><a href="_rarimo_react_provider.html">@rarimo/react-<wbr/>provider</a></li></ul></li></ul></div></details></nav>
+<li class="tsd-kind-module"><a href="_rarimo_react_provider.html">@rarimo/react-<wbr/>provider</a></li>
+<li class="tsd-kind-module"><a href="_rarimo_shared.html">@rarimo/shared</a></li>
+<li class="tsd-kind-module"><a href="_rarimo_swap.html">@rarimo/swap</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_rarimo_providers_solana.PhantomProvider.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Phantom<wbr/>Provider</a></li>
