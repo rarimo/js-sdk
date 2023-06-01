@@ -66,6 +66,6 @@
     "displayName": "@rarimo/shared"
   },
   "dependencies": {
-    "@distributedlab/tools": "^0.2.0-rc.9"
+    "@distributedlab/tools": "^0.2.0-rc.16"
   }
 }
