@@ -1,4 +1,5 @@
-import { ProviderProxy, Providers, RawProvider } from '@rarimo/provider'
+import type { ProviderProxy, RawProvider } from '@rarimo/provider'
+import { Providers } from '@rarimo/provider'
 
 import { BaseEVMProvider } from './base-evm'
 

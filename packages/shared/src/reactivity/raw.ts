@@ -1,7 +1,9 @@
 import { isFunction } from '@/helpers'
 
-import { Computed, isComputed } from './computed'
-import { isRef, Ref } from './ref'
+import type { Computed } from './computed'
+import { isComputed } from './computed'
+import type { Ref } from './ref'
+import { isRef } from './ref'
 
 export type ComputedOrRef<T = unknown> = Ref<T> | Computed<T>
 export type Unwrap<T> = T extends ComputedOrRef<infer V> ? V : T

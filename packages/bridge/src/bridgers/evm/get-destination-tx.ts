@@ -3,7 +3,8 @@ import {
   JsonApiClient,
   JsonApiError,
 } from '@distributedlab/jac'
-import { BridgeChain, ChainId, HexString, sleep } from '@rarimo/shared'
+import type { BridgeChain, ChainId, HexString } from '@rarimo/shared'
+import { sleep } from '@rarimo/shared'
 
 import { CONFIG } from '@/config'
 import type {

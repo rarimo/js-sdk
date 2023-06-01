@@ -1,20 +1,20 @@
-import type { Token } from '@rarimo/bridge'
-import {
-  DestinationTransaction,
-  DestinationTransactionStatus,
-  tokenFromChain,
-} from '@rarimo/bridge'
-import { errors as providerErrors, IProvider } from '@rarimo/provider'
-import {
-  Amount,
+import type { DestinationTransaction, Token } from '@rarimo/bridge'
+import { DestinationTransactionStatus } from '@rarimo/bridge'
+import { tokenFromChain } from '@rarimo/bridge'
+import type { IProvider } from '@rarimo/provider'
+import { errors as providerErrors } from '@rarimo/provider'
+import type {
   BridgeChain,
   ChainId,
+  TokenSymbol,
+  TransactionBundle,
+} from '@rarimo/shared'
+import {
+  Amount,
   ChainNames,
   ChainTypes,
   isString,
-  TokenSymbol,
   toLowerCase,
-  TransactionBundle,
 } from '@rarimo/shared'
 import type { Swapper } from '@rarimo/swap'
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'

@@ -1,9 +1,11 @@
 import type { Token } from '@rarimo/bridge'
-import {
+import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  createCheckoutOperation,
   CreateCheckoutOperationParams,
+} from '@rarimo/nft-checkout'
+import {
+  createCheckoutOperation,
   EVMOperation,
   Price,
 } from '@rarimo/nft-checkout'

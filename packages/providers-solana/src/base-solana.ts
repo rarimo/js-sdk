@@ -1,8 +1,4 @@
-import {
-  errors,
-  ProviderEventBus,
-  ProviderEventBusEvents,
-  ProviderEvents,
+import type {
   ProviderProxy,
   RawProvider,
   SolanaProvider,
@@ -11,12 +7,13 @@ import {
   TransactionResponse,
 } from '@rarimo/provider'
 import {
-  Chain,
-  ChainId,
-  ChainNames,
-  ChainTypes,
-  SOLANA_CHAIN_IDS,
-} from '@rarimo/shared'
+  errors,
+  ProviderEventBus,
+  ProviderEventBusEvents,
+  ProviderEvents,
+} from '@rarimo/provider'
+import type { Chain, ChainId } from '@rarimo/shared'
+import { ChainNames, ChainTypes, SOLANA_CHAIN_IDS } from '@rarimo/shared'
 import { PublicKey } from '@solana/web3.js'
 
 import {

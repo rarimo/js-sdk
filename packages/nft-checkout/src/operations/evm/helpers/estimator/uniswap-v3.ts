@@ -1,19 +1,16 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import type { Currency } from '@uniswap/sdk-core'
 import {
-  Currency,
   CurrencyAmount,
   Fraction,
   Percent,
   Token as UNIToken,
   TradeType,
 } from '@uniswap/sdk-core'
-import {
-  AlphaRouter,
-  ChainId as UNIChainId,
-  RouteWithValidQuote,
-} from '@uniswap/smart-order-router'
+import type { RouteWithValidQuote } from '@uniswap/smart-order-router'
+import { AlphaRouter, ChainId as UNIChainId } from '@uniswap/smart-order-router'
 import { encodeRouteToPath, Route } from '@uniswap/v3-sdk'
 import type { providers } from 'ethers'
 import JSBI from 'jsbi'

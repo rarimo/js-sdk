@@ -1,8 +1,8 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
+import type { ChainId } from '@rarimo/shared'
 import {
   Amount,
-  ChainId,
   NATIVE_TOKEN_WRAP_SLIPPAGE_MULTIPLIER,
   RARIMO_BRIDGE_FEE,
   toLowerCase,

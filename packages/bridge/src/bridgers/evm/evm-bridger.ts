@@ -1,14 +1,6 @@
 import type { IProvider } from '@rarimo/provider'
-import {
-  Amount,
-  BridgeChain,
-  ChainId,
-  CHAINS,
-  ChainTypes,
-  HexString,
-  ref,
-  toRaw,
-} from '@rarimo/shared'
+import type { BridgeChain, ChainId, HexString } from '@rarimo/shared'
+import { Amount, CHAINS, ChainTypes, ref, toRaw } from '@rarimo/shared'
 
 import { errors } from '@/errors'
 import type { Bridger, BridgerCreateFn, DestinationTransaction } from '@/types'

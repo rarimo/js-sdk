@@ -1,9 +1,9 @@
-import {
+import type {
   NetworkId,
-  setupWalletSelector,
   Wallet,
   WalletSelector,
 } from '@near-wallet-selector/core'
+import { setupWalletSelector } from '@near-wallet-selector/core'
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 import type { NearTransactionRequestBody } from '@rarimo/provider'
 import { ChainNames, NEAR_CHAIN_IDS } from '@rarimo/shared'

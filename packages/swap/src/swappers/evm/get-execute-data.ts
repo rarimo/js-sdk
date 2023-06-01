@@ -1,11 +1,11 @@
 import type { Token } from '@rarimo/bridge'
+import type { TransactionBundle } from '@rarimo/shared'
 import {
   Amount,
   BUNDLE_SALT_BYTES,
   isUndefined,
   MASTER_ROUTER_ABI,
   toLowerCase,
-  TransactionBundle,
 } from '@rarimo/shared'
 import { utils } from 'ethers'
 

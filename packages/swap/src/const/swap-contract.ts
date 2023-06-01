@@ -1,4 +1,5 @@
-import { ChainId, ChainNames, EVM_CHAIN_IDS } from '@rarimo/shared'
+import type { ChainId } from '@rarimo/shared'
+import { ChainNames, EVM_CHAIN_IDS } from '@rarimo/shared'
 
 import { SwapCommands } from '@/enums'
 

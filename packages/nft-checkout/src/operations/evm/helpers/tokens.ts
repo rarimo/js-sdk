@@ -1,6 +1,8 @@
 import { Fetcher } from '@distributedlab/fetcher'
-import { newToken, Token, tokenFromChain } from '@rarimo/bridge'
-import { BridgeChain, ChainNames, EVMDexType } from '@rarimo/shared'
+import type { Token } from '@rarimo/bridge'
+import { newToken, tokenFromChain } from '@rarimo/bridge'
+import type { BridgeChain } from '@rarimo/shared'
+import { ChainNames, EVMDexType } from '@rarimo/shared'
 import type { TokenInfo } from '@uniswap/token-lists'
 
 import { DEFAULT_FETCHER_CONFIG } from '@/config'

@@ -1,4 +1,5 @@
-import { newToken, NewTokenOpts, Token } from '@rarimo/bridge'
+import type { NewTokenOpts, Token } from '@rarimo/bridge'
+import { newToken } from '@rarimo/bridge'
 import type { Amount } from '@rarimo/shared'
 
 import type { PaymentToken } from '@/types'

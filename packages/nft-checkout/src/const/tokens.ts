@@ -1,4 +1,5 @@
-import { newToken, Token } from '@rarimo/bridge'
+import type { Token } from '@rarimo/bridge'
+import { newToken } from '@rarimo/bridge'
 import { ChainNames, EVM_CHAINS } from '@rarimo/shared'
 
 const chapelChain = EVM_CHAINS.find(i => i.name === ChainNames.Chapel)!

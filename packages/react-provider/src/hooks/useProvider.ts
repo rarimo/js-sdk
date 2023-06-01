@@ -1,5 +1,4 @@
-import {
-  createProvider,
+import type {
   CreateProviderOpts,
   IProvider,
   ProviderBase,
@@ -8,6 +7,7 @@ import {
   TransactionRequestBody,
   TransactionResponse,
 } from '@rarimo/provider'
+import { createProvider } from '@rarimo/provider'
 import type { Chain, ChainId } from '@rarimo/shared'
 import { useCallback, useEffect, useState } from 'react'
 

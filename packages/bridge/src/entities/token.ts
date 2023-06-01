@@ -1,10 +1,10 @@
-import {
+import type {
   Address,
   BridgeChain,
   Decimals,
-  EVMDexType,
   TokenSymbol,
 } from '@rarimo/shared'
+import { EVMDexType } from '@rarimo/shared'
 
 import type { Token } from '@/types'
 

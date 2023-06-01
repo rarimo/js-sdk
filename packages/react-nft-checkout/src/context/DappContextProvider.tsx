@@ -13,7 +13,8 @@ import type {
   ProviderProxyConstructor,
 } from '@rarimo/provider'
 import type { BridgeChain } from '@rarimo/shared'
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useEffect, useMemo, useState } from 'react'
 
 import { useCheckoutOperation, useProvider } from '@/hooks'
 
