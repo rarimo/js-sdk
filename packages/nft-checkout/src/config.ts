@@ -4,7 +4,7 @@ import type { Config } from './types'
 
 export const DEFAULT_CONFIG: Config = {
   UNISWAP_V3_TOKEN_LIST_URL:
-    'https://ipfs.tokend.io/ipfs/ipns/tokens.uniswap.org',
+    'https://ipfs.testnet.rarimo.com/ipfs/ipns/tokens.uniswap.org',
   TRADER_JOE_TOKEN_LIST_URL:
     'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/mc.tokenlist.json',
   PANCAKE_SWAP_TOKEN_LIST_URL:

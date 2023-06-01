@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/nft-checkout` - Pulling internal tokens mapping for testnets
 
 ## [1.5.0-rc.25] - 2023-05-25
-### Added
+### Fixed
 - `@rarimo/provider` - `RawProvider` type
 
 ## [1.5.0-rc.24] - 2023-05-25
