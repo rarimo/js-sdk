@@ -1,7 +1,7 @@
 {
   "name": "rarimo-js-sdk-monorepo-root",
   "private": true,
-  "description": "TypeScript-based source development script for Rarimo Protocol",
+  "description": "TypeScript-based source development script for the Rarimo protocol",
   "keywords": [
     "sdk",
     "rarimo"
