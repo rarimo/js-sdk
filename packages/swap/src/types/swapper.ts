@@ -1,3 +1,4 @@
+import type { Computed, Raw, Ref } from '@distributedlab/reactivity'
 import type {
   DestinationTransaction,
   InternalToken,
@@ -8,10 +9,7 @@ import type {
   Amount,
   BridgeChain,
   ChainTypes,
-  Computed,
   HexString,
-  Raw,
-  Ref,
   TransactionBundle,
 } from '@rarimo/shared'
 
@@ -44,7 +42,7 @@ export type Swapper = Raw<{
    */
   execute(args: ExecuteArgs): Promise<TransactionResponse>
   /**
-   * Proxy function of {@link Bridger.loadSupportedChains}
+   * Proxy function of {@link Bridger.supportedChains}
    */
   supportedChains(): Promise<BridgeChain[]>
   /**

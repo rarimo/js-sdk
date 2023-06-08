@@ -84,7 +84,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
 
   if (!isWrappedOrUnwrapped) {
     if (!args.path || !amountOut) {
-      throw new TypeError('path,amountOut args are required for swap')
+      throw new TypeError('path, amountOut args are required for swap')
     }
 
     data.push(...getSwapData(from, to, amountIn, amountOut, args.path))

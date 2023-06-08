@@ -1,6 +1,7 @@
+import { ref, toRaw } from '@distributedlab/reactivity'
 import type { IProvider } from '@rarimo/provider'
 import type { BridgeChain, ChainId, HexString } from '@rarimo/shared'
-import { Amount, CHAINS, ChainTypes, ref, toRaw } from '@rarimo/shared'
+import { Amount, CHAINS, ChainTypes } from '@rarimo/shared'
 
 import { errors } from '@/errors'
 import type { Bridger, BridgerCreateFn, DestinationTransaction } from '@/types'
@@ -17,7 +18,7 @@ import {
 } from './get-destination-tx'
 
 export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
-  const provider = ref(p)
+  const provider = p
   const chains = ref<BridgeChain[]>([])
   const isInitialized = ref(false)
 
@@ -25,7 +26,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     return chains.value.find(chain => chain.id === id)
   }
 
-  const loadSupportedChains = async (): Promise<BridgeChain[]> => {
+  const supportedChains = async (): Promise<BridgeChain[]> => {
     // TODO: add backend integration
     if (!chains.value.length) chains.value = CHAINS[ChainTypes.EVM]!
     return chains.value
@@ -33,7 +34,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
 
   const init = async () => {
     if (isInitialized.value) return
-    await loadSupportedChains()
+    await supportedChains()
     isInitialized.value = true
   }
 
@@ -59,11 +60,11 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     operator: HexString,
     amount?: Amount,
   ) => {
-    return _approveIfNeeded(provider.value, operator, token, amount)
+    return _approveIfNeeded(provider, operator, token, amount)
   }
 
   const approve = async (token: Token, operator: HexString) => {
-    return _approve(provider.value, operator, token)
+    return _approve(provider, operator, token)
   }
 
   const isApproveRequired = async (
@@ -71,7 +72,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     operator: HexString,
     amount?: Amount,
   ) => {
-    return isApproveERC20Required(provider.value, operator, token, amount)
+    return isApproveERC20Required(provider, operator, token, amount)
   }
 
   return toRaw({
@@ -80,7 +81,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     chains,
     isInitialized,
     init,
-    loadSupportedChains,
+    supportedChains,
     getDestinationTx,
     getInternalTokenMapping,
     isApproveRequired,
