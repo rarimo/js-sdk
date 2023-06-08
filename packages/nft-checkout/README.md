@@ -77,13 +77,6 @@ const sendTransaction = async () => {
   // At this point you can ask the user to confirm the transaction with the fees or cancel it.
   const estimatedPrice = await op.estimatePrice(selectedToken)
 
-  // Create a JSON string with pricing information to encode in the transaction.
-  const priceString = JSON.stringify({
-    impact: estimatedPrice.impact,
-    price: estimatedPrice.price.toString(),
-    gasPrice: estimatedPrice.gasPrice,
-  })
-
   // Create the transaction bundle, which includes custom logic that tells the Rarimo contract what to do after unlocking the transferred tokens on the destination chain, such as calling another contract to buy the NFT on the destination chain.
   // Optionally, you can set the bundle salt to be able to access the temporary contracts that Rarimo uses to run the bundled transactions.
   // See "Bundling" in the Rarimo documentation: https://docs.rarimo.com/overview/bundling
