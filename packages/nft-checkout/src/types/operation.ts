@@ -1,16 +1,15 @@
-import type { DestinationTransaction } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type {
   Address,
   BridgeChain,
   Chain,
   ChainId,
+  DestinationTransaction,
   TransactionBundle,
 } from '@rarimo/shared'
 
 import type { Price } from '@/entities'
 
-import type { Config } from './config'
 import type { OperationSubscriber } from './operation-event-bus'
 import type { EstimatedPrice, PaymentToken } from './token'
 
@@ -43,9 +42,9 @@ export type CheckoutOperationParams = {
   slippage?: number // 0.5, 1, 5, 10 etc
 }
 
-export interface CheckoutOperationConstructor {
-  new (config: Config, provider: IProvider): CheckoutOperation
-}
+export type CheckoutOperationCreateFunction = (
+  provider: IProvider,
+) => CheckoutOperation
 
 export interface CheckoutOperation extends OperationSubscriber {
   chainFrom: Chain | undefined

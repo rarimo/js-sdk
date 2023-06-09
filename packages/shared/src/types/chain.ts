@@ -7,7 +7,7 @@ export type ChainId = string | number
 
 export type Chain = {
   id: ChainId
-  name: string
+  name: ChainNames
   rpcUrl: string
   explorerUrl: string
   token: {
@@ -17,12 +17,12 @@ export type Chain = {
   }
   type: ChainTypes
   icon: string
+  isTestnet: boolean
 }
 
 export type BridgeChain = Chain & {
   contractAddress: Address
   dexType: EVMDexType
-  isTestnet: boolean
 }
 
 export type ChainIdMap = { [key in ChainNames]?: ChainId }

@@ -1,10 +1,22 @@
 import { ref, toRaw } from '@distributedlab/reactivity'
 import type { IProvider } from '@rarimo/provider'
-import type { BridgeChain, ChainId, HexString } from '@rarimo/shared'
-import { Amount, CHAINS, ChainTypes } from '@rarimo/shared'
+import type {
+  BridgeChain,
+  ChainId,
+  DestinationTransaction,
+  HexString,
+} from '@rarimo/shared'
+import {
+  Amount,
+  ChainKind,
+  ChainTypes,
+  fetchInternalTokenMapping,
+  getDestinationTx as fetchDestTx,
+  loadSupportedChains,
+} from '@rarimo/shared'
 
 import { errors } from '@/errors'
-import type { Bridger, BridgerCreateFn, DestinationTransaction } from '@/types'
+import type { Bridger, BridgerCreateFn } from '@/types'
 import type { Token } from '@/types'
 
 import {
@@ -12,24 +24,25 @@ import {
   approveIfNeeded as _approveIfNeeded,
   isApproveERC20Required,
 } from './approve-if-needed'
-import {
-  fetchInternalTokenMapping,
-  getDestinationTx as fetchDestTx,
-} from './get-destination-tx'
 
 export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
   const provider = p
   const chains = ref<BridgeChain[]>([])
   const isInitialized = ref(false)
 
-  const getChainById = (id: ChainId) => {
-    return chains.value.find(chain => chain.id === id)
+  const supportedChains = async (kind?: ChainKind): Promise<BridgeChain[]> => {
+    if (chains.value.length) return chains.value
+
+    chains.value = await loadSupportedChains({
+      type: ChainTypes.EVM,
+      kind,
+    })
+
+    return chains.value
   }
 
-  const supportedChains = async (): Promise<BridgeChain[]> => {
-    // TODO: add backend integration
-    if (!chains.value.length) chains.value = CHAINS[ChainTypes.EVM]!
-    return chains.value
+  const getChainById = (id: ChainId) => {
+    return chains.value.find(chain => Number(chain.id) === Number(id))
   }
 
   const init = async () => {
@@ -82,6 +95,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     isInitialized,
     init,
     supportedChains,
+    getChainById,
     getDestinationTx,
     getInternalTokenMapping,
     isApproveRequired,

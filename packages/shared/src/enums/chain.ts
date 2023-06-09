@@ -25,7 +25,12 @@ export enum EVMDexType {
 }
 
 export enum ChainTypes {
-  EVM = 1,
-  Solana = 2,
-  Near = 3,
+  EVM,
+  Solana,
+  Near,
+}
+
+export enum ChainKind {
+  Mainnet = 'mainnet',
+  Testnet = 'testnet',
 }

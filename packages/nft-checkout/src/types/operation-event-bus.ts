@@ -17,8 +17,16 @@ export type OperationEventMap = {
   [OperationEventBusEvents.StatusChanged]: OperationEventPayload
 }
 
+export type OperationEventCallback = (e?: OperationEventPayload) => void
+
+export interface OperationEmitter {
+  emit: (event: OperationEventBusEvents, e: OperationEventPayload) => void
+}
+
 export interface OperationSubscriber {
-  onInitiated(cb: (e?: OperationEventPayload) => void): void
-  onStatusChanged(cb: (e?: OperationEventPayload) => void): void
+  onInitiated(cb: OperationEventCallback): void
+  onStatusChanged(cb: OperationEventCallback): void
   clearHandlers(): void
 }
+
+export type OperationEventBus = OperationEmitter & OperationSubscriber

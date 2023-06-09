@@ -23,8 +23,10 @@ export class OperationChainNotSupportedError extends RuntimeError {
 
 export class OperationSupportedTokensLoadFailedError extends RuntimeError {
   public name = 'OperationSupportedTokensLoadFailedError'
-  constructor(message = 'Failed to load supported tokens for selected chain') {
-    super(message)
+  constructor(
+    e = new Error('Failed to load supported tokens for selected chain'),
+  ) {
+    super(e)
   }
 }
 
@@ -35,23 +37,9 @@ export class OperationInvalidSelectedTokenPairError extends RuntimeError {
   }
 }
 
-export class OperationEstimatedPriceNotExistError extends RuntimeError {
-  public name = 'OperationEstimatedPriceNotExistError'
-  constructor(message = 'Provided estimated price does not exist') {
-    super(message)
-  }
-}
-
 export class OperationInvalidChainPairError extends RuntimeError {
   public name = 'OperationInvalidChainPairError'
   constructor(message = 'Provided chain pair is invalid') {
-    super(message)
-  }
-}
-
-export class OperationInvalidTokenPairError extends RuntimeError {
-  public name = 'OperationInvalidTokenPairError'
-  constructor(message = 'Provided token pair is invalid') {
     super(message)
   }
 }
