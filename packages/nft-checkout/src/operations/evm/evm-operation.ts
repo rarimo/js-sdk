@@ -45,18 +45,16 @@ const IS_TOKEN_WRAPPED = false
  * ```
  */
 export const EVMOperation = (p: IProvider): CheckoutOperation => {
-  const isInitialized = ref(false)
-  const status = ref(CheckoutOperationStatus.Created)
-  const tokens = ref<Token[]>([])
-
   const provider = p
   const swapper = createSwapper(createEVMSwapper, p)
   const bus = createOperationEventBus()
-
-  const chainFrom = ref<BridgeChain | undefined>(undefined)
-  const chainTo = ref<BridgeChain | undefined>(undefined)
-  const params = ref<CheckoutOperationParams | undefined>(undefined)
-  const targetToken = ref<Token | undefined>(undefined)
+  const chainFrom = ref<BridgeChain>()
+  const chainTo = ref<BridgeChain>()
+  const params = ref<CheckoutOperationParams>()
+  const targetToken = ref<Token>()
+  const isInitialized = ref(false)
+  const status = ref(CheckoutOperationStatus.Created)
+  const tokens = ref<Token[]>([])
 
   const init = async (p: CheckoutOperationParams) => {
     setStatus(CheckoutOperationStatus.Initializing)
