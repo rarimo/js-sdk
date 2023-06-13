@@ -1,11 +1,20 @@
+import type { Computed, Raw, Ref } from '@distributedlab/reactivity'
 import type { IProvider, TransactionResponse } from '@rarimo/provider'
-import type { BridgeChain, ChainTypes, HexString, Raw } from '@rarimo/shared'
-import type { Amount, Computed, Ref } from '@rarimo/shared'
+import type {
+  Amount,
+  BridgeChain,
+  ChainId,
+  ChainKind,
+  ChainTypes,
+  DestinationTransaction,
+  HexString,
+  InternalToken,
+} from '@rarimo/shared'
 
-import type { DestinationTransaction, InternalToken, Token } from '@/types'
+import type { Token } from '@/types'
 
 export type Bridger = Raw<{
-  provider: Ref<IProvider>
+  provider: IProvider
   chains: Computed<BridgeChain[]>
   chainType: ChainTypes
   isInitialized: Ref<boolean>
@@ -17,7 +26,14 @@ export type Bridger = Raw<{
    *
    * @returns A list of supported chains and information about them
    */
-  loadSupportedChains(): Promise<BridgeChain[]>
+  loadSupportedChains(kind?: ChainKind): Promise<BridgeChain[]>
+
+  /**
+   * Get the chain that are supported for the bridging by ID
+   *
+   * @returns Supported chain and information about it or void
+   */
+  getChainById(id: ChainId): BridgeChain | void
 
   /**
    * Get the destination chain transaction hash as the result of the bridging

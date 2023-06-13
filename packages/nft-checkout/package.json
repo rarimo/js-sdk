@@ -50,9 +50,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^0.2.0-rc.16",
-    "@distributedlab/jac": "^0.2.0-rc.16",
-    "@distributedlab/tools": "^0.2.0-rc.16",
+    "@distributedlab/reactivity": "^0.2.0-rc.19",
+    "@distributedlab/tools": "^0.2.0-rc.19",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
@@ -71,7 +70,6 @@
     "@uniswap/token-lists": "1.0.0-beta.30",
     "@uniswap/v2-sdk": "^3.0.1",
     "@uniswap/v3-sdk": "^3.9.0",
-    "ethereum-erc20-token-balances-multicall": "^1.0.2",
     "ethers": "^5.7.2",
     "events": "^3.3.0",
     "jsbi": "^3.2.5"

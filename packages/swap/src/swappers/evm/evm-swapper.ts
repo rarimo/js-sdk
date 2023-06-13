@@ -1,19 +1,18 @@
+import { extend, ref, toRaw } from '@distributedlab/reactivity'
 import { createBridger, createEVMBridger } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import { computed, ref, toRaw } from '@rarimo/shared'
 
 import type { ExecuteArgs, Swapper } from '@/types'
 
 import { getExecuteData } from './get-execute-data'
 
-export const createEVMSwapper = (p: IProvider): Swapper => {
-  const provider = ref(p)
-  const bridger = ref(createBridger(createEVMBridger, p))
+export const createEVMSwapper = (provider: IProvider): Swapper => {
+  const bridger = createBridger(createEVMBridger, provider)
   const isInitialized = ref(false)
 
   const init = async () => {
     if (isInitialized.value) return
-    await bridger.value.init()
+    await bridger.init()
     isInitialized.value = true
   }
 
@@ -23,15 +22,11 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     const { from, amountIn, handleAllowance } = args
 
     if (handleAllowance) {
-      await bridger.value.approveIfNeeded(
-        from,
-        from.chain.contractAddress,
-        amountIn,
-      )
+      await bridger.approveIfNeeded(from, from.chain.contractAddress, amountIn)
     }
 
-    return provider.value.signAndSendTx({
-      from: provider.value.address,
+    return provider.signAndSendTx({
+      from: provider.address,
       to: from.chain.contractAddress,
       data: getExecuteData(args),
       ...(from.isNative
@@ -42,20 +37,12 @@ export const createEVMSwapper = (p: IProvider): Swapper => {
     })
   }
 
-  return toRaw({
-    chains: computed(() => bridger.value.chains),
-    isInitialized,
-    provider,
-    init,
-    execute,
-    chainType: bridger.value.chainType,
-    isApproveRequired: bridger.value.isApproveRequired.bind(bridger.value),
-    getDestinationTx: bridger.value.getDestinationTx.bind(bridger.value),
-    supportedChains: bridger.value.loadSupportedChains.bind(bridger.value),
-    approveIfNeeded: bridger.value.approveIfNeeded.bind(bridger.value),
-    approve: bridger.value.approve.bind(bridger.value),
-    getInternalTokenMapping: bridger.value.getInternalTokenMapping.bind(
-      bridger.value,
-    ),
-  })
+  return toRaw(
+    extend(bridger, {
+      bridger,
+      isInitialized,
+      init,
+      execute,
+    }),
+  )
 }

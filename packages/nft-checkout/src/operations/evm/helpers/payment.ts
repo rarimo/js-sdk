@@ -2,86 +2,158 @@ import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import { tokenFromChain } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import type { BridgeChain } from '@rarimo/shared'
-import { Amount } from '@rarimo/shared'
 import type {
-  BalanceResult,
-  Token as TokenInfo,
-} from 'ethereum-erc20-token-balances-multicall'
-import { getBalancesForEthereumAddress } from 'ethereum-erc20-token-balances-multicall'
+  BridgeChain,
+  InternalAccountBalance,
+  TokenSymbol,
+} from '@rarimo/shared'
+import {
+  Amount,
+  ChainNames,
+  loadAccountBalances,
+  parseTokenId,
+  toLowerCase,
+} from '@rarimo/shared'
+import type { Swapper } from '@rarimo/swap'
 
 import { paymentTokenFromToken } from '@/entities'
-import type { PaymentToken } from '@/types'
+import type { CheckoutOperationParams, PaymentToken } from '@/types'
 
-const mapTokenBalances = (
-  supportedTokens: Token[],
-  balances: BalanceResult,
-): PaymentToken[] => {
-  if (!balances.tokens) return []
+import { estimate, getNativeAmountIn, isSameChainOperation } from './estimator'
+import { NATIVE_TOKEN_ADDRESS } from './tokens'
 
-  return balances.tokens.reduce((acc, token) => {
-    const paymentToken = createPaymentToken(supportedTokens, token)
-    if (paymentToken) acc.push(paymentToken)
-    return acc
-  }, [] as PaymentToken[])
+const INTERNAL_TOKENS_MAP: { [key in ChainNames]?: string } = {
+  [ChainNames.Goerli]: '2',
+  [ChainNames.Sepolia]: '3',
+  [ChainNames.Fuji]: '4',
+  [ChainNames.Chapel]: '5',
 }
 
-const getTokenByAddress = (
+export const getPaymentTokensWithPairs = async (
+  provider: IProvider,
+  params: CheckoutOperationParams,
   tokens: Token[],
-  address: string,
-): Token | undefined => {
-  return tokens.find(i => i.address === address)
+  targetToken: Token,
+  chainFrom: BridgeChain,
+) => {
+  const paymentTokens = await getPaymentTokens(provider, chainFrom, tokens)
+
+  const targetTokenSymbol = toLowerCase(targetToken.symbol)
+
+  const paymentTokensWithoutTarget = paymentTokens.filter(
+    i => toLowerCase(i.symbol) !== targetTokenSymbol,
+  )
+
+  const estimatedPrices = await Promise.allSettled(
+    paymentTokensWithoutTarget.map(i =>
+      estimate(provider, tokens, i, params, targetToken),
+    ),
+  )
+
+  return estimatedPrices.reduce<PaymentToken[]>((acc, promise) => {
+    if (promise.status !== 'fulfilled') return acc
+
+    const paymentToken = paymentTokensWithoutTarget.find(
+      t => toLowerCase(t.symbol) === toLowerCase(promise.value.from.symbol),
+    )
+
+    if (!paymentToken) return acc
+
+    const amountIn = promise.value.from.isNative
+      ? getNativeAmountIn(params, promise.value.price)
+      : promise.value.price
+
+    const isEnoughBalance = amountIn.isLessThanOrEqualTo(
+      paymentToken.balanceRaw,
+    )
+
+    if (isEnoughBalance) acc.push(paymentToken)
+
+    return acc
+  }, [])
+}
+
+export const getTargetToken = async (
+  swapper: Swapper,
+  params: CheckoutOperationParams,
+  tokens: Token[],
+  chainFrom: BridgeChain,
+  chainTo: BridgeChain,
+): Promise<Token | undefined> => {
+  const isSameChain = isSameChainOperation(params)
+  const targetTokenAddress = toLowerCase(params.price.address)
+
+  // get target token from params if it's the same chain operation,
+  // otherwise we will get it from internal mappings
+  if (isSameChain) {
+    return targetTokenAddress
+      ? tokens.find(
+          i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
+        )
+      : tokenFromChain(chainFrom)
+  }
+
+  const targetTokenSymbol = getTargetTokenSymbol(chainTo, params.price.symbol)
+
+  if (!targetTokenSymbol) return
+
+  const internalToken = await swapper.getInternalTokenMapping(targetTokenSymbol)
+
+  if (!internalToken) return
+
+  const chainFromName = toLowerCase(chainFrom?.name)
+
+  const chain = internalToken.chains.find(
+    i => toLowerCase(i.id) === chainFromName,
+  )
+
+  if (!chain) return
+
+  return chain.token_address === NATIVE_TOKEN_ADDRESS
+    ? tokenFromChain(chainFrom)
+    : tokens.find(
+        i => toLowerCase(i.address) === toLowerCase(chain.token_address),
+      )
+}
+
+const getPaymentTokens = async (
+  provider: IProvider,
+  chain: BridgeChain,
+  tokens: Token[],
+): Promise<PaymentToken[]> => {
+  const balances = await loadAccountBalances(chain, provider.address!)
+
+  if (!balances.length) return []
+
+  return balances.reduce<PaymentToken[]>((acc, token) => {
+    const paymentToken = createPaymentToken(tokens, token)
+    if (paymentToken) acc.push(paymentToken)
+    return acc
+  }, [])
 }
 
 const createPaymentToken = (
   supportedTokens: Token[],
-  token: TokenInfo,
+  balance: InternalAccountBalance,
 ): PaymentToken | undefined => {
-  const internalToken = getTokenByAddress(
-    supportedTokens,
-    token.contractAddress,
+  const [, address] = parseTokenId(balance.token.id)
+
+  const token = supportedTokens.find(i =>
+    address === NATIVE_TOKEN_ADDRESS
+      ? i.isNative
+      : toLowerCase(i.address) === toLowerCase(address),
   )
 
-  if (!internalToken || !token.decimals) return
-
-  if (BN.fromBigInt(token.balance, token.decimals).isZero) return
+  if (!token || BN.fromBigInt(balance.amount, token.decimals).isZero) return
 
   return paymentTokenFromToken(
-    internalToken,
-    Amount.fromBigInt(token.balance, token.decimals),
+    token,
+    Amount.fromBigInt(balance.amount, token.decimals),
   )
 }
 
-export const getPaymentTokens = async (
-  chain: BridgeChain,
-  provider: IProvider,
-  tokens: Token[],
-): Promise<PaymentToken[]> => {
-  const erc20 = mapTokenBalances(
-    tokens,
-    await getBalancesForEthereumAddress({
-      contractAddresses: tokens.reduce((acc: string[], i) => {
-        if (i.address) acc.push(i.address)
-        return acc
-      }, []),
-      ethereumAddress: provider.address!,
-      providerOptions: { ethersProvider: provider?.getWeb3Provider?.() },
-      formatBalances: false,
-    }),
-  )
+const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
+  if (!chain.isTestnet) return symbol
 
-  const _provider = provider.getWeb3Provider?.()
-  const nativeBalance = await _provider?.getBalance(provider.address!)
-
-  return [
-    ...erc20,
-    ...(nativeBalance && nativeBalance.gt(0)
-      ? [
-          paymentTokenFromToken(
-            tokenFromChain(chain),
-            Amount.fromBigInt(nativeBalance.toString(), chain.token.decimals),
-          ),
-        ]
-      : []),
-  ]
+  return INTERNAL_TOKENS_MAP[chain.name] ?? ''
 }

@@ -2,7 +2,6 @@ import type { Token } from '@rarimo/bridge'
 import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  CreateCheckoutOperationParams,
 } from '@rarimo/nft-checkout'
 import {
   createCheckoutOperation,
@@ -15,7 +14,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 type Props = {
   provider: IProvider | null
-  createCheckoutOperationParams?: CreateCheckoutOperationParams
   selectedChain?: BridgeChain
   params?: CheckoutOperationParams
   selectedSwapToken?: Token
@@ -23,7 +21,6 @@ type Props = {
 
 export const useCheckoutOperation = ({
   provider,
-  createCheckoutOperationParams,
   selectedChain,
   params,
   selectedSwapToken,
@@ -63,13 +60,9 @@ export const useCheckoutOperation = ({
   useEffect(() => {
     if (!provider) return
 
-    const op = createCheckoutOperation(
-      EVMOperation,
-      provider,
-      createCheckoutOperationParams,
-    )
+    const op = createCheckoutOperation(EVMOperation, provider)
     setCheckoutOperation(op)
-  }, [createCheckoutOperationParams, provider])
+  }, [provider])
 
   useEffect(() => {
     if (!checkoutOperation || !params || !selectedChain) return

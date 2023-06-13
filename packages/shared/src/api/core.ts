@@ -1,28 +1,18 @@
-import {
-  HTTP_STATUS_CODES,
-  JsonApiClient,
-  JsonApiError,
-} from '@distributedlab/jac'
-import type { BridgeChain, ChainId, HexString } from '@rarimo/shared'
-import { sleep } from '@rarimo/shared'
+import { HTTP_STATUS_CODES, JsonApiError } from '@distributedlab/jac'
 
-import { CONFIG } from '@/config'
+import { sleep } from '@/helpers'
 import type {
+  BridgeChain,
+  ChainId,
   DestinationTransaction,
   DestinationTransactionResponse,
+  HexString,
   InternalToken,
 } from '@/types'
 
-const DESTINATION_TX_PULL_INTERVAL = 2000
+import { coreApi } from './api'
 
-const api = new JsonApiClient({
-  baseUrl: CONFIG.CORE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Origin: window?.origin ?? '',
-  },
-  credentials: 'omit',
-})
+const DESTINATION_TX_PULL_INTERVAL = 2000
 
 export const getDestinationTx = async (
   sourceChain: BridgeChain,
@@ -48,7 +38,7 @@ const fetchDestinationTx = async (
   txHash: HexString,
 ): Promise<DestinationTransactionResponse | null> => {
   try {
-    const { data } = await api.get<DestinationTransactionResponse>(
+    const { data } = await coreApi.get<DestinationTransactionResponse>(
       `/v1/chains/${chainId}/transactions/${txHash}`,
     )
     return data
@@ -66,7 +56,7 @@ export const fetchInternalTokenMapping = async (
 ): Promise<InternalToken | undefined> => {
   let result: InternalToken | undefined
   try {
-    const { data } = await api.get<InternalToken>(
+    const { data } = await coreApi.get<InternalToken>(
       `/v1/tokens/${targetTokenSymbol}`,
     )
     result = data

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- `root` - Known issues to the `README.md` file
+- `@rarimo/bridge` - `@distributedlab/reactivity` dependency
+- `@rarimo/shared` - All internal API interactions with the core and dex services
+
+### Changed
+- `@rarimo/bridge` - Moved all internal API interactions to the `@rarimo/shared` package
+- `@rarimo/nft-checkout` - Refactored with the `@distributedlab/reactivity` package
+- `@rarimo/nft-checkout` - `supportedChains` method in the `CheckoutOperation` renamed to the `loadSupportedChains`
+
+### Removed
+- `@rarimo/bridge` - `@distributedlab/jac` dependency
+- `@rarimo/nft-checkout` - Hardcoded chain list
+- `@rarimo/nft-checkout` - `ethereum-erc20-token-balances-multicall` dependency
+- `@rarimo/nft-checkout` - `@distributedlab/fetcher` dependency
+
 ## [2.0.0-rc.0] - 2023-06-01
 ### Added
 - `@rarimo/shared` - Utility functions, types and constants shared across @rarimo packages.

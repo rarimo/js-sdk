@@ -1,39 +1,18 @@
-import type { DestinationTransaction } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type {
   Address,
   BridgeChain,
   Chain,
   ChainId,
+  DestinationTransaction,
   TransactionBundle,
 } from '@rarimo/shared'
 
 import type { Price } from '@/entities'
+import { CheckoutOperationStatus } from '@/enums'
 
-import type { Config } from './config'
 import type { OperationSubscriber } from './operation-event-bus'
 import type { EstimatedPrice, PaymentToken } from './token'
-
-export enum CheckoutOperationStatus {
-  Created,
-  Initializing,
-  SupportedChainsLoading,
-  SupportedChainsLoaded,
-  Initialized,
-  PaymentTokensLoading,
-  PaymentTokensLoaded,
-  EstimatedPriceCalculating,
-  EstimatedPriceCalculated,
-  CheckoutStarted,
-  CheckAllowance,
-  Approve,
-  Approved,
-  SubmittingCheckoutTx,
-  CheckoutCompleted,
-  DestinationTxPending,
-  DestinationTxSuccess,
-  DestinationTxFailed,
-}
 
 export type CheckoutOperationParams = {
   chainIdTo: ChainId
@@ -43,9 +22,9 @@ export type CheckoutOperationParams = {
   slippage?: number // 0.5, 1, 5, 10 etc
 }
 
-export interface CheckoutOperationConstructor {
-  new (config: Config, provider: IProvider): CheckoutOperation
-}
+export type CheckoutOperationCreateFunction = (
+  provider: IProvider,
+) => CheckoutOperation
 
 export interface CheckoutOperation extends OperationSubscriber {
   chainFrom: Chain | undefined
@@ -63,7 +42,7 @@ export interface CheckoutOperation extends OperationSubscriber {
    *
    * @returns A list of supported chains and information about them
    */
-  supportedChains(): Promise<BridgeChain[]>
+  loadSupportedChains(): Promise<BridgeChain[]>
   /**
    * Load the wallet's balance of payment tokens on the specified chain.
    *

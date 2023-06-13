@@ -125,6 +125,36 @@ To use `@rarimo/nft-checkout` in project which uses `yarn` as package manager yo
 }
 ```
 
+### Incorrectly resolved dependencies in the ESM projects
+If you see the following error:
+
+```
+TypeError: n.BigInt is not a function
+```
+
+This is because of this code fragment in the [@uniswap/router-sdk] which is used inside our SDK:
+
+```js
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./router-sdk.cjs.production.min.js')
+} else {
+  module.exports = require('./router-sdk.cjs.development.js')
+}
+```
+
+This code in the `./dist/index.js` resolves CommonJS version of the package instead of ESM version. To fix this issue you need to add the following config to your Webpack\Vite config:
+
+```js
+{
+  resolve: {
+    alias: {
+      '@uniswap/router-sdk': '@uniswap/router-sdk/dist/router-sdk.esm.js'
+    }
+  }
+}
+```
+
+[@uniswap/router-sdk]: https://github.com/Uniswap/router-sdk
 
 ## Development
 

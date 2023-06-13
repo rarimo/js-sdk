@@ -3,7 +3,6 @@ import { tokenFromChain } from '@rarimo/bridge'
 import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  CreateCheckoutOperationParams,
   EstimatedPrice,
   PaymentToken,
 } from '@rarimo/nft-checkout'
@@ -53,7 +52,6 @@ export type DappContextProviderPropsType = {
   params?: CheckoutOperationParams
   createCheckoutTransactionBundleCb?: (caller: string) => string
   createProviderOpts?: CreateProviderOpts
-  createCheckoutOperationParams?: CreateCheckoutOperationParams
 }
 
 export const DappContext = createContext({} as DappContextType)
@@ -64,14 +62,12 @@ export const DappContext = createContext({} as DappContextType)
  * @param params - An object that represents the final NFT transaction
  * @param createCheckoutTransactionBundleCb - A callback which should return encoded bundle of all the transactions to run; see https://rarimo.gitlab.io/docs/docs/overview/bundling
  * @param createProviderOpts - Parameters to pass to the provider; see {@link createProviderOpts}
- * @param createCheckoutOperationParams - Parameters to pass to the checkout operation; see {@link createCheckoutOperation}
  */
 export const DappContextProvider = ({
   children,
   params,
   createCheckoutTransactionBundleCb,
   createProviderOpts,
-  createCheckoutOperationParams,
 }: DappContextProviderPropsType) => {
   const [selectedProviderProxy, setSelectedProviderProxy] =
     useState<ProviderProxyConstructor>()
@@ -96,7 +92,6 @@ export const DappContextProvider = ({
   const { checkoutOperation, checkoutOperationReactiveState } =
     useCheckoutOperation({
       provider,
-      createCheckoutOperationParams,
       selectedChain,
       params,
       selectedSwapToken,
@@ -106,7 +101,7 @@ export const DappContextProvider = ({
     if (!checkoutOperation) return
 
     const getSupportedChains = async () => {
-      const chains = await checkoutOperation.supportedChains()
+      const chains = await checkoutOperation.loadSupportedChains()
 
       setSupportedChains(chains)
     }

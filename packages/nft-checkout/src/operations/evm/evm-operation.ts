@@ -1,50 +1,39 @@
-import type { DestinationTransaction, Token } from '@rarimo/bridge'
-import { DestinationTransactionStatus } from '@rarimo/bridge'
-import { tokenFromChain } from '@rarimo/bridge'
+import { extend, ref, toRaw } from '@distributedlab/reactivity'
+import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import { errors as providerErrors } from '@rarimo/provider'
-import type {
-  BridgeChain,
-  ChainId,
-  TokenSymbol,
-  TransactionBundle,
-} from '@rarimo/shared'
+import type { BridgeChain, TransactionBundle } from '@rarimo/shared'
 import {
   Amount,
-  ChainNames,
   ChainTypes,
+  DestinationTransactionStatus,
   isString,
-  toLowerCase,
 } from '@rarimo/shared'
-import type { Swapper } from '@rarimo/swap'
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'
 import type { providers } from 'ethers'
 
-import { OperationEventBusEvents } from '@/enums'
+import { CheckoutOperationStatus, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  Config,
   EstimatedPrice,
   PaymentToken,
 } from '@/types'
-import { CheckoutOperationStatus } from '@/types'
 
-import { OperationEventBus } from '../event-bus'
+import { createOperationEventBus } from '../event-bus'
 import {
   estimate,
   getNativeAmountIn,
-  getPaymentTokens,
+  getPaymentTokensWithPairs,
   getSwapAmount,
-  isSameChainOperation,
+  getTargetToken,
+  handleCorrectProviderChain,
   loadTokens,
 } from './helpers'
 
 // We always use liquidity pool and not control those token contracts
 // In case when `isWrapped: false`, bridge contract won't try to burn tokens
 const IS_TOKEN_WRAPPED = false
-const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 /**
  * An operation on an EVM chain.
@@ -55,282 +44,166 @@ const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
  * const op = createCheckoutOperation(EVMOperation, provider)
  * ```
  */
-export class EVMOperation
-  extends OperationEventBus
-  implements CheckoutOperation
-{
-  readonly #provider: IProvider
-  readonly #config: Config
+export const EVMOperation = (provider: IProvider): CheckoutOperation => {
+  const swapper = createSwapper(createEVMSwapper, provider)
+  const bus = createOperationEventBus()
+  const chainFrom = ref<BridgeChain>()
+  const chainTo = ref<BridgeChain>()
+  const params = ref<CheckoutOperationParams>()
+  const targetToken = ref<Token>()
+  const isInitialized = ref(false)
+  const status = ref(CheckoutOperationStatus.Created)
+  const tokens = ref<Token[]>([])
 
-  #isInitialized = false
-  #status: CheckoutOperationStatus = CheckoutOperationStatus.Created
+  const init = async (p: CheckoutOperationParams) => {
+    setStatus(CheckoutOperationStatus.Initializing)
+    await swapper.init()
 
-  #chainFrom?: BridgeChain
-  #params?: CheckoutOperationParams
-  #targetToken?: Token
-
-  #tokens: Token[] = []
-  #swapper: Swapper
-
-  constructor(config: Config, provider: IProvider) {
-    super()
-    this.#config = config
-    this.#provider = provider
-    this.#swapper = createSwapper(createEVMSwapper, provider)
-  }
-
-  public get status(): CheckoutOperationStatus {
-    return this.#status
-  }
-
-  public get chainFrom(): BridgeChain | undefined {
-    return this.#chainFrom
-  }
-
-  public get provider(): IProvider {
-    return this.#provider
-  }
-
-  public get isInitialized(): boolean {
-    return this.#isInitialized
-  }
-
-  public get params() {
-    return this.#params
-  }
-
-  async init(params: CheckoutOperationParams): Promise<void> {
-    this.#setStatus(CheckoutOperationStatus.Initializing)
-
-    await this.#swapper.init()
-
-    const from = this.#getChainByID(params.chainIdFrom)
-    const to = this.#getChainByID(params.chainIdTo)
+    const from = swapper.getChainById(p.chainIdFrom)
+    const to = swapper.getChainById(p.chainIdTo)
 
     if (!from || !to) {
       throw new errors.OperationInvalidChainPairError()
     }
 
-    this.#chainFrom = from
-    this.#params = params
+    chainFrom.value = from
+    chainTo.value = to
+    params.value = p
 
-    if (this.#provider.chainType !== ChainTypes.EVM) {
+    if (provider.chainType !== ChainTypes.EVM) {
       throw new errors.OperationInvalidProviderChainTypeError()
     }
 
-    this.#isInitialized = true
+    isInitialized.value = true
 
-    this.#emitEvent(OperationEventBusEvents.Initiated)
-    this.#setStatus(CheckoutOperationStatus.Initialized)
+    emitEvent(OperationEventBusEvents.Initiated)
+    setStatus(CheckoutOperationStatus.Initialized)
   }
 
-  public async supportedChains(): Promise<BridgeChain[]> {
-    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoading)
+  const loadSupportedChains = async () => {
+    setStatus(CheckoutOperationStatus.SupportedChainsLoading)
 
-    const chains = this.#swapper.chains.length
-      ? this.#swapper.chains
-      : await this.#swapper.supportedChains()
+    const chains = swapper.chains.length
+      ? swapper.chains
+      : await swapper.loadSupportedChains()
 
-    this.#setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
+    setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
 
     return chains
   }
 
-  public async loadPaymentTokens(chain?: BridgeChain): Promise<PaymentToken[]> {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+  const loadPaymentTokens = async (chain?: BridgeChain) => {
+    if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
 
-    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoading)
+    setStatus(CheckoutOperationStatus.PaymentTokensLoading)
 
-    if (!this.#provider.isConnected) {
-      await this.#provider.connect()
-    }
+    await handleCorrectProviderChain(provider, chain, chainFrom.value)
 
-    if (this.#provider.chainId != chain?.id) {
-      await this.#switchChain(chain)
-    }
+    if (!params.value || !chainFrom.value || !chainTo.value!) return []
 
-    const withPairs = await this.#getPaymentTokensWithPairs(
-      await getPaymentTokens(
-        this.#chainFrom!,
-        this.#provider,
-        await this.#loadTokens(),
-      ),
+    tokens.value = await loadTokens(chainFrom.value)
+
+    targetToken.value = await getTargetToken(
+      swapper,
+      params.value,
+      tokens.value,
+      chainFrom.value,
+      chainTo.value,
     )
 
-    this.#setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
+    if (!targetToken.value) return []
+
+    const withPairs = await getPaymentTokensWithPairs(
+      provider,
+      params.value,
+      tokens.value,
+      targetToken.value,
+      chainFrom.value,
+    )
+
+    setStatus(CheckoutOperationStatus.PaymentTokensLoaded)
 
     return withPairs
   }
 
-  public async estimatePrice(from: PaymentToken) {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
+  const estimatePrice = async (from: PaymentToken) => {
+    if (!isInitialized.value || !params.value || !targetToken.value) {
+      throw new errors.OperatorNotInitializedError()
+    }
 
-    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
+    setStatus(CheckoutOperationStatus.EstimatedPriceCalculating)
 
     const price = await estimate(
-      this.#provider,
-      this.#tokens,
+      provider,
+      tokens.value,
       from,
-      this.#params!,
-      this.#targetToken!,
+      params.value,
+      targetToken.value,
     )
 
-    this.#setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
+    setStatus(CheckoutOperationStatus.EstimatedPriceCalculated)
 
     return price
   }
 
-  public async checkout(
-    e: EstimatedPrice,
-    bundle?: TransactionBundle,
-  ): Promise<string> {
+  const checkout = async (e: EstimatedPrice, bundle?: TransactionBundle) => {
+    if (!isInitialized.value || !params.value) {
+      throw new errors.OperatorNotInitializedError()
+    }
+
     if (!e.from.chain.contractAddress) {
       throw new errors.OperationChainNotSupportedError()
     }
 
-    this.#setStatus(CheckoutOperationStatus.CheckoutStarted)
+    setStatus(CheckoutOperationStatus.CheckoutStarted)
 
-    const chainTo = this.#swapper.chains.find(
-      i => Number(i.id) === Number(this.#params?.chainIdTo),
-    )
+    const { amountIn, amountOut } = getAmounts(params.value, e)
 
-    const { amountIn, amountOut } = getAmounts(this.#params!, e)
+    if (!e.from.isNative) await approveIfRequired(e.from, amountIn)
 
-    if (!e.from.isNative) await this.#approveIfRequired(e.from, amountIn)
+    setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
 
-    this.#setStatus(CheckoutOperationStatus.SubmittingCheckoutTx)
-
-    const result = await this.#swapper.execute({
+    const result = await swapper.execute({
       from: e.from,
       to: e.to,
       amountIn,
       amountOut,
-      receiver: this.#params!.recipient,
+      receiver: params.value.recipient,
       path: e.path,
-      chainTo,
+      chainTo: chainTo.value,
       bundle,
       isWrapped: IS_TOKEN_WRAPPED,
       handleAllowance: false,
     })
 
-    this.#setStatus(CheckoutOperationStatus.CheckoutCompleted)
+    setStatus(CheckoutOperationStatus.CheckoutCompleted)
 
     return isString(result)
       ? result
       : (result as providers.TransactionReceipt)?.transactionHash
   }
 
-  public async getDestinationTx(
+  const getDestinationTx = async (
     sourceChain: BridgeChain,
     sourceTxHash: string,
-  ): Promise<DestinationTransaction> {
-    this.#setStatus(CheckoutOperationStatus.DestinationTxPending)
+  ) => {
+    setStatus(CheckoutOperationStatus.DestinationTxPending)
 
-    const result = await this.#swapper.getDestinationTx(
-      sourceChain,
-      sourceTxHash,
-    )
-    const status =
-      result!.status === DestinationTransactionStatus.Success
+    const result = await swapper.getDestinationTx(sourceChain, sourceTxHash)
+
+    setStatus(
+      result.status === DestinationTransactionStatus.Success
         ? CheckoutOperationStatus.DestinationTxSuccess
-        : CheckoutOperationStatus.DestinationTxFailed
-
-    this.#setStatus(status)
+        : CheckoutOperationStatus.DestinationTxFailed,
+    )
 
     return result
   }
 
-  async #getPaymentTokensWithPairs(
-    result: PaymentToken[],
-  ): Promise<PaymentToken[]> {
-    this.#targetToken = await this.#getTargetToken()
+  const approveIfRequired = async (token: Token, amount: Amount) => {
+    setStatus(CheckoutOperationStatus.CheckAllowance)
 
-    if (!this.#targetToken) return []
-
-    const tokens = result.filter(
-      i => toLowerCase(i.symbol) !== toLowerCase(this.#targetToken?.symbol),
-    )
-
-    const estimatedPrices = await Promise.allSettled(
-      tokens.map(i =>
-        estimate(
-          this.#provider,
-          this.#tokens,
-          i,
-          this.#params!,
-          this.#targetToken!,
-        ),
-      ),
-    )
-
-    return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
-      if (i.status === 'fulfilled') {
-        const paymentToken = result.find(
-          t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
-        )
-
-        if (paymentToken) {
-          const amountIn = i.value.from.isNative
-            ? getNativeAmountIn(this.#params!, i.value.price)
-            : i.value.price
-
-          const isEnoughBalance = amountIn.isLessThanOrEqualTo(
-            paymentToken.balanceRaw,
-          )
-
-          if (isEnoughBalance) acc.push(paymentToken)
-        }
-      }
-
-      return acc
-    }, [])
-  }
-
-  async #getTargetToken(): Promise<Token | undefined> {
-    const params = this.#params!
-    const isSameChain = isSameChainOperation(params)
-    const targetTokenAddress = params.price.address
-
-    // get target token from params if it's the same chain operation,
-    // otherwise we will get it from internal mappings
-    if (isSameChain) {
-      return targetTokenAddress
-        ? this.#tokens.find(
-            i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
-          )
-        : tokenFromChain(this.#chainFrom!)
-    }
-
-    const targetTokenSymbol = getTargetTokenSymbol(
-      this.#getChainByID(params.chainIdTo)!,
-      params.price.symbol,
-    )
-
-    if (!targetTokenSymbol) return
-
-    const internalToken = await this.#swapper.getInternalTokenMapping(
-      targetTokenSymbol,
-    )
-
-    if (!internalToken) return
-
-    const chain = internalToken?.chains.find(
-      i => toLowerCase(i.id) === toLowerCase(this.#chainFrom?.name),
-    )
-
-    if (!chain) return
-
-    return chain.token_address === NATIVE_TOKEN_ADDRESS
-      ? tokenFromChain(this.#chainFrom!)
-      : this.#tokens.find(
-          i => toLowerCase(i.address) === toLowerCase(chain.token_address),
-        )
-  }
-
-  async #approveIfRequired(token: Token, amount: Amount) {
-    this.#setStatus(CheckoutOperationStatus.CheckAllowance)
-
-    const isApproveRequired = await this.#swapper.isApproveRequired(
+    const isApproveRequired = await swapper.isApproveRequired(
       token,
       token.chain.contractAddress,
       amount,
@@ -338,49 +211,39 @@ export class EVMOperation
 
     if (!isApproveRequired) return
 
-    this.#setStatus(CheckoutOperationStatus.Approve)
-    await this.#swapper.approve(token, token.chain.contractAddress)
-    this.#setStatus(CheckoutOperationStatus.Approved)
+    setStatus(CheckoutOperationStatus.Approve)
+    await swapper.approve(token, token.chain.contractAddress)
+    setStatus(CheckoutOperationStatus.Approved)
   }
 
-  #getChainByID(id: ChainId) {
-    return this.#swapper.chains.find(chain => chain.id === id)
+  const setStatus = (s: CheckoutOperationStatus) => {
+    status.value = s
+    emitEvent(OperationEventBusEvents.StatusChanged)
   }
 
-  async #loadTokens() {
-    if (!this.isInitialized) return []
-    this.#tokens = await loadTokens(this.#config, this.#chainFrom!)
-    return this.#tokens
-  }
-
-  async #switchChain(chain?: BridgeChain) {
-    if (!this.isInitialized) throw new errors.OperatorNotInitializedError()
-
-    const targetChain = chain ?? this.#chainFrom
-    try {
-      await this.#provider.switchChain(targetChain!.id)
-    } catch (e) {
-      if (!(e instanceof providerErrors.ProviderChainNotFoundError)) {
-        throw e
-      }
-      await this.#provider.addChain!(targetChain!)
-      await this.#switchChain(targetChain)
-    }
-  }
-
-  #setStatus(status: CheckoutOperationStatus) {
-    this.#status = status
-    this.#emitEvent(OperationEventBusEvents.StatusChanged)
-  }
-
-  #emitEvent(event: OperationEventBusEvents) {
-    this.emit(event, {
-      isInitiated: this.#isInitialized,
-      chainFrom: this.#chainFrom,
-      params: this.#params,
-      status: this.#status,
+  const emitEvent = (event: OperationEventBusEvents) => {
+    bus.emit(event, {
+      isInitiated: isInitialized.value,
+      chainFrom: chainFrom.value,
+      params: params.value,
+      status: status.value,
     })
   }
+
+  return toRaw(
+    extend(bus, {
+      provider,
+      isInitialized,
+      status,
+      chainFrom,
+      init,
+      loadSupportedChains,
+      loadPaymentTokens,
+      estimatePrice,
+      checkout,
+      getDestinationTx,
+    }),
+  )
 }
 
 const getAmounts = (
@@ -394,17 +257,4 @@ const getAmounts = (
   const amountOut = getSwapAmount(params)
 
   return { amountIn, amountOut }
-}
-
-const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
-  if (!chain.isTestnet) return symbol
-
-  return (
-    {
-      [ChainNames.Goerli]: '2',
-      [ChainNames.Sepolia]: '3',
-      [ChainNames.Fuji]: '4',
-      [ChainNames.Chapel]: '5',
-    }[chain.name] ?? ''
-  )
 }

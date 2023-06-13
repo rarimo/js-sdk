@@ -1,32 +1,21 @@
 import type { IProvider } from '@rarimo/provider'
 import type { ChainTypes } from '@rarimo/shared'
 
-import { DEFAULT_CONFIG } from './config'
 import { errors } from './errors'
 import type {
   CheckoutOperation,
-  CheckoutOperationConstructor,
-  Config,
+  CheckoutOperationCreateFunction,
 } from './types'
 
 export type Operators = {
-  [key in ChainTypes]?: CheckoutOperationConstructor
-}
-
-export type CreateCheckoutOperationParams = {
-  config?: Partial<Config>
+  [key in ChainTypes]?: CheckoutOperationCreateFunction
 }
 
 export class NFTCheckoutFactory {
   readonly #operators: Operators
-  readonly #config: Config
 
-  constructor(operators: Operators, config?: Partial<Config>) {
+  constructor(operators: Operators) {
     this.#operators = operators
-    this.#config = {
-      ...DEFAULT_CONFIG,
-      ...(config || {}),
-    }
   }
 
   create(chainType: ChainTypes, provider: IProvider): CheckoutOperation {
@@ -35,7 +24,7 @@ export class NFTCheckoutFactory {
     }
 
     // eslint works like an idiot here
-    return new this.#operators[chainType]!(this.#config, provider)
+    return this.#operators[chainType]!(provider)
   }
 }
 
@@ -50,14 +39,8 @@ export class NFTCheckoutFactory {
  * const op = createCheckoutOperation(EVMCheckoutOperation, provider)
  */
 export const createCheckoutOperation = (
-  operator: CheckoutOperationConstructor,
+  operator: CheckoutOperationCreateFunction,
   provider: IProvider,
-  params?: CreateCheckoutOperationParams,
 ): CheckoutOperation => {
-  const config = {
-    ...DEFAULT_CONFIG,
-    ...(params?.config || {}),
-  }
-
-  return new operator(config, provider)
+  return operator(provider)
 }

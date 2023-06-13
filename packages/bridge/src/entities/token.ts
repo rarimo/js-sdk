@@ -15,6 +15,7 @@ export type NewTokenOpts = {
   symbol: TokenSymbol
   decimals: Decimals
   logoURI?: string
+  isNative?: boolean
 }
 
 export const newToken = (t: NewTokenOpts): Token => {
@@ -24,7 +25,9 @@ export const newToken = (t: NewTokenOpts): Token => {
     isQuickSwap: v === EVMDexType.QuickSwap,
     isPancakeSwap: v === EVMDexType.PancakeSwap,
     isUniswapV3: v === EVMDexType.UniswapV3,
-    isNative: t.chain.token.symbol.toLowerCase() === t.symbol.toLowerCase(),
+    isNative:
+      t.isNative ??
+      t.chain.token.symbol.toLowerCase() === t.symbol.toLowerCase(),
   }
 
   return {
@@ -42,5 +45,6 @@ export const tokenFromChain = (chain: BridgeChain): Token => {
     symbol: chain.token.symbol,
     decimals: chain.token.decimals,
     logoURI: chain.icon,
+    isNative: true,
   })
 }
