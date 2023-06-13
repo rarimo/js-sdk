@@ -25,11 +25,16 @@ export type InternalBridgeChainType = {
   value: ChainTypes
 }
 
+export type InternalBridgeChainKind = {
+  name: ChainKind
+  value: number
+}
+
 export type InternalBridgeChain = {
   id: ChainId
   name: string
   type: InternalBridgeChainType
-  kind: ChainKind
+  kind: InternalBridgeChainKind
   rpc: string
   explorer_url: string
   icon: string

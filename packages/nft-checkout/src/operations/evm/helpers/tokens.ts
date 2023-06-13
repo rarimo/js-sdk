@@ -1,7 +1,7 @@
 import type { Token } from '@rarimo/bridge'
 import { newToken } from '@rarimo/bridge'
 import type { BridgeChain, InternalSupportedToken } from '@rarimo/shared'
-import { loadSupportedTokens, parseTokenId } from '@rarimo/shared'
+import { loadSupportedTokens } from '@rarimo/shared'
 
 import { errors } from '@/errors'
 
@@ -25,7 +25,7 @@ const tokenFromInternalSupportedToken = (
   token: InternalSupportedToken,
   chain: BridgeChain,
 ): Token => {
-  const [, address] = parseTokenId(token.id)
+  const address = token.id
 
   return newToken({
     chain,
@@ -34,6 +34,6 @@ const tokenFromInternalSupportedToken = (
     symbol: token.symbol,
     decimals: token.decimals,
     logoURI: token.logo_uri,
-    isNative: token.native,
+    isNative: Boolean(token.native),
   })
 }

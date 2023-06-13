@@ -1,4 +1,5 @@
 import { ChainKind, ChainNames, ChainTypes } from '@/enums'
+import { isUndefined } from '@/helpers'
 import type {
   BridgeChain,
   HexString,
@@ -15,21 +16,21 @@ export const loadSupportedChains = async ({
 }: { type?: ChainTypes; kind?: ChainKind } = {}): Promise<BridgeChain[]> => {
   const { data } = await dexApi.get<InternalBridgeChain[]>('/chains', {
     query: {
-      ...(type ? { type } : {}),
-      ...(kind ? { kind } : {}),
+      ...(isUndefined(type) ? {} : { 'filter[type]': type }),
+      ...(kind ? { 'filter[kind]': kind } : {}),
     },
   })
 
   if (!data.length) return []
 
   return data.map(chain => ({
-    id: chain.id,
+    id: Number(chain.id),
     name: chain.name as ChainNames,
     rpcUrl: chain.rpc,
     explorerUrl: chain.explorer_url,
     type: chain.type.value,
     icon: chain.icon,
-    isTestnet: chain.kind === ChainKind.Testnet,
+    isTestnet: chain.kind.name === ChainKind.Testnet,
     contractAddress: chain.swap_contract_address,
     dexType: chain.swap_contract_version,
     token: {

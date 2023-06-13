@@ -20,41 +20,7 @@ import { paymentTokenFromToken } from '@/entities'
 import type { CheckoutOperationParams, PaymentToken } from '@/types'
 
 import { estimate, getNativeAmountIn, isSameChainOperation } from './estimator'
-import { loadTokens, NATIVE_TOKEN_ADDRESS } from './tokens'
-
-const createPaymentToken = (
-  supportedTokens: Token[],
-  balance: InternalAccountBalance,
-): PaymentToken | undefined => {
-  const [, address] = parseTokenId(balance.token.id)
-
-  const token = supportedTokens.find(
-    i => toLowerCase(i.address) === toLowerCase(address),
-  )
-
-  if (!token || BN.fromBigInt(balance.amount, token.decimals).isZero) return
-
-  return paymentTokenFromToken(
-    token,
-    Amount.fromBigInt(balance.amount, token.decimals),
-  )
-}
-
-const getPaymentTokens = async (
-  provider: IProvider,
-  chain: BridgeChain,
-  tokens: Token[],
-): Promise<PaymentToken[]> => {
-  const balances = await loadAccountBalances(chain, provider.address!)
-
-  if (!balances.length) return []
-
-  return balances.reduce((acc, token) => {
-    const paymentToken = createPaymentToken(tokens, token)
-    if (paymentToken) acc.push(paymentToken)
-    return acc
-  }, [] as PaymentToken[])
-}
+import { NATIVE_TOKEN_ADDRESS } from './tokens'
 
 const INTERNAL_TOKENS_MAP: { [key in ChainNames]?: string } = {
   [ChainNames.Goerli]: '2',
@@ -63,10 +29,48 @@ const INTERNAL_TOKENS_MAP: { [key in ChainNames]?: string } = {
   [ChainNames.Chapel]: '5',
 }
 
-const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
-  if (!chain.isTestnet) return symbol
+export const getPaymentTokensWithPairs = async (
+  provider: IProvider,
+  params: CheckoutOperationParams,
+  tokens: Token[],
+  targetToken: Token,
+  chainFrom: BridgeChain,
+) => {
+  const paymentTokens = await getPaymentTokens(provider, chainFrom, tokens)
 
-  return INTERNAL_TOKENS_MAP[chain.name] ?? ''
+  const targetTokenSymbol = toLowerCase(targetToken.symbol)
+
+  const paymentTokensWithoutTarget = paymentTokens.filter(
+    i => toLowerCase(i.symbol) !== targetTokenSymbol,
+  )
+
+  const estimatedPrices = await Promise.allSettled(
+    paymentTokensWithoutTarget.map(i =>
+      estimate(provider, tokens, i, params, targetToken),
+    ),
+  )
+
+  return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
+    if (i.status !== 'fulfilled') return acc
+
+    const paymentToken = paymentTokensWithoutTarget.find(
+      t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
+    )
+
+    if (!paymentToken) return acc
+
+    const amountIn = i.value.from.isNative
+      ? getNativeAmountIn(params, i.value.price)
+      : i.value.price
+
+    const isEnoughBalance = amountIn.isLessThanOrEqualTo(
+      paymentToken.balanceRaw,
+    )
+
+    if (isEnoughBalance) acc.push(paymentToken)
+
+    return acc
+  }, [])
 }
 
 export const getTargetToken = async (
@@ -112,50 +116,44 @@ export const getTargetToken = async (
       )
 }
 
-export const getPaymentTokensWithPairs = async (
+const getPaymentTokens = async (
   provider: IProvider,
-  params: CheckoutOperationParams,
+  chain: BridgeChain,
   tokens: Token[],
-  targetToken: Token,
-  chainFrom: BridgeChain,
-) => {
-  const paymentTokens = await getPaymentTokens(
-    provider,
-    chainFrom,
-    await loadTokens(chainFrom),
-  )
+): Promise<PaymentToken[]> => {
+  const balances = await loadAccountBalances(chain, provider.address!)
 
-  const targetTokenSymbol = toLowerCase(targetToken.symbol)
+  if (!balances.length) return []
 
-  const paymentTokensWithoutTarget = paymentTokens.filter(
-    i => toLowerCase(i.symbol) !== targetTokenSymbol,
-  )
-
-  const estimatedPrices = await Promise.allSettled(
-    paymentTokensWithoutTarget.map(i =>
-      estimate(provider, tokens, i, params, targetToken),
-    ),
-  )
-
-  return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
-    if (i.status !== 'fulfilled') return acc
-
-    const paymentToken = paymentTokensWithoutTarget.find(
-      t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
-    )
-
-    if (!paymentToken) return acc
-
-    const amountIn = i.value.from.isNative
-      ? getNativeAmountIn(params, i.value.price)
-      : i.value.price
-
-    const isEnoughBalance = amountIn.isLessThanOrEqualTo(
-      paymentToken.balanceRaw,
-    )
-
-    if (isEnoughBalance) acc.push(paymentToken)
-
+  return balances.reduce((acc, token) => {
+    const paymentToken = createPaymentToken(tokens, token)
+    if (paymentToken) acc.push(paymentToken)
     return acc
-  }, [])
+  }, [] as PaymentToken[])
+}
+
+const createPaymentToken = (
+  supportedTokens: Token[],
+  balance: InternalAccountBalance,
+): PaymentToken | undefined => {
+  const [, address] = parseTokenId(balance.token.id)
+
+  const token = supportedTokens.find(i =>
+    address === NATIVE_TOKEN_ADDRESS
+      ? i.isNative
+      : toLowerCase(i.address) === toLowerCase(address),
+  )
+
+  if (!token || BN.fromBigInt(balance.amount, token.decimals).isZero) return
+
+  return paymentTokenFromToken(
+    token,
+    Amount.fromBigInt(balance.amount, token.decimals),
+  )
+}
+
+const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
+  if (!chain.isTestnet) return symbol
+
+  return INTERNAL_TOKENS_MAP[chain.name] ?? ''
 }

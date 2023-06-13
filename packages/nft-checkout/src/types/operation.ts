@@ -9,30 +9,10 @@ import type {
 } from '@rarimo/shared'
 
 import type { Price } from '@/entities'
+import { CheckoutOperationStatus } from '@/enums'
 
 import type { OperationSubscriber } from './operation-event-bus'
 import type { EstimatedPrice, PaymentToken } from './token'
-
-export enum CheckoutOperationStatus {
-  Created,
-  Initializing,
-  SupportedChainsLoading,
-  SupportedChainsLoaded,
-  Initialized,
-  PaymentTokensLoading,
-  PaymentTokensLoaded,
-  EstimatedPriceCalculating,
-  EstimatedPriceCalculated,
-  CheckoutStarted,
-  CheckAllowance,
-  Approve,
-  Approved,
-  SubmittingCheckoutTx,
-  CheckoutCompleted,
-  DestinationTxPending,
-  DestinationTxSuccess,
-  DestinationTxFailed,
-}
 
 export type CheckoutOperationParams = {
   chainIdTo: ChainId

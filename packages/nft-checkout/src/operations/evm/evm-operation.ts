@@ -11,7 +11,7 @@ import {
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'
 import type { providers } from 'ethers'
 
-import { OperationEventBusEvents } from '@/enums'
+import { CheckoutOperationStatus, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import type {
   CheckoutOperation,
@@ -19,7 +19,6 @@ import type {
   EstimatedPrice,
   PaymentToken,
 } from '@/types'
-import { CheckoutOperationStatus } from '@/types'
 
 import { createOperationEventBus } from '../event-bus'
 import {
@@ -29,6 +28,7 @@ import {
   getSwapAmount,
   getTargetToken,
   handleCorrectProviderChain,
+  loadTokens,
 } from './helpers'
 
 // We always use liquidity pool and not control those token contracts
@@ -101,6 +101,8 @@ export const EVMOperation = (p: IProvider): CheckoutOperation => {
     await handleCorrectProviderChain(provider, chain, chainFrom.value)
 
     if (!params.value || !chainFrom.value || !chainTo.value!) return []
+
+    tokens.value = await loadTokens(chainFrom.value)
 
     targetToken.value = await getTargetToken(
       swapper,
