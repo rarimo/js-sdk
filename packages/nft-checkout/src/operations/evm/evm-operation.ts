@@ -44,9 +44,8 @@ const IS_TOKEN_WRAPPED = false
  * const op = createCheckoutOperation(EVMOperation, provider)
  * ```
  */
-export const EVMOperation = (p: IProvider): CheckoutOperation => {
-  const provider = p
-  const swapper = createSwapper(createEVMSwapper, p)
+export const EVMOperation = (provider: IProvider): CheckoutOperation => {
+  const swapper = createSwapper(createEVMSwapper, provider)
   const bus = createOperationEventBus()
   const chainFrom = ref<BridgeChain>()
   const chainTo = ref<BridgeChain>()
@@ -81,12 +80,12 @@ export const EVMOperation = (p: IProvider): CheckoutOperation => {
     setStatus(CheckoutOperationStatus.Initialized)
   }
 
-  const supportedChains = async () => {
+  const loadSupportedChains = async () => {
     setStatus(CheckoutOperationStatus.SupportedChainsLoading)
 
     const chains = swapper.chains.length
       ? swapper.chains
-      : await swapper.supportedChains()
+      : await swapper.loadSupportedChains()
 
     setStatus(CheckoutOperationStatus.SupportedChainsLoaded)
 
@@ -238,7 +237,7 @@ export const EVMOperation = (p: IProvider): CheckoutOperation => {
       status,
       chainFrom,
       init,
-      supportedChains,
+      loadSupportedChains,
       loadPaymentTokens,
       estimatePrice,
       checkout,

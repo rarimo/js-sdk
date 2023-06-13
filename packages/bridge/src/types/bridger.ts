@@ -4,12 +4,12 @@ import type {
   Amount,
   BridgeChain,
   ChainId,
+  ChainKind,
   ChainTypes,
   DestinationTransaction,
   HexString,
   InternalToken,
 } from '@rarimo/shared'
-import { ChainKind } from '@rarimo/shared'
 
 import type { Token } from '@/types'
 
@@ -26,7 +26,7 @@ export type Bridger = Raw<{
    *
    * @returns A list of supported chains and information about them
    */
-  supportedChains(kind?: ChainKind): Promise<BridgeChain[]>
+  loadSupportedChains(kind?: ChainKind): Promise<BridgeChain[]>
 
   /**
    * Get the chain that are supported for the bridging by ID

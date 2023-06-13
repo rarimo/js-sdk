@@ -12,7 +12,7 @@ import {
   ChainTypes,
   fetchInternalTokenMapping,
   getDestinationTx as fetchDestTx,
-  loadSupportedChains,
+  loadSupportedChains as _loadSupportedChains,
 } from '@rarimo/shared'
 
 import { errors } from '@/errors'
@@ -25,15 +25,18 @@ import {
   isApproveERC20Required,
 } from './approve-if-needed'
 
-export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
-  const provider = p
+export const createEVMBridger: BridgerCreateFn = (
+  provider: IProvider,
+): Bridger => {
   const chains = ref<BridgeChain[]>([])
   const isInitialized = ref(false)
 
-  const supportedChains = async (kind?: ChainKind): Promise<BridgeChain[]> => {
+  const loadSupportedChains = async (
+    kind?: ChainKind,
+  ): Promise<BridgeChain[]> => {
     if (chains.value.length) return chains.value
 
-    chains.value = await loadSupportedChains({
+    chains.value = await _loadSupportedChains({
       type: ChainTypes.EVM,
       kind,
     })
@@ -47,7 +50,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
 
   const init = async () => {
     if (isInitialized.value) return
-    await supportedChains()
+    await loadSupportedChains()
     isInitialized.value = true
   }
 
@@ -94,7 +97,7 @@ export const createEVMBridger: BridgerCreateFn = (p: IProvider): Bridger => {
     chains,
     isInitialized,
     init,
-    supportedChains,
+    loadSupportedChains,
     getChainById,
     getDestinationTx,
     getInternalTokenMapping,

@@ -6,9 +6,8 @@ import type { ExecuteArgs, Swapper } from '@/types'
 
 import { getExecuteData } from './get-execute-data'
 
-export const createEVMSwapper = (p: IProvider): Swapper => {
-  const provider = p
-  const bridger = createBridger(createEVMBridger, p)
+export const createEVMSwapper = (provider: IProvider): Swapper => {
+  const bridger = createBridger(createEVMBridger, provider)
   const isInitialized = ref(false)
 
   const init = async () => {

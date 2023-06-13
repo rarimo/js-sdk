@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `@rarimo/bridge` - Moved all internal API interactions to the `@rarimo/shared` package
 - `@rarimo/nft-checkout` - Refactored with the `@distributedlab/reactivity` package
+- `@rarimo/nft-checkout` - `supportedChains` method in the `CheckoutOperation` renamed to the `loadSupportedChains`
 
 ### Removed
 - `@rarimo/bridge` - `@distributedlab/jac` dependency

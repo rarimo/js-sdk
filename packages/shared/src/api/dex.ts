@@ -8,7 +8,7 @@ import type {
   InternalSupportedToken,
 } from '@/types'
 
-import { dexApi, loadDataViaLoop } from './api'
+import { dexApi, loadAllPagesData } from './api'
 
 export const loadSupportedChains = async ({
   type,
@@ -16,8 +16,8 @@ export const loadSupportedChains = async ({
 }: { type?: ChainTypes; kind?: ChainKind } = {}): Promise<BridgeChain[]> => {
   const { data } = await dexApi.get<InternalBridgeChain[]>('/chains', {
     query: {
-      ...(isUndefined(type) ? {} : { 'filter[type]': type }),
-      ...(kind ? { 'filter[kind]': kind } : {}),
+      ...(!isUndefined(type) && { 'filter[type]': type }),
+      ...(kind && { 'filter[kind]': kind }),
     },
   })
 
@@ -45,7 +45,7 @@ export const loadAccountBalances = async (
 ): Promise<InternalAccountBalance[]> => {
   const endpoint = `/chains/evm/${chain.name}/${accountAddress}/balances`
   const response = await dexApi.get<InternalAccountBalance[]>(endpoint)
-  return loadDataViaLoop(response)
+  return loadAllPagesData(response)
 }
 
 export const loadSupportedTokens = async (

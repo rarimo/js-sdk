@@ -50,18 +50,18 @@ export const getPaymentTokensWithPairs = async (
     ),
   )
 
-  return estimatedPrices.reduce<PaymentToken[]>((acc, i) => {
-    if (i.status !== 'fulfilled') return acc
+  return estimatedPrices.reduce<PaymentToken[]>((acc, promise) => {
+    if (promise.status !== 'fulfilled') return acc
 
     const paymentToken = paymentTokensWithoutTarget.find(
-      t => toLowerCase(t.symbol) === toLowerCase(i.value.from.symbol),
+      t => toLowerCase(t.symbol) === toLowerCase(promise.value.from.symbol),
     )
 
     if (!paymentToken) return acc
 
-    const amountIn = i.value.from.isNative
-      ? getNativeAmountIn(params, i.value.price)
-      : i.value.price
+    const amountIn = promise.value.from.isNative
+      ? getNativeAmountIn(params, promise.value.price)
+      : promise.value.price
 
     const isEnoughBalance = amountIn.isLessThanOrEqualTo(
       paymentToken.balanceRaw,
@@ -125,11 +125,11 @@ const getPaymentTokens = async (
 
   if (!balances.length) return []
 
-  return balances.reduce((acc, token) => {
+  return balances.reduce<PaymentToken[]>((acc, token) => {
     const paymentToken = createPaymentToken(tokens, token)
     if (paymentToken) acc.push(paymentToken)
     return acc
-  }, [] as PaymentToken[])
+  }, [])
 }
 
 const createPaymentToken = (

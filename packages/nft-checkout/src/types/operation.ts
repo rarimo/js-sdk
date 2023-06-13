@@ -42,7 +42,7 @@ export interface CheckoutOperation extends OperationSubscriber {
    *
    * @returns A list of supported chains and information about them
    */
-  supportedChains(): Promise<BridgeChain[]>
+  loadSupportedChains(): Promise<BridgeChain[]>
   /**
    * Load the wallet's balance of payment tokens on the specified chain.
    *

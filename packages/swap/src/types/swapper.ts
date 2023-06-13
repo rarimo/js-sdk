@@ -41,9 +41,9 @@ export type Swapper = Raw<{
    */
   execute(args: ExecuteArgs): Promise<TransactionResponse>
   /**
-   * Proxy function of {@link Bridger.supportedChains}
+   * Proxy function of {@link Bridger.loadSupportedChains}
    */
-  supportedChains(): Promise<BridgeChain[]>
+  loadSupportedChains(): Promise<BridgeChain[]>
   /**
    * Proxy function of {@link Bridger.getChainById}
    */
