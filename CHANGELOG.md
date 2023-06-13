@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-rc.2] - 2023-06-13
+### Fixed
+- `@rarimo/shared` - `ipfs://` token image uris
+
 ## [2.0.0-rc.1] - 2023-06-13
 ### Added
 - `root` - Known issues to the `README.md` file
@@ -301,7 +305,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.1...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.2...HEAD
+[2.0.0-rc.2]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.1...2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.0...2.0.0-rc.1
 [2.0.0-rc.0]: https://github.com/rarimo/js-sdk/compare/1.5.0...2.0.0-rc.0
 [1.5.0]: https://github.com/rarimo/js-sdk/compare/1.5.0-rc.25...1.5.0

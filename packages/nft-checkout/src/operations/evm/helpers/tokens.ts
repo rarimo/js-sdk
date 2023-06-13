@@ -6,6 +6,7 @@ import { loadSupportedTokens } from '@rarimo/shared'
 import { errors } from '@/errors'
 
 export const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const RARIMO_IPFS_BASE_URL = 'https://ipfs.testnet.rarimo.com/ipfs/ipfs/'
 
 export const loadTokens = async (chain: BridgeChain): Promise<Token[]> => {
   let tokens: InternalSupportedToken[] = []
@@ -27,13 +28,15 @@ const tokenFromInternalSupportedToken = (
 ): Token => {
   const address = token.id
 
+  const logoURI = token.logo_uri?.replace('ipfs://', RARIMO_IPFS_BASE_URL)
+
   return newToken({
     chain,
     address: address === NATIVE_TOKEN_ADDRESS ? '' : address,
     name: token.name,
     symbol: token.symbol,
     decimals: token.decimals,
-    logoURI: token.logo_uri,
+    logoURI,
     isNative: Boolean(token.native),
   })
 }

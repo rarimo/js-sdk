@@ -73,11 +73,6 @@ const PaymentTokensList = () => {
               {tokens.length ? (
                 <List>
                   {tokens.map(paymentToken => {
-                    const tokenLogoUri = paymentToken.logoURI?.replace(
-                      'ipfs://',
-                      'https://ipfs.io/ipfs/',
-                    )
-
                     return (
                       <ListItemButton
                         selected={
@@ -89,7 +84,7 @@ const PaymentTokensList = () => {
                       >
                         <ListItemAvatar>
                           <Avatar>
-                            <img src={tokenLogoUri} width={40} alt="" />
+                            <img src={paymentToken.logoURI} width={40} alt="" />
                           </Avatar>
                         </ListItemAvatar>
                         <ListItemText
