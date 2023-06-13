@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/nft-checkout",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.1",
   "description": "Tools to create cross-train transactions with the Rarimo Protocol",
   "repository": {
     "type": "git",
