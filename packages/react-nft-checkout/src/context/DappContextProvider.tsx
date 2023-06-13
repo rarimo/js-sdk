@@ -101,7 +101,7 @@ export const DappContextProvider = ({
     if (!checkoutOperation) return
 
     const getSupportedChains = async () => {
-      const chains = await checkoutOperation.supportedChains()
+      const chains = await checkoutOperation.loadSupportedChains()
 
       setSupportedChains(chains)
     }
