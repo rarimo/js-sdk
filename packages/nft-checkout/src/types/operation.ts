@@ -47,16 +47,26 @@ export interface CheckoutOperation extends OperationSubscriber {
    * Load the wallet's balance of payment tokens on the specified chain.
    *
    * @param chain - A chain from {@link supportedChains}
+   * @param isMultiplePayment - is multiple payment enabled, in that case
+   * method won't check user balance for the payment token
    * @returns An array of tokens and the wallet's balance of each token
    */
-  loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
+  loadPaymentTokens(
+    chain: BridgeChain,
+    isMultiplePayment?: boolean,
+  ): Promise<PaymentToken[]>
   /**
-   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
+   * Get the estimated purchase price in the payment token or tokens,
+   * including the cost to swap the tokens to the tokens that the seller accepts
+   * payment in
    *
-   * @param from The token to use for the transaction
-   * @returns Information about the costs involved in the transaction, including the gas price
+   * @param from The payment token or tokens to use for the transaction
+   * @returns Information about the costs involved in the transaction,
+   * including the gas price. Can throw an error if insufficient funds for the
+   * multiple token payment.
    */
   estimatePrice(from: PaymentToken): Promise<EstimatedPrice>
+  estimatePrice(fromTokens: PaymentToken[]): Promise<EstimatedPrice[]>
   /**
    * Send a transaction to Rarimo for processing
    *
@@ -65,6 +75,7 @@ export interface CheckoutOperation extends OperationSubscriber {
    * @returns The hash of the transaction
    */
   checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>
+  checkout(e: EstimatedPrice[], bundle?: TransactionBundle): Promise<string>
   /**
    * Get the destination chain transaction hash as the result of the bridging
    *

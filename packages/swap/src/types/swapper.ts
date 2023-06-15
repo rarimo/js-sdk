@@ -40,6 +40,10 @@ export type Swapper = Raw<{
    * @returns Transaction Response
    */
   execute(args: ExecuteArgs): Promise<TransactionResponse>
+  execute(
+    args: ExecuteArgs[],
+    multiplePaymentOpts: MultiplePaymentOpts,
+  ): Promise<TransactionResponse>
   /**
    * Proxy function of {@link Bridger.loadSupportedChains}
    */
@@ -97,4 +101,9 @@ export type ExecuteArgs = {
   bundle?: TransactionBundle
   isWrapped?: boolean
   handleAllowance?: boolean
+}
+
+export type MultiplePaymentOpts = {
+  amountOut: Amount
+  to: Token
 }

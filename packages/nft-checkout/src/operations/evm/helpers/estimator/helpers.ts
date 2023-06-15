@@ -50,9 +50,14 @@ export const validateSlippage = (slippage: number) => {
   }
 }
 
-export const getSwapAmount = (params: CheckoutOperationParams): Amount => {
-  const rawPrice = params.price
-  if (isSameChainOperation(params)) return rawPrice
+export const getSwapAmount = (
+  params: CheckoutOperationParams,
+  amountOut?: Amount,
+): Amount => {
+  const rawPrice = amountOut || params.price
+  // If amountOut is provided, it means that we are doing multiple token payment
+  // thus target amount is already calculated
+  if (amountOut || isSameChainOperation(params)) return rawPrice
 
   const decimals = rawPrice.decimals
   const numerator = BN.fromBigInt(rawPrice.value, decimals)
@@ -106,16 +111,21 @@ export const createWrapUnwrapEstimate = (
   from: Token,
   to: Token,
   params: CheckoutOperationParams,
+  amountOut?: Amount,
 ): EstimatedPrice => ({
   impact: '0',
   from,
   to,
-  price: createWrapPrice(params),
+  price: createWrapPrice(params, amountOut),
+  amountOut,
 })
 
-export const createWrapPrice = (params: CheckoutOperationParams) => {
+export const createWrapPrice = (
+  params: CheckoutOperationParams,
+  amountOut?: Amount,
+) => {
   return Price.fromBigInt(
-    getSwapAmount(params).value,
+    getSwapAmount(params, amountOut).value,
     params.price.decimals,
     params.price.symbol,
   )

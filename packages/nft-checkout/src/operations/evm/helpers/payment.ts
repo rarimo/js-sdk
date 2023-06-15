@@ -35,6 +35,7 @@ export const getPaymentTokensWithPairs = async (
   tokens: Token[],
   targetToken: Token,
   chainFrom: BridgeChain,
+  isMultiplePayment: boolean,
 ) => {
   const paymentTokens = await getPaymentTokens(provider, chainFrom, tokens)
 
@@ -58,6 +59,11 @@ export const getPaymentTokensWithPairs = async (
     )
 
     if (!paymentToken) return acc
+
+    if (isMultiplePayment) {
+      acc.push(paymentToken)
+      return acc
+    }
 
     const amountIn = promise.value.from.isNative
       ? getNativeAmountIn(params, promise.value.price)

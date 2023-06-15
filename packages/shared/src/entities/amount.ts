@@ -17,6 +17,10 @@ export class AmountBase {
     return this.#bn.decimals
   }
 
+  public get isZero(): boolean {
+    return this.#bn.isZero
+  }
+
   public isLessThan(amount: AmountBase): boolean {
     return BN.fromBigInt(this.value, this.decimals).isLessThan(
       BN.fromBigInt(amount.value, amount.decimals),
@@ -57,5 +61,9 @@ export class Amount extends AmountBase {
 
   public static fromRaw(value: string, decimals: Decimals): Amount {
     return new Amount(BN.fromRaw(value, decimals))
+  }
+
+  public static fromBN(value: BN): Amount {
+    return new Amount(value)
   }
 }

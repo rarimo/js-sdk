@@ -75,3 +75,12 @@ export class OperatorWrappedTokenNotFound extends RuntimeError {
     super(message)
   }
 }
+
+export class OperationInsufficientFundsError extends RuntimeError {
+  public name = 'OperationInsufficientFundsError'
+  constructor(
+    message = 'Failed to estimate multiple tokens payment operation: insufficient funds, please make sure you have enough balance.',
+  ) {
+    super(message)
+  }
+}

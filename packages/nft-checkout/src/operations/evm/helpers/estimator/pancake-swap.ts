@@ -4,6 +4,7 @@ import { getAllCommonPairs } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import { Amount } from '@rarimo/shared'
 
 import { Price } from '@/entities'
 import { errors } from '@/errors'
@@ -29,6 +30,7 @@ export const estimatePancakeSwap = async (
   _from: Token,
   _to: Token,
   params: CheckoutOperationParams,
+  amountOut?: Amount,
 ) => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -50,7 +52,7 @@ export const estimatePancakeSwap = async (
 
   const amount = CurrencyAmount.fromRawAmount(
     tokenB,
-    getSwapAmount(params).value,
+    getSwapAmount(params, amountOut).value,
   )
 
   const pairs = await getAllCommonPairs(tokenA, tokenB, {
@@ -74,5 +76,6 @@ export const estimatePancakeSwap = async (
     from: _from,
     to: _to,
     price: Price.fromBigInt(maximumAmountInRaw, _from.decimals, _from.symbol),
+    amountOut,
   }
 }

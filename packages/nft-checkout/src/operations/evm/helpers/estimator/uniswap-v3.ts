@@ -1,6 +1,7 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import { Amount } from '@rarimo/shared'
 import type { Currency } from '@uniswap/sdk-core'
 import {
   CurrencyAmount,
@@ -36,8 +37,12 @@ const getRoutePath = (route: RouteWithValidQuote[], isNative: boolean) => {
 const getSwapCurrencyAmount = (
   params: CheckoutOperationParams,
   token: UNIToken,
+  amountOut?: Amount,
 ) => {
-  return CurrencyAmount.fromRawAmount(token, getSwapAmount(params).value)
+  return CurrencyAmount.fromRawAmount(
+    token,
+    getSwapAmount(params, amountOut).value,
+  )
 }
 
 const getSlippage = (slippage?: number): Percent => {
@@ -56,6 +61,7 @@ export const estimateUniswapV3 = async (
   _from: Token,
   _to: Token,
   params: CheckoutOperationParams,
+  amountOut?: Amount,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -76,7 +82,7 @@ export const estimateUniswapV3 = async (
   )
 
   // Input amount is the original price of nft.
-  const swapAmount = getSwapCurrencyAmount(params, tokenB)
+  const swapAmount = getSwapCurrencyAmount(params, tokenB, amountOut)
 
   const router = new AlphaRouter({
     chainId: from.chain.id as UNIChainId,
@@ -115,5 +121,6 @@ export const estimateUniswapV3 = async (
       estimatedGasUsedUSD.currency.decimals,
     ).toString(),
     gasPrice: BN.fromBigInt(gasPriceWei.toString(), BN.WEI_DECIMALS).toString(),
+    amountOut,
   }
 }

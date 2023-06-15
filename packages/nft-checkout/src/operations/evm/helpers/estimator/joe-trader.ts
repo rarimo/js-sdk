@@ -1,5 +1,6 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import type { Amount } from '@rarimo/shared'
 import {
   ChainId,
   Fetcher,
@@ -33,6 +34,7 @@ export const estimateTraderJoe = async (
   _from: Token,
   _to: Token,
   params: CheckoutOperationParams,
+  amountOut?: Amount,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -52,7 +54,7 @@ export const estimateTraderJoe = async (
     to.name,
   )
 
-  const amount = new TokenAmount(tokenB, getSwapAmount(params).value)
+  const amount = new TokenAmount(tokenB, getSwapAmount(params, amountOut).value)
 
   const pair = await Fetcher.fetchPairData(
     tokenA,
@@ -73,5 +75,6 @@ export const estimateTraderJoe = async (
       _from.decimals,
       _from.symbol,
     ),
+    amountOut,
   }
 }

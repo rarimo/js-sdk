@@ -8,6 +8,7 @@ import {
   TokenAmount,
   Trade,
 } from '@rarimo/quickswap-sdk'
+import type { Amount } from '@rarimo/shared'
 
 import { Price } from '@/entities'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
@@ -38,6 +39,7 @@ export const estimateQuickSwap = async (
   _from: Token,
   _to: Token,
   params: CheckoutOperationParams,
+  amountOut?: Amount,
 ): Promise<EstimatedPrice> => {
   const { from, to } = handleNativeTokens(tokens, _from, _to)
 
@@ -61,7 +63,7 @@ export const estimateQuickSwap = async (
     to.name,
   )
 
-  const amount = new TokenAmount(tokenB, getSwapAmount(params).value)
+  const amount = new TokenAmount(tokenB, getSwapAmount(params, amountOut).value)
 
   const pair = await Fetcher.fetchPairData(
     tokenA,
@@ -82,5 +84,6 @@ export const estimateQuickSwap = async (
       _from.decimals,
       _from.symbol,
     ),
+    amountOut,
   }
 }

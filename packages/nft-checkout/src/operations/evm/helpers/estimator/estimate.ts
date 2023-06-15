@@ -1,19 +1,20 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import type { Amount } from '@rarimo/shared'
 
 import { errors } from '@/errors'
-import {
-  createWrapUnwrapEstimate,
-  handleNativeTokens,
-  isUnwrapOnly,
-  isWrapOnly,
-} from '@/operations/evm/helpers'
 import type {
   CheckoutOperationParams,
   EstimatedPrice,
   PaymentToken,
 } from '@/types'
 
+import {
+  createWrapUnwrapEstimate,
+  handleNativeTokens,
+  isUnwrapOnly,
+  isWrapOnly,
+} from './helpers'
 import { estimateTraderJoe } from './joe-trader'
 import { estimatePancakeSwap } from './pancake-swap'
 import { estimateQuickSwap } from './quick-swap'
@@ -25,18 +26,20 @@ export const estimate = async (
   from: PaymentToken,
   params: CheckoutOperationParams,
   targetToken: Token,
+  amountOut?: Amount,
 ): Promise<EstimatedPrice> => {
   if (!from || !targetToken) {
     throw new errors.OperationInvalidSelectedTokenPairError()
   }
 
-  const opts: [Token[], IProvider, Token, Token, CheckoutOperationParams] = [
-    tokens,
-    provider,
-    from,
-    targetToken,
-    params,
-  ]
+  const opts: [
+    Token[],
+    IProvider,
+    Token,
+    Token,
+    CheckoutOperationParams,
+    Amount | undefined,
+  ] = [tokens, provider, from, targetToken, params, amountOut]
 
   const { from: fromHandled, to: targetTokenHandled } = handleNativeTokens(
     tokens,
@@ -53,6 +56,7 @@ export const estimate = async (
       from,
       isUnwrap ? targetToken : fromHandled,
       params,
+      amountOut,
     )
   }
 

@@ -3,6 +3,7 @@ import type { TransactionBundle } from '@rarimo/shared'
 import {
   Amount,
   BUNDLE_SALT_BYTES,
+  isArray,
   isUndefined,
   MASTER_ROUTER_ABI,
   toLowerCase,
@@ -16,7 +17,7 @@ import {
   WRAPPED_CHAIN_TOKEN_SYMBOLS,
 } from '@/const'
 import { SwapCommands } from '@/enums'
-import type { ExecuteArgs } from '@/types'
+import type { ExecuteArgs, MultiplePaymentOpts } from '@/types'
 
 import { buildPayload } from './payload-builder'
 
@@ -26,32 +27,85 @@ type CommandPayload = {
   data: string
 }
 
-export const getExecuteData = (args: ExecuteArgs): string => {
-  const {
+export const getExecuteData = (
+  args: ExecuteArgs | ExecuteArgs[],
+  multiplePaymentOpts?: MultiplePaymentOpts,
+): string => {
+  return isArray(args)
+    ? getExecuteDataMultiple(args, multiplePaymentOpts!)
+    : getExecuteDataSingle(args)
+}
+
+const getExecuteDataMultiple = (
+  args: ExecuteArgs[],
+  multiplePaymentOpts: MultiplePaymentOpts,
+): string => {
+  const arg = args[0]
+  const { amountOut, to } = multiplePaymentOpts
+  const isBridgingRequired = getIsBridgingRequired(arg.from, arg.to)
+  const isSameChainBundleExecution = Boolean(arg.bundle?.bundle)
+
+  const data = [
+    ...args.map(i => getSwapData(isBridgingRequired, i)).flat(),
+    ...getBridgeData(isBridgingRequired, arg, to, amountOut),
+    ...buildSameChainBundleData(isBridgingRequired, arg.bundle),
+    ...buildTransferData(
+      to,
+      amountOut,
+      arg.receiver || CALLER_ADDRESS,
+      isBridgingRequired,
+      isSameChainBundleExecution,
+    ),
+  ]
+
+  return encodeCommandPayload(data)
+}
+
+const getExecuteDataSingle = (args: ExecuteArgs): string => {
+  const { from, to, receiver = CALLER_ADDRESS } = args
+  const { isUnwrapRequired, isWrapRequired } = getIsWrappedOrUnwrappedRequired(
     from,
     to,
-    amountIn,
-    amountOut,
-    chainTo,
-    receiver = CALLER_ADDRESS,
-  } = args
+  )
+  const isWrappedOrUnwrapped = isWrapRequired || isUnwrapRequired
+  const isBridgingRequired = getIsBridgingRequired(from, to)
+  const isSameChainBundleExecution = Boolean(args.bundle?.bundle)
+
+  // If token was wrapped\unwrapped thus amount for bridging equals to amountIn
+  // and amountOut could be undefined otherwise if token was swapped we need
+  // to take amountOut as amount for bridging\transferring
+  const amount = isWrappedOrUnwrapped ? args.amountIn : args.amountOut!
+
+  const data = [
+    ...getSwapData(isBridgingRequired, args),
+    ...getBridgeData(isBridgingRequired, args, args.to, amount),
+    ...buildSameChainBundleData(isBridgingRequired, args.bundle),
+    ...buildTransferData(
+      to,
+      amount,
+      receiver,
+      isBridgingRequired,
+      isSameChainBundleExecution,
+    ),
+  ]
+  return encodeCommandPayload(data)
+}
+
+const getSwapData = (
+  isBridgingRequired: boolean,
+  args: ExecuteArgs,
+): CommandPayload[] => {
+  const { from, to, amountIn, amountOut, receiver = CALLER_ADDRESS } = args
 
   const data = []
 
-  const isBridgingRequired = Number(from.chain.id) !== Number(chainTo?.id)
   const isSameChainBundleExecution = Boolean(args.bundle?.bundle)
 
-  const isWrapRequired =
-    from.isNative &&
-    toLowerCase(WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(from.chain.id)]) ===
-      toLowerCase(to.symbol)
-
-  const isUnwrapRequired =
-    toLowerCase(WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(from.chain.id)]) ===
-      toLowerCase(from.symbol) &&
-    toLowerCase(to.symbol) === toLowerCase(to.chain.token.symbol)
-
-  const isWrappedOrUnwrapped = isUnwrapRequired || isWrapRequired
+  const { isUnwrapRequired, isWrapRequired } = getIsWrappedOrUnwrappedRequired(
+    from,
+    to,
+  )
+  const isWrappedOrUnwrapped = isWrapRequired || isUnwrapRequired
 
   // If bridging is required or if there is same chain bundle execution,
   // tokens must be on the swap contract balance.
@@ -87,7 +141,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
       throw new TypeError('path, amountOut args are required for swap')
     }
 
-    data.push(...getSwapData(from, to, amountIn, amountOut, args.path))
+    data.push(...buildSwapData(from, to, amountIn, amountOut, args.path))
 
     // If to.isNative swap output token we need to unwrap it for UniswapV3
     if (isSameChainBundleExecution && to.isNative && to.isUniswapV3) {
@@ -100,36 +154,27 @@ export const getExecuteData = (args: ExecuteArgs): string => {
     }
   }
 
-  // If token was wrapped\unwrapped thus amount for bridging equals to amountIn
-  // and amountOut could be undefined otherwise if token was swapped we need
-  // to take amountOut as amount for bridging\transferring
-  const amount = isWrappedOrUnwrapped ? amountIn : amountOut!
+  return data
+}
 
-  data.push(...getBridgeData(isBridgingRequired, args, to, receiver, amount))
+const getBridgeData = (
+  isBridgingRequired: boolean,
+  args: ExecuteArgs,
+  to: Token,
+  amount: Amount,
+): CommandPayload[] => {
+  if (!isBridgingRequired) return []
+  const { receiver = CALLER_ADDRESS } = args
+  return buildBridgeData(args, to, receiver, amount)
+}
 
-  // If bridging is not required and bundle is provided, thus we need to execute
-  // bundle on the same chain
-  data.push(...getSameChainBundleData(isBridgingRequired, args.bundle))
-
-  // If token wasn't bridged thus transfer to the receiver is required
-  // otherwise we will transfer change after swap operation which should be 0
-  // but better to be sure that all tokens was transferred to the receiver
-  data.push(
-    ...getTransferData(
-      to,
-      amount,
-      receiver,
-      isBridgingRequired,
-      isSameChainBundleExecution,
-    ),
-  )
-
+const encodeCommandPayload = (data: CommandPayload[]): string => {
   return new utils.Interface(MASTER_ROUTER_ABI).encodeFunctionData('make', [
     data,
   ])
 }
 
-const getSwapData = (
+const buildSwapData = (
   from: Token,
   to: Token,
   amountIn: Amount,
@@ -175,15 +220,12 @@ const getSwapData = (
   return data
 }
 
-const getBridgeData = (
-  isBridgingRequired: boolean,
+const buildBridgeData = (
   args: ExecuteArgs,
   to: Token,
   receiver: string,
   amountOut: Amount,
 ): CommandPayload[] => {
-  if (!isBridgingRequired) return []
-
   if (!args.chainTo || isUndefined(args.isWrapped)) {
     throw new TypeError('chainTo, isWrapped args are required for bridging')
   }
@@ -208,19 +250,22 @@ const getBridgeData = (
   ]
 }
 
-const getTransferData = (
+const buildTransferData = (
   to: Token,
   amount: Amount,
   receiver: string,
   isBridgingRequired: boolean,
   isSameChainBundleExecution: boolean,
 ): CommandPayload[] => {
+  // If token wasn't bridged thus transfer to the receiver is required
+  // otherwise we will transfer change after swap operation which should be 0
+  // but better to be sure that all tokens was transferred to the receiver
   const command = to.isNative
     ? SwapCommands.TransferNative
     : SwapCommands.TransferErc20
   const token = to.isNative ? [] : [to.address]
 
-  // first time we transfer required amount of the tokens to the receiver is bridging
+  // First time we transfer required amount of the tokens to the receiver is bridging
   // not required second time to be sure that swap contract balance is empty we
   // transfer change to the caller
   return [
@@ -231,13 +276,15 @@ const getTransferData = (
   ]
 }
 
-const getSameChainBundleData = (
+const buildSameChainBundleData = (
   isBridgingRequired: boolean,
   { bundle } = {} as TransactionBundle,
 ): CommandPayload[] => {
   if (isBridgingRequired || !bundle) return []
 
-  // to execute transaction bundle on the same chain we need to use multicall
+  // If bridging is not required and bundle is provided, thus we need to execute
+  // bundle on the same chain.
+  // To execute transaction bundle on the same chain we need to use multicall
   return [
     {
       command: SwapCommands.Multicall,
@@ -245,4 +292,22 @@ const getSameChainBundleData = (
       data: bundle,
     },
   ]
+}
+
+const getIsWrappedOrUnwrappedRequired = (from: Token, to: Token) => {
+  const isWrapRequired =
+    from.isNative &&
+    toLowerCase(WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(from.chain.id)]) ===
+      toLowerCase(to.symbol)
+
+  const isUnwrapRequired =
+    toLowerCase(WRAPPED_CHAIN_TOKEN_SYMBOLS[Number(from.chain.id)]) ===
+      toLowerCase(from.symbol) &&
+    toLowerCase(to.symbol) === toLowerCase(to.chain.token.symbol)
+
+  return { isWrapRequired, isUnwrapRequired }
+}
+
+const getIsBridgingRequired = (from: Token, to: Token) => {
+  return Number(from.chain.id) !== Number(to.chain.id)
 }

@@ -4,13 +4,14 @@ import type { Amount } from '@rarimo/shared'
 import type { Price } from '@/entities'
 
 export type EstimatedPrice = {
+  from: Token
+  to: Token
+  price: Price
+  amountOut?: Amount
   path?: string | string[]
   impact?: string
   gasPrice?: string
   gasPriceInUSD?: string
-  from: Token
-  to: Token
-  price: Price
 }
 
 export type PaymentToken = Token & {
