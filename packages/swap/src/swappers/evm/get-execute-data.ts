@@ -39,7 +39,9 @@ export const getExecuteData = (args: ExecuteArgs): string => {
   const data = []
 
   const isBridgingRequired = Number(from.chain.id) !== Number(chainTo?.id)
-  const isSameChainBundleExecution = Boolean(args.bundle?.bundle)
+  const isSameChain = Number(from.chain.id) !== Number(chainTo?.id)
+  const isBundleExists = Boolean(args.bundle?.bundle)
+  const isSameChainBundleExecution = isSameChain && isBundleExists
 
   const isWrapRequired =
     from.isNative &&
@@ -56,8 +58,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
   // If bridging is required or if there is same chain bundle execution,
   // tokens must be on the swap contract balance.
   // During swapping tokens swap contract will be receiver by default.
-  const rcvr =
-    isBridgingRequired || isSameChainBundleExecution ? THIS_ADDRESS : receiver
+  const rcvr = isBridgingRequired || isSameChain ? THIS_ADDRESS : receiver
 
   // If wrap of the native token is required
   if (isWrapRequired) {
@@ -90,7 +91,7 @@ export const getExecuteData = (args: ExecuteArgs): string => {
     data.push(...getSwapData(from, to, amountIn, amountOut, args.path))
 
     // If to.isNative swap output token we need to unwrap it for UniswapV3
-    if (isSameChainBundleExecution && to.isNative && to.isUniswapV3) {
+    if (isSameChain && to.isNative && to.isUniswapV3) {
       data.push(
         buildPayload(SwapCommands.UnwrapNative, [
           THIS_ADDRESS,
