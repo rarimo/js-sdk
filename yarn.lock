@@ -12047,6 +12047,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "rarimo-js-sdk-monorepo-root@workspace:."
   dependencies:
+    "@rarimo/bridge": "workspace:^"
+    "@rarimo/shared": "workspace:^"
     "@types/react": ^18
     "@typescript-eslint/eslint-plugin": ^5.51.0
     "@typescript-eslint/parser": ^5.30.7
