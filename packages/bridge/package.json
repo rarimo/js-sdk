@@ -60,11 +60,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "@rarimo/bridge"
-  },
   "dependencies": {
     "@distributedlab/reactivity": "^0.2.0-rc.19",
     "@distributedlab/tools": "^0.2.0-rc.19",
