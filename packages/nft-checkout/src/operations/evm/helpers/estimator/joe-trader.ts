@@ -1,5 +1,6 @@
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
+import { Price } from '@rarimo/shared'
 import {
   ChainId,
   Fetcher,
@@ -10,7 +11,6 @@ import {
   Trade,
 } from '@traderjoe-xyz/sdk'
 
-import { Price } from '@/entities'
 import type { CheckoutOperationParams, EstimatedPrice } from '@/types'
 
 import { getSwapAmount, handleNativeTokens, validateSlippage } from './helpers'

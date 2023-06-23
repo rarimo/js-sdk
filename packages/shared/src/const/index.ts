@@ -1,4 +1,5 @@
 export * from './abis'
+export * from './bridge'
 export * from './chains'
 export * from './common'
 export * from './evm'
