@@ -25,10 +25,6 @@ export default {
     nodePolyfills(),
     alias({
       entries: [
-        {find: 'ipfs-http-client', replacement: '../../node_modules/ipfs-http-client/dist/index.min.js'},
-        {find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js'},
-        {find: 'near-api-js', replacement: '../../node_modules/near-api-js/dist/near-api-js.js'},
-
         {find: 'util', replacement: '../../node_modules/util/util.js'},
         {find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js'},
         {find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js'},

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - `root` - `@rarimo/identity-gen-iden3` package
+- `root` - `@rarimo/auth-zkp-iden3` package
+- `@rarimo/shared` - export createApi method
 
 ## [2.0.0-rc.2] - 2023-06-13
 ### Fixed

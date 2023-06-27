@@ -30,14 +30,14 @@ export type IdentityConfig = {
 }
 
 export class Identity {
-  #privateKeyHex = '' as string
-  #identityId: Id = {} as Id
-  #claimProofSiblings: Siblings = [] as Siblings
-  #treeState: TreeState = {} as TreeState
-  #authClaim: Claim = {} as Claim
+  privateKeyHex = '' as string
+  identityId: Id = {} as Id
+  claimProofSiblings: Siblings = [] as Siblings
+  treeState: TreeState = {} as TreeState
+  authClaim: Claim = {} as Claim
 
   public static config: IdentityConfig = {
-    AUTH_BJJ_CREDENTIAL_HASH: 'cca3371a6cb1b715004407e325bd993c',
+    AUTH_BJJ_CREDENTIAL_HASH: '',
     ID_TYPE: Uint8Array.from([1, 0]),
     CLAIM_PROOF_SIBLINGS_COUNT: 40,
   }
@@ -55,37 +55,25 @@ export class Identity {
   }
 
   constructor(privateKeyHex?: string) {
-    this.#privateKeyHex = this.initPrivateKey(privateKeyHex)
+    this.privateKeyHex = this.initPrivateKey(privateKeyHex)
   }
 
-  get privateKey() {
-    return new PrivateKey(Hex.decodeString(this.#privateKeyHex))
+  public get privateKey() {
+    return new PrivateKey(Hex.decodeString(this.privateKeyHex))
   }
 
-  get identityIdString() {
-    return this.#identityId.string()
+  public get identityIdString() {
+    return this.identityId.string()
   }
 
-  get identityIdBigIntString() {
-    return this.#identityId.bigInt().toString()
-  }
-
-  get claimProofSiblings() {
-    return this.#claimProofSiblings
-  }
-
-  get treeState() {
-    return this.#treeState
-  }
-
-  get authClaim() {
-    return this.#authClaim
+  public get identityIdBigIntString() {
+    return this.identityId.bigInt().toString()
   }
 
   async createIdentity() {
-    this.#authClaim = this.createAuthClaim()
+    this.authClaim = this.createAuthClaim()
 
-    const authResponse = this.#authClaim.hiHv()
+    const authResponse = this.authClaim.hiHv()
 
     const uint8array1 = new TextEncoder().encode('claims')
     const uint8array2 = new TextEncoder().encode('revocations')
@@ -111,13 +99,13 @@ export class Identity {
       rootsTreeRoot.bigInt(),
     )
 
-    this.#identityId = DID.fromGenesisFromIdenState(
+    this.identityId = DID.fromGenesisFromIdenState(
       Identity.config.ID_TYPE,
       identity,
     ).id
 
     const claimProof = await claimsTree.generateProof(
-      this.#authClaim.hIndex(),
+      this.authClaim.hIndex(),
       claimsTreeRoot,
     )
 
@@ -128,7 +116,7 @@ export class Identity {
 
     claimProof.proof.siblings = claimProofSiblings
 
-    this.#claimProofSiblings = claimProofSiblings
+    this.claimProofSiblings = claimProofSiblings
 
     const stateHash = hashElems([
       claimsTreeRoot.bigInt(),
@@ -136,7 +124,7 @@ export class Identity {
       rootsTreeRoot.bigInt(),
     ])
 
-    this.#treeState = {
+    this.treeState = {
       state: stateHash.string(),
       claimsRoot: claimsTreeRoot.string(),
       revocationRoot: revocationsTreeRoot.string(),

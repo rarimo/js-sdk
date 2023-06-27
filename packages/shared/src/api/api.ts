@@ -10,7 +10,7 @@ export const CONFIG = {
   MAX_PAGE_LIMIT: 100,
 }
 
-const createApi = (baseUrl: string): JsonApiClient => {
+export const createApi = (baseUrl: string): JsonApiClient => {
   return new JsonApiClient({
     baseUrl,
     headers: {
