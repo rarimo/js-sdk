@@ -29,6 +29,9 @@
       "node": "./dist/cjs/index.js",
       "import": "./dist/esm/index.js",
       "default": "./dist/esm/index.js"
+    },
+    "./assets": {
+      "default": "./dist/assets/**/*"
     }
   },
   "scripts": {
@@ -58,6 +61,7 @@
     "@typechain/ethers-v5": "^11.0.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.2",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "tsc-alias": "^1.8.2",
     "typechain": "^8.2.0"

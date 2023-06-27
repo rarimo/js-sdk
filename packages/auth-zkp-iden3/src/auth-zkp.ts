@@ -47,9 +47,9 @@ export class AuthZkp {
     const api = createApi(AuthZkp.config.ISSUER_API_URL)
 
     const { data } = await api.get<ClaimOffer>(
-      `/integrations/qid-issuer/v1/public/claims/offers/${
+      `integrations/issuer/v1/public/claims/offers/${
         this.#identity.identityIdString
-      }/QDAOMembership`,
+      }/NaturalPerson`,
     )
 
     const claimDetails = {
@@ -70,10 +70,10 @@ export class AuthZkp {
       this.prepareInputs,
     )
 
-    // TODO: get files
+    // TODO: add files to package.json exports and read here
     const [wasm, provingKey] = await Promise.all([
-      readBytesFile('/circuits/auth/circuit.wasm'),
-      readBytesFile('/circuits/auth/circuit_final.zkey'),
+      readBytesFile('assets/circuit.wasm'),
+      readBytesFile('assets/circuit_final.zkey'),
     ])
 
     const jwzTokenRaw = await token2.prove(provingKey, wasm)

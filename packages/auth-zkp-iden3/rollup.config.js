@@ -6,6 +6,9 @@ import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser'
 import alias from '@rollup/plugin-alias'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
+import copy from 'rollup-plugin-copy'
+
+import path from 'path'
 
 const packageDirName = __dirname.split('/').pop()
 
@@ -19,6 +22,11 @@ export default {
     format: 'esm',
   },
   plugins: [
+    copy({
+      targets: [
+        { src: `${path.resolve(__dirname, './assets/**/*')}`, dest: 'dist/assets' },
+      ]
+    }),
     commonJS(),
     resolve({
       browser: true,
