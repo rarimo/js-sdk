@@ -44,34 +44,9 @@ export class OperationInvalidChainPairError extends RuntimeError {
   }
 }
 
-export class OperationSwapRouteNotFound extends RuntimeError {
-  public name = 'OperationSwapRouteNotFound'
-  constructor(message = 'Failed to find swap route') {
-    super(message)
-  }
-}
-
 export class OperationInvalidProviderChainTypeError extends RuntimeError {
   public name = 'OperationInvalidProviderChainTypeError'
   constructor(message = 'Provided provider chain type is invalid') {
-    super(message)
-  }
-}
-
-export class OperatorInvalidSlippageError extends RuntimeError {
-  public name = 'OperatorInvalidSlippageError'
-  constructor(
-    message = 'Provided slippage is invalid. Slippage must be between 0 and 100',
-  ) {
-    super(message)
-  }
-}
-
-export class OperatorWrappedTokenNotFound extends RuntimeError {
-  public name = 'OperatorWrappedTokenNotFound'
-  constructor(
-    message = 'Failed to find wrapped token for selected chain native token to estimate swap price',
-  ) {
     super(message)
   }
 }
@@ -81,6 +56,13 @@ export class OperationInsufficientFundsError extends RuntimeError {
   constructor(
     message = 'Failed to estimate multiple tokens payment operation: insufficient funds, please make sure you have enough balance.',
   ) {
+    super(message)
+  }
+}
+
+export class OperationEstimateError extends RuntimeError {
+  public name = 'OperationEstimateError'
+  constructor(message = 'Failed to estimate payment operation') {
     super(message)
   }
 }

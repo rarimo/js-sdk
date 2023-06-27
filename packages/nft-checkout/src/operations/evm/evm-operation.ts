@@ -3,6 +3,7 @@ import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import type { BridgeChain, TransactionBundle } from '@rarimo/shared'
+import { Price } from '@rarimo/shared'
 import {
   Amount,
   ChainTypes,
@@ -14,7 +15,6 @@ import type { ExecuteArgs } from '@rarimo/swap'
 import { createEVMSwapper, createSwapper } from '@rarimo/swap'
 import type { providers } from 'ethers'
 
-import { Price } from '@/entities'
 import { CheckoutOperationStatus, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
 import type {
@@ -196,14 +196,7 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   }
 
   const estimatePriceSingle = (from: PaymentToken, amountOut?: Amount) => {
-    return estimate(
-      provider,
-      tokens.value,
-      from,
-      params.value!,
-      targetToken.value!,
-      amountOut,
-    )
+    return estimate(from, targetToken.value!, params.value!, amountOut)
   }
 
   const checkout = async (

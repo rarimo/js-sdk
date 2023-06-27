@@ -5,14 +5,14 @@ import type {
   Chain,
   ChainId,
   DestinationTransaction,
+  Price,
   TransactionBundle,
 } from '@rarimo/shared'
 
-import type { Price } from '@/entities'
 import { CheckoutOperationStatus } from '@/enums'
 
+import type { EstimatedPrice, PaymentToken } from './estimate'
 import type { OperationSubscriber } from './operation-event-bus'
-import type { EstimatedPrice, PaymentToken } from './token'
 
 export type CheckoutOperationParams = {
   chainIdTo: ChainId

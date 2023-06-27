@@ -1,6 +1,8 @@
 import { BN } from '@distributedlab/tools'
-import type { Decimals, HexString, TokenSymbol } from '@rarimo/shared'
-import { AmountBase } from '@rarimo/shared'
+
+import type { Decimals, HexString, TokenSymbol } from '@/types'
+
+import { AmountBase } from './amount'
 
 export class Price extends AmountBase {
   readonly #symbol: TokenSymbol
@@ -33,7 +35,8 @@ export class Price extends AmountBase {
     value: string,
     decimals: Decimals,
     symbol: TokenSymbol,
+    address?: HexString,
   ): Price {
-    return new Price(BN.fromBigInt(value, decimals), symbol)
+    return new Price(BN.fromBigInt(value, decimals), symbol, address)
   }
 }

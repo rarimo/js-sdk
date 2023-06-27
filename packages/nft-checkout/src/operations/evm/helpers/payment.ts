@@ -7,6 +7,7 @@ import type {
   InternalAccountBalance,
   TokenSymbol,
 } from '@rarimo/shared'
+import { NATIVE_TOKEN_ADDRESS } from '@rarimo/shared'
 import {
   Amount,
   ChainNames,
@@ -19,8 +20,8 @@ import type { Swapper } from '@rarimo/swap'
 import { paymentTokenFromToken } from '@/entities'
 import type { CheckoutOperationParams, PaymentToken } from '@/types'
 
-import { estimate, getNativeAmountIn, isSameChainOperation } from './estimator'
-import { NATIVE_TOKEN_ADDRESS } from './tokens'
+import { estimate } from './estimate'
+import { getNativeAmountIn, isSameChainOperation } from './utils'
 
 const INTERNAL_TOKENS_MAP: { [key in ChainNames]?: string } = {
   [ChainNames.Goerli]: '2',
@@ -46,9 +47,7 @@ export const getPaymentTokensWithPairs = async (
   )
 
   const estimatedPrices = await Promise.allSettled(
-    paymentTokensWithoutTarget.map(i =>
-      estimate(provider, tokens, i, params, targetToken),
-    ),
+    paymentTokensWithoutTarget.map(i => estimate(i, targetToken, params)),
   )
 
   return estimatedPrices.reduce<PaymentToken[]>((acc, promise) => {

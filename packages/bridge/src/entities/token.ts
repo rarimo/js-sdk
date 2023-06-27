@@ -2,9 +2,14 @@ import type {
   Address,
   BridgeChain,
   Decimals,
+  InternalSupportedToken,
   TokenSymbol,
 } from '@rarimo/shared'
-import { EVMDexType } from '@rarimo/shared'
+import {
+  EVMDexType,
+  NATIVE_TOKEN_ADDRESS,
+  RARIMO_IPFS_BASE_URL,
+} from '@rarimo/shared'
 
 import type { Token } from '@/types'
 
@@ -46,5 +51,24 @@ export const tokenFromChain = (chain: BridgeChain): Token => {
     decimals: chain.token.decimals,
     logoURI: chain.icon,
     isNative: true,
+  })
+}
+
+export const tokenFromInternalSupportedToken = (
+  token: InternalSupportedToken,
+  chain: BridgeChain,
+): Token => {
+  const address = token.id
+
+  const logoURI = token.logo_uri?.replace('ipfs://', RARIMO_IPFS_BASE_URL)
+
+  return newToken({
+    chain,
+    address: address === NATIVE_TOKEN_ADDRESS ? '' : address,
+    name: token.name,
+    symbol: token.symbol,
+    decimals: token.decimals,
+    logoURI,
+    isNative: Boolean(token.native),
   })
 }
