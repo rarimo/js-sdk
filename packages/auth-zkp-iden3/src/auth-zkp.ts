@@ -21,9 +21,9 @@ export class AuthZkp {
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
     CIRCUIT_WASM_URL:
-      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/circuit.wasm',
+      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
     CIRCUIT_FINAL_KEY_URL:
-      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/circuit_final.zkey',
+      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
   }
 
   public static setConfig(config: Partial<AuthZkpConfig>) {
