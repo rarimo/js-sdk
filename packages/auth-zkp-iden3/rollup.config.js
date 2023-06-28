@@ -18,13 +18,14 @@ export default {
     name: `${packageDirName}`,
     format: 'esm',
   },
-  // external: [
-  //   '@iden3/js-crypto',
-  //   '@iden3/js-iden3-core',
-  //   '@iden3/js-jwz',
-  //   '@iden3/js-merkletree',
-  //   '@rarimo/identity-gen-iden3',
-  // ],
+  external: [
+    '@syntect/wasm',
+    // '@iden3/js-crypto',
+    // '@iden3/js-iden3-core',
+    // '@iden3/js-jwz',
+    // '@iden3/js-merkletree',
+    // '@rarimo/identity-gen-iden3',
+  ],
   plugins: [
     commonJS(),
     resolve({
