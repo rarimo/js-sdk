@@ -6,9 +6,6 @@ import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser'
 import alias from '@rollup/plugin-alias'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
-import copy from 'rollup-plugin-copy'
-
-import path from 'path'
 
 const packageDirName = __dirname.split('/').pop()
 
@@ -21,12 +18,14 @@ export default {
     name: `${packageDirName}`,
     format: 'esm',
   },
+  // external: [
+  //   '@iden3/js-crypto',
+  //   '@iden3/js-iden3-core',
+  //   '@iden3/js-jwz',
+  //   '@iden3/js-merkletree',
+  //   '@rarimo/identity-gen-iden3',
+  // ],
   plugins: [
-    copy({
-      targets: [
-        { src: `${path.resolve(__dirname, './assets/**/*')}`, dest: 'dist/assets' },
-      ]
-    }),
     commonJS(),
     resolve({
       browser: true,

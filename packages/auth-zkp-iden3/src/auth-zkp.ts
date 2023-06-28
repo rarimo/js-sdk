@@ -12,7 +12,7 @@ import type {
 } from '@/types'
 
 export class AuthZkp {
-  #identity: Identity = {} as Identity
+  identity: Identity = {} as Identity
   authClaimWithProof: AuthClaimWithProof = {} as AuthClaimWithProof
   issuerResponse: IssuerResponse = {} as IssuerResponse
 
@@ -20,6 +20,10 @@ export class AuthZkp {
     RPC_URL: '',
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
+    CIRCUIT_WASM_URL:
+      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/circuit.wasm',
+    CIRCUIT_FINAL_KEY_URL:
+      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/circuit_final.zkey',
   }
 
   public static setConfig(config: Partial<AuthZkpConfig>) {
@@ -27,7 +31,7 @@ export class AuthZkp {
   }
 
   constructor(identity: Identity) {
-    this.#identity = identity
+    this.identity = identity
 
     this.authClaimWithProof = {
       claim: {
@@ -47,9 +51,7 @@ export class AuthZkp {
     const api = createApi(AuthZkp.config.ISSUER_API_URL)
 
     const { data } = await api.get<ClaimOffer>(
-      `integrations/issuer/v1/public/claims/offers/${
-        this.#identity.identityIdString
-      }/NaturalPerson`,
+      `integrations/issuer/v1/public/claims/offers/${this.identity.identityIdString}/NaturalPerson`,
     )
 
     const claimDetails = {
@@ -67,16 +69,18 @@ export class AuthZkp {
     const token2 = new Token(
       proving.provingMethodGroth16AuthV2Instance,
       JSON.stringify(claimDetails),
-      this.prepareInputs,
+      this.prepareInputs.bind(this),
     )
 
     // TODO: add files to package.json exports and read here
     const [wasm, provingKey] = await Promise.all([
-      readBytesFile('assets/circuit.wasm'),
-      readBytesFile('assets/circuit_final.zkey'),
+      readBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
+      readBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
     ])
 
     const jwzTokenRaw = await token2.prove(provingKey, wasm)
+
+    console.log('jwzTokenRaw', jwzTokenRaw)
 
     const { rawData } = await api
       .withBaseUrl(data.body.url)
@@ -90,11 +94,11 @@ export class AuthZkp {
   async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {
     const messageHashBigInt = fromBigEndian(messageHash)
 
-    const signature = this.#identity.privateKey.signPoseidon(messageHashBigInt)
+    const signature = this.identity.privateKey.signPoseidon(messageHashBigInt)
     const gistInfo = await getGISTProof({
       rpcUrl: AuthZkp.config.RPC_URL,
       contractAddress: AuthZkp.config.STATE_V2_ADDRESS,
-      userId: this.#identity.identityIdBigIntString,
+      userId: this.identity.identityIdBigIntString,
     })
 
     return new TextEncoder().encode(
@@ -113,7 +117,7 @@ export class AuthZkp {
         challengeSignatureR8y: signature.R8[1].toString(),
         challengeSignatureS: signature.S.toString(),
         claimsTreeRoot: this.authClaimWithProof.treeState.claimsRoot,
-        genesisID: this.#identity.identityIdBigIntString,
+        genesisID: this.identity.identityIdBigIntString,
         revTreeRoot: this.authClaimWithProof.treeState.revocationRoot,
         rootsTreeRoot: this.authClaimWithProof.treeState.rootOfRoots,
         state: this.authClaimWithProof.treeState.state,

@@ -112,4 +112,6 @@ export type AuthZkpConfig = {
   RPC_URL: string
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
+  CIRCUIT_WASM_URL: string
+  CIRCUIT_FINAL_KEY_URL: string
 }
