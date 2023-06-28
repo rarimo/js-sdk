@@ -34,11 +34,12 @@ import type {
   ZkpGenQuery,
 } from '@/types'
 
-export class ZkpGen {
+export class ZkpGen<T extends { [key: string]: number }> {
   requestId = ''
   identity: Identity = {} as Identity
   query: ZkpGenQuery = {} as ZkpGenQuery
-  verifiableCredentials: VerifiableCredentials = {} as VerifiableCredentials
+  verifiableCredentials: VerifiableCredentials<T> =
+    {} as VerifiableCredentials<T>
 
   challenge = ''
 
@@ -57,7 +58,7 @@ export class ZkpGen {
     this.config = Object.assign(this.config, config)
   }
 
-  constructor(opts: ZkpGenCreateOpts) {
+  constructor(opts: ZkpGenCreateOpts<T>) {
     this.requestId = opts.requestId
     this.identity = opts.identity
     this.verifiableCredentials = opts.verifiableCredentials
@@ -93,7 +94,9 @@ export class ZkpGen {
     const value = new Array(64)
     value.fill('0')
     value[0] =
-      this.verifiableCredentials.body.credential.credentialSubject.serialNumber.toString()
+      this.verifiableCredentials.body.credential.credentialSubject?.[
+        this.query.variableName
+      ].toString()
 
     const inputs = JSON.stringify({
       requestID: this.requestId,
@@ -179,6 +182,7 @@ export class ZkpGen {
       value: value,
     })
 
+    // TODO: replace wrong wasm and zkey files
     const [wasm, provingKey] = await Promise.all([
       readBytesFile('/circuits/credentials_mtp/circuit.wasm'),
       readBytesFile('/circuits/credentials_mtp/circuit_final.zkey'),
@@ -205,10 +209,11 @@ export class ZkpGen {
 
     const buf = new ArrayBuffer(32)
     const view = new DataView(buf)
-    // TODO: what is claimSerialNumber?
     view.setUint32(
       0,
-      this.verifiableCredentials.body.credential.credentialSubject.serialNumber,
+      this.verifiableCredentials.body.credential.credentialSubject?.[
+        this.query.variableName
+      ],
       true,
     )
 
@@ -217,8 +222,9 @@ export class ZkpGen {
     delete credential.proof
 
     const mz = await Merklizer.merklizeJSONLD(JSON.stringify(credential))
-    // TODO: what is serialNumber?
-    const path: Path = await mz.resolveDocPath('credentialSubject.serialNumber')
+    const path: Path = await mz.resolveDocPath(
+      `credentialSubject.${this.query.variableName}`,
+    )
     const claimProof = await mz.proof(path)
 
     claimProof.proof.siblings = circomSiblingsFromSiblings(

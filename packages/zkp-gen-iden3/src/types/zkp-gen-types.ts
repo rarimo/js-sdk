@@ -10,10 +10,10 @@ export type ZkpGenQuery = {
   value: string
 }
 
-export type ZkpGenCreateOpts = {
+export type ZkpGenCreateOpts<T extends { [key: string]: number }> = {
   requestId: string
   identity: Identity
-  verifiableCredentials: VerifiableCredentials
+  verifiableCredentials: VerifiableCredentials<T>
 
   challenge: string
 

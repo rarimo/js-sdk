@@ -6,9 +6,10 @@ import { type Identity } from '@rarimo/identity-gen-iden3'
 import { getGISTProof, readBytesFile } from '@/helpers'
 import type { AuthZkpConfig, ClaimOffer, VerifiableCredentials } from '@/types'
 
-export class AuthZkp {
+export class AuthZkp<T extends { [key: string]: number }> {
   identity: Identity = {} as Identity
-  verifiableCredentials: VerifiableCredentials = {} as VerifiableCredentials
+  verifiableCredentials: VerifiableCredentials<T> =
+    {} as VerifiableCredentials<T>
 
   public static config: AuthZkpConfig = {
     RPC_URL: '',
@@ -28,7 +29,7 @@ export class AuthZkp {
     this.identity = identity
   }
 
-  async getClaim(): Promise<VerifiableCredentials> {
+  async getClaim(): Promise<VerifiableCredentials<T>> {
     const api = new JsonApiClient({
       baseUrl: AuthZkp.config.ISSUER_API_URL,
       headers: {
@@ -68,15 +69,16 @@ export class AuthZkp {
 
     const { rawData: issuerData } = await api
       .withBaseUrl(offerData.body.url)
-      .post<VerifiableCredentials>('', {
+      .post<VerifiableCredentials<T>>('', {
         body: jwzTokenRaw,
       })
 
     if (!issuerData) throw new TypeError('Issuer response is empty')
 
-    this.verifiableCredentials = issuerData as unknown as VerifiableCredentials
+    this.verifiableCredentials =
+      issuerData as unknown as VerifiableCredentials<T>
 
-    return issuerData as unknown as VerifiableCredentials
+    return issuerData as unknown as VerifiableCredentials<T>
   }
 
   async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {

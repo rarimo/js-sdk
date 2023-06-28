@@ -23,7 +23,7 @@ export type IssuerData = {
   type: string
 }
 
-export interface VerifiableCredentials {
+export interface VerifiableCredentials<T extends { [key: string]: number }> {
   body: {
     credential: {
       ['@context']: string[]
@@ -38,10 +38,10 @@ export interface VerifiableCredentials {
       }
       credentialSubject: {
         id: string
-        isMember: number
-        serialNumber: number
         type: string
-      }
+        // isMember: number
+        // serialNumber: number
+      } & T
       expirationDate: string
       id: string
       issuanceDate: string
