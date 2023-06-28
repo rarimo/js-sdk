@@ -4,11 +4,11 @@ import { proving, Token } from '@iden3/js-jwz'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 
 import { getGISTProof, readBytesFile } from '@/helpers'
-import type { AuthZkpConfig, ClaimOffer, IssuerResponse } from '@/types'
+import type { AuthZkpConfig, ClaimOffer, VerifiableCredentials } from '@/types'
 
 export class AuthZkp {
   identity: Identity = {} as Identity
-  issuerResponse: IssuerResponse = {} as IssuerResponse
+  verifiableCredentials: VerifiableCredentials = {} as VerifiableCredentials
 
   public static config: AuthZkpConfig = {
     RPC_URL: '',
@@ -28,7 +28,7 @@ export class AuthZkp {
     this.identity = identity
   }
 
-  async getClaim(): Promise<IssuerResponse> {
+  async getClaim(): Promise<VerifiableCredentials> {
     const api = new JsonApiClient({
       baseUrl: AuthZkp.config.ISSUER_API_URL,
       headers: {
@@ -68,15 +68,15 @@ export class AuthZkp {
 
     const { rawData: issuerData } = await api
       .withBaseUrl(offerData.body.url)
-      .post<IssuerResponse>('', {
+      .post<VerifiableCredentials>('', {
         body: jwzTokenRaw,
       })
 
     if (!issuerData) throw new TypeError('Issuer response is empty')
 
-    this.issuerResponse = issuerData as unknown as IssuerResponse
+    this.verifiableCredentials = issuerData as unknown as VerifiableCredentials
 
-    return issuerData as unknown as IssuerResponse
+    return issuerData as unknown as VerifiableCredentials
   }
 
   async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {
@@ -116,9 +116,6 @@ export class AuthZkp {
       gistMtpAuxHv: gistInfo?.auxValue.toString(),
       gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
     }
-
-    console.log('preparedInputs', preparedInputs)
-    console.log('preparedInputs', JSON.stringify(preparedInputs))
 
     return new TextEncoder().encode(JSON.stringify(preparedInputs))
   }

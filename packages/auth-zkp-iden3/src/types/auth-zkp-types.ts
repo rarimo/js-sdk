@@ -23,7 +23,7 @@ export type IssuerData = {
   type: string
 }
 
-export interface IssuerResponse {
+export interface VerifiableCredentials {
   body: {
     credential: {
       ['@context']: string[]
