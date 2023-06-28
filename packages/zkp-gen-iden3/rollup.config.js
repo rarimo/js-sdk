@@ -19,6 +19,8 @@ export default {
   },
   external: [
     '@syntect/wasm',
+    'buffer',
+    'Buffer',
     // '@iden3/js-crypto',
     // '@iden3/js-iden3-core',
     // '@iden3/js-jwz',

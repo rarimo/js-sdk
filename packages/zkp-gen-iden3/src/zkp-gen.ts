@@ -14,7 +14,7 @@ import {
   type MtValue,
   type Path,
 } from '@iden3/js-jsonld-merklization'
-import { proving } from '@iden3/js-jwz'
+import { proving, type ZKProof } from '@iden3/js-jwz'
 import {
   circomSiblingsFromSiblings,
   newHashFromHex,
@@ -29,28 +29,31 @@ import { getGISTProof, readBytesFile, unmarshalBinary } from '@/helpers'
 import type {
   ClaimStatus,
   IssuerState,
+  QueryVariableNameAbstract,
   Schema,
   ZkpGenCreateOpts,
   ZkpGenQuery,
 } from '@/types'
 
-export class ZkpGen<T extends { [key: string]: number }> {
+export class ZkpGen<T extends QueryVariableNameAbstract> {
   requestId = ''
   identity: Identity = {} as Identity
-  query: ZkpGenQuery = {} as ZkpGenQuery
+  query: ZkpGenQuery<T> = {} as ZkpGenQuery<T>
   verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>
 
   challenge = ''
+
+  subjectProof: ZKProof = {} as ZKProof
 
   public static config = {
     RPC_URL: '',
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
     CIRCUIT_WASM_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/circuit.wasm',
     CIRCUIT_FINAL_KEY_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/circuit_final.zkey',
     CLAIM_PROOF_SIBLINGS_COUNT: 32,
   }
 
@@ -184,15 +187,17 @@ export class ZkpGen<T extends { [key: string]: number }> {
 
     // TODO: replace wrong wasm and zkey files
     const [wasm, provingKey] = await Promise.all([
-      readBytesFile('/circuits/credentials_mtp/circuit.wasm'),
-      readBytesFile('/circuits/credentials_mtp/circuit_final.zkey'),
+      readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
+      readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
     ])
 
-    return await proving.provingMethodGroth16AuthV2Instance.prove(
+    this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
       new TextEncoder().encode(inputs),
       provingKey,
       wasm,
     )
+
+    return this.subjectProof
   }
 
   async #createCoreClaim(): Promise<{
@@ -223,7 +228,7 @@ export class ZkpGen<T extends { [key: string]: number }> {
 
     const mz = await Merklizer.merklizeJSONLD(JSON.stringify(credential))
     const path: Path = await mz.resolveDocPath(
-      `credentialSubject.${this.query.variableName}`,
+      `credentialSubject.${String(this.query.variableName)}`,
     )
     const claimProof = await mz.proof(path)
 

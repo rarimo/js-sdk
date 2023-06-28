@@ -1,23 +1,25 @@
 import type { Hash, Siblings } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
-import { Identity } from '@rarimo/identity-gen-iden3'
+import type { Identity } from '@rarimo/identity-gen-iden3'
 
-import { ZKP_OPERATORS } from '@/enums'
+import type { ZKP_OPERATORS } from '@/enums'
 
-export type ZkpGenQuery = {
-  variableName: string
+export type QueryVariableNameAbstract = { [key: string]: number }
+
+export type ZkpGenQuery<T extends QueryVariableNameAbstract> = {
+  variableName: keyof T
   operator: ZKP_OPERATORS
-  value: string
+  value: string[]
 }
 
-export type ZkpGenCreateOpts<T extends { [key: string]: number }> = {
+export type ZkpGenCreateOpts<T extends QueryVariableNameAbstract> = {
   requestId: string
   identity: Identity
   verifiableCredentials: VerifiableCredentials<T>
 
   challenge: string
 
-  query: ZkpGenQuery
+  query: ZkpGenQuery<T>
 }
 
 export type IssuerState = {

@@ -4,9 +4,14 @@ import { proving, Token } from '@iden3/js-jwz'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 
 import { getGISTProof, readBytesFile } from '@/helpers'
-import type { AuthZkpConfig, ClaimOffer, VerifiableCredentials } from '@/types'
+import type {
+  AuthZkpConfig,
+  ClaimOffer,
+  QueryVariableNameAbstract,
+  VerifiableCredentials,
+} from '@/types'
 
-export class AuthZkp<T extends { [key: string]: number }> {
+export class AuthZkp<T extends QueryVariableNameAbstract> {
   identity: Identity = {} as Identity
   verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>

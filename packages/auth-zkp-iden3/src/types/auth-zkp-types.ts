@@ -23,7 +23,9 @@ export type IssuerData = {
   type: string
 }
 
-export interface VerifiableCredentials<T extends { [key: string]: number }> {
+export type QueryVariableNameAbstract = { [key: string]: number }
+
+export interface VerifiableCredentials<T extends QueryVariableNameAbstract> {
   body: {
     credential: {
       ['@context']: string[]
