@@ -16,6 +16,8 @@ import {
   type Siblings,
 } from '@iden3/js-merkletree'
 
+import { initPrivateKey } from '@/helpers'
+
 export type TreeState = {
   state: string
   claimsRoot: string
@@ -55,7 +57,7 @@ export class Identity {
   }
 
   constructor(privateKeyHex?: string) {
-    this.privateKeyHex = this.initPrivateKey(privateKeyHex)
+    this.privateKeyHex = initPrivateKey(privateKeyHex)
   }
 
   public get privateKey() {
@@ -130,17 +132,6 @@ export class Identity {
       revocationRoot: revocationsTreeRoot.string(),
       rootOfRoots: rootsTreeRoot.string(),
     }
-  }
-
-  initPrivateKey(hexString?: string) {
-    let arr
-    if (hexString) {
-      arr = Hex.decodeString(hexString)
-    } else {
-      arr = new Uint8Array(32)
-      window.crypto.getRandomValues(arr)
-    }
-    return new PrivateKey(arr).hex()
   }
 
   // TODO: move to zkp-auth package

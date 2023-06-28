@@ -1,10 +1,5 @@
 import { fetcher } from '@distributedlab/fetcher'
 
-// const fetcher = new Fetcher({
-//   baseUrl: 'https://raw.githubusercontent.com',
-//   credentials: 'omit',
-// })
-
 export async function readBytesFile(path: string) {
   const response = await fetcher.get(path)
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
