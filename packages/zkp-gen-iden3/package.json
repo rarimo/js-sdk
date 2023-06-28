@@ -48,6 +48,8 @@
     "access": "public"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.2",
@@ -76,7 +78,6 @@
     "@rarimo/auth-zkp-iden3": "workspace:^",
     "@rarimo/identity-gen-iden3": "workspace:^",
     "@rarimo/shared": "workspace:^",
-    "keccak256": "^1.0.6",
     "tslib": "^2.5.0"
   }
 }

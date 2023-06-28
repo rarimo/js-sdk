@@ -1,4 +1,5 @@
 import { fetcher } from '@distributedlab/fetcher'
+import { keccak256 } from '@ethersproject/keccak256'
 import { Hex, Signature } from '@iden3/js-crypto'
 import {
   Claim,
@@ -22,8 +23,8 @@ import {
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import { type Identity } from '@rarimo/identity-gen-iden3'
+import { Buffer } from 'buffer'
 import type { BigNumber } from 'ethers'
-import keccak256 from 'keccak256'
 
 import { getGISTProof, readBytesFile, unmarshalBinary } from '@/helpers'
 import type {
@@ -185,7 +186,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       value: value,
     })
 
-    // TODO: replace wrong wasm and zkey files
     const [wasm, provingKey] = await Promise.all([
       readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
       readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
@@ -264,13 +264,13 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       '#' +
       this.verifiableCredentials.body.credential.credentialSubject.type
     const schemaBytes = new TextEncoder().encode(schemaString)
-    const keccakString = keccak256(Buffer.from(schemaBytes))
+    const keccakString = Buffer.from(keccak256(Buffer.from(schemaBytes)))
     return new SchemaHash(keccakString.subarray(keccakString.byteLength - 16))
   }
 
   async #requestClaimRevocationStatus(revNonce: number) {
     const { data } = await fetcher.get(
-      `${ZkpGen.config.ISSUER_API_URL}/integrations/qid-issuer/v1/public/claims/revocations/check/${revNonce}`,
+      `${ZkpGen.config.ISSUER_API_URL}/integrations/issuer/v1/public/claims/revocations/check/${revNonce}`,
     )
 
     return data as ClaimStatus

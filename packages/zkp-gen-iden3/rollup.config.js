@@ -5,6 +5,10 @@ import babel from '@rollup/plugin-babel'
 import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser'
 import alias from '@rollup/plugin-alias'
+
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
+
 import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 const packageDirName = __dirname.split('/').pop()
@@ -38,13 +42,14 @@ export default {
       entries: [
         {find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js'},
 
-        {find: 'util', replacement: '../../node_modules/util/util.js'},
-        {find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js'},
-        {find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js'},
+        { find: 'util', replacement: '../../node_modules/util/util.js' },
+        { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
+        { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
         { find: "@iden3/js-iden3-core", replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
         { find: "@iden3/js-jwz", replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
         { find: "@iden3/js-crypto", replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
-        { find: "@iden3/js-jsonld-merklization", replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
+        { find: "@iden3/js-jsonld-merklization", replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" },
+        // { find: 'keccak256', replacement: '../../node_modules/keccak256/keccak256.js' }
       ],
     }),
     babel({
@@ -57,4 +62,19 @@ export default {
     json(),
     terser(),
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+    },
+    // Enable esbuild polyfill plugins
+    plugins: [
+      NodeGlobalsPolyfillPlugin({
+        process: true,
+        buffer: true,
+      }),
+      NodeModulesPolyfillPlugin(),
+    ],
+  }
 }
