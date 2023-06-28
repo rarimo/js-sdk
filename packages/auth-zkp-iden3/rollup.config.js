@@ -9,7 +9,6 @@ import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 const packageDirName = __dirname.split('/').pop()
 
-
 export default {
   input: `${__dirname}/src/index.ts`,
   output: {

@@ -34,9 +34,10 @@ export type IdentityConfig = {
 export class Identity {
   privateKeyHex = '' as string
   identityId: Id = {} as Id
-  claimProofSiblings: Siblings = [] as Siblings
+  authClaimIncProofSiblings: Siblings = [] as Siblings
+  authClaimNonRevProofSiblings: Siblings = [] as Siblings
   treeState: TreeState = {} as TreeState
-  authClaim: Claim = {} as Claim
+  coreAuthClaim: Claim = {} as Claim
 
   public static config: IdentityConfig = {
     AUTH_BJJ_CREDENTIAL_HASH: '',
@@ -48,7 +49,7 @@ export class Identity {
     this.config = Object.assign(this.config, config)
   }
 
-  public static async create(privateKeyHex?: string) {
+  public static async create(privateKeyHex?: string): Promise<Identity> {
     const identity = new Identity(privateKeyHex)
 
     await identity.createIdentity()
@@ -72,10 +73,17 @@ export class Identity {
     return this.identityId.bigInt().toString()
   }
 
-  async createIdentity() {
-    this.authClaim = this.createAuthClaim()
+  public get authClaimInput() {
+    return [
+      ...this.coreAuthClaim.index.map(el => el.toBigInt().toString()),
+      ...this.coreAuthClaim.value.map(el => el.toBigInt().toString()),
+    ]
+  }
 
-    const authResponse = this.authClaim.hiHv()
+  async createIdentity() {
+    this.coreAuthClaim = this.createCoreAuthClaim()
+
+    const authResponse = this.coreAuthClaim.hiHv()
 
     const uint8array1 = new TextEncoder().encode('claims')
     const uint8array2 = new TextEncoder().encode('revocations')
@@ -106,19 +114,30 @@ export class Identity {
       identity,
     ).id
 
-    const claimProof = await claimsTree.generateProof(
-      this.authClaim.hIndex(),
+    const authClaimIncProof = await claimsTree.generateProof(
+      this.coreAuthClaim.hIndex(),
       claimsTreeRoot,
     )
 
-    const claimProofSiblings = circomSiblingsFromSiblings(
-      claimProof.proof.siblings,
+    const authClaimIncProofSiblings = circomSiblingsFromSiblings(
+      authClaimIncProof.proof.siblings,
       Identity.config.CLAIM_PROOF_SIBLINGS_COUNT,
     )
 
-    claimProof.proof.siblings = claimProofSiblings
+    const authClaimNonRevProof = await revocationsTree.generateProof(
+      this.coreAuthClaim.getRevocationNonce(),
+      revocationsTreeRoot,
+    )
 
-    this.claimProofSiblings = claimProofSiblings
+    const authClaimNonRevProofSiblings = circomSiblingsFromSiblings(
+      authClaimNonRevProof.proof.siblings,
+      Identity.config.CLAIM_PROOF_SIBLINGS_COUNT,
+    )
+
+    // authClaimIncProof.proof.siblings = authClaimIncProofSiblings
+
+    this.authClaimIncProofSiblings = authClaimIncProofSiblings
+    this.authClaimNonRevProofSiblings = authClaimNonRevProofSiblings
 
     const stateHash = hashElems([
       claimsTreeRoot.bigInt(),
@@ -135,7 +154,7 @@ export class Identity {
   }
 
   // TODO: move to zkp-auth package
-  createAuthClaim() {
+  createCoreAuthClaim() {
     const hash = SchemaHash.newSchemaHashFromHex(
       Identity.config.AUTH_BJJ_CREDENTIAL_HASH,
     )

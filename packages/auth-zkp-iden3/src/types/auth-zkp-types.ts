@@ -1,5 +1,3 @@
-import type { TreeState } from '@rarimo/identity-gen-iden3'
-
 export type IssuerData = {
   authCoreClaim: string
   credentialStatus: {
@@ -25,7 +23,7 @@ export type IssuerData = {
   type: string
 }
 
-export type IssuerResponse = {
+export interface IssuerResponse {
   body: {
     credential: {
       ['@context']: string[]
@@ -91,21 +89,6 @@ export type ClaimOffer = {
   to: string
   typ: string
   type: string
-}
-
-export type NonRevProof = {
-  proofSiblings: string[]
-  treeState: TreeState
-}
-
-export type AuthClaimWithProof = {
-  claim: {
-    index: string[]
-    value: string[]
-  }
-  treeState: TreeState
-  proofSiblings: string[]
-  nonRevProof: NonRevProof
 }
 
 export type AuthZkpConfig = {

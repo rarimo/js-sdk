@@ -4,16 +4,10 @@ import { proving, Token } from '@iden3/js-jwz'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 
 import { getGISTProof, readBytesFile } from '@/helpers'
-import type {
-  AuthClaimWithProof,
-  AuthZkpConfig,
-  ClaimOffer,
-  IssuerResponse,
-} from '@/types'
+import type { AuthZkpConfig, ClaimOffer, IssuerResponse } from '@/types'
 
 export class AuthZkp {
   identity: Identity = {} as Identity
-  authClaimWithProof: AuthClaimWithProof = {} as AuthClaimWithProof
   issuerResponse: IssuerResponse = {} as IssuerResponse
 
   public static config: AuthZkpConfig = {
@@ -32,22 +26,9 @@ export class AuthZkp {
 
   constructor(identity: Identity) {
     this.identity = identity
-
-    this.authClaimWithProof = {
-      claim: {
-        index: identity.authClaim.index.map(el => el.toBigInt().toString()),
-        value: identity.authClaim.value.map(el => el.toBigInt().toString()),
-      },
-      treeState: identity.treeState,
-      proofSiblings: identity.claimProofSiblings.map(el => el.string()),
-      nonRevProof: {
-        proofSiblings: identity.claimProofSiblings.map(el => el.string()),
-        treeState: identity.treeState,
-      },
-    }
   }
 
-  async getClaim() {
+  async getClaim(): Promise<IssuerResponse> {
     const api = new JsonApiClient({
       baseUrl: AuthZkp.config.ISSUER_API_URL,
       headers: {
@@ -93,9 +74,9 @@ export class AuthZkp {
 
     if (!issuerData) throw new TypeError('Issuer response is empty')
 
-    this.issuerResponse = issuerData as IssuerResponse
+    this.issuerResponse = issuerData as unknown as IssuerResponse
 
-    return issuerData
+    return issuerData as unknown as IssuerResponse
   }
 
   async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {
@@ -108,34 +89,37 @@ export class AuthZkp {
       userId: this.identity.identityIdBigIntString,
     })
 
-    return new TextEncoder().encode(
-      JSON.stringify({
-        authClaim: [
-          ...this.authClaimWithProof.claim.index,
-          ...this.authClaimWithProof.claim.value,
-        ],
-        authClaimIncMtp: this.authClaimWithProof.proofSiblings,
-        authClaimNonRevMtp: this.authClaimWithProof.proofSiblings,
-        authClaimNonRevMtpAuxHi: '0',
-        authClaimNonRevMtpAuxHv: '0',
-        authClaimNonRevMtpNoAux: '1',
-        challenge: messageHashBigInt.toString(),
-        challengeSignatureR8x: signature.R8[0].toString(),
-        challengeSignatureR8y: signature.R8[1].toString(),
-        challengeSignatureS: signature.S.toString(),
-        claimsTreeRoot: this.authClaimWithProof.treeState.claimsRoot,
-        genesisID: this.identity.identityIdBigIntString,
-        revTreeRoot: this.authClaimWithProof.treeState.revocationRoot,
-        rootsTreeRoot: this.authClaimWithProof.treeState.rootOfRoots,
-        state: this.authClaimWithProof.treeState.state,
-        profileNonce: '0',
-        gistRoot: gistInfo?.root.toString(),
-        gistMtp:
-          gistInfo?.siblings?.map?.((el: unknown) => el?.toString()) ?? [],
-        gistMtpAuxHi: gistInfo?.auxIndex.toString(),
-        gistMtpAuxHv: gistInfo?.auxValue.toString(),
-        gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
-      }),
-    )
+    const preparedInputs = {
+      authClaim: [...this.identity.authClaimInput],
+      authClaimIncMtp: [
+        ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
+      ],
+      authClaimNonRevMtp: [
+        ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
+      ],
+      authClaimNonRevMtpAuxHi: '0',
+      authClaimNonRevMtpAuxHv: '0',
+      authClaimNonRevMtpNoAux: '1',
+      challenge: messageHashBigInt.toString(),
+      challengeSignatureR8x: signature.R8[0].toString(),
+      challengeSignatureR8y: signature.R8[1].toString(),
+      challengeSignatureS: signature.S.toString(),
+      claimsTreeRoot: this.identity.treeState.claimsRoot,
+      genesisID: this.identity.identityIdBigIntString,
+      revTreeRoot: this.identity.treeState.revocationRoot,
+      rootsTreeRoot: this.identity.treeState.rootOfRoots,
+      state: this.identity.treeState.state,
+      profileNonce: '0',
+      gistRoot: gistInfo?.root.toString(),
+      gistMtp: gistInfo?.siblings?.map?.((el: unknown) => el?.toString()) ?? [],
+      gistMtpAuxHi: gistInfo?.auxIndex.toString(),
+      gistMtpAuxHv: gistInfo?.auxValue.toString(),
+      gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
+    }
+
+    console.log('preparedInputs', preparedInputs)
+    console.log('preparedInputs', JSON.stringify(preparedInputs))
+
+    return new TextEncoder().encode(JSON.stringify(preparedInputs))
   }
 }
