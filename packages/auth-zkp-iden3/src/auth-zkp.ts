@@ -1,7 +1,7 @@
+import { JsonApiClient } from '@distributedlab/jac'
 import { fromBigEndian } from '@iden3/js-iden3-core'
 import { proving, Token } from '@iden3/js-jwz'
 import { type Identity } from '@rarimo/identity-gen-iden3'
-import { createApi } from '@rarimo/shared'
 
 import { getGISTProof, readBytesFile } from '@/helpers'
 import type {
@@ -21,9 +21,9 @@ export class AuthZkp {
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
     CIRCUIT_WASM_URL:
-      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
     CIRCUIT_FINAL_KEY_URL:
-      '/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
   }
 
   public static setConfig(config: Partial<AuthZkpConfig>) {
@@ -48,22 +48,28 @@ export class AuthZkp {
   }
 
   async getClaim() {
-    const api = createApi(AuthZkp.config.ISSUER_API_URL)
+    const api = new JsonApiClient({
+      baseUrl: AuthZkp.config.ISSUER_API_URL,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'omit',
+    })
 
-    const { data } = await api.get<ClaimOffer>(
-      `integrations/issuer/v1/public/claims/offers/${this.identity.identityIdString}/NaturalPerson`,
-    )
+    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.identityIdString}/NaturalPerson`
+
+    const { data: offerData } = await api.get<ClaimOffer>(claimEndpoint)
 
     const claimDetails = {
-      id: data.id,
-      typ: data.typ,
+      id: offerData?.id,
+      typ: offerData?.typ,
       type: 'https://iden3-communication.io/credentials/1.0/fetch-request',
-      thid: data.thid,
+      thid: offerData?.thid,
       body: {
-        id: data.body.credentials[0].id,
+        id: offerData?.body.credentials[0].id,
       },
-      from: data.to,
-      to: data.from,
+      from: offerData?.to,
+      to: offerData?.from,
     }
 
     const token2 = new Token(
@@ -72,7 +78,6 @@ export class AuthZkp {
       this.prepareInputs.bind(this),
     )
 
-    // TODO: add files to package.json exports and read here
     const [wasm, provingKey] = await Promise.all([
       readBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
       readBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
@@ -80,15 +85,17 @@ export class AuthZkp {
 
     const jwzTokenRaw = await token2.prove(provingKey, wasm)
 
-    console.log('jwzTokenRaw', jwzTokenRaw)
+    const { rawData: issuerData } = await api
+      .withBaseUrl(offerData.body.url)
+      .post<IssuerResponse>('', {
+        body: jwzTokenRaw,
+      })
 
-    const { rawData } = await api
-      .withBaseUrl(data.body.url)
-      .post<IssuerResponse>('', { body: jwzTokenRaw })
+    if (!issuerData) throw new TypeError('Issuer response is empty')
 
-    this.issuerResponse = rawData as IssuerResponse
+    this.issuerResponse = issuerData as IssuerResponse
 
-    return rawData
+    return issuerData
   }
 
   async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {

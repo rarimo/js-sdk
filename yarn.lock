@@ -450,6 +450,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@distributedlab/fetcher@npm:^0.2.0-rc.20":
+  version: 0.2.0-rc.20
+  resolution: "@distributedlab/fetcher@npm:0.2.0-rc.20"
+  dependencies:
+    uuid: ^9.0.0
+  checksum: 5b334a3055429f404e2740a5d96d7c3a367e9270511c7e390748170cb4563f0e26224cf427a259861cf120dd8c371b0acc28bda590b46e607ff5d379ec9dbdd0
+  languageName: node
+  linkType: hard
+
 "@distributedlab/jac@npm:^0.2.0-rc.19":
   version: 0.2.0-rc.19
   resolution: "@distributedlab/jac@npm:0.2.0-rc.19"
@@ -2645,6 +2654,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/auth-zkp-iden3@workspace:packages/auth-zkp-iden3"
   dependencies:
+    "@distributedlab/fetcher": ^0.2.0-rc.20
     "@iden3/js-crypto": ^1.0.0-beta.1
     "@iden3/js-iden3-core": ^1.0.0-beta.2
     "@iden3/js-jwz": ^1.0.0-beta.2
