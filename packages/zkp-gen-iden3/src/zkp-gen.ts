@@ -25,6 +25,7 @@ import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { Buffer } from 'buffer'
 import type { BigNumber } from 'ethers'
+import omit from 'lodash/omit'
 
 import { getGISTProof, readBytesFile, unmarshalBinary } from '@/helpers'
 import type {
@@ -81,6 +82,23 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   async generateProof() {
+    const inputs = await this.#prepareInputs()
+
+    const [wasm, provingKey] = await Promise.all([
+      readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
+      readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
+    ])
+
+    this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
+      new TextEncoder().encode(inputs),
+      provingKey,
+      wasm,
+    )
+
+    return this.subjectProof
+  }
+
+  async #prepareInputs() {
     // ==================== USER SIDE ======================
     const challenge = fromLittleEndian(Hex.decodeString(this.challenge))
 
@@ -99,10 +117,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
     // ==================== ISSUER SIDE ======================
 
-    const [
-      credentialSigProof,
-      // credentialMtp
-    ] = this.verifiableCredentials.body.credential.proof!
+    const [credentialSigProof] =
+      this.verifiableCredentials.body.credential.proof!
 
     const issuerAuthCoreClaim = new Claim()
     issuerAuthCoreClaim.fromHex(credentialSigProof.coreClaim)
@@ -114,7 +130,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
 
     const issuerID = DID.parse(this.verifiableCredentials.from).id
-    // const treeState = this.#calculateIssuerStateHash(issuerClaimStatus)
     const signatureProof = this.#parseBJJSignatureProof()
 
     const {
@@ -122,6 +137,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       coreClaim: coreClaimFromIssuer,
       claimProof,
     } = await this.#createCoreClaimFromIssuer()
+
+    // ==================== SETUP SIDE ======================
 
     const timestamp = Math.floor(Date.now() / 1000)
 
@@ -132,30 +149,30 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         this.query.variableName
       ].toString()
 
-    const inputs = JSON.stringify({
-      // we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request
-      // and verifier can use it to identify the request, and verify the proof of specific request in case of multiple query requests
+    return JSON.stringify({
+      /* we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request */
+      /* and verifier can use it to identify the request, and verify the proof of specific request in case of multiple query requests */
       requestID: this.requestId,
 
       /* userID ownership signals */
       userGenesisID: this.identity.identityIdBigIntString,
       profileNonce: '0',
 
-      // user state
+      /* user state */
       userState: this.identity.treeState.state,
       userClaimsTreeRoot: this.identity.treeState.claimsRoot,
       userRevTreeRoot: this.identity.treeState.revocationRoot,
       userRootsTreeRoot: this.identity.treeState.rootOfRoots,
 
-      // Auth claim
+      /* Auth claim */
       authClaim: [...this.identity.authClaimInput],
 
-      // auth claim. merkle tree proof of inclusion to claim tree
+      /* auth claim. merkle tree proof of inclusion to claim tree */
       authClaimIncMtp: [
         ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
       ],
 
-      // auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree
+      /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
       authClaimNonRevMtp: [
         ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
       ],
@@ -163,7 +180,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       authClaimNonRevMtpAuxHi: '0',
       authClaimNonRevMtpAuxHv: '0',
 
-      // challenge signature
+      /* challenge signature */
       challenge: challenge.toString(),
       challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
       challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
@@ -171,7 +188,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
       // global identity state tree on chain
       gistRoot: gistInfo?.root.toString(),
-      // proof of inclusion or exclusion of the user in the global state
+      /* proof of inclusion or exclusion of the user in the global state */
       gistMtp: ensureArraySize(
         gistInfo?.siblings.map((el: BigNumber) => el.toString()),
         64,
@@ -183,10 +200,10 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       /* issuerClaim signals */
       claimSubjectProfileNonce: '0',
 
-      // issuer ID
+      /* issuer ID */
       issuerID: issuerID.bigInt().toString(),
 
-      // issuer auth proof of existence
+      /* issuer auth proof of existence */
       issuerAuthClaim: signatureProof.issuerAuthClaim,
       issuerAuthClaimMtp: signatureProof.issuerAuthClaimIncProof,
       issuerAuthClaimsTreeRoot: signatureProof.claimsTreeRoot.string(),
@@ -194,7 +211,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       issuerAuthRootsTreeRoot: signatureProof.rootOfRoots.string(),
       // issuerAuthState: signatureProof.issuerState.state.string(),
 
-      // issuer auth claim non rev proof
+      /* issuer auth claim non rev proof */
       issuerAuthClaimNonRevMtp: ensureArraySize(
         issuerAuthClaimStatus.mtp.siblings.map(el => el.string()),
         40,
@@ -203,12 +220,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       issuerAuthClaimNonRevMtpAuxHi: '0',
       issuerAuthClaimNonRevMtpAuxHv: '0',
 
-      // claim issued by issuer to the user
+      /* claim issued by issuer to the user */
       issuerClaim: [
         ...coreClaimFromIssuer.index.map(el => el.toBigInt().toString()),
         ...coreClaimFromIssuer.value.map(el => el.toBigInt().toString()),
       ],
-      // issuerClaim non rev inputs
+      /* issuerClaim non rev inputs */
       isRevocationChecked: '1',
       issuerClaimNonRevMtp: ensureArraySize(
         userClaimStatus.mtp.siblings.map(el => el.string()),
@@ -260,19 +277,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       operator: this.query.operator,
       value: value,
     })
-
-    const [wasm, provingKey] = await Promise.all([
-      readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
-      readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
-    ])
-
-    this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
-      new TextEncoder().encode(inputs),
-      provingKey,
-      wasm,
-    )
-
-    return this.subjectProof
   }
 
   async #createCoreClaimFromIssuer(): Promise<{
@@ -283,15 +287,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       value?: MtValue
     }
   }> {
-    // const revNonce = new Uint8Array(8)
-    //
-    // window.crypto.getRandomValues(revNonce)
-
     const schemaHash = await this.#getSchemaHash()
 
-    const credential = { ...this.verifiableCredentials.body.credential }
-    // TODO: use lodash omit or pick
-    delete credential.proof
+    const credential = omit({ ...this.verifiableCredentials.body.credential }, [
+      'proof',
+    ])
 
     const mz = await Merklizer.merklizeJSONLD(JSON.stringify(credential))
     const path: Path = await mz.resolveDocPath(

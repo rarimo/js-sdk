@@ -34,7 +34,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     this.identity = identity
   }
 
-  async getClaim(): Promise<VerifiableCredentials<T>> {
+  async getVerifiableCredentials(): Promise<VerifiableCredentials<T>> {
     const api = new JsonApiClient({
       baseUrl: AuthZkp.config.ISSUER_API_URL,
       headers: {
@@ -62,7 +62,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     const token2 = new Token(
       proving.provingMethodGroth16AuthV2Instance,
       JSON.stringify(claimDetails),
-      this.prepareInputs.bind(this),
+      this.#prepareInputs.bind(this),
     )
 
     const [wasm, provingKey] = await Promise.all([
@@ -86,7 +86,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     return issuerData as unknown as VerifiableCredentials<T>
   }
 
-  async prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {
+  async #prepareInputs(messageHash: Uint8Array): Promise<Uint8Array> {
     const messageHashBigInt = fromBigEndian(messageHash)
 
     const signature = this.identity.privateKey.signPoseidon(messageHashBigInt)

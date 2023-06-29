@@ -17,10 +17,30 @@ yarn add @rarimo/auth-zkp-iden3
 ### Usage
 
 ```ts
-Identity.setConfig({
-  AUTH_BJJ_CREDENTIAL_HASH: '[your_hash]',
-})
-const identity = await Identity.create()
+import { AuthZkp } from '@rarimo/auth-zkp-iden3'
+
+/**
+ * define type with variable to proof,
+ * verifiableCredentials response will keep this variable in credentialSubject
+ */
+type QueryVariableName = { isNatural: number }
+
+const getVerifiableCredentials = async () => {
+  AuthZkp.setConfig({
+    // rpc url where statev2 contract is deployed
+    RPC_URL: 'https://matic-mumbai.chainstacklabs.com',
+    // statev2 contract address
+    STATE_V2_ADDRESS: '0x134B1BE34911E39A8397ec6289782989729807a4',
+    // api url of issuer svc
+    ISSUER_API_URL: 'http://127.0.0.1:8000/',
+  })
+  const authProof = new AuthZkp<QueryVariableName>(
+    identityStoreSnap.identity as Identity,
+  )
+
+  const verifiableCredentials = await authProof.getVerifiableCredentials()
+}
+
 ```
 
 ## Running the tests
