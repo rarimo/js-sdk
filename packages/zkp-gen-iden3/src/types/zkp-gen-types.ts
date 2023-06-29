@@ -34,6 +34,10 @@ export type ClaimStatus = {
   mtp: {
     existence: boolean
     siblings: Siblings
+    nodeAux?: {
+      key: Hash
+      value: Hash
+    }
   }
 }
 
