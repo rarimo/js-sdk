@@ -81,6 +81,21 @@ const getZkProof = async () => {
 }
 ```
 
+### Important
+Add this aliases to your client app build config
+```ts
+[
+  { find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js' },
+  { find: 'util', replacement: '../../node_modules/util/util.js' },
+  { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
+  { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
+  { find: "@iden3/js-iden3-core", replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
+  { find: "@iden3/js-jwz", replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
+  { find: "@iden3/js-crypto", replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
+  { find: "@iden3/js-jsonld-merklization", replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
+]
+```
+
 ## Running the tests
 
 ```

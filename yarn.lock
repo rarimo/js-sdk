@@ -2745,6 +2745,11 @@ __metadata:
     tsc-alias: ^1.8.2
     tslib: ^2.5.0
     typechain: ^8.2.0
+  peerDependencies:
+    "@iden3/js-crypto": ^1.0.0-beta.1
+    "@iden3/js-iden3-core": ^1.0.0-beta.2
+    "@iden3/js-jwz": ^1.0.0-beta.2
+    "@iden3/js-merkletree": ^1.0.0-beta.4
   languageName: unknown
   linkType: soft
 
@@ -2787,6 +2792,10 @@ __metadata:
     rollup-plugin-polyfill-node: ^0.12.0
     tsc-alias: ^1.8.2
     tslib: ^2.5.0
+  peerDependencies:
+    "@iden3/js-crypto": ^1.0.0-beta.1
+    "@iden3/js-iden3-core": ^1.0.0-beta.2
+    "@iden3/js-merkletree": ^1.0.0-beta.4
   languageName: unknown
   linkType: soft
 
@@ -3054,6 +3063,12 @@ __metadata:
     tsc-alias: ^1.8.2
     tslib: ^2.5.0
     typechain: ^8.2.0
+  peerDependencies:
+    "@iden3/js-crypto": ^1.0.0-beta.1
+    "@iden3/js-iden3-core": ^1.0.0-beta.2
+    "@iden3/js-jsonld-merklization": ^1.0.0-beta.14
+    "@iden3/js-jwz": ^1.0.0-beta.2
+    "@iden3/js-merkletree": ^1.0.0-beta.4
   languageName: unknown
   linkType: soft
 
