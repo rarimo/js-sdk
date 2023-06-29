@@ -1,11 +1,11 @@
 import { fetcher } from '@distributedlab/fetcher'
+import { arrayify } from '@ethersproject/bytes'
 import { keccak256 } from '@ethersproject/keccak256'
 import { Hex, Signature } from '@iden3/js-crypto'
 import {
   Claim,
   ClaimOptions,
   DID,
-  fromBigEndian,
   fromLittleEndian,
   SchemaHash,
 } from '@iden3/js-iden3-core'
@@ -60,9 +60,9 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
     CIRCUIT_WASM_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/circuit.wasm',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit.wasm',
     CIRCUIT_FINAL_KEY_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/circuit_final.zkey',
+      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit_final.zkey',
     CLAIM_PROOF_SIBLINGS_COUNT: 32,
   }
 
@@ -204,7 +204,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       issuerAuthClaimsTreeRoot: signatureProof.claimsTreeRoot.string(),
       issuerAuthRevTreeRoot: signatureProof.revocationTreeRoot.string(),
       issuerAuthRootsTreeRoot: signatureProof.rootOfRoots.string(),
-      issuerAuthState: signatureProof.issuerState.state.string(),
+      // issuerAuthState: signatureProof.issuerState.state.string(),
 
       // issuer auth claim non rev proof
       issuerAuthClaimNonRevMtp: ensureArraySize(
@@ -260,7 +260,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       claimPathNotExists: '0',
       claimPathMtp: ensureArraySize(
         claimProof.proof.siblings.map(el => el.string()),
-        64,
+        32,
       ),
       claimPathMtpNoAux: '0',
       claimPathMtpAuxHi: '0',
@@ -303,14 +303,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     //
     // window.crypto.getRandomValues(revNonce)
 
-    const revNonce = Buffer.from(
-      String(
-        this.verifiableCredentials.body.credential.credentialStatus
-          .revocationNonce,
-      ),
-    )
-
     const schemaHash = await this.#getSchemaHash()
+    console.log('schemaHash', schemaHash)
     const credential = { ...this.verifiableCredentials.body.credential }
     // TODO: use lodash omit or pick
     delete credential.proof
@@ -330,16 +324,13 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       schemaHash,
       ClaimOptions.withValueMerklizedRoot((await mz.root()).bigInt()),
       ClaimOptions.withIndexId(this.identity.identityId),
-      ClaimOptions.withRevocationNonce(fromBigEndian(revNonce)),
-      ClaimOptions.withVersion(0),
+      ClaimOptions.withRevocationNonce(
+        BigInt(
+          this.verifiableCredentials.body.credential.credentialStatus
+            .revocationNonce,
+        ),
+      ),
     )
-
-    // coreClaim.setRevocationNonce(
-    //   BigInt(
-    //     this.verifiableCredentials.body.credential.credentialStatus
-    //       .revocationNonce,
-    //   ),
-    // )
 
     return { path, coreClaim, claimProof }
   }
@@ -350,7 +341,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
     const schemaString = `${data?.$metadata.uris.jsonLdContext}#${this.verifiableCredentials.body.credential.credentialSubject.type}`
     const schemaBytes = new TextEncoder().encode(schemaString)
-    const keccakString = Buffer.from(keccak256(Buffer.from(schemaBytes)))
+    const keccakString = arrayify(keccak256(Buffer.from(schemaBytes)))
+    console.log('getChemaHash', {
+      keccak: keccak256(Buffer.from(schemaBytes)),
+      origin: keccakString,
+      subArray: keccakString.subarray(keccakString.byteLength - 16),
+    })
     return new SchemaHash(keccakString.subarray(keccakString.byteLength - 16))
   }
 
