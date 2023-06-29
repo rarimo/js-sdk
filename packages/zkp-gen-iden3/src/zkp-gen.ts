@@ -97,8 +97,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         .revocationNonce,
     )
 
-    console.log('userClaimStatus', userClaimStatus)
-
     // ==================== ISSUER SIDE ======================
 
     const [
@@ -111,13 +109,9 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
     const issuerRevNonce = issuerAuthCoreClaim.getRevocationNonce()
 
-    // TODO: check is issuerRevNonce bigInt converts to number correctly
     const issuerAuthClaimStatus = await this.#requestClaimRevocationStatus(
       Number(issuerRevNonce),
     )
-
-    // const issuerClaimNonRevRevTreeRoot =
-    //   issuerClaimStatus.issuer.revocationTreeRoot
 
     const issuerID = DID.parse(this.verifiableCredentials.from).id
     // const treeState = this.#calculateIssuerStateHash(issuerClaimStatus)
@@ -128,12 +122,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       coreClaim: coreClaimFromIssuer,
       claimProof,
     } = await this.#createCoreClaimFromIssuer()
-
-    console.log('#createCoreClaim', {
-      path,
-      coreClaimFromIssuer,
-      claimProof,
-    })
 
     const timestamp = Math.floor(Date.now() / 1000)
 
@@ -273,10 +261,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       value: value,
     })
 
-    console.log('inputs')
-    console.log(inputs)
-    console.log(JSON.parse(inputs))
-
     const [wasm, provingKey] = await Promise.all([
       readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
       readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
@@ -304,7 +288,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     // window.crypto.getRandomValues(revNonce)
 
     const schemaHash = await this.#getSchemaHash()
-    console.log('schemaHash', schemaHash)
+
     const credential = { ...this.verifiableCredentials.body.credential }
     // TODO: use lodash omit or pick
     delete credential.proof
@@ -342,11 +326,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const schemaString = `${data?.$metadata.uris.jsonLdContext}#${this.verifiableCredentials.body.credential.credentialSubject.type}`
     const schemaBytes = new TextEncoder().encode(schemaString)
     const keccakString = arrayify(keccak256(Buffer.from(schemaBytes)))
-    console.log('getChemaHash', {
-      keccak: keccak256(Buffer.from(schemaBytes)),
-      origin: keccakString,
-      subArray: keccakString.subarray(keccakString.byteLength - 16),
-    })
     return new SchemaHash(keccakString.subarray(keccakString.byteLength - 16))
   }
 

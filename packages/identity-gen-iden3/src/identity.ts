@@ -153,7 +153,6 @@ export class Identity {
     }
   }
 
-  // TODO: move to zkp-auth package
   createCoreAuthClaim() {
     const hash = SchemaHash.newSchemaHashFromHex(
       Identity.config.AUTH_BJJ_CREDENTIAL_HASH,
