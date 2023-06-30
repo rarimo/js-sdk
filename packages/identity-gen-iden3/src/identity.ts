@@ -11,7 +11,7 @@ import {
 import {
   circomSiblingsFromSiblings,
   hashElems,
-  LocalStorageDB,
+  InMemoryDB,
   Merkletree,
   type Siblings,
 } from '@iden3/js-merkletree'
@@ -89,9 +89,9 @@ export class Identity {
     const uint8array2 = new TextEncoder().encode('revocations')
     const uint8array3 = new TextEncoder().encode('roots')
 
-    const storage1 = new LocalStorageDB(uint8array1)
-    const storage2 = new LocalStorageDB(uint8array2)
-    const storage3 = new LocalStorageDB(uint8array3)
+    const storage1 = new InMemoryDB(uint8array1)
+    const storage2 = new InMemoryDB(uint8array2)
+    const storage3 = new InMemoryDB(uint8array3)
 
     const claimsTree = new Merkletree(storage1, true, 32)
     const revocationsTree = new Merkletree(storage2, true, 32)
