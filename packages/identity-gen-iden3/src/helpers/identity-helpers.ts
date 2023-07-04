@@ -1,14 +1,22 @@
 import { Hex, PrivateKey } from '@iden3/js-crypto'
 
-export const initPrivateKey = (hexString?: string): string => {
-  let arr
-  if (hexString) {
-    arr = Hex.decodeString(hexString)
-  } else {
-    arr = new Uint8Array(32)
-    window.crypto.getRandomValues(arr)
+const generatePrivateKey = (): PrivateKey => {
+  const randomValues = new Uint8Array(32)
 
-    return initPrivateKey(new PrivateKey(arr).hex())
+  if (!(typeof window === 'undefined')) {
+    return new PrivateKey(window.crypto.getRandomValues(randomValues))
   }
-  return new PrivateKey(arr).hex()
+
+  const webcrypto = require('crypto').webcrypto
+
+  return new PrivateKey(webcrypto.getRandomValues(randomValues))
+}
+
+export const getPrivateKeyHex = (hexString?: string): string => {
+  if (hexString) {
+    return new PrivateKey(Hex.decodeString(hexString)).hex()
+  }
+
+  const privateKey = generatePrivateKey()
+  return privateKey.hex()
 }

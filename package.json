@@ -35,6 +35,7 @@
     "build:identity-gen-iden3": "yarn workspace @rarimo/identity-gen-iden3 build",
     "build:auth-zkp-iden3": "yarn workspace @rarimo/auth-zkp-iden3 build",
     "build:zkp-gen-iden3": "yarn workspace @rarimo/zkp-gen-iden3 build",
+    "build:shared-zkp-iden3": "yarn workspace @rarimo/shared-zkp-iden3 build",
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0 && yarn workspaces foreach -pv --no-private run typecheck",
     "publish-next": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish --tag next",

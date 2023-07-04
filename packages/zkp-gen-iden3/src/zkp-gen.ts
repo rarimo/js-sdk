@@ -23,13 +23,18 @@ import {
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import { type Identity } from '@rarimo/identity-gen-iden3'
+import {
+  getBytesFile,
+  getGISTProof,
+  unmarshalBinary,
+} from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
 import type { BigNumber } from 'ethers'
 import omit from 'lodash/omit'
 
-import { getGISTProof, readBytesFile, unmarshalBinary } from '@/helpers'
 import type {
   ClaimStatus,
+  Config,
   IssuerState,
   QueryVariableNameAbstract,
   Schema,
@@ -46,18 +51,19 @@ const ensureArraySize = (arr: string[], size: number): string[] => {
 }
 
 export class ZkpGen<T extends QueryVariableNameAbstract> {
-  requestId = ''
-  identity: Identity = {} as Identity
-  query: ZkpGenQuery<T> = {} as ZkpGenQuery<T>
-  verifiableCredentials: VerifiableCredentials<T> =
+  public requestId = ''
+  public identity: Identity = {} as Identity
+  public query: ZkpGenQuery<T> = {} as ZkpGenQuery<T>
+  public verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>
 
-  challenge = ''
+  public challenge = ''
 
-  subjectProof: ZKProof = {} as ZKProof
+  public subjectProof: ZKProof = {} as ZKProof
 
-  public static config = {
+  public static config: Config = {
     RPC_URL: '',
+    RAW_PROVIDER: undefined,
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
     CIRCUIT_WASM_URL:
@@ -67,7 +73,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     CLAIM_PROOF_SIBLINGS_COUNT: 32,
   }
 
-  public static setConfig(config: Partial<typeof ZkpGen.config>) {
+  public static setConfig(config: Config) {
     this.config = Object.assign(this.config, config)
   }
 
@@ -85,8 +91,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const inputs = await this.#prepareInputs()
 
     const [wasm, provingKey] = await Promise.all([
-      readBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
-      readBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
+      getBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
+      getBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
     ])
 
     this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
@@ -105,9 +111,13 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const signatureChallenge = this.identity.privateKey.signPoseidon(challenge)
 
     const gistInfo = await getGISTProof({
-      rpcUrl: ZkpGen.config.RPC_URL,
+      ...(ZkpGen.config.RAW_PROVIDER
+        ? { rawProvider: ZkpGen.config.RAW_PROVIDER }
+        : ZkpGen.config.RPC_URL
+        ? { rpcUrl: ZkpGen.config.RPC_URL }
+        : {}),
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
-      userId: this.identity.identityIdBigIntString,
+      userId: this.identity.idBigIntString,
     })
 
     const userClaimStatus = await this.#requestClaimRevocationStatus(
@@ -155,7 +165,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       requestID: this.requestId,
 
       /* userID ownership signals */
-      userGenesisID: this.identity.identityIdBigIntString,
+      userGenesisID: this.identity.idBigIntString,
       profileNonce: '0',
 
       /* user state */
@@ -307,7 +317,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const coreClaim = Claim.newClaim(
       schemaHash,
       ClaimOptions.withValueMerklizedRoot((await mz.root()).bigInt()),
-      ClaimOptions.withIndexId(this.identity.identityId),
+      ClaimOptions.withIndexId(this.identity.id),
       ClaimOptions.withRevocationNonce(
         BigInt(
           this.verifiableCredentials.body.credential.credentialStatus

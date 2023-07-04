@@ -16,7 +16,7 @@ import {
   type Siblings,
 } from '@iden3/js-merkletree'
 
-import { initPrivateKey } from '@/helpers'
+import { getPrivateKeyHex } from '@/helpers'
 
 export type TreeState = {
   state: string
@@ -32,12 +32,12 @@ export type IdentityConfig = {
 }
 
 export class Identity {
-  privateKeyHex = '' as string
-  identityId: Id = {} as Id
-  authClaimIncProofSiblings: Siblings = [] as Siblings
-  authClaimNonRevProofSiblings: Siblings = [] as Siblings
-  treeState: TreeState = {} as TreeState
-  coreAuthClaim: Claim = {} as Claim
+  public privateKeyHex = '' as string
+  public id: Id = {} as Id
+  public authClaimIncProofSiblings: Siblings = [] as Siblings
+  public authClaimNonRevProofSiblings: Siblings = [] as Siblings
+  public treeState: TreeState = {} as TreeState
+  public coreAuthClaim: Claim = {} as Claim
 
   public static config: IdentityConfig = {
     AUTH_BJJ_CREDENTIAL_HASH: '',
@@ -58,19 +58,19 @@ export class Identity {
   }
 
   constructor(privateKeyHex?: string) {
-    this.privateKeyHex = initPrivateKey(privateKeyHex)
+    this.privateKeyHex = getPrivateKeyHex(privateKeyHex)
   }
 
   public get privateKey() {
     return new PrivateKey(Hex.decodeString(this.privateKeyHex))
   }
 
-  public get identityIdString() {
-    return this.identityId.string()
+  public get idString() {
+    return this.id.string()
   }
 
-  public get identityIdBigIntString() {
-    return this.identityId.bigInt().toString()
+  public get idBigIntString() {
+    return this.id.bigInt().toString()
   }
 
   public get authClaimInput() {
@@ -109,10 +109,7 @@ export class Identity {
       rootsTreeRoot.bigInt(),
     )
 
-    this.identityId = DID.fromGenesisFromIdenState(
-      Identity.config.ID_TYPE,
-      identity,
-    ).id
+    this.id = DID.fromGenesisFromIdenState(Identity.config.ID_TYPE, identity).id
 
     const authClaimIncProof = await claimsTree.generateProof(
       this.coreAuthClaim.hIndex(),
@@ -134,8 +131,6 @@ export class Identity {
       Identity.config.CLAIM_PROOF_SIBLINGS_COUNT,
     )
 
-    // authClaimIncProof.proof.siblings = authClaimIncProofSiblings
-
     this.authClaimIncProofSiblings = authClaimIncProofSiblings
     this.authClaimNonRevProofSiblings = authClaimNonRevProofSiblings
 
@@ -151,9 +146,11 @@ export class Identity {
       revocationRoot: revocationsTreeRoot.string(),
       rootOfRoots: rootsTreeRoot.string(),
     }
+
+    return this
   }
 
-  createCoreAuthClaim() {
+  createCoreAuthClaim(): Claim {
     const hash = SchemaHash.newSchemaHashFromHex(
       Identity.config.AUTH_BJJ_CREDENTIAL_HASH,
     )

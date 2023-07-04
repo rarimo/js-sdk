@@ -2,21 +2,21 @@ import { JsonApiClient } from '@distributedlab/jac'
 import { fromBigEndian } from '@iden3/js-iden3-core'
 import { proving, Token } from '@iden3/js-jwz'
 import { type Identity } from '@rarimo/identity-gen-iden3'
+import { errors, getBytesFile, getGISTProof } from '@rarimo/shared-zkp-iden3'
 
-import { getGISTProof, readBytesFile } from '@/helpers'
 import type {
-  AuthZkpConfig,
   ClaimOffer,
+  Config,
   QueryVariableNameAbstract,
   VerifiableCredentials,
 } from '@/types'
 
 export class AuthZkp<T extends QueryVariableNameAbstract> {
-  identity: Identity = {} as Identity
-  verifiableCredentials: VerifiableCredentials<T> =
+  public identity: Identity = {} as Identity
+  public verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>
 
-  public static config: AuthZkpConfig = {
+  public static config: Config = {
     RPC_URL: '',
     ISSUER_API_URL: '',
     STATE_V2_ADDRESS: '',
@@ -26,26 +26,28 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
       'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
   }
 
-  public static setConfig(config: Partial<AuthZkpConfig>) {
+  #api: JsonApiClient
+
+  public static setConfig(config: Config) {
     this.config = Object.assign(this.config, config)
   }
 
   constructor(identity: Identity) {
     this.identity = identity
-  }
 
-  async getVerifiableCredentials(): Promise<VerifiableCredentials<T>> {
-    const api = new JsonApiClient({
+    this.#api = new JsonApiClient({
       baseUrl: AuthZkp.config.ISSUER_API_URL,
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'omit',
     })
+  }
 
-    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.identityIdString}/NaturalPerson`
+  async getVerifiableCredentials(): Promise<VerifiableCredentials<T>> {
+    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.idString}/NaturalPerson`
 
-    const { data: offerData } = await api.get<ClaimOffer>(claimEndpoint)
+    const { data: offerData } = await this.#api.get<ClaimOffer>(claimEndpoint)
 
     const claimDetails = {
       id: offerData?.id,
@@ -59,26 +61,29 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
       to: offerData?.from,
     }
 
-    const token2 = new Token(
+    const authZkpToken = new Token(
       proving.provingMethodGroth16AuthV2Instance,
       JSON.stringify(claimDetails),
       this.#prepareInputs.bind(this),
     )
 
     const [wasm, provingKey] = await Promise.all([
-      readBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
-      readBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
+      getBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
+      getBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
     ])
 
-    const jwzTokenRaw = await token2.prove(provingKey, wasm)
+    const jwzTokenRaw = await authZkpToken.prove(provingKey, wasm)
 
-    const { rawData: issuerData } = await api
+    const { rawData: issuerData } = await this.#api
       .withBaseUrl(offerData.body.url)
       .post<VerifiableCredentials<T>>('', {
         body: jwzTokenRaw,
       })
 
-    if (!issuerData) throw new TypeError('Issuer response is empty')
+    if (!issuerData)
+      throw new errors.IssuerResponseEmptyError(
+        `Issuer response by ${offerData.body.url} is empty`,
+      )
 
     this.verifiableCredentials =
       issuerData as unknown as VerifiableCredentials<T>
@@ -91,9 +96,13 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
 
     const signature = this.identity.privateKey.signPoseidon(messageHashBigInt)
     const gistInfo = await getGISTProof({
-      rpcUrl: AuthZkp.config.RPC_URL,
+      ...(AuthZkp.config.RAW_PROVIDER
+        ? { rawProvider: AuthZkp.config.RAW_PROVIDER }
+        : AuthZkp.config.RPC_URL
+        ? { rpcUrl: AuthZkp.config.RPC_URL }
+        : {}),
       contractAddress: AuthZkp.config.STATE_V2_ADDRESS,
-      userId: this.identity.identityIdBigIntString,
+      userId: this.identity.idBigIntString,
     })
 
     const preparedInputs = {
@@ -112,7 +121,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
       challengeSignatureR8y: signature.R8[1].toString(),
       challengeSignatureS: signature.S.toString(),
       claimsTreeRoot: this.identity.treeState.claimsRoot,
-      genesisID: this.identity.identityIdBigIntString,
+      genesisID: this.identity.idBigIntString,
       revTreeRoot: this.identity.treeState.revocationRoot,
       rootsTreeRoot: this.identity.treeState.rootOfRoots,
       state: this.identity.treeState.state,

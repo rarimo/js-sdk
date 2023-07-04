@@ -1,5 +1,5 @@
 # @rarimo/identity-gen-iden3
-These packages aim to provide developers with a set of commonly used functions and features for building web applications, such as handling big numbers, date manipulation, subscribing to and receiving notifications when certain events occur with EventEmitter, and more.
+These packages aim to provide class to generate identity for iden3 protocol
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/identity-gen-iden3)
 ![types](https://badgen.net/npm/types/@rarimo/identity-gen-iden3)
@@ -23,26 +23,8 @@ Identity.setConfig({
 const identity = await Identity.create()
 ```
 
-### Important
-Add this aliases to your client app build config
-```ts
-[
-  { find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js' },
-  { find: 'util', replacement: '../../node_modules/util/util.js' },
-  { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
-  { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
-  { find: "@iden3/js-iden3-core", replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-jwz", replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-crypto", replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-jsonld-merklization", replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
-]
-```
-
-## Running the tests
-
-```
-yarn test
-```
+## Known Issues
+[Read here](https://github.com/rarimo/js-sdk/blob/main/README.md#working-with-zkp-iden3-packages)
 
 ## License
 

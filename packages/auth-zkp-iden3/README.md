@@ -1,5 +1,5 @@
 # @rarimo/auth-zkp-iden3
-These packages aim to provide developers with a set of commonly used functions and features for building web applications, such as handling big numbers, date manipulation, subscribing to and receiving notifications when certain events occur with EventEmitter, and more.
+This package provides a class to work with iden3 zero-knowledge proof. Generates auth proof and return verifiable credentials.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/auth-zkp-iden3)
 ![types](https://badgen.net/npm/types/@rarimo/auth-zkp-iden3)
@@ -18,6 +18,7 @@ yarn add @rarimo/auth-zkp-iden3
 
 ```ts
 import { AuthZkp } from '@rarimo/auth-zkp-iden3'
+import { type Identity } from '@rarimo/identity-gen-iden3'
 
 /**
  * define type with variable to proof,
@@ -25,7 +26,10 @@ import { AuthZkp } from '@rarimo/auth-zkp-iden3'
  */
 type QueryVariableName = { isNatural: number }
 
-const getVerifiableCredentials = async () => {
+const getVerifiableCredentials = async (identity: Identity) => {
+  /**
+   * Setup config is necessary to let AuthZkp works properly
+   */
   AuthZkp.setConfig({
     // rpc url where statev2 contract is deployed
     RPC_URL: 'https://matic-mumbai.chainstacklabs.com',
@@ -34,34 +38,14 @@ const getVerifiableCredentials = async () => {
     // api url of issuer svc
     ISSUER_API_URL: 'http://127.0.0.1:8000/',
   })
-  const authProof = new AuthZkp<QueryVariableName>(
-    identityStoreSnap.identity as Identity,
-  )
+  const authProof = new AuthZkp<QueryVariableName>(identity)
 
   const verifiableCredentials = await authProof.getVerifiableCredentials()
 }
 ```
 
-### Important
-Add this aliases to your client app build config
-```ts
-[
-  { find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js' },
-  { find: 'util', replacement: '../../node_modules/util/util.js' },
-  { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
-  { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
-  { find: "@iden3/js-iden3-core", replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-jwz", replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-crypto", replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
-  { find: "@iden3/js-jsonld-merklization", replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
-]
-```
-
-## Running the tests
-
-```
-yarn test
-```
+## Known Issues
+[Read here](https://github.com/rarimo/js-sdk/blob/main/README.md#working-with-zkp-iden3-packages)
 
 ## License
 

@@ -1,9 +1,9 @@
-export enum ZKP_OPERATORS {
-  SKIP = '0',
-  EQUALS = '1',
-  LESS_THAN = '2',
-  GREATER_THAN = '3',
-  IN = '4',
-  NOTIN = '5',
-  NOT_EQUALS = '6',
+export enum ZkpOperators {
+  Skip = '0',
+  Equals = '1',
+  LessThan = '2',
+  GreaterThan = '3',
+  In = '4',
+  Notin = '5',
+  NotEquals = '6',
 }

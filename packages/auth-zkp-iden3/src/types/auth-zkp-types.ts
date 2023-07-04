@@ -1,3 +1,5 @@
+import type { RawProvider } from '@rarimo/provider'
+
 export type IssuerData = {
   authCoreClaim: string
   credentialStatus: {
@@ -41,8 +43,6 @@ export interface VerifiableCredentials<T extends QueryVariableNameAbstract> {
       credentialSubject: {
         id: string
         type: string
-        // isMember: number
-        // serialNumber: number
       } & T
       expirationDate: string
       id: string
@@ -93,8 +93,9 @@ export type ClaimOffer = {
   type: string
 }
 
-export type AuthZkpConfig = {
-  RPC_URL: string
+export type Config = {
+  RPC_URL?: string
+  RAW_PROVIDER?: RawProvider
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
   CIRCUIT_WASM_URL: string
