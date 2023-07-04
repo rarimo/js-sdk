@@ -7,3 +7,7 @@ export type TransactionBundle = {
   bundle: HexString
   salt?: HexString
 }
+
+export type ClassInstanceToPlainObject<T> = {
+  [K in keyof T]: T[K]
+}

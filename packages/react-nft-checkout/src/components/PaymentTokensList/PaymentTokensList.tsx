@@ -37,7 +37,7 @@ const PaymentTokensList = () => {
         setIsLoading(true)
         setLoadingErrorText('')
         const paymentTokens = selectedChain
-          ? (await loadPaymentTokens?.(selectedChain)) ?? []
+          ? (await loadPaymentTokens?.()) ?? []
           : []
         setTokens(paymentTokens)
       } catch (error) {

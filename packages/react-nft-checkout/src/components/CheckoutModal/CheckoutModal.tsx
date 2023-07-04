@@ -1,6 +1,5 @@
-import { BN } from '@distributedlab/tools'
 import { Divider, Typography } from '@mui/material'
-import type { EstimatedPrice } from '@rarimo/nft-checkout'
+import type { SwapEstimation } from '@rarimo/nft-checkout'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -30,7 +29,7 @@ const CheckoutModal = () => {
 
   const [isPriceLoading, setIsPriceLoading] = useState(true)
   const [estimatedPrice, setEstimatedPrice] = useState<
-    EstimatedPrice | undefined
+    SwapEstimation | undefined
   >()
   const [isTransactionProcessing, setIsTransactionProcessing] = useState(false)
   const [txHash, setTxHash] = useState('')
@@ -38,13 +37,8 @@ const CheckoutModal = () => {
   const isEnoughTokensForCheckout = useMemo(() => {
     if (!selectedPaymentToken || !estimatedPrice) return false
 
-    return BN.fromRaw(
-      selectedPaymentToken.isNative
-        ? selectedPaymentToken.balance
-        : selectedPaymentToken.balanceRaw.value,
-      selectedPaymentToken.decimals,
-    ).isGreaterThanOrEqualTo(
-      BN.fromBigInt(estimatedPrice.price.value, estimatedPrice.price.decimals),
+    return selectedPaymentToken.balanceRaw.isGreaterThanOrEqualTo(
+      estimatedPrice.amountIn,
     )
   }, [estimatedPrice, selectedPaymentToken])
 
@@ -54,7 +48,7 @@ const CheckoutModal = () => {
 
     setIsTransactionProcessing(true)
 
-    const hash = await checkout?.(estimatedPrice, { bundle })
+    const hash = await checkout?.([estimatedPrice], { bundle })
     if (hash) {
       setTxHash(hash)
     }
@@ -66,8 +60,8 @@ const CheckoutModal = () => {
 
     const fetchPrice = async () => {
       setIsPriceLoading(true)
-      const price = await estimatePrice(selectedPaymentToken)
-      setEstimatedPrice(price)
+      const price = await estimatePrice([selectedPaymentToken])
+      setEstimatedPrice(price[0])
       setIsPriceLoading(false)
     }
 

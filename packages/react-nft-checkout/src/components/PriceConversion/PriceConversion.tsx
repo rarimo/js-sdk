@@ -1,12 +1,12 @@
 import { Box, Card, Divider, Typography } from '@mui/material'
-import type { EstimatedPrice } from '@rarimo/nft-checkout'
+import type { SwapEstimation } from '@rarimo/nft-checkout'
 
 import { LoadingIndicator } from '@/components'
 import { useDappContext } from '@/hooks'
 
 type Props = {
   isLoading: boolean
-  estimatedPrice?: EstimatedPrice
+  estimatedPrice?: SwapEstimation
 }
 
 /**
@@ -47,7 +47,7 @@ const PriceConversion = ({ isLoading, estimatedPrice }: Props) => {
               >
                 <Typography variant="subtitle1">Price conversion</Typography>
                 <Typography variant="subtitle1">
-                  {`${params.price} ${estimatedPrice.to?.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
+                  {`${params.price} ${estimatedPrice.to.symbol} = ${estimatedPrice.amountIn} ${estimatedPrice.from.symbol}`}
                 </Typography>
               </Box>
             </Box>

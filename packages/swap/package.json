@@ -66,7 +66,7 @@
     "displayName": "@rarimo/swap"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^0.2.0-rc.19",
+    "@distributedlab/reactivity": "^0.2.0-rc.21",
     "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^"

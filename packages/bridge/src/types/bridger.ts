@@ -8,7 +8,6 @@ import type {
   ChainTypes,
   DestinationTransaction,
   HexString,
-  InternalToken,
 } from '@rarimo/shared'
 
 import type { Token } from '@/types'
@@ -26,7 +25,7 @@ export type Bridger = Raw<{
    *
    * @returns A list of supported chains and information about them
    */
-  loadSupportedChains(kind?: ChainKind): Promise<BridgeChain[]>
+  getSupportedChains(kind?: ChainKind): Promise<BridgeChain[]>
 
   /**
    * Get the chain that are supported for the bridging by ID
@@ -77,13 +76,6 @@ export type Bridger = Raw<{
     operator: HexString,
     amount?: Amount,
   ): Promise<TransactionResponse | void>
-
-  /**
-   * @returns Rarimo backend token mapping for the provided token symbol
-   */
-  getInternalTokenMapping(
-    targetTokenSymbol: string,
-  ): Promise<InternalToken | void>
 }>
 
 export type BridgerCreateFn = (p: IProvider) => Bridger

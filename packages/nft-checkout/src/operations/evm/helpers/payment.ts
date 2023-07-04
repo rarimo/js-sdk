@@ -1,60 +1,65 @@
 import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
-import { tokenFromChain } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
-import type {
-  BridgeChain,
-  InternalAccountBalance,
-  TokenSymbol,
-} from '@rarimo/shared'
+import type { BridgeChain, InternalAccountBalance } from '@rarimo/shared'
 import { NATIVE_TOKEN_ADDRESS } from '@rarimo/shared'
 import {
   Amount,
-  ChainNames,
   loadAccountBalances,
   parseTokenId,
   toLowerCase,
 } from '@rarimo/shared'
-import type { Swapper } from '@rarimo/swap'
 
 import { paymentTokenFromToken } from '@/entities'
-import type { CheckoutOperationParams, PaymentToken } from '@/types'
+import type { PaymentToken } from '@/types'
 
-import { estimate } from './estimate'
-import { getNativeAmountIn, isSameChainOperation } from './utils'
+import { getEstimation } from './get-estimation'
 
-const INTERNAL_TOKENS_MAP: { [key in ChainNames]?: string } = {
-  [ChainNames.Goerli]: '2',
-  [ChainNames.Sepolia]: '3',
-  [ChainNames.Fuji]: '4',
-  [ChainNames.Chapel]: '5',
-}
-
-export const getPaymentTokensWithPairs = async (
-  provider: IProvider,
-  params: CheckoutOperationParams,
-  tokens: Token[],
-  targetToken: Token,
-  chainFrom: BridgeChain,
-  isMultiplePayment: boolean,
-) => {
+export const getPaymentTokensWithPairs = async ({
+  provider,
+  tokens,
+  to,
+  chainFrom,
+  chainTo,
+  amountOut,
+  isMultiplePayment,
+  slippage,
+}: {
+  provider: IProvider
+  tokens: Token[]
+  to: Token
+  chainFrom: BridgeChain
+  chainTo: BridgeChain
+  amountOut: Amount
+  isMultiplePayment: boolean
+  slippage?: number
+}) => {
   const paymentTokens = await getPaymentTokens(provider, chainFrom, tokens)
-
-  const targetTokenSymbol = toLowerCase(targetToken.symbol)
-
+  const targetTokenSymbol = toLowerCase(to.symbol)
   const paymentTokensWithoutTarget = paymentTokens.filter(
     i => toLowerCase(i.symbol) !== targetTokenSymbol,
   )
 
   const estimatedPrices = await Promise.allSettled(
-    paymentTokensWithoutTarget.map(i => estimate(i, targetToken, params)),
+    paymentTokensWithoutTarget.map(i =>
+      getEstimation({
+        chainIdFrom: chainFrom.id,
+        chainIdTo: chainTo.id,
+        from: i,
+        to,
+        amountOut,
+        slippage,
+      }),
+    ),
   )
 
   return estimatedPrices.reduce<PaymentToken[]>((acc, promise) => {
     if (promise.status !== 'fulfilled') return acc
 
+    const from = promise.value.from
+    const fromSymbol = toLowerCase(from.symbol)
     const paymentToken = paymentTokensWithoutTarget.find(
-      t => toLowerCase(t.symbol) === toLowerCase(promise.value.from.symbol),
+      t => toLowerCase(t.symbol) === fromSymbol,
     )
 
     if (!paymentToken) return acc
@@ -64,11 +69,7 @@ export const getPaymentTokensWithPairs = async (
       return acc
     }
 
-    const amountIn = promise.value.from.isNative
-      ? getNativeAmountIn(params, promise.value.price)
-      : promise.value.price
-
-    const isEnoughBalance = amountIn.isLessThanOrEqualTo(
+    const isEnoughBalance = promise.value.amountIn.isLessThanOrEqualTo(
       paymentToken.balanceRaw,
     )
 
@@ -76,49 +77,6 @@ export const getPaymentTokensWithPairs = async (
 
     return acc
   }, [])
-}
-
-export const getTargetToken = async (
-  swapper: Swapper,
-  params: CheckoutOperationParams,
-  tokens: Token[],
-  chainFrom: BridgeChain,
-  chainTo: BridgeChain,
-): Promise<Token | undefined> => {
-  const isSameChain = isSameChainOperation(params)
-  const targetTokenAddress = toLowerCase(params.price.address)
-
-  // get target token from params if it's the same chain operation,
-  // otherwise we will get it from internal mappings
-  if (isSameChain) {
-    return targetTokenAddress
-      ? tokens.find(
-          i => toLowerCase(i.address) === toLowerCase(targetTokenAddress),
-        )
-      : tokenFromChain(chainFrom)
-  }
-
-  const targetTokenSymbol = getTargetTokenSymbol(chainTo, params.price.symbol)
-
-  if (!targetTokenSymbol) return
-
-  const internalToken = await swapper.getInternalTokenMapping(targetTokenSymbol)
-
-  if (!internalToken) return
-
-  const chainFromName = toLowerCase(chainFrom?.name)
-
-  const chain = internalToken.chains.find(
-    i => toLowerCase(i.id) === chainFromName,
-  )
-
-  if (!chain) return
-
-  return chain.token_address === NATIVE_TOKEN_ADDRESS
-    ? tokenFromChain(chainFrom)
-    : tokens.find(
-        i => toLowerCase(i.address) === toLowerCase(chain.token_address),
-      )
 }
 
 const getPaymentTokens = async (
@@ -155,10 +113,4 @@ const createPaymentToken = (
     token,
     Amount.fromBigInt(balance.amount, token.decimals),
   )
-}
-
-const getTargetTokenSymbol = (chain: BridgeChain, symbol: TokenSymbol) => {
-  if (!chain.isTestnet) return symbol
-
-  return INTERNAL_TOKENS_MAP[chain.name] ?? ''
 }

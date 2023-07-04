@@ -1,12 +1,12 @@
 import { Box, Card, CircularProgress, Divider, Typography } from '@mui/material'
-import type { EstimatedPrice } from '@rarimo/nft-checkout'
+import type { SwapEstimation } from '@rarimo/nft-checkout'
 
 import { useDappContext } from '@/hooks'
 
 type Props = {
   isTransactionProcessing: boolean
   txHash: string
-  estimatedPrice?: EstimatedPrice
+  estimatedPrice?: SwapEstimation
 }
 
 /**
@@ -56,7 +56,7 @@ const TransactionSummary = ({
             <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">Spent:</Typography>
               <Typography variant="subtitle1">
-                {`${params.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.price} ${estimatedPrice.price.symbol}`}
+                {`${params.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.amountIn} ${estimatedPrice.from.symbol}`}
               </Typography>
             </Card>
           </Box>

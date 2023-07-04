@@ -1,12 +1,5 @@
 import { RuntimeError } from '@rarimo/shared'
 
-export class OperatorNotExistsError extends RuntimeError {
-  public name = 'OperatorNotExistsError'
-  constructor(message = 'Could not find implementation for this operator') {
-    super(message)
-  }
-}
-
 export class OperatorNotInitializedError extends RuntimeError {
   public name = 'OperatorNotInitializedError'
   constructor(message = 'Provided operator is not initialized') {
@@ -63,6 +56,36 @@ export class OperationInsufficientFundsError extends RuntimeError {
 export class OperationEstimateError extends RuntimeError {
   public name = 'OperationEstimateError'
   constructor(message = 'Failed to estimate payment operation') {
+    super(message)
+  }
+}
+
+export class OperationIntermediateTokenNotFoundError extends RuntimeError {
+  public name = 'OperationIntermediateTokenNotFoundError'
+  constructor(message = 'Failed to find intermediate token') {
+    super(message)
+  }
+}
+
+export class OperationSwapToTokenNotFoundError extends RuntimeError {
+  public name = 'OperationSwapToTokenNotFoundError'
+  constructor(message = 'Failed to find swap to token') {
+    super(message)
+  }
+}
+
+export class OperationPaymentTokensNotProvidedError extends RuntimeError {
+  public name = 'OperationPaymentTokensNotProvidedError'
+  constructor(message = 'There are no payment tokens provided') {
+    super(message)
+  }
+}
+
+export class OperationSameChainDestinationTxError extends RuntimeError {
+  public name = 'OperationSameChainDestinationTxError'
+  constructor(
+    message = 'Operation destination is the same chain, thus transaction hash equals to the source one',
+  ) {
     super(message)
   }
 }

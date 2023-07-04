@@ -10,7 +10,6 @@ import {
   Amount,
   ChainKind,
   ChainTypes,
-  fetchInternalTokenMapping,
   getDestinationTx as fetchDestTx,
   loadSupportedChains as _loadSupportedChains,
 } from '@rarimo/shared'
@@ -31,7 +30,7 @@ export const createEVMBridger: BridgerCreateFn = (
   const chains = ref<BridgeChain[]>([])
   const isInitialized = ref(false)
 
-  const loadSupportedChains = async (
+  const getSupportedChains = async (
     kind?: ChainKind,
   ): Promise<BridgeChain[]> => {
     if (chains.value.length) return chains.value
@@ -50,7 +49,7 @@ export const createEVMBridger: BridgerCreateFn = (
 
   const init = async () => {
     if (isInitialized.value) return
-    await loadSupportedChains()
+    await getSupportedChains()
     isInitialized.value = true
   }
 
@@ -65,10 +64,6 @@ export const createEVMBridger: BridgerCreateFn = (
     }
 
     return fetchDestTx(sourceChain, sourceTxHash)
-  }
-
-  const getInternalTokenMapping = (targetTokenSymbol: string) => {
-    return fetchInternalTokenMapping(targetTokenSymbol)
   }
 
   const approveIfNeeded = async (
@@ -97,10 +92,9 @@ export const createEVMBridger: BridgerCreateFn = (
     chains,
     isInitialized,
     init,
-    loadSupportedChains,
+    getSupportedChains,
     getChainById,
     getDestinationTx,
-    getInternalTokenMapping,
     isApproveRequired,
     approve,
     approveIfNeeded,
