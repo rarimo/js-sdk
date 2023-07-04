@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/nft-checkout",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "Tools to create cross-train transactions with the Rarimo Protocol",
   "repository": {
     "type": "git",
@@ -50,8 +50,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^0.2.0-rc.19",
-    "@distributedlab/tools": "^0.2.0-rc.19",
+    "@distributedlab/reactivity": "^0.2.0-rc.21",
+    "@distributedlab/tools": "^0.2.0-rc.21",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
