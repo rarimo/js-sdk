@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "Generating identity for iden3 protocol",
   "repository": {
     "type": "git",
@@ -59,7 +59,7 @@
     "tsc-alias": "^1.8.2"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^0.2.0-rc.20",
+    "@distributedlab/fetcher": "^0.2.0-rc.21",
     "@rarimo/identity-gen-iden3": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared-zkp-iden3": "workspace:^",

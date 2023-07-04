@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/swap",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "Rarimo swap package",
   "repository": {
     "type": "git",
@@ -61,7 +61,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^0.2.0-rc.19",
+    "@distributedlab/reactivity": "^0.2.0-rc.21",
     "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^"

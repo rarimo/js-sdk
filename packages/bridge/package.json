@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/bridge",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "All bridge related functionality for the Rarimo Protocol",
   "repository": {
     "type": "git",
@@ -61,8 +61,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^0.2.0-rc.19",
-    "@distributedlab/tools": "^0.2.0-rc.19",
+    "@distributedlab/reactivity": "^0.2.0-rc.21",
+    "@distributedlab/tools": "^0.2.0-rc.21",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^",
     "ethers": "^5.7.2"
