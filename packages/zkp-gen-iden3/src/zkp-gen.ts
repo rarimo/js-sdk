@@ -23,6 +23,7 @@ import {
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import { type Identity } from '@rarimo/identity-gen-iden3'
+import { omit } from '@rarimo/shared'
 import {
   getBytesFile,
   getGISTProof,
@@ -30,7 +31,6 @@ import {
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
 import type { BigNumber } from 'ethers'
-import omit from 'lodash/omit'
 
 import type {
   ClaimStatus,
