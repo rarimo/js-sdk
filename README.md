@@ -30,7 +30,9 @@ from the latest release.
 ## Packages
 
 The Rarimo SDK is a library that consists of many smaller NPM packages within the
-[@rarimo namespace](https://www.npmjs.com/org/rarimo):
+[@rarimo namespace](https://www.npmjs.com/org/rarimo).
+
+### Token swapping, bridging, and checkout packages
 
 | Package                                                                                                | Description                                                                                                                                       | Latest                                                                                                                                  |
 |--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -44,6 +46,11 @@ The Rarimo SDK is a library that consists of many smaller NPM packages within th
 | [@rarimo/nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html)              | Features of the Rarimo SDK that create cross-chain transactions based on the Rarimo protocol.                                                     | [![npm version](https://img.shields.io/npm/v/@rarimo/nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/nft-checkout)             |
 | [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)          | Tools to connect to wallets in React applications through the Rarimo SDK.                                                                         | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)         |
 | [@rarimo/react-nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html)  | Features of the Rarimo SDK that provide React components to manage cross-train transactions with the Rarimo protocol.                             | [![npm version](https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/react-nft-checkout) |
+
+### Identity packages
+
+| Package                                                                                                | Description                                                                                                                                       | Latest                                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | [@rarimo/identity-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html) | Tools that generate distributed identities for the Iden3 protocol.                                                                                | [![npm version](https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/identity-gen-iden3) |
 | [@rarimo/auth-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html)         | Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.                                                        | [![npm version](https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/auth-zkp-iden3)         |
 | [@rarimo/zkp-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html)           | Tools that generate zero-knowledge proofs for the Iden3 protocol.                                                                                                | [![npm version](https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/zkp-gen-iden3)           |
