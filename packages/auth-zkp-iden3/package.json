@@ -1,7 +1,7 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
   "version": "2.0.0-rc.3",
-  "description": "Generating identity for iden3 protocol",
+  "description": "Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk.git",

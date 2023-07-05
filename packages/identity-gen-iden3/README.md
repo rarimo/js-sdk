@@ -1,5 +1,5 @@
 # @rarimo/identity-gen-iden3
-These packages aim to provide class to generate identity for iden3 protocol
+Tools that generate distributed identities for the Iden3 protocol.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/identity-gen-iden3)
 ![types](https://badgen.net/npm/types/@rarimo/identity-gen-iden3)

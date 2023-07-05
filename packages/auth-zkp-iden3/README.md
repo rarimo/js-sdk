@@ -1,5 +1,5 @@
 # @rarimo/auth-zkp-iden3
-This package provides a class to work with iden3 zero-knowledge proof. Generates auth proof and return verifiable credentials.
+Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/auth-zkp-iden3)
 ![types](https://badgen.net/npm/types/@rarimo/auth-zkp-iden3)
