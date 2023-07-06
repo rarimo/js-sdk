@@ -29,8 +29,8 @@ This is Typedoc-generated documentation. It is helpful if you want to look up de
 This documentation is auto-generated based on the current main branch and can diverge
 from the latest release.</p>
 <a id="md:packages" class="tsd-anchor"></a><h2><a href="#md:packages">Packages</a></h2><p>The Rarimo SDK is a library that consists of many smaller NPM packages within the
-<a href="https://www.npmjs.com/org/rarimo">@rarimo namespace</a>:</p>
-<table>
+<a href="https://www.npmjs.com/org/rarimo">@rarimo namespace</a>.</p>
+<a id="md:token-swapping-bridging-and-checkout-packages" class="tsd-anchor"></a><h3><a href="#md:token-swapping-bridging-and-checkout-packages">Token swapping, bridging, and checkout packages</a></h3><table>
 <thead>
 <tr>
 <th>Package</th>
@@ -40,75 +40,176 @@ from the latest release.</p>
 </thead>
 <tbody><tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_shared.html">@rarimo/shared</a></td>
-<td>Utility functions, types and constants shared across Rarimo packages.</td>
+<td>Utility functions, types, and constants shared across Rarimo packages.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/shared"><img src="https://img.shields.io/npm/v/@rarimo/shared.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_bridge.html">@rarimo/bridge</a></td>
-<td>All bridge related functionality for the Rarimo Protocol</td>
+<td>Internal tools that other Rarimo packages use to bridge tokens.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/bridge"><img src="https://img.shields.io/npm/v/@rarimo/bridge.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_swap.html">@rarimo/swap</a></td>
-<td>Rarimo NFT Checkout core package</td>
+<td>Internal tools that other Rarimo packages use to swap tokens.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/swap"><img src="https://img.shields.io/npm/v/@rarimo/swap.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_provider.html">@rarimo/provider</a></td>
-<td>Provides access to wallets and wraps the wallet extension providers from different EVM and non-EVM chains to one common interface for ease of use</td>
+<td>A common interface for access to wallets (EVM and non-EVM) in the Rarimo SDK, used by packages that provide access to wallets on specific chains.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/provider"><img src="https://img.shields.io/npm/v/@rarimo/provider.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_providers_evm.html">@rarimo/providers-evm</a></td>
-<td>The EVM wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the EVM compatible blockchains</td>
+<td>Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on EVM-compatible blockchains.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/providers-evm"><img src="https://img.shields.io/npm/v/@rarimo/providers-evm.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_providers_solana.html">@rarimo/providers-solana</a></td>
-<td>The Solana wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the Solana blockchain</td>
+<td>Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Solana blockchain.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/providers-solana"><img src="https://img.shields.io/npm/v/@rarimo/providers-solana.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_providers_near.html">@rarimo/providers-near</a></td>
-<td>The Near wallet wrappers called as Provider in the Rarimo SDK that can be used to interact with the Near blockchain</td>
+<td>Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the NEAR blockchain.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/providers-near"><img src="https://img.shields.io/npm/v/@rarimo/providers-near.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_nft_checkout.html">@rarimo/nft-checkout</a></td>
-<td>Tools to create cross-train transactions with the Rarimo protocol</td>
+<td>Features of the Rarimo SDK that create cross-chain transactions based on the Rarimo protocol.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/nft-checkout"><img src="https://img.shields.io/npm/v/@rarimo/nft-checkout.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html">@rarimo/react-provider</a></td>
-<td>React <code>@rarimo/provider</code> adapter</td>
+<td>Tools to connect to wallets in React applications through the Rarimo SDK.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/react-provider"><img src="https://img.shields.io/npm/v/@rarimo/react-provider.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html">@rarimo/react-nft-checkout</a></td>
-<td>React components that you can use in your UI to create cross-chain transactions with the Rarimo Protocol</td>
+<td>Features of the Rarimo SDK that provide React components to manage cross-train transactions with the Rarimo protocol.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/react-nft-checkout"><img src="https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg" alt="npm version"></a></td>
 </tr>
+</tbody></table>
+<a id="md:identity-packages" class="tsd-anchor"></a><h3><a href="#md:identity-packages">Identity packages</a></h3><table>
+<thead>
 <tr>
+<th>Package</th>
+<th>Description</th>
+<th>Latest</th>
+</tr>
+</thead>
+<tbody><tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html">@rarimo/identity-gen-iden3</a></td>
-<td>Generating identity for iden3 protocol</td>
+<td>Tools that generate distributed identities for the Iden3 protocol.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/identity-gen-iden3"><img src="https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html">@rarimo/auth-zkp-iden3</a></td>
-<td>Generating auth zero-knowledge proof for iden3 protocol</td>
+<td>Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/auth-zkp-iden3"><img src="https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html">@rarimo/zkp-gen-iden3</a></td>
-<td>Generating zero-knowledge proof for iden3 protocol</td>
+<td>Tools that generate zero-knowledge proofs for the Iden3 protocol.</td>
 <td><a href="https://www.npmjs.com/package/@rarimo/zkp-gen-iden3"><img src="https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg" alt="npm version"></a></td>
 </tr>
 <tr>
 <td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_shared_zkp_iden_3.html">@rarimo/shared-zkp-iden3</a></td>
-<td>Utility functions, types and constants shared across</td>
-<td></td>
+<td>Internal tools that other Rarimo packages use for identity functionality.</td>
+<td><a href="https://www.npmjs.com/package/@rarimo/shared-zkp-iden3"><img src="https://img.shields.io/npm/v/@rarimo/shared-zkp-iden3.svg" alt="npm version"></a></td>
 </tr>
 </tbody></table>
+<a id="md:known-issues" class="tsd-anchor"></a><h2><a href="#md:known-issues">Known issues</a></h2><a id="md:react" class="tsd-anchor"></a><h3><a href="#md:react">React</a></h3><p>To use such packages as <code>@rarimo/provider</code> and <code>@rarimo/nft-checkout</code> in React project, created with <a href="https://create-react-app.dev/">create-react-app</a> you need to add <a href="https://craco.js.org/">craco</a> package and config to resolve the ESM version:</p>
+<pre><code class="language-shell"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-3">-D</span><span class="hl-1"> </span><span class="hl-2">@craco/craco</span>
+</code><button>Copy</button></pre>
+<p>Next, in the root of your project (where <code>package.json</code> is located) create a file named <code>craco.config.js</code> with the following content:</p>
+<pre><code class="language-js"><span class="hl-4">module</span><span class="hl-1">.</span><span class="hl-4">exports</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-5">webpack:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-5">configure:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-5">module:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-5">rules:</span><span class="hl-1"> [</span><br/><span class="hl-1">          {</span><br/><span class="hl-1">            </span><span class="hl-5">test:</span><span class="hl-6"> /</span><span class="hl-7">\.</span><span class="hl-6">m</span><span class="hl-8">?</span><span class="hl-6">js</span><span class="hl-9">$</span><span class="hl-6">/</span><span class="hl-1">,</span><br/><span class="hl-1">            </span><span class="hl-5">resolve:</span><span class="hl-1"> {</span><br/><span class="hl-1">              </span><span class="hl-5">fullySpecified:</span><span class="hl-1"> </span><span class="hl-3">false</span><span class="hl-1">,</span><br/><span class="hl-1">            },</span><br/><span class="hl-1">          },</span><br/><span class="hl-1">        ],</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<p>This config disables the breaking change that causes <a href="https://stackoverflow.com/questions/70964723/webpack-5-in-ceate-react-app-cant-resolve-not-fully-specified-routes">this error</a>.</p>
+<p>Then change the <code>start</code>/<code>build</code>/<code>test</code> commands in <code>package.json</code> replacing react-scripts to <code>craco</code>:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;scripts&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;start&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco start&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;build&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco build&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;test&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco test&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:nextjs" class="tsd-anchor"></a><h3><a href="#md:nextjs">Next.js</a></h3><p>To use such packages as <code>@rarimo/provider</code> and <code>@rarimo/nft-checkout</code> in Next.js projects version <code>10.0.5</code> or any upper version which uses webpack 4 you need to add the following config to <code>next.config.js</code>:</p>
+<pre><code class="language-js"><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-11">path</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;path&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-4">module</span><span class="hl-1">.</span><span class="hl-4">exports</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">webpack</span><span class="hl-5">:</span><span class="hl-1"> (</span><span class="hl-5">config</span><span class="hl-1">, { </span><span class="hl-5">isServer</span><span class="hl-1"> }) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-5">config</span><span class="hl-1">.</span><span class="hl-5">module</span><span class="hl-1">.</span><span class="hl-5">rules</span><span class="hl-1">.</span><span class="hl-0">push</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-5">test:</span><span class="hl-6"> /</span><span class="hl-7">\.</span><span class="hl-6">m</span><span class="hl-8">?</span><span class="hl-6">js</span><span class="hl-9">$</span><span class="hl-6">/</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-5">include:</span><span class="hl-6"> /node_modules/</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&#39;javascript/auto&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-5">resolve:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-5">alias:</span><span class="hl-1"> {</span><br/><span class="hl-1">          </span><span class="hl-2">&#39;@pancakeswap/multicall&#39;</span><span class="hl-5">:</span><span class="hl-1"> </span><span class="hl-5">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-5">__dirname</span><span class="hl-1">, </span><span class="hl-2">&#39;./node_modules/@pancakeswap/multicall/dist/index.mjs&#39;</span><span class="hl-1">),</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">    });</span><br/><br/><span class="hl-1">    </span><span class="hl-12">return</span><span class="hl-1"> </span><span class="hl-5">config</span><span class="hl-1">;</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">};</span>
+</code><button>Copy</button></pre>
+<a id="md:package-managers" class="tsd-anchor"></a><h3><a href="#md:package-managers">Package managers</a></h3><p>To use <code>@rarimo/nft-checkout</code> in project which uses <code>yarn</code> as package manager you need to add the following config to <code>package.json</code>:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;resolutions&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;@rarimo/nft-checkout/@pancakeswap/sdk/@pancakeswap/swap-sdk-core&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;0.0.1&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:incorrectly-resolved-dependencies-in-the-esm-projects" class="tsd-anchor"></a><h3><a href="#md:incorrectly-resolved-dependencies-in-the-esm-projects">Incorrectly resolved dependencies in the ESM projects</a></h3><p>If you see the following error:</p>
+<pre><code><span class="hl-13">TypeError</span><span class="hl-1">: </span><span class="hl-5">n</span><span class="hl-1">.</span><span class="hl-5">BigInt</span><span class="hl-1"> </span><span class="hl-5">is</span><span class="hl-1"> </span><span class="hl-5">not</span><span class="hl-1"> </span><span class="hl-5">a</span><span class="hl-1"> </span><span class="hl-3">function</span>
+</code><button>Copy</button></pre>
+<p>This is because of this code fragment in the <a href="https://github.com/Uniswap/router-sdk">@uniswap/router-sdk</a> which is used inside our SDK:</p>
+<pre><code class="language-js"><span class="hl-12">if</span><span class="hl-1"> (</span><span class="hl-5">process</span><span class="hl-1">.</span><span class="hl-5">env</span><span class="hl-1">.</span><span class="hl-11">NODE_ENV</span><span class="hl-1"> === </span><span class="hl-2">&#39;production&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-4">module</span><span class="hl-1">.</span><span class="hl-4">exports</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;./router-sdk.cjs.production.min.js&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">} </span><span class="hl-12">else</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">module</span><span class="hl-1">.</span><span class="hl-4">exports</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;./router-sdk.cjs.development.js&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<p>This code in the <code>./dist/index.js</code> resolves CommonJS version of the package instead of ESM version. To fix this issue you need to add the following config to your Webpack\Vite config:</p>
+<pre><code class="language-js"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">resolve</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-13">alias</span><span class="hl-1">: {</span><br/><span class="hl-1">      </span><span class="hl-2">&#39;@uniswap/router-sdk&#39;</span><span class="hl-1">: </span><span class="hl-2">&#39;@uniswap/router-sdk/dist/router-sdk.esm.js&#39;</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:working-with-zkp-iden3-packages" class="tsd-anchor"></a><h3><a href="#md:working-with-zkp-iden3-packages">Working with ZKP iden3 packages</a></h3><p>Just because <code>iden3</code> libraries is developed for node, you need to follow next steps in your client:</p>
+<p>First thing first, add following packages to your project, because it marked as <code>peerDependencies</code>:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">ethers</span><span class="hl-1"> </span><span class="hl-2">util</span><span class="hl-1"> </span><span class="hl-2">ejc</span><span class="hl-1"> </span><span class="hl-2">snarkjs</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-iden3-core</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-jwz</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-crypto</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-jsonld-merklization</span>
+</code><button>Copy</button></pre>
+<p>Then, ddd this aliases to your client app build config, especially if you are using ViteJs</p>
+<pre><code class="language-ts"><span class="hl-1">[</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;ethers&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/ethers/dist/ethers.esm.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;util&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/util/util.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;ejc&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/ejs/ejs.min.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;snarkjs&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/snarkjs/build/snarkjs.min.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-iden3-core&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-jwz&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-crypto&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-jsonld-merklization&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> }</span><br/><span class="hl-1">]</span>
+</code><button>Copy</button></pre>
+<a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><a id="md:editors" class="tsd-anchor"></a><h3><a href="#md:editors">Editors</a></h3><a id="md:vscode" class="tsd-anchor"></a><h4><a href="#md:vscode">VSCode</a></h4><p>To get ESLint and Prettier working in VSCode, install <a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint extension</a> and add the following to your settings.json:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;editor.codeActionsOnSave&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;source.fixAll.eslint&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;editor.formatOnSave&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.validate&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;javascript&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;typescript&quot;</span><br/><span class="hl-1">  ],</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.alwaysShowStatus&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.packageManager&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;yarn&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.workingDirectories&quot;</span><span class="hl-1">: [{ </span><span class="hl-10">&quot;mode&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;auto&quot;</span><span class="hl-1"> }]</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:webstorm" class="tsd-anchor"></a><h4><a href="#md:webstorm">WebStorm</a></h4><p>To get ESLint and Prettier working in WebStorm, go to <code>Preferences &gt; Languages &amp; Frameworks &gt; JavaScript &gt; Code Quality Tools &gt; ESLint</code> and check the following:</p>
+<ul>
+<li><code>Run eslint --fix on save</code> enabled</li>
+<li><code>Automatic ESLint configuration</code> enabled</li>
+<li><code>{**/*,*}.{js,ts}</code> in <code>Run for files</code> field</li>
+</ul>
+<a id="md:dependencies" class="tsd-anchor"></a><h3><a href="#md:dependencies">Dependencies</a></h3><a id="md:local-dependencies" class="tsd-anchor"></a><h4><a href="#md:local-dependencies">Local dependencies</a></h4><p>To install all dependencies, run:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">install</span>
+</code><button>Copy</button></pre>
+<p>If you are implementing a new package which needs to depend on the local package, you can use the following command to install it:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">workspace</span><span class="hl-1"> </span><span class="hl-2">@rarimo/target-package</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@distributedlab/package-to-add</span>
+</code><button>Copy</button></pre>
+<p>To install a dependency to all packages, use the following command:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">workspaces</span><span class="hl-1"> </span><span class="hl-2">foreach</span><span class="hl-1"> </span><span class="hl-3">-pt</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@rarimo/package-to-add</span>
+</code><button>Copy</button></pre>
+<a id="md:testing-dependencies" class="tsd-anchor"></a><h4><a href="#md:testing-dependencies">Testing dependencies</a></h4><p>To test the packages, you need:</p>
+<ol>
+<li><p>Build the packages:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button>Copy</button></pre>
+</li>
+<li><p>Switch yarn to version berry in the project where you want to test package, to yarn be able to resolve workspace dependencies:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">set</span><span class="hl-1"> </span><span class="hl-2">version</span><span class="hl-1"> </span><span class="hl-2">berry</span>
+</code><button>Copy</button></pre>
+</li>
+<li><p>Add this to the <code>.yarnrc.yml</code> file:</p>
+<pre><code class="language-yaml"><span class="hl-14">nodeLinker</span><span class="hl-1">: </span><span class="hl-15">node-modules</span>
+</code><button>Copy</button></pre>
+</li>
+<li><p>Link the packages to the project:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">link</span><span class="hl-1"> </span><span class="hl-3">-p</span><span class="hl-1"> </span><span class="hl-3">-A</span><span class="hl-1"> </span><span class="hl-2">/path/to/js-sdk/root/directory</span>
+</code><button>Copy</button></pre>
+</li>
+<li><p>Add dependencies to the package.json file:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;dependencies&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;@rarimo/provider&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;*&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+</li>
+<li><p>Install the dependencies:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">install</span>
+</code><button>Copy</button></pre>
+</li>
+</ol>
+<a id="md:basics" class="tsd-anchor"></a><h3><a href="#md:basics">Basics</a></h3><a id="md:build" class="tsd-anchor"></a><h4><a href="#md:build">Build</a></h4><pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button>Copy</button></pre>
+<a id="md:run-tests" class="tsd-anchor"></a><h4><a href="#md:run-tests">Run tests</a></h4><pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button>Copy</button></pre>
+<a id="md:run-linter" class="tsd-anchor"></a><h4><a href="#md:run-linter">Run linter</a></h4><pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">lint</span>
+</code><button>Copy</button></pre>
+<a id="md:check-release-version" class="tsd-anchor"></a><h4><a href="#md:check-release-version">Check release version</a></h4><pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">rsc</span><span class="hl-1"> </span><span class="hl-16">0.1</span><span class="hl-2">.0</span>
+</code><button>Copy</button></pre>
+<a id="md:bump-version-for-all-packages" class="tsd-anchor"></a><h4><a href="#md:bump-version-for-all-packages">Bump version for all packages</a></h4><pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">apply-version</span><span class="hl-1"> </span><span class="hl-16">0.1</span><span class="hl-2">.0</span>
+</code><button>Copy</button></pre>
+<a id="md:resources" class="tsd-anchor"></a><h3><a href="#md:resources">Resources</a></h3><ul>
+<li><a href="https://yarnpkg.com/cli/install">Yarn Berry</a></li>
+<li><a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a></li>
+<li><a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a></li>
+</ul>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -137,7 +238,41 @@ from the latest release.</p>
 <li><a href="#md:example"><span>Example</span></a></li>
 <li><a href="#md:changelog"><span>Changelog</span></a></li>
 <li><a href="#md:api-documentation"><span>API documentation</span></a></li>
-<li><a href="#md:packages"><span>Packages</span></a></li></ul></li></ul></li></ul></div></details></div>
+<li><a href="#md:packages"><span>Packages</span></a></li>
+<li>
+<ul>
+<li><a href="#md:token-swapping-bridging-and-checkout-packages"><span>Token swapping, bridging, and checkout packages</span></a></li>
+<li><a href="#md:identity-packages"><span>Identity packages</span></a></li></ul></li>
+<li><a href="#md:known-issues"><span>Known issues</span></a></li>
+<li>
+<ul>
+<li><a href="#md:react"><span>React</span></a></li>
+<li><a href="#md:nextjs"><span>Next.js</span></a></li>
+<li><a href="#md:package-managers"><span>Package managers</span></a></li>
+<li><a href="#md:incorrectly-resolved-dependencies-in-the-esm-projects"><span>Incorrectly resolved dependencies in the ESM projects</span></a></li>
+<li><a href="#md:working-with-zkp-iden3-packages"><span>Working with ZKP iden3 packages</span></a></li></ul></li>
+<li><a href="#md:development"><span>Development</span></a></li>
+<li>
+<ul>
+<li><a href="#md:editors"><span>Editors</span></a></li>
+<li>
+<ul>
+<li><a href="#md:vscode"><span>VSCode</span></a></li>
+<li><a href="#md:webstorm"><span>Web<wbr/>Storm</span></a></li></ul></li>
+<li><a href="#md:dependencies"><span>Dependencies</span></a></li>
+<li>
+<ul>
+<li><a href="#md:local-dependencies"><span>Local dependencies</span></a></li>
+<li><a href="#md:testing-dependencies"><span>Testing dependencies</span></a></li></ul></li>
+<li><a href="#md:basics"><span>Basics</span></a></li>
+<li>
+<ul>
+<li><a href="#md:build"><span>Build</span></a></li>
+<li><a href="#md:run-tests"><span>Run tests</span></a></li>
+<li><a href="#md:run-linter"><span>Run linter</span></a></li>
+<li><a href="#md:check-release-version"><span>Check release version</span></a></li>
+<li><a href="#md:bump-version-for-all-packages"><span>Bump version for all packages</span></a></li></ul></li>
+<li><a href="#md:resources"><span>Resources</span></a></li></ul></li></ul></li></ul></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>Rarimo <wbr/>Java<wbr/>Script/<wbr/>Typescript SDK</span></a>
 <ul class="tsd-small-nested-navigation">
