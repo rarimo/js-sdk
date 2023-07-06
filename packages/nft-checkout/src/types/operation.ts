@@ -25,7 +25,6 @@ export type CheckoutOperationParams = {
 
 export type CheckoutOperationCreateFunction = (
   provider: IProvider,
-  params: CheckoutOperationParams,
 ) => CheckoutOperation
 
 export interface CheckoutOperation extends OperationSubscriber {
@@ -37,7 +36,7 @@ export interface CheckoutOperation extends OperationSubscriber {
   /**
    * Initialize the operation with the source chain and transaction parameters
    */
-  init(): Promise<void>
+  init(params: CheckoutOperationParams): Promise<void>
   /**
    * Get the chains that are supported for the operation type
    *

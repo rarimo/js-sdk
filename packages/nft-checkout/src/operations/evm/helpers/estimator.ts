@@ -79,6 +79,6 @@ export const estimate = async ({
   if (!from.length) throw new errors.OperationPaymentTokensNotProvidedError()
 
   return isMultiplePayment
-    ? [await _estimatePriceSingle(from[0])]
-    : _estimatePriceMultiple(from)
+    ? _estimatePriceMultiple(from)
+    : [await _estimatePriceSingle(from[0])]
 }

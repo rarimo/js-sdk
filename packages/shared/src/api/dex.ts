@@ -10,7 +10,7 @@ import type {
 
 import { CONFIG, dexApi, loadAllPagesData } from './api'
 
-export const loadSupportedChains = async ({
+export const getSupportedChains = async ({
   type,
   kind,
 }: { type?: ChainTypes; kind?: ChainKind } = {}): Promise<BridgeChain[]> => {
@@ -39,7 +39,7 @@ export const loadSupportedChains = async ({
   }))
 }
 
-export const loadAccountBalances = async (
+export const getAccountBalances = async (
   chain: BridgeChain,
   accountAddress: HexString,
 ): Promise<InternalAccountBalance[]> => {
@@ -54,7 +54,7 @@ export const loadAccountBalances = async (
   return loadAllPagesData(response)
 }
 
-export const loadSupportedTokens = async (
+export const getSupportedTokens = async (
   chain: BridgeChain,
 ): Promise<InternalSupportedToken[]> => {
   const endpoint = `/chains/evm/${chain.name}/tokens`

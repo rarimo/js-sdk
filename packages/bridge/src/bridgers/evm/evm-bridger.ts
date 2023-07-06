@@ -11,7 +11,7 @@ import {
   ChainKind,
   ChainTypes,
   getDestinationTx as fetchDestTx,
-  loadSupportedChains as _loadSupportedChains,
+  getSupportedChains as getChains,
 } from '@rarimo/shared'
 
 import { errors } from '@/errors'
@@ -35,7 +35,7 @@ export const createEVMBridger: BridgerCreateFn = (
   ): Promise<BridgeChain[]> => {
     if (chains.value.length) return chains.value
 
-    chains.value = await _loadSupportedChains({
+    chains.value = await getChains({
       type: ChainTypes.EVM,
       kind,
     })

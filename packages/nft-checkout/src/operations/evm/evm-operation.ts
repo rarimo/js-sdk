@@ -28,16 +28,18 @@ import type {
 
 import { createOperationEventBus } from '../event-bus'
 import {
+  bnFromAmountLike,
   checkout as _checkout,
   estimate,
+  getAmountWithBridgeFee,
+  getAmountWithoutBridgeFee,
   getEstimation,
   getPaymentTokensWithPairs,
   getSameChainSwapToToken,
-  getSwapAmountOutWithBridgeFee,
   getTokenByAddress,
+  getTokens,
   handleCorrectProviderChain,
   isSameChainOperation,
-  loadTokens,
 } from './helpers'
 
 /**
@@ -49,32 +51,33 @@ import {
  * const op = createCheckoutOperation(EVMOperation, provider)
  * ```
  */
-export const EVMOperation = (
-  provider: IProvider,
-  params: CheckoutOperationParams,
-): CheckoutOperation => {
+export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   const swapper = createSwapper(createEVMSwapper, provider)
   const bus = createOperationEventBus()
 
   const isInitialized = ref(false)
   const status = ref(CheckoutOperationStatus.Created)
 
+  let params = {} as CheckoutOperationParams
   let isSameChain = false
   let isMultiplePayment = false
   let chainFrom = {} as BridgeChain
   let chainTo = {} as BridgeChain
-  let tokens: Token[] = []
+  let chainFromTokens: Token[] = []
+  let chainToTokens: Token[] = []
   let swapToToken = {} as Token
   let swapAmountOut = {} as Amount
   let intermediateOpts = {} as IntermediateTokenOpts
 
-  const init = async () => {
+  const init = async (_params: CheckoutOperationParams) => {
     isInitialized.value = false
     _setStatus(CheckoutOperationStatus.Initializing)
 
     if (provider.chainType !== ChainTypes.EVM) {
       throw new errors.OperationInvalidProviderChainTypeError()
     }
+
+    params = _params
 
     await swapper.init()
 
@@ -85,7 +88,7 @@ export const EVMOperation = (
       throw new errors.OperationInvalidChainPairError()
     }
 
-    tokens = await loadTokens(chainFrom)
+    await _loadTokens()
 
     isSameChain = isSameChainOperation(params)
     isMultiplePayment = Boolean(params.isMultiplePayment)
@@ -122,7 +125,7 @@ export const EVMOperation = (
       chainFrom,
       chainTo,
       isMultiplePayment,
-      tokens: tokens,
+      tokens: chainFromTokens,
       to: swapToToken!,
       slippage: params.slippage,
       amountOut: swapAmountOut,
@@ -180,7 +183,7 @@ export const EVMOperation = (
       receiver: params.recipient,
       setStatus: _setStatus,
       bundle,
-      ...(isSameChain && { intermediateOpts }),
+      ...(!isSameChain && { intermediateOpts }),
     })
 
     _setStatus(CheckoutOperationStatus.CheckoutCompleted)
@@ -211,10 +214,17 @@ export const EVMOperation = (
 
   const _getSwapToToken = () => {
     if (isSameChain) {
-      return getSameChainSwapToToken(chainFrom, tokens, params.price.address)
+      return getSameChainSwapToToken(
+        chainFrom,
+        chainFromTokens,
+        params.price.address,
+      )
     }
 
-    const chainFromUSDC = getTokenByAddress(tokens, USDC_MAP[chainFrom.name]!)
+    const chainFromUSDC = getTokenByAddress(
+      chainFromTokens,
+      USDC_MAP[chainFrom.name]!,
+    )
 
     if (!chainFromUSDC) {
       throw new errors.OperationIntermediateTokenNotFoundError()
@@ -231,31 +241,55 @@ export const EVMOperation = (
 
   const _getChainToUSDCSwapAmountIn = async () => {
     const { chainIdTo, slippage, price } = params
-    const chainToTokens = await loadTokens(chainTo!)
 
-    const from = getSameChainSwapToToken(
-      chainTo,
-      chainToTokens,
-      USDC_MAP[chainTo.name]!,
-    )!
-    const to = getSameChainSwapToToken(
-      chainTo,
-      chainToTokens,
-      params!.price.address,
-    )!
+    const usdcAddress = USDC_MAP[chainTo.name]!
+    const getTokenArgs: [BridgeChain, Token[]] = [chainTo, chainToTokens]
+    const from = getSameChainSwapToToken(...getTokenArgs, usdcAddress)!
+    const to = getSameChainSwapToToken(...getTokenArgs, price.address)!
 
-    // estimate USDC -> Target Token on the destination chain to determine
-    // how much USDC is required to bridge without bridge % fee
-    intermediateOpts = (await getEstimation({
+    const estimateArgs = {
       chainIdFrom: chainIdTo,
       chainIdTo,
       from,
       to,
-      amountOut: getSwapAmountOutWithBridgeFee(price),
+      amountOut: getAmountWithBridgeFee(price),
       slippage,
-    })) as IntermediateTokenOpts
+    }
 
-    return intermediateOpts.amountIn
+    // estimate USDC -> Target Token on the destination chain to determine
+    // how much USDC is required to bridge with and without bridge % fee
+    const estimationWithFee = await getEstimation(estimateArgs)
+
+    // USDC could have different decimals on different chains, thus we need to
+    // convert it to the same decimals as the chain from token.
+    // If this method called - "swapToToken" always is USDC
+    const chainFromUSDCAmountOut = bnFromAmountLike(
+      estimationWithFee.amountIn,
+    ).toDecimals(swapToToken.decimals)
+
+    intermediateOpts = {
+      ...estimationWithFee,
+      amountIn: getAmountWithoutBridgeFee(
+        chainFromUSDCAmountOut.toDecimals(estimationWithFee.amountIn.decimals),
+      ),
+      amountOut: price,
+    }
+
+    return Amount.fromBN(chainFromUSDCAmountOut)
+  }
+
+  const _loadTokens = async () => {
+    if (isSameChain) {
+      chainFromTokens = await getTokens(chainFrom)
+      return
+    }
+
+    const [from, to] = await Promise.all([
+      getTokens(chainFrom),
+      getTokens(chainTo),
+    ])
+    chainFromTokens = from
+    chainToTokens = to
   }
 
   const _setStatus = (s: CheckoutOperationStatus) => {

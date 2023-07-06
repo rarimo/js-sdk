@@ -5,7 +5,7 @@ import type { BridgeChain, InternalAccountBalance } from '@rarimo/shared'
 import { NATIVE_TOKEN_ADDRESS } from '@rarimo/shared'
 import {
   Amount,
-  loadAccountBalances,
+  getAccountBalances,
   parseTokenId,
   toLowerCase,
 } from '@rarimo/shared'
@@ -84,7 +84,7 @@ const getPaymentTokens = async (
   chain: BridgeChain,
   tokens: Token[],
 ): Promise<PaymentToken[]> => {
-  const balances = await loadAccountBalances(chain, provider.address!)
+  const balances = await getAccountBalances(chain, provider.address!)
 
   if (!balances.length) return []
 
@@ -107,7 +107,13 @@ const createPaymentToken = (
       : toLowerCase(i.address) === toLowerCase(address),
   )
 
-  if (!token || BN.fromBigInt(balance.amount, token.decimals).isZero) return
+  if (
+    !token ||
+    !token.decimals ||
+    BN.fromBigInt(balance.amount, token.decimals).isZero
+  ) {
+    return
+  }
 
   return paymentTokenFromToken(
     token,

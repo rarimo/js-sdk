@@ -4,7 +4,7 @@ import type { IProvider } from '@rarimo/provider'
 
 import type { ExecuteArgs, Swapper } from '@/types'
 
-import { getExecuteData } from './get-execute-data'
+import { getExecuteData } from './execute-data'
 
 export const createEVMSwapper = (provider: IProvider): Swapper => {
   const bridger = createBridger(createEVMBridger, provider)
@@ -22,8 +22,11 @@ export const createEVMSwapper = (provider: IProvider): Swapper => {
 
     return provider.signAndSendTx({
       from: provider.address,
-      to: args.chainTo.contractAddress,
-      data: getExecuteData(args),
+      to: args.chainFrom.contractAddress,
+      data: getExecuteData({
+        ...args,
+        receiver: args.receiver || provider.address,
+      }),
       value: args.swapOpts.find(i => i.from.isNative)?.amountIn?.value,
     })
   }

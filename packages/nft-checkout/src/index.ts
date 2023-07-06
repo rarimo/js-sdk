@@ -3,7 +3,6 @@ import type { IProvider } from '@rarimo/provider'
 import type {
   CheckoutOperation,
   CheckoutOperationCreateFunction,
-  CheckoutOperationParams,
 } from '@/types'
 
 /**
@@ -14,16 +13,13 @@ import type {
  *
  * @example
  * const provider = await createProvider(MetamaskProvider)
- * const op = await createCheckoutOperation(EVMCheckoutOperation, provider, params)
+ * const op = await createCheckoutOperation(EVMCheckoutOperation, provider)
  */
-export const createCheckoutOperation = async (
+export const createCheckoutOperation = (
   createOpFn: CheckoutOperationCreateFunction,
   provider: IProvider,
-  params: CheckoutOperationParams,
-): Promise<CheckoutOperation> => {
-  const op = createOpFn(provider, params)
-  await op.init()
-  return op
+): CheckoutOperation => {
+  return createOpFn(provider)
 }
 
 export * from './entities'

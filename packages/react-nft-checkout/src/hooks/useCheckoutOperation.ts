@@ -58,9 +58,16 @@ export const useCheckoutOperation = ({
   }, [checkoutOperation])
 
   useEffect(() => {
-    if (!provider || !params || !selectedChain) return
+    if (!provider) return
+
+    const op = createCheckoutOperation(EVMOperation, provider)
+    setCheckoutOperation(op)
+  }, [provider])
+
+  useEffect(() => {
+    if (!checkoutOperation || !params || !selectedChain) return
     const init = async () => {
-      const op = await createCheckoutOperation(EVMOperation, provider!, {
+      await checkoutOperation.init({
         ...params,
         chainIdFrom: selectedChain.id,
         price: Price.fromBigInt(
@@ -69,10 +76,10 @@ export const useCheckoutOperation = ({
           selectedSwapToken?.symbol ?? 'ETH',
         ),
       })
-      setCheckoutOperation(op)
     }
+
     init()
-  }, [provider, checkoutOperation, selectedChain, params, selectedSwapToken])
+  }, [checkoutOperation, selectedChain, params, selectedSwapToken])
 
   useEffect(() => {
     setListeners()

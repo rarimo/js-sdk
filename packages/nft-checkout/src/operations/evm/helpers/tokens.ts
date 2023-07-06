@@ -1,15 +1,15 @@
 import type { Token } from '@rarimo/bridge'
 import { tokenFromChain, tokenFromInternalSupportedToken } from '@rarimo/bridge'
 import type { BridgeChain, InternalSupportedToken } from '@rarimo/shared'
-import { loadSupportedTokens, toLowerCase } from '@rarimo/shared'
+import { getSupportedTokens, toLowerCase } from '@rarimo/shared'
 
 import { errors } from '@/errors'
 
-export const loadTokens = async (chain: BridgeChain): Promise<Token[]> => {
+export const getTokens = async (chain: BridgeChain): Promise<Token[]> => {
   let tokens: InternalSupportedToken[] = []
 
   try {
-    tokens = await loadSupportedTokens(chain)
+    tokens = await getSupportedTokens(chain)
   } catch (e) {
     throw new errors.OperationSupportedTokensLoadFailedError(e as Error)
   }
