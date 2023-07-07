@@ -15,13 +15,15 @@ export const getEstimation = async ({
   from,
   to,
   amountOut,
+  amountIn,
   slippage,
 }: {
   chainIdFrom: ChainId
   chainIdTo: ChainId
   from: Token
   to: Token
-  amountOut: Amount
+  amountIn?: Amount
+  amountOut?: Amount
   slippage?: number
 }): Promise<SwapEstimation> => {
   if (!from || !to) throw new errors.OperationInvalidSelectedTokenPairError()
@@ -29,8 +31,14 @@ export const getEstimation = async ({
   const query: EstimateQueryParams = {
     chainIdFrom: Number(chainIdFrom),
     chainIdTo: Number(chainIdTo),
-    'amountOut[value]': amountOut.value,
-    'amountOut[decimals]': amountOut.decimals,
+    ...(amountIn && {
+      'amountIn[value]': amountIn.value,
+      'amountIn[decimals]': amountIn.decimals,
+    }),
+    ...(amountOut && {
+      'amountOut[value]': amountOut.value,
+      'amountOut[decimals]': amountOut.decimals,
+    }),
     'from[name]': from.name,
     'from[symbol]': from.symbol,
     'from[decimals]': from.decimals,
@@ -54,7 +62,7 @@ export const getEstimation = async ({
   const {
     path,
     impact,
-    amountIn,
+    amountIn: _amountIn,
     amountOut: _amountOut,
     gasPrice,
     gasPriceInUSD,
@@ -67,7 +75,7 @@ export const getEstimation = async ({
     impact,
     gasPrice,
     gasPriceInUSD,
-    amountIn: Amount.fromPlainObject(amountIn),
+    amountIn: Amount.fromPlainObject(_amountIn),
     amountOut: Amount.fromPlainObject(_amountOut),
   }
 }

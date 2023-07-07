@@ -6,7 +6,7 @@ import { errors } from '@/errors'
 import type { PaymentToken, SwapEstimation } from '@/types'
 
 import { getEstimation } from './get-estimation'
-import { bnFromAmountLike, priceFromPaymentToken } from './utils'
+import { bnFromAmountLike } from './utils'
 
 export const estimate = async ({
   chainIdFrom,
@@ -25,52 +25,60 @@ export const estimate = async ({
   slippage?: number
   amountOut: Amount
 }) => {
-  const _estimatePriceSingle = (from: PaymentToken, _amountOut?: Amount) => {
+  const _estimatePriceSingle = ({
+    from,
+    amountIn,
+    amountOut: _amountOut,
+  }: {
+    from: PaymentToken
+    amountOut?: Amount
+    amountIn?: Amount
+  }) => {
     return getEstimation({
       chainIdFrom,
       chainIdTo,
       from,
       to,
-      amountOut: _amountOut || amountOut,
+      ...(amountIn ? { amountIn } : { amountOut: _amountOut || amountOut }),
       slippage,
     })
   }
 
   const _estimatePriceMultiple = async (from: PaymentToken[]) => {
-    const estimations: SwapEstimation[] = []
-    const totalAmountOut = BN.fromRaw('0', to.decimals)
+    const estimations: SwapEstimation[] = [] // usdc
+    let totalAmountOut = BN.fromRaw('0', to.decimals)
     const targetAmountOut = bnFromAmountLike(amountOut)
+    const zero = BN.fromRaw('0', to.decimals)
 
     for (const token of from) {
-      const _amountOut = targetAmountOut.clone().sub(totalAmountOut)
+      let amountOut = targetAmountOut.sub(totalAmountOut)
 
-      const estimation = await _estimatePriceSingle(
-        token,
-        Amount.fromBN(_amountOut),
+      if (amountOut.isLessThan(zero)) {
+        amountOut = totalAmountOut.add(amountOut)
+      }
+
+      let estimation = await _estimatePriceSingle({
+        from: token,
+        amountOut: Amount.fromBN(amountOut),
+      })
+
+      const isAmountInGreaterThanBalance = estimation.amountIn.isGreaterThan(
+        token.balanceRaw,
       )
 
-      // If the estimated price of the swap is less or equal than balance,
-      // we can use it, otherwise, we need to use balance as amount in
-      const isPriceLessThanOrEqualToBalance =
-        estimation.amountOut.isLessThanOrEqualTo(token.balanceRaw)
-
-      const estimationToAdd = isPriceLessThanOrEqualToBalance
-        ? estimation
-        : {
-            ...estimation,
-            price: priceFromPaymentToken(token),
-          }
-
-      const amountToAdd = isPriceLessThanOrEqualToBalance
-        ? bnFromAmountLike(estimation.amountOut)
-        : bnFromAmountLike(token.balanceRaw)
-
-      estimations.push(estimationToAdd)
-      totalAmountOut.add(amountToAdd)
-
-      if (totalAmountOut.isEqualTo(targetAmountOut)) {
-        return estimations
+      if (isAmountInGreaterThanBalance) {
+        estimation = await _estimatePriceSingle({
+          from: token,
+          amountIn: token.balanceRaw,
+        })
       }
+
+      estimations.push(estimation)
+      totalAmountOut = totalAmountOut.add(
+        bnFromAmountLike(estimation.amountOut),
+      )
+
+      if (totalAmountOut.isEqualTo(targetAmountOut)) return estimations
     }
 
     throw new errors.OperationInsufficientFundsError()
@@ -80,5 +88,5 @@ export const estimate = async ({
 
   return isMultiplePayment
     ? _estimatePriceMultiple(from)
-    : [await _estimatePriceSingle(from[0])]
+    : [await _estimatePriceSingle({ from: from[0] })]
 }

@@ -24,8 +24,10 @@ export type EstimateQueryParams = {
   'to[symbol]': string
   'to[decimals]': number
   'to[address]'?: string
-  'amountOut[value]': string
-  'amountOut[decimals]': number
+  'amountIn[value]'?: string
+  'amountIn[decimals]'?: number
+  'amountOut[value]'?: string
+  'amountOut[decimals]'?: number
   chainIdFrom: number
   chainIdTo: number
   slippage?: number

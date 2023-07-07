@@ -2,7 +2,7 @@ import { BN } from '@distributedlab/tools'
 import { Amount, RARIMO_BRIDGE_FEE } from '@rarimo/shared'
 
 import { Price } from '@/entities'
-import type { CheckoutOperationParams, PaymentToken } from '@/types'
+import type { CheckoutOperationParams } from '@/types'
 
 const ONE = 1
 const ONE_HUNDRED = 100
@@ -45,12 +45,4 @@ export const bnFromAmountLike = (amount: Amount | BN): BN => {
   return isAmountLike(amount)
     ? BN.fromBigInt(amount.value, amount.decimals)
     : amount
-}
-
-export const priceFromPaymentToken = (token: PaymentToken): Price => {
-  return Price.fromBigInt(
-    token.balanceRaw.value,
-    token.balanceRaw.decimals,
-    token.symbol,
-  )
 }
