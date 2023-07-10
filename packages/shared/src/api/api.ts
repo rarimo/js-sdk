@@ -15,7 +15,7 @@ const getOrigin = () => {
   return window?.origin ?? ''
 }
 
-const createApi = (baseUrl: string): JsonApiClient => {
+export const createApi = (baseUrl: string): JsonApiClient => {
   return new JsonApiClient({
     baseUrl,
     headers: {

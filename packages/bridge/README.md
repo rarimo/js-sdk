@@ -1,5 +1,5 @@
 # @rarimo/bridge
-Rarimo SDK bridge package.
+Internal tools that other Rarimo packages use to bridge tokens.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/bridge)
 ![types](https://badgen.net/npm/types/@rarimo/bridge)

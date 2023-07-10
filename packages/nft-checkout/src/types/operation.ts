@@ -44,7 +44,7 @@ export interface CheckoutOperation extends OperationSubscriber {
    */
   loadSupportedChains(): Promise<BridgeChain[]>
   /**
-   * Load the wallet's balance of payment tokens on the specified chain.
+   * Load the tokens that the wallet has enough of to run the operation.
    *
    * @param chain - A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token

@@ -32,3 +32,15 @@ export const isUndefined = (val: unknown): val is undefined => {
 export const toLowerCase = (val?: string): string => {
   return val?.toLowerCase() ?? ''
 }
+
+export const omit = <T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K | ReadonlyArray<K>>,
+): Omit<T, K> => {
+  return Object.entries(obj).reduce((result, [key, value]) => {
+    if (!keys.includes(key as K)) {
+      result[key as keyof Omit<T, K>] = value
+    }
+    return result
+  }, {} as Omit<T, K>)
+}
