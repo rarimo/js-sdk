@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "Utility functions, types and constants shared across @rarimo packages.",
   "repository": {
     "type": "git",
@@ -59,11 +59,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "@rarimo/shared"
   },
   "dependencies": {
     "@distributedlab/jac": "^0.2.0-rc.24",

@@ -10,12 +10,12 @@ export const CONFIG = {
   MAX_PAGE_LIMIT: 500,
 }
 
-const getOrigin = (): string => {
+const getOrigin = () => {
   if (typeof window === 'undefined') return ''
   return window?.origin ?? ''
 }
 
-const createApi = (baseUrl: string): JsonApiClient => {
+export const createApi = (baseUrl: string): JsonApiClient => {
   return new JsonApiClient({
     baseUrl,
     headers: {

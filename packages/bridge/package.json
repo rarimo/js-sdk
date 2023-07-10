@@ -1,7 +1,7 @@
 {
   "name": "@rarimo/bridge",
-  "version": "2.0.0-rc.2",
-  "description": "All bridge related functionality for the Rarimo Protocol",
+  "version": "2.0.0-rc.3",
+  "description": "Internal tools that other Rarimo packages use to bridge tokens.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rarimo/js-sdk.git",
@@ -59,11 +59,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "@rarimo/bridge"
   },
   "dependencies": {
     "@distributedlab/reactivity": "^0.2.0-rc.24",

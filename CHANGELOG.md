@@ -49,6 +49,13 @@ token always will be USDC
 - `@rarimo/bridge` - IPFS protocol image links
 - `@rarimo/shared` - `window is undefined` issue in Node.js environment
 
+## [2.0.0-rc.3] - 2023-07-04
+### Added
+- `root` - `@rarimo/identity-gen-iden3` package
+- `root` - `@rarimo/auth-zkp-iden3` package
+- `root` - `@rarimo/zkp-gen-iden3` package
+- `root` - `@rarimo/shared-zkp-iden3` package
+- `@rarimo/shared` - export createApi method
 
 ## [2.0.0-rc.2] - 2023-06-13
 ### Fixed
@@ -348,7 +355,8 @@ token always will be USDC
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.2...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.3...HEAD
+[2.0.0-rc.3]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.2...2.0.0-rc.3
 [2.0.0-rc.2]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.1...2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.0...2.0.0-rc.1
 [2.0.0-rc.0]: https://github.com/rarimo/js-sdk/compare/1.5.0...2.0.0-rc.0

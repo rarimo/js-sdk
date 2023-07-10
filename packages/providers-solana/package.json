@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/providers-solana",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on the Solana blockchain.",
   "repository": {
     "type": "git",
@@ -65,10 +65,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "@rarimo/providers-solana"
   }
 }
