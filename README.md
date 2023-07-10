@@ -100,77 +100,10 @@ Then change the `start`/`build`/`test` commands in `package.json` replacing reac
 }
 ```
 
-### Next.js
-
-To use such packages as `@rarimo/provider` and `@rarimo/nft-checkout` in Next.js projects version `10.0.5` or any upper version which uses webpack 4 you need to add the following config to `next.config.js`:
-
-```js
-const path = require('path');
-
-module.exports = {
-  webpack: (config, { isServer }) => {
-    config.module.rules.push({
-      test: /\.m?js$/,
-      include: /node_modules/,
-      type: 'javascript/auto',
-      resolve: {
-        alias: {
-          '@pancakeswap/multicall': path.resolve(__dirname, './node_modules/@pancakeswap/multicall/dist/index.mjs'),
-        }
-      },
-    });
-
-    return config;
-  },
-};
-```
-
-### Package managers
-To use `@rarimo/nft-checkout` in project which uses `yarn` as package manager you need to add the following config to `package.json`:
-
-```json
-{
-  "resolutions": {
-    "@rarimo/nft-checkout/@pancakeswap/sdk/@pancakeswap/swap-sdk-core": "0.0.1"
-  }
-}
-```
-
-### Incorrectly resolved dependencies in the ESM projects
-If you see the following error:
-
-```
-TypeError: n.BigInt is not a function
-```
-
-This is because of this code fragment in the [@uniswap/router-sdk] which is used inside our SDK:
-
-```js
-if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./router-sdk.cjs.production.min.js')
-} else {
-  module.exports = require('./router-sdk.cjs.development.js')
-}
-```
-
-This code in the `./dist/index.js` resolves CommonJS version of the package instead of ESM version. To fix this issue you need to add the following config to your Webpack\Vite config:
-
-```js
-{
-  resolve: {
-    alias: {
-      '@uniswap/router-sdk': '@uniswap/router-sdk/dist/router-sdk.esm.js'
-    }
-  }
-}
-```
-
-[@uniswap/router-sdk]: https://github.com/Uniswap/router-sdk
-
 ### Working with ZKP iden3 packages
 Just because `iden3` libraries is developed for node, you need to follow next steps in your client:
 
-First thing first, add following packages to your project, because it marked as `peerDependencies`:
+First thing first, add the following packages to your project, because it marked as `peerDependencies`:
 
 ```bash
 yarn add ethers util ejc snarkjs @iden3/js-iden3-core @iden3/js-jwz @iden3/js-crypto @iden3/js-jsonld-merklization
