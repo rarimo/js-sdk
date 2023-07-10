@@ -6,6 +6,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `@rarimo/nft-checkout` - Multiple token payment support
+- `@rarimo/nft-checkout` - USDC Intermediate token support
+- `@rarimo/nft-checkout` - `isMultiplePayment` flag to the `CheckoutOperationParams` type
+- `@rarimo/shared` - Max retries for the `getDestinationTx` function
+
+### Changed
+- `@rarimo/bridge` - `Bridge.loadSupportedChains` method renamed to the `getSupportedChains`
+- `@rarimo/nft-checkout` - `CheckoutOperation.loadSupportedChains` method renamed to the `getSupportedChains`
+- `@rarimo/nft-checkout` - `CheckoutOperation.loadPaymentTokens` method renamed to the `getPaymentTokens`
+- `@rarimo/nft-checkout` - `CheckoutOperation.estimatePrice` method accepts `PaymentToken[]` instead of `PaymentToken`
+- `@rarimo/nft-checkout` - `CheckoutOperation.checkout` method accepts `SwapEstimation[]` instead of `SwapEstimation`
+- `@rarimo/nft-checkout` - Swap estimations moved to the backend service
+- `@rarimo/swap` - Building execution data refactored
+- `@rarimo/swap` - `Swapper.loadSupportedChains` method renamed to the `getSupportedChains`
+- `all` - `@distributedlab` packages updated to the latest versions (`0.2.0-rc.24`)
+
+### Removed
+- `@rarimo/bridge` - `Bridge.getInternalTokenMapping` method
+- `@rarimo/swapper` - `Swapper.getInternalTokenMapping` method
+- `@rarimo/nft-checkout` - `@pancakeswap/sdk` dependency
+- `@rarimo/nft-checkout` - `@pancakeswap/smart-router` dependency
+- `@rarimo/nft-checkout` - `@pancakeswap/swap-sdk-core` dependency
+- `@rarimo/nft-checkout` - `@rarimo/quickswap-sdk` dependency
+- `@rarimo/nft-checkout` - `@traderjoe-xyz/sdk` dependency
+- `@rarimo/nft-checkout` - `@uniswap/router-sdk` dependency
+- `@rarimo/nft-checkout` - `@uniswap/sdk-core` dependency
+- `@rarimo/nft-checkout` - `@uniswap/smart-order-router` dependency
+- `@rarimo/nft-checkout` - `@uniswap/token-lists` dependency
+- `@rarimo/nft-checkout` - `@uniswap/v2-sdk` dependency
+- `@rarimo/nft-checkout` - `@uniswap/v3-sdk` dependency
+- `@rarimo/nft-checkout` - `events` dependency
+- `@rarimo/nft-checkout` - `jsbi` dependency
+- `@rarimo/nft-checkout` - `@pancakeswap/swap-sdk-core` yarn resolution and npm override
+- `@rarimo/nft-checkout` - `CheckoutOperation.loadPaymentTokens` optional `chain` parameter
+- `@rarimo/nft-checkout` - Handling bridge deposit token via internal token mapping, now deposit
+token always will be USDC
+
+### Fixed
+- `root` - .editorconfig max-line-length
+- `@rarimo/bridge` - IPFS protocol image links
+- `@rarimo/shared` - `window is undefined` issue in Node.js environment
+
 
 ## [2.0.0-rc.2] - 2023-06-13
 ### Fixed
