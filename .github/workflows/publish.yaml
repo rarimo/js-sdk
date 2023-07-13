@@ -6,36 +6,22 @@ on:
       - '*.*.*'
 
 jobs:
-  build:
+
+  publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nodejs: [18]
-
+        nodejs: [ 18 ]
     steps:
-      - uses: actions/checkout@v2
-      - name: Build on Node.js ${{ matrix.nodejs }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.nodejs }}
-      - run: yarn install
-      - run: yarn build
-      - run: yarn lint
-        env:
-          CI: true
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.nodejs }}
       - name: Publish
         run: |
           yarn install
           yarn build
+          yarn lint
           yarn publish-latest
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
