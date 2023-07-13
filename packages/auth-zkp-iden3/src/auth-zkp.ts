@@ -11,25 +11,32 @@ import type {
   VerifiableCredentials,
 } from '@/types'
 
+let globalConfig: Config = {
+  RPC_URL: '',
+  ISSUER_API_URL: '',
+  STATE_V2_ADDRESS: '',
+  CIRCUIT_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
+  CIRCUIT_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
+}
+
 export class AuthZkp<T extends QueryVariableNameAbstract> {
   public identity: Identity = {} as Identity
   public verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>
 
-  public static config: Config = {
-    RPC_URL: '',
-    ISSUER_API_URL: '',
-    STATE_V2_ADDRESS: '',
-    CIRCUIT_WASM_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit.wasm',
-    CIRCUIT_FINAL_KEY_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/auth-zkp-iden3/assets/auth/circuit_final.zkey',
-  }
-
   #api: JsonApiClient
 
-  public static setConfig(config: Config) {
-    this.config = Object.assign(this.config, config)
+  public static get config(): Config {
+    return globalConfig
+  }
+
+  public static setConfig(config: Partial<Config>) {
+    globalConfig = {
+      ...globalConfig,
+      ...config,
+    }
   }
 
   constructor(identity: Identity) {

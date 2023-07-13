@@ -50,6 +50,18 @@ const ensureArraySize = (arr: string[], size: number): string[] => {
   return arr
 }
 
+let globalConfig: Config = {
+  RPC_URL: '',
+  RAW_PROVIDER: undefined,
+  ISSUER_API_URL: '',
+  STATE_V2_ADDRESS: '',
+  CIRCUIT_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit.wasm',
+  CIRCUIT_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit_final.zkey',
+  CLAIM_PROOF_SIBLINGS_COUNT: 32,
+}
+
 export class ZkpGen<T extends QueryVariableNameAbstract> {
   public requestId = ''
   public identity: Identity = {} as Identity
@@ -61,20 +73,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
   public subjectProof: ZKProof = {} as ZKProof
 
-  public static config: Config = {
-    RPC_URL: '',
-    RAW_PROVIDER: undefined,
-    ISSUER_API_URL: '',
-    STATE_V2_ADDRESS: '',
-    CIRCUIT_WASM_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit.wasm',
-    CIRCUIT_FINAL_KEY_URL:
-      'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit_final.zkey',
-    CLAIM_PROOF_SIBLINGS_COUNT: 32,
+  public static get config() {
+    return globalConfig
   }
 
   public static setConfig(config: Config) {
-    this.config = Object.assign(this.config, config)
+    globalConfig = { ...globalConfig, ...config }
   }
 
   constructor(opts: ZkpGenCreateOpts<T>) {

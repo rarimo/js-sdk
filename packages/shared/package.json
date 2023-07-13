@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared",
-  "version": "2.0.0-rc.4",
+  "version": "2.0.0-rc.5",
   "description": "Utility functions, types and constants shared across @rarimo packages.",
   "repository": {
     "type": "git",
