@@ -14,10 +14,8 @@ export const WRAPPED_CHAIN_TOKEN_SYMBOLS = {
   // Ethereum
   [IDS[ChainNames.Ethereum]]: 'WETH',
   [IDS[ChainNames.Goerli]]: 'WETH',
-  [IDS[ChainNames.Sepolia]]: 'WETH',
   // Polygon
   [IDS[ChainNames.Polygon]]: 'WMATIC',
-  [IDS[ChainNames.Mumbai]]: 'WMATIC',
   // Avalanche
   [IDS[ChainNames.Avalanche]]: 'WAVAX',
   [IDS[ChainNames.Fuji]]: 'WAVAX',

@@ -7,6 +7,6 @@ export const USDC_MAP: { [key in ChainNames]?: HexString } = {
   [ChainNames.Avalanche]: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
   [ChainNames.Polygon]: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
   [ChainNames.Goerli]: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
-  [ChainNames.Mumbai]: '0x0fa8781a83e46826621b3bc094ea2a0212e71b23',
-  [ChainNames.Fuji]: '0x5425890298aed601595a70ab815c96711a31bc65',
+  [ChainNames.Fuji]: '0xB6076C93701D6a07266c31066B298AeC6dd65c2d',
+  [ChainNames.Chapel]: '0x29a751263Aa7fD3E7728F2A2c9136007A2d61Ac1',
 }

@@ -3,8 +3,6 @@ export enum ChainNames {
   Polygon = 'Polygon',
   Avalanche = 'Avalanche',
   Goerli = 'Goerli',
-  Sepolia = 'Sepolia',
-  Mumbai = 'Mumbai',
   Fuji = 'fuji',
   BinanceSmartChain = 'BSC',
   Chapel = 'bsc_testnet',
