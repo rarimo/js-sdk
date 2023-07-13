@@ -7,6 +7,7 @@ import {
   ChainTypes,
   DestinationTransactionStatus,
   isString,
+  RARIMO_BRIDGE_FEE,
   type TransactionBundle,
 } from '@rarimo/shared'
 import {
@@ -31,8 +32,6 @@ import {
   bnFromAmountLike,
   checkout as _checkout,
   estimate,
-  getAmountWithBridgeFee,
-  getAmountWithoutBridgeFee,
   getEstimation,
   getPaymentTokensWithPairs,
   getSameChainSwapToToken,
@@ -252,7 +251,9 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
       chainIdTo,
       from,
       to,
-      amountOut: getAmountWithBridgeFee(price),
+      amountOut: Amount.fromBN(
+        bnFromAmountLike(price).addPercent(RARIMO_BRIDGE_FEE),
+      ),
       slippage,
     }
 
@@ -267,11 +268,15 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
       estimationWithFee.amountIn,
     ).toDecimals(swapToToken.decimals)
 
+    const amountIn = Amount.fromBN(
+      chainFromUSDCAmountOut
+        .subPercent(RARIMO_BRIDGE_FEE)
+        .toDecimals(estimationWithFee.amountIn.decimals),
+    )
+
     intermediateOpts = {
       ...estimationWithFee,
-      amountIn: getAmountWithoutBridgeFee(
-        chainFromUSDCAmountOut.toDecimals(estimationWithFee.amountIn.decimals),
-      ),
+      amountIn,
       amountOut: price,
     }
 

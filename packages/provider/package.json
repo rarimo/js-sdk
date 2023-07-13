@@ -50,7 +50,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/tools": "^0.2.0-rc.24",
+    "@distributedlab/tools": "^1.0.0-rc.0",
     "@rarimo/shared": "workspace:^"
   },
   "devDependencies": {

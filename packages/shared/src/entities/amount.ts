@@ -9,6 +9,10 @@ export class AmountBase {
     this.#bn = value
   }
 
+  public get bn(): BN {
+    return this.#bn
+  }
+
   public get value(): string {
     return this.#bn.value
   }
@@ -22,27 +26,19 @@ export class AmountBase {
   }
 
   public isLessThan(amount: AmountBase): boolean {
-    return BN.fromBigInt(this.value, this.decimals).isLessThan(
-      BN.fromBigInt(amount.value, amount.decimals),
-    )
+    return this.#bn.lt(amount.bn)
   }
 
   public isLessThanOrEqualTo(amount: AmountBase): boolean {
-    return BN.fromBigInt(this.value, this.decimals).isLessThanOrEqualTo(
-      BN.fromBigInt(amount.value, amount.decimals),
-    )
+    return this.#bn.lte(amount.bn)
   }
 
   public isGreaterThan(amount: AmountBase): boolean {
-    return BN.fromBigInt(this.value, this.decimals).isGreaterThan(
-      BN.fromBigInt(amount.value, amount.decimals),
-    )
+    return this.#bn.gt(amount.bn)
   }
 
   public isGreaterThanOrEqualTo(amount: AmountBase): boolean {
-    return BN.fromBigInt(this.value, this.decimals).isGreaterThanOrEqualTo(
-      BN.fromBigInt(amount.value, amount.decimals),
-    )
+    return this.#bn.gte(amount.bn)
   }
 
   public toString(): string {
