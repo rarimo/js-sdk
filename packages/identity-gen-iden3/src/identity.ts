@@ -31,6 +31,12 @@ export type IdentityConfig = {
   CLAIM_PROOF_SIBLINGS_COUNT: number
 }
 
+let globalConfig: IdentityConfig = {
+  AUTH_BJJ_CREDENTIAL_HASH: '',
+  ID_TYPE: Uint8Array.from([1, 0]),
+  CLAIM_PROOF_SIBLINGS_COUNT: 40,
+}
+
 export class Identity {
   public privateKeyHex = '' as string
   public id: Id = {} as Id
@@ -39,14 +45,12 @@ export class Identity {
   public treeState: TreeState = {} as TreeState
   public coreAuthClaim: Claim = {} as Claim
 
-  public static config: IdentityConfig = {
-    AUTH_BJJ_CREDENTIAL_HASH: '',
-    ID_TYPE: Uint8Array.from([1, 0]),
-    CLAIM_PROOF_SIBLINGS_COUNT: 40,
+  public static get config(): IdentityConfig {
+    return globalConfig
   }
 
   public static setConfig(config: Partial<IdentityConfig>) {
-    this.config = Object.assign(this.config, config)
+    globalConfig = { ...globalConfig, ...config }
   }
 
   public static async create(privateKeyHex?: string): Promise<Identity> {
