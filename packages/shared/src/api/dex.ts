@@ -8,9 +8,9 @@ import type {
   InternalSupportedToken,
 } from '@/types'
 
-import { dexApi, loadAllPagesData } from './api'
+import { CONFIG, dexApi, loadAllPagesData } from './api'
 
-export const loadSupportedChains = async ({
+export const getSupportedChains = async ({
   type,
   kind,
 }: { type?: ChainTypes; kind?: ChainKind } = {}): Promise<BridgeChain[]> => {
@@ -39,19 +39,31 @@ export const loadSupportedChains = async ({
   }))
 }
 
-export const loadAccountBalances = async (
+export const getAccountBalances = async (
   chain: BridgeChain,
   accountAddress: HexString,
 ): Promise<InternalAccountBalance[]> => {
   const endpoint = `/chains/evm/${chain.name}/${accountAddress}/balances`
-  const response = await dexApi.get<InternalAccountBalance[]>(endpoint)
+  const response = await dexApi.get<InternalAccountBalance[]>(endpoint, {
+    query: {
+      page: {
+        limit: CONFIG.MAX_PAGE_LIMIT,
+      },
+    },
+  })
   return loadAllPagesData(response)
 }
 
-export const loadSupportedTokens = async (
+export const getSupportedTokens = async (
   chain: BridgeChain,
 ): Promise<InternalSupportedToken[]> => {
   const endpoint = `/chains/evm/${chain.name}/tokens`
-  const { data } = await dexApi.get<InternalSupportedToken[]>(endpoint)
-  return data
+  const response = await dexApi.get<InternalSupportedToken[]>(endpoint, {
+    query: {
+      page: {
+        limit: CONFIG.MAX_PAGE_LIMIT,
+      },
+    },
+  })
+  return loadAllPagesData(response)
 }

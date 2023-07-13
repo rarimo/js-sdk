@@ -7,8 +7,6 @@ export const EVM_CHAIN_IDS: ChainIdMap = {
   [ChainNames.Fuji]: 43113,
   [ChainNames.Avalanche]: 43114,
   [ChainNames.Goerli]: 5,
-  [ChainNames.Sepolia]: 11155111,
-  [ChainNames.Mumbai]: 80001,
   [ChainNames.BinanceSmartChain]: 56,
   [ChainNames.Chapel]: 97,
 }

@@ -1,12 +1,5 @@
 import { RuntimeError } from '@rarimo/shared'
 
-export class OperatorNotExistsError extends RuntimeError {
-  public name = 'OperatorNotExistsError'
-  constructor(message = 'Could not find implementation for this operator') {
-    super(message)
-  }
-}
-
 export class OperatorNotInitializedError extends RuntimeError {
   public name = 'OperatorNotInitializedError'
   constructor(message = 'Provided operator is not initialized') {
@@ -44,13 +37,6 @@ export class OperationInvalidChainPairError extends RuntimeError {
   }
 }
 
-export class OperationSwapRouteNotFound extends RuntimeError {
-  public name = 'OperationSwapRouteNotFound'
-  constructor(message = 'Failed to find swap route') {
-    super(message)
-  }
-}
-
 export class OperationInvalidProviderChainTypeError extends RuntimeError {
   public name = 'OperationInvalidProviderChainTypeError'
   constructor(message = 'Provided provider chain type is invalid') {
@@ -58,19 +44,47 @@ export class OperationInvalidProviderChainTypeError extends RuntimeError {
   }
 }
 
-export class OperatorInvalidSlippageError extends RuntimeError {
-  public name = 'OperatorInvalidSlippageError'
+export class OperationInsufficientFundsError extends RuntimeError {
+  public name = 'OperationInsufficientFundsError'
   constructor(
-    message = 'Provided slippage is invalid. Slippage must be between 0 and 100',
+    message = 'Failed to estimate multiple tokens payment operation: insufficient funds, please make sure you have enough balance.',
   ) {
     super(message)
   }
 }
 
-export class OperatorWrappedTokenNotFound extends RuntimeError {
-  public name = 'OperatorWrappedTokenNotFound'
+export class OperationEstimateError extends RuntimeError {
+  public name = 'OperationEstimateError'
+  constructor(message = 'Failed to estimate payment operation') {
+    super(message)
+  }
+}
+
+export class OperationIntermediateTokenNotFoundError extends RuntimeError {
+  public name = 'OperationIntermediateTokenNotFoundError'
+  constructor(message = 'Failed to find intermediate token') {
+    super(message)
+  }
+}
+
+export class OperationSwapToTokenNotFoundError extends RuntimeError {
+  public name = 'OperationSwapToTokenNotFoundError'
+  constructor(message = 'Failed to find swap to token') {
+    super(message)
+  }
+}
+
+export class OperationPaymentTokensNotProvidedError extends RuntimeError {
+  public name = 'OperationPaymentTokensNotProvidedError'
+  constructor(message = 'There are no payment tokens provided') {
+    super(message)
+  }
+}
+
+export class OperationSameChainDestinationTxError extends RuntimeError {
+  public name = 'OperationSameChainDestinationTxError'
   constructor(
-    message = 'Failed to find wrapped token for selected chain native token to estimate swap price',
+    message = 'Operation destination is the same chain, thus transaction hash equals to the source one',
   ) {
     super(message)
   }

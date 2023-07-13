@@ -1,6 +1,6 @@
 import { BN } from '@distributedlab/tools'
 
-import type { Decimals } from '@/types'
+import type { ClassInstanceToPlainObject, Decimals } from '@/types'
 
 export class AmountBase {
   readonly #bn: BN
@@ -15,6 +15,10 @@ export class AmountBase {
 
   public get decimals(): Decimals {
     return this.#bn.decimals
+  }
+
+  public get isZero(): boolean {
+    return this.#bn.isZero
   }
 
   public isLessThan(amount: AmountBase): boolean {
@@ -44,6 +48,13 @@ export class AmountBase {
   public toString(): string {
     return this.#bn.toString()
   }
+
+  public toJSON() {
+    return {
+      value: this.value,
+      decimals: this.decimals,
+    }
+  }
 }
 
 export class Amount extends AmountBase {
@@ -57,5 +68,15 @@ export class Amount extends AmountBase {
 
   public static fromRaw(value: string, decimals: Decimals): Amount {
     return new Amount(BN.fromRaw(value, decimals))
+  }
+
+  public static fromBN(value: BN): Amount {
+    return new Amount(value)
+  }
+
+  public static fromPlainObject(
+    amount: ClassInstanceToPlainObject<Amount>,
+  ): Amount {
+    return new Amount(BN.fromBigInt(amount.value, amount.decimals))
   }
 }

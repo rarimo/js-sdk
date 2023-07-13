@@ -1,5 +1,6 @@
 import { HTTP_STATUS_CODES, JsonApiError } from '@distributedlab/jac'
 
+import { RuntimeError } from '@/entities'
 import { sleep } from '@/helpers'
 import type {
   BridgeChain,
@@ -7,24 +8,28 @@ import type {
   DestinationTransaction,
   DestinationTransactionResponse,
   HexString,
-  InternalToken,
 } from '@/types'
 
 import { coreApi } from './api'
 
 const DESTINATION_TX_PULL_INTERVAL = 2000
+const DESTINATION_TX_PULL_MAX_RETRIES = 20
+const pullError = new RuntimeError(
+  'Failed to fetch destination transaction chain',
+)
 
 export const getDestinationTx = async (
   sourceChain: BridgeChain,
   sourceTxHash: HexString,
 ): Promise<DestinationTransaction> => {
+  let retries = 0
   let transaction: DestinationTransactionResponse | null = null
 
   while (!transaction) {
+    retries += 1
+    if (retries > DESTINATION_TX_PULL_MAX_RETRIES) throw pullError
     transaction = await fetchDestinationTx(sourceChain.name, sourceTxHash)
-    if (!transaction) {
-      await sleep(DESTINATION_TX_PULL_INTERVAL)
-    }
+    if (!transaction) await sleep(DESTINATION_TX_PULL_INTERVAL)
   }
 
   return {
@@ -43,29 +48,8 @@ const fetchDestinationTx = async (
     )
     return data
   } catch (e) {
-    if ((e as JsonApiError).httpStatus === HTTP_STATUS_CODES.NOT_FOUND) {
-      return null
-    }
-
+    const status = (e as JsonApiError).httpStatus
+    if (status === HTTP_STATUS_CODES.NOT_FOUND) return null
     throw e
   }
-}
-
-export const fetchInternalTokenMapping = async (
-  targetTokenSymbol: string,
-): Promise<InternalToken | undefined> => {
-  let result: InternalToken | undefined
-  try {
-    const { data } = await coreApi.get<InternalToken>(
-      `/v1/tokens/${targetTokenSymbol}`,
-    )
-    result = data
-  } catch (e) {
-    if ((e as JsonApiError).httpStatus === HTTP_STATUS_CODES.NOT_FOUND) {
-      return
-    }
-    console.error(e)
-  }
-
-  return result
 }

@@ -5,7 +5,13 @@ export const hasOwn = (
   return Object.prototype.hasOwnProperty.call(val, key)
 }
 
-export const isArray = Array.isArray
+export const isArray = <T = unknown>(val: unknown): val is T[] => {
+  return Array.isArray(val)
+}
+
+export const isOneElementArray = <T = unknown>(val: unknown): val is T[] => {
+  return isArray(val) && val.length === 1
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const isFunction = (val: unknown): val is Function => {
@@ -15,6 +21,7 @@ export const isFunction = (val: unknown): val is Function => {
 export const isString = (val: unknown): val is string => {
   return typeof val === 'string'
 }
+
 export const isObject = (
   val: unknown,
 ): val is Record<string | number | symbol, unknown> => {

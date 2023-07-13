@@ -59,7 +59,7 @@
     "tsc-alias": "^1.8.2"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^0.2.0-rc.21",
+    "@distributedlab/fetcher": "^0.2.0-rc.24",
     "@rarimo/identity-gen-iden3": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared-zkp-iden3": "workspace:^",

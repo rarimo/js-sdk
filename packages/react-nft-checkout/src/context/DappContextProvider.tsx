@@ -3,8 +3,8 @@ import { tokenFromChain } from '@rarimo/bridge'
 import type {
   CheckoutOperation,
   CheckoutOperationParams,
-  EstimatedPrice,
   PaymentToken,
+  SwapEstimation,
 } from '@rarimo/nft-checkout'
 import type {
   CreateProviderOpts,
@@ -37,11 +37,11 @@ export type DappContextType = {
   setSelectedPaymentToken: React.Dispatch<
     React.SetStateAction<PaymentToken | undefined | null>
   >
-  estimatedPrice?: EstimatedPrice
+  estimatedPrice?: SwapEstimation
   setEstimatedPrice: React.Dispatch<
-    React.SetStateAction<EstimatedPrice | undefined>
+    React.SetStateAction<SwapEstimation | undefined>
   >
-  loadPaymentTokens?: CheckoutOperation['loadPaymentTokens']
+  loadPaymentTokens?: CheckoutOperation['getPaymentTokens']
   estimatePrice?: CheckoutOperation['estimatePrice']
   checkout?: CheckoutOperation['checkout']
   getDestinationTx?: CheckoutOperation['getDestinationTx']
@@ -75,7 +75,7 @@ export const DappContextProvider = ({
   const [selectedChain, setSelectedChain] = useState<BridgeChain>()
   const [selectedPaymentToken, setSelectedPaymentToken] =
     useState<PaymentToken | null>()
-  const [estimatedPrice, setEstimatedPrice] = useState<EstimatedPrice>()
+  const [estimatedPrice, setEstimatedPrice] = useState<SwapEstimation>()
 
   const { provider, providerReactiveState, createProviderError } = useProvider(
     selectedProviderProxy,
@@ -101,7 +101,7 @@ export const DappContextProvider = ({
     if (!checkoutOperation) return
 
     const getSupportedChains = async () => {
-      const chains = await checkoutOperation.loadSupportedChains()
+      const chains = await checkoutOperation.getSupportedChains()
 
       setSupportedChains(chains)
     }
@@ -115,7 +115,7 @@ export const DappContextProvider = ({
   )
 
   const loadPaymentTokens = useMemo(
-    () => checkoutOperation?.loadPaymentTokens.bind(checkoutOperation),
+    () => checkoutOperation?.getPaymentTokens.bind(checkoutOperation),
     [checkoutOperation],
   )
 

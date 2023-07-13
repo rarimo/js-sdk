@@ -4,7 +4,7 @@ import type { IProvider } from '@rarimo/provider'
 
 import type { ExecuteArgs, Swapper } from '@/types'
 
-import { getExecuteData } from './get-execute-data'
+import { getExecuteData } from './execute-data'
 
 /**
  * @description Instead of using this function directly, run token swaps as transactions with the [@rarimo/nft-checkout]() package.
@@ -22,23 +22,24 @@ export const createEVMSwapper = (provider: IProvider): Swapper => {
 
   const execute = async (args: ExecuteArgs) => {
     await init()
-
-    const { from, amountIn, handleAllowance } = args
-
-    if (handleAllowance) {
-      await bridger.approveIfNeeded(from, from.chain.contractAddress, amountIn)
-    }
+    await approveMultipleIfNeeded(args)
 
     return provider.signAndSendTx({
       from: provider.address,
-      to: from.chain.contractAddress,
-      data: getExecuteData(args),
-      ...(from.isNative
-        ? {
-            value: amountIn.value,
-          }
-        : {}),
+      to: args.chainFrom.contractAddress,
+      data: getExecuteData({
+        ...args,
+        receiver: args.receiver || provider.address,
+      }),
+      value: args.swapOpts.find(i => i.from.isNative)?.amountIn?.value,
     })
+  }
+
+  const approveMultipleIfNeeded = async (executeArgs: ExecuteArgs) => {
+    for (const arg of executeArgs.swapOpts) {
+      const { from, amountIn } = arg
+      await bridger.approveIfNeeded(from, from.chain.contractAddress, amountIn)
+    }
   }
 
   return toRaw(

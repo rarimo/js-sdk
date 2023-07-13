@@ -8,11 +8,11 @@ import type {
   TransactionBundle,
 } from '@rarimo/shared'
 
-import type { Price } from '@/entities'
+import { Price } from '@/entities'
 import { CheckoutOperationStatus } from '@/enums'
 
+import type { PaymentToken, SwapEstimation } from './estimate'
 import type { OperationSubscriber } from './operation-event-bus'
-import type { EstimatedPrice, PaymentToken } from './token'
 
 export type CheckoutOperationParams = {
   chainIdTo: ChainId
@@ -20,6 +20,7 @@ export type CheckoutOperationParams = {
   price: Price
   recipient?: Address
   slippage?: number // 0.5, 1, 5, 10 etc
+  isMultiplePayment?: boolean
 }
 
 export type CheckoutOperationCreateFunction = (
@@ -34,37 +35,42 @@ export interface CheckoutOperation extends OperationSubscriber {
 
   /**
    * Initialize the operation with the source chain and transaction parameters
-   * @param args - Information about the source chain and the target transaction of the operation
    */
-  init(args: CheckoutOperationParams): Promise<void>
+  init(params: CheckoutOperationParams): Promise<void>
   /**
    * Get the chains that are supported for the operation type
    *
    * @returns A list of supported chains and information about them
    */
-  loadSupportedChains(): Promise<BridgeChain[]>
+  getSupportedChains(): Promise<BridgeChain[]>
   /**
    * Load the tokens that the wallet has enough of to run the operation.
    *
-   * @param chain - A chain from {@link supportedChains}
    * @returns An array of tokens and the wallet's balance of each token
    */
-  loadPaymentTokens(chain: BridgeChain): Promise<PaymentToken[]>
+  getPaymentTokens(): Promise<PaymentToken[]>
   /**
-   * Get the estimated purchase price in the payment token, including the cost to swap the tokens to the tokens that the seller accepts payment in
+   * Get the estimated purchase price in the payment token or tokens,
+   * including the cost to swap the tokens to the tokens that the seller accepts
+   * payment in
    *
-   * @param from The token to use for the transaction
-   * @returns Information about the costs involved in the transaction, including the gas price
+   * @param from The payment token or tokens to use for the transaction
+   * @returns Information about the costs involved in the transaction,
+   * including the gas price. Can throw an error if insufficient funds for the
+   * multiple token payment.
    */
-  estimatePrice(from: PaymentToken): Promise<EstimatedPrice>
+  estimatePrice(from: PaymentToken[]): Promise<SwapEstimation[]>
   /**
    * Send a transaction to Rarimo for processing
    *
-   * @param e - The estimated price of the transaction, from {@link estimatePrice}
+   * @param estimations - The estimated price of the transaction, from {@link estimatePrice}
    * @param bundle - The transaction bundle
    * @returns The hash of the transaction
    */
-  checkout(e: EstimatedPrice, bundle?: TransactionBundle): Promise<string>
+  checkout(
+    estimations: SwapEstimation[],
+    bundle?: TransactionBundle,
+  ): Promise<string>
   /**
    * Get the destination chain transaction hash as the result of the bridging
    *

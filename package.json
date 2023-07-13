@@ -71,8 +71,5 @@
   },
   "peerDependencies": {
     "@types/react": "^18"
-  },
-  "resolutions": {
-    "@pancakeswap/sdk/@pancakeswap/swap-sdk-core": "0.0.1"
   }
 }

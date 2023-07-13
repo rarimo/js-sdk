@@ -61,7 +61,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/jac": "^0.2.0-rc.21",
-    "@distributedlab/tools": "^0.2.0-rc.21"
+    "@distributedlab/jac": "^0.2.0-rc.24",
+    "@distributedlab/tools": "^0.2.0-rc.24"
   }
 }

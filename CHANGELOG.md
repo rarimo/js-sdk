@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- `@rarimo/nft-checkout`
+  - Multiple token payment support
+  - USDC Intermediate token support
+  - `isMultiplePayment` flag to the `CheckoutOperationParams` type
+- `@rarimo/shared` - Max retries for the `getDestinationTx` function
+
+### Changed
+- `@rarimo/bridge` - `Bridge.loadSupportedChains` method renamed to the `getSupportedChains`
+- `@rarimo/nft-checkout`
+  - `CheckoutOperation.loadSupportedChains` method renamed to the `getSupportedChains`
+  - `CheckoutOperation.loadPaymentTokens` method renamed to the `getPaymentTokens`
+  - `CheckoutOperation.estimatePrice` method accepts `PaymentToken[]` instead of `PaymentToken`
+  - `CheckoutOperation.checkout` method accepts `SwapEstimation[]` instead of `SwapEstimation`
+  - Swap estimations moved to the backend service
+- `@rarimo/swap`
+  - Building execution data refactored
+  - `Swapper.loadSupportedChains` method renamed to the `getSupportedChains`
+- `all` - `@distributedlab` packages updated to the latest versions (`0.2.0-rc.24`)
+
+### Removed
+- `@rarimo/bridge` - `Bridge.getInternalTokenMapping` method
+- `@rarimo/swapper` - `Swapper.getInternalTokenMapping` method
+- `@rarimo/nft-checkout`
+  - `@pancakeswap/sdk` dependency
+  - `@pancakeswap/smart-router` dependency
+  - `@pancakeswap/swap-sdk-core` dependency
+  - `@rarimo/quickswap-sdk` dependency
+  - `@traderjoe-xyz/sdk` dependency
+  - `@uniswap/router-sdk` dependency
+  - `@uniswap/sdk-core` dependency
+  - `@uniswap/smart-order-router` dependency
+  - `@uniswap/token-lists` dependency
+  - `@uniswap/v2-sdk` dependency
+  - `@uniswap/v3-sdk` dependency
+  - `events` dependency
+  - `jsbi` dependency
+  - `@pancakeswap/swap-sdk-core` yarn resolution and npm override
+  - `CheckoutOperation.loadPaymentTokens` optional `chain` parameter
+  - Sepolia and Mumbai chains
+  - Handling bridge deposit token via internal token mapping, now deposit token always will be USDC
+
+### Fixed
+- `root` - .editorconfig max-line-length
+- `@rarimo/bridge` - IPFS protocol image links
+- `@rarimo/shared` - `window is undefined` issue in Node.js environment
+
 ## [2.0.0-rc.3] - 2023-07-04
 ### Added
 - `root` - `@rarimo/identity-gen-iden3` package

@@ -8,7 +8,6 @@ import type {
   ChainTypes,
   DestinationTransaction,
   HexString,
-  InternalToken,
   TransactionBundle,
 } from '@rarimo/shared'
 
@@ -21,29 +20,18 @@ export type Swapper = Raw<{
   isInitialized: Ref<boolean>
   init(): Promise<void>
   /**
-   * @description Submits a transaction to the swap contract to swap, wrap, unwrap, bridge tokens
-   *
-   * @param args.from - Input token
-   * @param args.to - Output token after swap or wrap\unwrap
-   * @param args.amountIn - Amount of input token
-   * @param args.amountOut - Amount of output token, required if swap is required
-   * @param args.receiver - Could be another contract, if empty it will be caller by default
-   * @param args.path - DEX swap token path, required if swap is required
-   * @param args.chainTo - Destination chain object, required if bridging is required
-   * @param args.bundle: - Transaction bundle {@link https://docs.rarimo.com/docs/overview/bundling},
-   * required if transaction bundling is required
-   * @param args.isWrapped - Determines does input token is wrapped by the Rarimo bridge
-   * (does it should be burned during the deposit), required if bridging is required,
-   * @param args.handleAllowance - Does handling of allowance is required,
-   * like checking allowance and if it less than input amount - approve tx will be submitted
-   *
+   * @description Submits a transaction to the swap contract to swap, wrap,
+   * unwrap, bridge tokens
    * @returns Transaction Response
    */
-  execute(args: ExecuteArgs): Promise<TransactionResponse>
+  execute(
+    args: ExecuteArgs,
+    multiplePaymentOpts?: MultiplePaymentOpts,
+  ): Promise<TransactionResponse>
   /**
-   * Proxy function of {@link Bridger.loadSupportedChains}
+   * Proxy function of {@link Bridger.getSupportedChains}
    */
-  loadSupportedChains(): Promise<BridgeChain[]>
+  getSupportedChains(): Promise<BridgeChain[]>
   /**
    * Proxy function of {@link Bridger.getChainById}
    */
@@ -78,23 +66,44 @@ export type Swapper = Raw<{
     operator: HexString,
     amount?: Amount,
   ): Promise<TransactionResponse | void>
-  /**
-   * Proxy function of {@link Bridger.getInternalTokenMapping}
-   */
-  getInternalTokenMapping(
-    targetTokenSymbol: string,
-  ): Promise<InternalToken | void>
 }>
 
 export type ExecuteArgs = {
-  from: Token
-  to: Token
-  amountIn: Amount
-  amountOut?: Amount
+  swapOpts: SwapOpts[]
+  multiplePaymentsOpts?: MultiplePaymentOpts
+  intermediateOpts?: IntermediateTokenOpts
+  chainFrom: BridgeChain
+  chainTo: BridgeChain
+  // Could be another contract, if empty it will be caller by default
   receiver?: string
-  path?: string | string[]
-  chainTo?: BridgeChain
+  // Transaction bundle {@link https://docs.rarimo.com/docs/overview/bundling},
   bundle?: TransactionBundle
-  isWrapped?: boolean
+  // Does handling of allowance be required, like checking allowance, and if it
+  // less than input amount - approve tx will?
   handleAllowance?: boolean
+  // Determines does deposit token be wrapped by the Rarimo bridge
+  // (should it be burned during the deposit), required if bridging is required,
+  isWrapped?: boolean
+}
+
+export type SwapOpts = {
+  // Input token
+  from: Token
+  // Output token after swap or wrap\unwrap
+  to: Token
+  // Amount of input token
+  amountIn: Amount
+  // Amount of output token, required if swap is required
+  amountOut: Amount
+  // DEX swap a token path, required if swap is required
+  path?: string[]
+}
+
+export type IntermediateTokenOpts = SwapOpts
+
+export type MultiplePaymentOpts = {
+  // Target amount of output token grabbed from the multiple input tokens
+  amountOut: Amount
+  // Target output token
+  to: Token
 }
