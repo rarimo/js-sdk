@@ -1,4 +1,5 @@
 import { extend, ref, toRaw } from '@distributedlab/reactivity'
+import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
@@ -7,7 +8,6 @@ import {
   ChainTypes,
   DestinationTransactionStatus,
   isString,
-  RARIMO_BRIDGE_FEE,
   type TransactionBundle,
 } from '@rarimo/shared'
 import {
@@ -40,6 +40,8 @@ import {
   handleCorrectProviderChain,
   isSameChainOperation,
 } from './helpers'
+
+const RARIMO_BRIDGE_FEE = 2.5
 
 /**
  * An operation on an EVM chain.
@@ -268,8 +270,15 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
       estimationWithFee.amountIn,
     ).toDecimals(swapToToken.decimals)
 
+    // Amount from which percent will be subtracted on the backend side has
+    // precision chainFromUSDCAmountOut.decimals, thus we need to cut off
+    // the extra precision from the chainFromUSDCAmountOut.raw, so we will create
+    // a new BN instance from the chainFromUSDCAmountOut.value
     const amountIn = Amount.fromBN(
-      chainFromUSDCAmountOut
+      BN.fromBigInt(
+        chainFromUSDCAmountOut.value,
+        chainFromUSDCAmountOut.decimals,
+      )
         .subPercent(RARIMO_BRIDGE_FEE)
         .toDecimals(estimationWithFee.amountIn.decimals),
     )

@@ -1,2 +1,0 @@
-export const RARIMO_BRIDGE_FEE = 2.5
-export const SWAP_TOKEN_SLIPPAGE_MULTIPLIER = 1.02
