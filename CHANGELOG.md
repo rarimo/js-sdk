@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rarimo/auth-zkp-iden3` - fix global config
 - `@rarimo/zkp-gen-iden3` - fix global config
 
+## [2.0.0-rc.5] - 2023-07-14
+### Changed
+- `all` - Updated `@distributedlab` packages to the latest versions (`1.0.0-rc.0`)
+
 ## [2.0.0-rc.4] - 2023-07-13
 ### Added
 - `@rarimo/nft-checkout`

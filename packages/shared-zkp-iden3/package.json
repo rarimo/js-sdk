@@ -58,7 +58,7 @@
     "typechain": "^8.2.0"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^0.2.0-rc.24",
+    "@distributedlab/fetcher": "^1.0.0-rc.0",
     "tslib": "^2.5.0"
   }
 }

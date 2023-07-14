@@ -53,9 +53,7 @@ export const estimate = async ({
     for (const token of from) {
       let amountOut = targetAmountOut.sub(totalAmountOut)
 
-      if (amountOut.isLessThan(zero)) {
-        amountOut = totalAmountOut.add(amountOut)
-      }
+      if (amountOut.lt(zero)) amountOut = totalAmountOut.add(amountOut)
 
       let estimation = await _estimatePriceSingle({
         from: token,
@@ -78,7 +76,7 @@ export const estimate = async ({
         bnFromAmountLike(estimation.amountOut),
       )
 
-      if (totalAmountOut.isEqualTo(targetAmountOut)) return estimations
+      if (totalAmountOut.eq(targetAmountOut)) return estimations
     }
 
     throw new errors.OperationInsufficientFundsError()

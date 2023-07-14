@@ -26,8 +26,7 @@ export const isApproveERC20Required = async (
 
   const allowance = BN.fromBigInt(allowanceRaw.toString(), token.decimals)
   const estimationPrice = BN.fromBigInt(amount.value, amount.decimals)
-
-  return estimationPrice.isGreaterThan(allowance)
+  return estimationPrice.gt(allowance)
 }
 
 export const approveIfNeeded = async (
