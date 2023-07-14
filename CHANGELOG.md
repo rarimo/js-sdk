@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-rc.5] - 2023-07-14
+### Changed
+- `all` - Updated `@distributedlab` packages to the latest versions (`1.0.0-rc.0`)
+
 ## [2.0.0-rc.4] - 2023-07-13
 ### Added
 - `@rarimo/nft-checkout`
@@ -361,7 +365,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.4...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.5...HEAD
+[2.0.0-rc.5]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.4...2.0.0-rc.5
 [2.0.0-rc.4]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.3...2.0.0-rc.4
 [2.0.0-rc.3]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.2...2.0.0-rc.3
 [2.0.0-rc.2]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.1...2.0.0-rc.2
