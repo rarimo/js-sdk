@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/provider",
-  "version": "2.0.0-rc.6",
+  "version": "2.0.0-rc.7",
   "description": "A common interface for access to wallets (EVM and non-EVM) in the Rarimo SDK, used by packages that provide access to wallets on specific chains such as @rarimo/providers-evm, @rarimo/providers-solana, and @rarimo/providers-near.",
   "repository": {
     "type": "git",
@@ -50,7 +50,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/tools": "^1.0.0-rc.0",
+    "@distributedlab/tools": "^1.0.0-rc.1",
     "@rarimo/shared": "workspace:^"
   },
   "devDependencies": {
