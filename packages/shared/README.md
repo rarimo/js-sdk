@@ -1,5 +1,5 @@
 # @rarimo/shared
-Utility functions, types, and constants shared across @rarimo packages.
+Utility functions, types, and constants shared across Rarimo packages.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/shared)
 ![types](https://badgen.net/npm/types/@rarimo/shared)
