@@ -24,6 +24,7 @@ export type InternalBridgeChain = {
   explorer_url: string
   icon: string
   swap_contract_address: Address
+  bridge_facade_address: Address
   swap_contract_version: EVMDexType
   native_token: {
     symbol: TokenSymbol

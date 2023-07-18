@@ -1,6 +1,7 @@
 import { ref, toRaw } from '@distributedlab/reactivity'
 import type { IProvider } from '@rarimo/provider'
 import type {
+  Address,
   BridgeChain,
   ChainId,
   DestinationTransaction,
@@ -10,13 +11,15 @@ import {
   Amount,
   ChainKind,
   ChainTypes,
+  FEE_MANAGER_ABI,
   getDestinationTx as fetchDestTx,
   getSupportedChains as getChains,
+  NATIVE_TOKEN_ADDRESS,
 } from '@rarimo/shared'
+import { Contract } from 'ethers'
 
 import { errors } from '@/errors'
-import type { Bridger, BridgerCreateFn } from '@/types'
-import type { Token } from '@/types'
+import type { Bridger, BridgerCreateFn, Token } from '@/types'
 
 import {
   approve as _approve,
@@ -68,22 +71,44 @@ export const createEVMBridger: BridgerCreateFn = (
 
   const approveIfNeeded = async (
     token: Token,
-    operator: HexString,
+    operator: Address,
     amount?: Amount,
   ) => {
     return _approveIfNeeded(provider, operator, token, amount)
   }
 
-  const approve = async (token: Token, operator: HexString) => {
+  const approve = async (token: Token, operator: Address) => {
     return _approve(provider, operator, token)
   }
 
   const isApproveRequired = async (
     token: Token,
-    operator: HexString,
+    operator: Address,
     amount?: Amount,
   ) => {
     return isApproveERC20Required(provider, operator, token, amount)
+  }
+
+  const getCommission = async (chain: BridgeChain, token: Token) => {
+    if (Number(chain.id) !== Number(provider.chainId)) {
+      throw new TypeError('provided chain is not the same as current')
+    }
+
+    const facade = new Contract(
+      chain.bridgeFacadeAddress,
+      FEE_MANAGER_ABI,
+      provider.getWeb3Provider?.(),
+    )
+
+    const amount = await facade.getCommission(
+      token.isNative ? NATIVE_TOKEN_ADDRESS : token.address,
+    )
+
+    const commission = Amount.fromBigInt(amount, token.decimals)
+
+    if (commission.isZero) throw new errors.BridgerZeroCommissionError()
+
+    return commission
   }
 
   return toRaw({
@@ -98,5 +123,6 @@ export const createEVMBridger: BridgerCreateFn = (
     isApproveRequired,
     approve,
     approveIfNeeded,
+    getCommission,
   })
 }

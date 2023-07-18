@@ -1,72 +1,22 @@
-import type { Computed, Raw, Ref } from '@distributedlab/reactivity'
-import type { Token } from '@rarimo/bridge'
+import type { Raw } from '@distributedlab/reactivity'
+import type { Bridger, Token } from '@rarimo/bridge'
 import type { IProvider, TransactionResponse } from '@rarimo/provider'
-import type {
-  Amount,
-  BridgeChain,
-  ChainId,
-  ChainTypes,
-  DestinationTransaction,
-  HexString,
-  TransactionBundle,
-} from '@rarimo/shared'
+import type { Amount, BridgeChain, TransactionBundle } from '@rarimo/shared'
 
 export type SwapperCreateFn = (p: IProvider) => Swapper
 
-export type Swapper = Raw<{
-  provider: Ref<IProvider>
-  chains: Computed<BridgeChain[]>
-  chainType: ChainTypes
-  isInitialized: Ref<boolean>
-  init(): Promise<void>
-  /**
-   * @description Submits a transaction to the swap contract to swap, wrap,
-   * unwrap, bridge tokens
-   * @returns Transaction Response
-   */
-  execute(
-    args: ExecuteArgs,
-    multiplePaymentOpts?: MultiplePaymentOpts,
-  ): Promise<TransactionResponse>
-  /**
-   * Proxy function of {@link Bridger.getSupportedChains}
-   */
-  getSupportedChains(): Promise<BridgeChain[]>
-  /**
-   * Proxy function of {@link Bridger.getChainById}
-   */
-  getChainById(id: ChainId): BridgeChain | void
-  /**
-   * Proxy function of {@link Bridger.getDestinationTx}
-   */
-  getDestinationTx(
-    sourceChain: BridgeChain,
-    sourceTxHash: string,
-  ): Promise<DestinationTransaction>
-  /**
-   * Proxy function of {@link Bridger.isApproveRequired}
-   */
-  isApproveRequired(
-    token: Token,
-    operator: HexString,
-    amount?: Amount,
-  ): Promise<boolean>
-  /**
-   * Proxy function of {@link Bridger.approve}
-   */
-  approve(
-    token: Token,
-    operator: HexString,
-  ): Promise<TransactionResponse | void>
-  /**
-   * Proxy function of {@link Bridger.approveIfNeeded}
-   */
-  approveIfNeeded(
-    token: Token,
-    operator: HexString,
-    amount?: Amount,
-  ): Promise<TransactionResponse | void>
-}>
+export type Swapper = Bridger &
+  Raw<{
+    /**
+     * @description Submits a transaction to the swap contract to swap, wrap,
+     * unwrap, bridge tokens
+     * @returns Transaction Response
+     */
+    execute(
+      args: ExecuteArgs,
+      multiplePaymentOpts?: MultiplePaymentOpts,
+    ): Promise<TransactionResponse>
+  }>
 
 export type ExecuteArgs = {
   swapOpts: SwapOpts[]
