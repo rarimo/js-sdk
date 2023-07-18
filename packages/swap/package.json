@@ -65,5 +65,8 @@
     "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }

@@ -60,5 +60,8 @@
   "dependencies": {
     "@distributedlab/fetcher": "^1.0.0-rc.1",
     "tslib": "^2.5.0"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }

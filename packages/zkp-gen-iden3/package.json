@@ -75,5 +75,8 @@
     "@iden3/js-jsonld-merklization": "^1.0.0-beta.14",
     "@iden3/js-jwz": "^1.0.0-beta.2",
     "@iden3/js-merkletree": "^1.0.0-beta.4"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }
