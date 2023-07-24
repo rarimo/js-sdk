@@ -63,5 +63,8 @@
   "dependencies": {
     "@distributedlab/jac": "^1.0.0-rc.1",
     "@distributedlab/tools": "^1.0.0-rc.1"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }

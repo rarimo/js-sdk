@@ -65,5 +65,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }

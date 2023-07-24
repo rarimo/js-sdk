@@ -66,5 +66,8 @@
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^",
     "ethers": "^5.7.2"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }
