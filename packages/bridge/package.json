@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/bridge",
-  "version": "2.0.0-rc.7",
+  "version": "2.0.0-rc.8",
   "description": "Internal tools that other Rarimo packages use to bridge tokens.",
   "repository": {
     "type": "git",
@@ -68,6 +68,8 @@
     "ethers": "^5.7.2"
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"]
+    "entryPoints": [
+      "src/index.ts"
+    ]
   }
 }
