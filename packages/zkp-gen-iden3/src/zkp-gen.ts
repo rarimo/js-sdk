@@ -163,7 +163,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         this.query.variableName
       ].toString()
 
-    return JSON.stringify({
+    const preparedInputs = {
       /* we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request */
       /* and verifier can use it to identify the request, and verify the proof of specific request in case of multiple query requests */
       requestID: this.requestId,
@@ -290,7 +290,9 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       slotIndex: '0',
       operator: this.query.operator,
       value: value,
-    })
+    }
+
+    return JSON.stringify(preparedInputs)
   }
 
   async #createCoreClaimFromIssuer(): Promise<{
