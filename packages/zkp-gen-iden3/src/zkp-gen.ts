@@ -158,10 +158,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
     const value = new Array(64)
     value.fill('0')
-    value[0] =
+    value[0] = Number(
       this.verifiableCredentials.body.credential.credentialSubject?.[
         this.query.variableName
-      ].toString()
+      ],
+    ).toString()
 
     const preparedInputs = {
       /* we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request */
