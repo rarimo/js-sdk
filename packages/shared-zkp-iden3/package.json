@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared-zkp-iden3",
-  "version": "2.0.0-rc.7",
+  "version": "2.0.0-rc.8",
   "description": "Internal tools that other Rarimo packages use for identity functionality.",
   "repository": {
     "type": "git",
@@ -62,6 +62,8 @@
     "tslib": "^2.5.0"
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"]
+    "entryPoints": [
+      "src/index.ts"
+    ]
   }
 }

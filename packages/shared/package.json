@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared",
-  "version": "2.0.0-rc.7",
+  "version": "2.0.0-rc.8",
   "description": "Utility functions, types and constants shared across Rarimo packages.",
   "repository": {
     "type": "git",
@@ -65,6 +65,8 @@
     "@distributedlab/tools": "^1.0.0-rc.1"
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"]
+    "entryPoints": [
+      "src/index.ts"
+    ]
   }
 }

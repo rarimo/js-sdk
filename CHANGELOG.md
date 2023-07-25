@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.8] - 2023-07-25
+### Changed
+- `@rarimo/auth-zkp-iden3` - replaced hardcoded `NatualPerson` claim schema type with method parameter
+
 ## [2.0.0-rc.7] - 2023-07-17
 ### Changed
 - `all` - Updated `@distributedlab` packages to the latest versions (`1.0.0-rc.1`)
@@ -373,7 +377,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.7...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.8...HEAD
+[2.0.0-rc.8]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.7...2.0.0-rc.8
 [2.0.0-rc.7]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.6...2.0.0-rc.7
 [2.0.0-rc.6]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.5...2.0.0-rc.6
 [2.0.0-rc.5]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.4...2.0.0-rc.5
