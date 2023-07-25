@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/bridge",
-  "version": "2.0.0-rc.5",
+  "version": "2.0.0-rc.7",
   "description": "Internal tools that other Rarimo packages use to bridge tokens.",
   "repository": {
     "type": "git",
@@ -61,10 +61,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^0.2.0-rc.24",
-    "@distributedlab/tools": "^0.2.0-rc.24",
+    "@distributedlab/reactivity": "^1.0.0-rc.1",
+    "@distributedlab/tools": "^1.0.0-rc.1",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^",
     "ethers": "^5.7.2"
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"]
   }
 }
