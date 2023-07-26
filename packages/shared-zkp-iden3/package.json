@@ -62,6 +62,8 @@
     "tslib": "^2.5.0"
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"]
+    "entryPoints": [
+      "src/index.ts"
+    ]
   }
 }

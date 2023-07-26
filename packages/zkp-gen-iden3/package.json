@@ -77,6 +77,8 @@
     "@iden3/js-merkletree": "^1.0.0-beta.4"
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"]
+    "entryPoints": [
+      "src/index.ts"
+    ]
   }
 }
