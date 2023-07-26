@@ -51,8 +51,10 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     })
   }
 
-  async getVerifiableCredentials(): Promise<VerifiableCredentials<T>> {
-    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.idString}/NaturalPerson`
+  async getVerifiableCredentials(
+    claimSchemaType: string,
+  ): Promise<VerifiableCredentials<T>> {
+    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.idString}/${claimSchemaType}`
 
     const { data: offerData } = await this.#api.get<ClaimOffer>(claimEndpoint)
 
