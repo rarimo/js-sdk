@@ -89,7 +89,7 @@ const sendTransaction = async () => {
   const paymentTokens = await op.getPaymentTokens()
 
   // Select the token to accept payment in on the source chain.
-  // This example hard-codes UNI, but your application can ask the user which token to pay with.
+  // This example hard-codes ETH, but your application can ask the user which token to pay with.
   const selectedToken = paymentTokens.find(i => i.symbol === paymentToken)!
 
   // Get the estimated cost of the token swap, not the total cost to the user
