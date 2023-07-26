@@ -64,7 +64,7 @@ const sendTransaction = async () => {
   const sourceChain = chains.find((i: BridgeChain) => i.name === sourceChainName)!
 
   // Select the chain to pay on.
-  // In this case, the NFT contract is on the Goerli chain.
+  // In this case, the NFT contract is on the Fuji chain.
   const destinationChain = chains.find((i: BridgeChain) => i.name === destinationChainName)!
   receiveToken.value = destinationChain.token.symbol
 
