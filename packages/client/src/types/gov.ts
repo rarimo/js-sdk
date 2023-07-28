@@ -1,10 +1,11 @@
-import type { ProposalStatus } from '@/enums'
+import type { Coin } from './bank'
+import type { BaseModel } from './base'
 import type {
   DropPartiesProposal,
   ReshareKeysProposal,
   SlashProposal,
   UnfreezeSignerPartyProposal,
-} from '@/types/rarimocore'
+} from './rarimocore'
 import type {
   AddCollectionDataProposal,
   AddFeeTokenProposal,
@@ -20,10 +21,7 @@ import type {
   UpdateTokenItemProposal,
   UpgradeContractProposal,
   WithdrawFeeProposal,
-} from '@/types/tokenmanager'
-
-import type { Coin } from './bank'
-import type { BaseModel } from './base'
+} from './tokenmanager'
 
 export type VotingParams = {
   voting_period: string
@@ -56,7 +54,7 @@ export type FinalTallyResult = {
 export type Proposal = {
   id: string
   messages: BaseModel<string>[]
-  status: ProposalStatus
+  status: string
   final_tally_result?: FinalTallyResult
   submit_block: string
   deposit_end_block: string

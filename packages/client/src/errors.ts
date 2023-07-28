@@ -1,4 +1,5 @@
 import type { BroadcastTxFailure } from '@cosmjs/launchpad'
+import { RuntimeError } from '@rarimo/shared'
 
 export class WalletNotInitializedError extends ReferenceError {
   constructor() {
@@ -21,17 +22,13 @@ export class WalletExtensionNotInstalledError extends ReferenceError {
   }
 }
 
-export class WalletBroadcastError extends Error {
+export class WalletBroadcastError extends RuntimeError {
   name = 'WalletBroadcastError'
-  txCode: number
-  txHash: string
-  txRawLog?: string
 
   constructor(txFailure: BroadcastTxFailure) {
-    super(txFailure.rawLog || 'unknown error')
-    this.name = 'Broadcast Tx Error'
-    this.txCode = txFailure.code
-    this.txRawLog = txFailure.rawLog
-    this.txHash = txFailure.transactionHash
+    super(
+      txFailure.rawLog || 'Transaction broadcast failed',
+      txFailure as unknown as Error,
+    )
   }
 }
