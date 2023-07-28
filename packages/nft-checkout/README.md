@@ -25,16 +25,16 @@ import { MetamaskProvider } from '@rarimo/providers-evm'
 import { utils } from "ethers"
 
 // Address of the NFT sale contract
-const NFT_CONTRACT_ADDRESS = "0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1"
+const NFT_CONTRACT_ADDRESS = "0xebd22f080134e268a229895d4a89b98d2265aa3d"
 // Buyer's address to send the bought NFT to
 const USER_WALLET_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 // Chains to use
-const selectedChainName = ChainNames.Goerli
-const targetChainName = ChainNames.Sepolia
+const sourceChainName = ChainNames.Ethereum
+const destinationChainName = ChainNames.Avalanche
 
 // Token to accept payment in
-const paymentToken = "UNI"
+const paymentToken = "USDT"
 
 const sendTransaction = async () => {
   // Connect to the Metamask wallet in the browser, using the MetamaskProvider interface to limit bundle size.
@@ -44,21 +44,22 @@ const sendTransaction = async () => {
   const op = createCheckoutOperation(EVMOperation, provider)
 
   // Get the chains that are supported from that chain type.
-  const chains = await op.supportedChains()
+  const chains = await op.getSupportedChains()
 
   // Select the chain to pay from.
-  // This example uses the Goerli chain, but your application can ask the user which chain to use.
-  const selectedChain = chains.find((i: BridgeChain) => i.name === selectedChainName)!
+  // This example uses the Ethereum chain, but your application can ask the user which chain to use.
+  const sourceChain = chains.find((i: BridgeChain) => i.name === sourceChainName)!
 
   // Select the chain to pay on.
-  // In this case, the NFT contract is on the Sepolia chain.
-  const destinationChain = chains.find((i: BridgeChain) => i.name === targetChainName)!
+  // In this case, the NFT contract is on the Avalanche chain.
+  const destinationChain = chains.find((i: BridgeChain) => i.name === destinationChainName)!
 
   // Set the parameters for the transaction, including source and destination chain.
-  const params:CheckoutOperationParams = {
-    chainIdFrom: selectedChain.id,
+  const params: CheckoutOperationParams = {
+    chainIdFrom: sourceChain.id,
     chainIdTo: destinationChain.id,
-    price: Price.fromRaw("0.01", 18, "ETH"),
+    price: Price.fromRaw("0.00001", destinationChain.token.decimals, destinationChain.token.symbol),
+    recipient: USER_WALLET_ADDRESS,
   }
 
   // Initialize the transaction object
@@ -67,7 +68,7 @@ const sendTransaction = async () => {
   // Load the user's balance of payment tokens on the source chain.
   // When this method runs, the wallet prompts the user to switch to the selected chain if necessary.
   // Then, the method returns the tokens on this chain that the DEX supports and that the wallet has a balance of greater than zero.
-  const paymentTokens = await op.loadPaymentTokens(selectedChain)
+  const paymentTokens = await op.getPaymentTokens()
 
   // Select the token to accept payment in on the source chain.
   // This example hard-codes UNI, but your application can ask the user which token to pay with.
@@ -110,11 +111,14 @@ const sendTransaction = async () => {
   const txHash = await op.checkout(estimatedPrice, { bundle })
 
   // Get the transaction on the source chain
-  const sourceTxUrl = provider.getTxUrl(selectedChain!, String(txHash))
+  const sourceTxUrl = provider.getTxUrl(sourceChain!, String(txHash))
   console.log("Source chain transaction:", sourceTxUrl)
 
+  // There is no destination transcation if it is the same chain operation
+  if (sourceChain.id !== destinationChain.id) return
+
   // Get the transaction that unlocks tokens on the destination chain
-  const destinationTx = await op.getDestinationTx(selectedChain!, String(txHash))
+  const destinationTx = await op.getDestinationTx(sourceChain!, String(txHash))
   const destinationTxUrl = provider.getTxUrl(destinationChain!, destinationTx.hash)
   console.log("Destination chain transaction:", destinationTxUrl)
 }
