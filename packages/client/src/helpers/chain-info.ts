@@ -1,8 +1,7 @@
 import type { ChainInfo } from '@keplr-wallet/types'
 
+import { makeQuerier } from '@/querier'
 import type { Config } from '@/types'
-
-import { makeQuerier } from '../querier'
 
 export const getChainInfo = async (
   config: Config,

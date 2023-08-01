@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Any } from "../../../google/protobuf/any";
+import { Any } from "@/codec/google/protobuf/any";
 import { Coin } from "../../base/v1beta1/coin";
 
 export const protobufPackage = "cosmos.gov.v1beta1";

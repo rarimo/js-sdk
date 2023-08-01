@@ -1,27 +1,5 @@
 import type { Coin } from './bank'
 import type { BaseModel } from './base'
-import type {
-  DropPartiesProposal,
-  ReshareKeysProposal,
-  SlashProposal,
-  UnfreezeSignerPartyProposal,
-} from './rarimocore'
-import type {
-  AddCollectionDataProposal,
-  AddFeeTokenProposal,
-  AddNetworkProposal,
-  CreateCollectionProposal,
-  RemoveCollectionDataProposal,
-  RemoveCollectionProposal,
-  RemoveFeeTokenProposal,
-  RemoveNetworkProposal,
-  RemoveTokenItemProposal,
-  UpdateCollectionDataProposal,
-  UpdateFeeTokenProposal,
-  UpdateTokenItemProposal,
-  UpgradeContractProposal,
-  WithdrawFeeProposal,
-} from './tokenmanager'
 
 export type VotingParams = {
   voting_period: string
@@ -62,34 +40,4 @@ export type Proposal = {
   voting_start_block: string
   voting_end_block: string
   metadata: string
-}
-
-export type SubmitProposalContent =
-  | UpgradeContractProposal
-  | AddNetworkProposal
-  | RemoveNetworkProposal
-  | AddFeeTokenProposal
-  | UpdateFeeTokenProposal
-  | RemoveFeeTokenProposal
-  | WithdrawFeeProposal
-  | UpdateTokenItemProposal
-  | RemoveTokenItemProposal
-  | CreateCollectionProposal
-  | UpdateCollectionDataProposal
-  | AddCollectionDataProposal
-  | RemoveCollectionDataProposal
-  | RemoveCollectionProposal
-  | UnfreezeSignerPartyProposal
-  | ReshareKeysProposal
-  | SlashProposal
-  | DropPartiesProposal
-
-/**
- * MsgSubmitProposal defines an sdk.Msg type that supports submitting arbitrary
- * proposal Content.
- */
-export type MsgSubmitProposal = {
-  content: SubmitProposalContent
-  initialDeposit: Coin[]
-  proposer: string
 }

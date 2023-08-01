@@ -40,10 +40,11 @@ export type RarimoQuerier = {
   getDelegationRewards(delegator: string, validator: string): Promise<Coin[]>
 }
 
-export type RarimoClient = RarimoQuerier &
-  Omit<RarimoBroadcaster, 'disconnect'> & {
-    config: Config
-    wallet: Wallet
-    connect: () => Promise<void>
-    disconnect: () => void
-  }
+export type RarimoClient = {
+  config: Config
+  wallet: Wallet
+  query: RarimoQuerier
+  tx: RarimoBroadcaster
+  connect: () => Promise<void>
+  disconnect: () => void
+}

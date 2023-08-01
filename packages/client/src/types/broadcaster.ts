@@ -1,19 +1,12 @@
 import type { DeliverTxResponse } from '@cosmjs/stargate'
 
 import { Coin } from '@/codec/cosmos/base/v1beta1/coin'
-import { ProposalType, VoteOption } from '@/enums'
-
-import type { MsgSubmitProposal } from './gov'
+import { VoteOption } from '@/enums'
 
 export type RarimoBroadcaster = {
   disconnect: () => void
 
   // gov
-  submitProposal(
-    proposalType: ProposalType,
-    msg: MsgSubmitProposal,
-  ): Promise<DeliverTxResponse>
-
   voteProposal(
     voter: string,
     proposalId: number,

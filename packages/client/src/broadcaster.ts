@@ -4,16 +4,11 @@ import {
   MsgWithdrawValidatorCommission,
 } from '@/codec/cosmos/distribution/v1beta1/tx'
 import { VoteOption as EVoteOption } from '@/codec/cosmos/gov/v1beta1/gov'
-import { MsgSubmitProposal, MsgVote } from '@/codec/cosmos/gov/v1beta1/tx'
+import { MsgVote } from '@/codec/cosmos/gov/v1beta1/tx'
 import { MsgDelegate, MsgUndelegate } from '@/codec/cosmos/staking/tx'
-import { ProposalType, VoteOption } from '@/enums'
-import { createMsgSubmitProposal, makeBroadcastMaker } from '@/helpers'
-import type {
-  Config,
-  MsgSubmitProposal as TMsgSubmitProposal,
-  RarimoBroadcaster,
-  Wallet,
-} from '@/types'
+import { VoteOption } from '@/enums'
+import { makeBroadcastMaker } from '@/helpers'
+import type { Config, RarimoBroadcaster, Wallet } from '@/types'
 
 export const makeBroadcaster = async (
   config: Config,
@@ -26,13 +21,6 @@ export const makeBroadcaster = async (
     disconnect: api.disconnect,
 
     // gov
-    submitProposal: (proposalType: ProposalType, msg: TMsgSubmitProposal) => {
-      return broadcaster<MsgSubmitProposal>(
-        '/cosmos.gov.v1beta1.MsgSubmitProposal',
-        MsgSubmitProposal,
-      )(createMsgSubmitProposal(proposalType, msg))
-    },
-
     voteProposal: (voter: string, proposalId: number, option: VoteOption) => {
       return broadcaster<MsgVote>(
         '/cosmos.gov.v1beta1.MsgVote',

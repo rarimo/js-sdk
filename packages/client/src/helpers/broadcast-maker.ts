@@ -1,11 +1,18 @@
 import type { BroadcastTxFailure } from '@cosmjs/launchpad'
+import { decodePubkey } from '@cosmjs/proto-signing'
 import {
   type EncodeObject,
   type GeneratedType,
   Registry,
 } from '@cosmjs/proto-signing/build/registry'
-import { type DeliverTxResponse, SigningStargateClient } from '@cosmjs/stargate'
+import {
+  type Account,
+  type DeliverTxResponse,
+  SigningStargateClient,
+} from '@cosmjs/stargate'
 
+import { BaseAccount } from '@/codec/cosmos/auth/auth'
+import { EthAccount } from '@/codec/ethermint/account'
 import { WalletBroadcastError } from '@/errors'
 import type { Config, Wallet } from '@/types'
 
@@ -19,7 +26,16 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
     const _stargate = await SigningStargateClient.connectWithSigner(
       config.rpcUrl,
       wallet.signer,
-      { registry: stargateRegistry as never },
+      {
+        registry: stargateRegistry as never,
+        accountParser: acc => {
+          if (acc.typeUrl === '/cosmos.auth.v1beta1.BaseAccount') {
+            return baseAccountToAccount(BaseAccount.decode(acc.value))
+          }
+
+          return baseAccountToAccount(EthAccount.decode(acc.value).baseAccount!)
+        },
+      },
     )
 
     if (!_stargate) return
@@ -36,11 +52,7 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
     const res = await stargate.signAndBroadcast(
       wallet.account.address,
       messages,
-      // TODO: check this
-      {
-        amount: [{ denom: config.currency.minDenom, amount: '200000' }],
-        gas: '2000000',
-      },
+      config.tx,
     )
 
     if (!res || ('code' in res && res.code !== 0)) {
@@ -65,5 +77,14 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
   return {
     disconnect,
     makeBroadcastCaller,
+  }
+}
+
+const baseAccountToAccount = (base: BaseAccount): Account => {
+  return {
+    address: base.address,
+    accountNumber: base.accountNumber,
+    sequence: base.sequence,
+    pubkey: base.pubKey ? decodePubkey(base.pubKey) : null,
   }
 }

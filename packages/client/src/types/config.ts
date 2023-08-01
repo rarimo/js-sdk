@@ -12,4 +12,8 @@ export type Config = {
     average: number
     high: number
   }
+  tx: {
+    amount: [{ denom: string; amount: string }]
+    gas: string
+  }
 }
