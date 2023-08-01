@@ -43,11 +43,14 @@ export const createEVMSwapper = (provider: IProvider): Swapper => {
   }
 
   return toRaw(
-    extend(bridger, {
+    extend(
+      {
+        bridger,
+        isInitialized,
+        init,
+        execute,
+      },
       bridger,
-      isInitialized,
-      init,
-      execute,
-    }),
+    ),
   )
 }
