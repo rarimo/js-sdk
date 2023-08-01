@@ -14,9 +14,9 @@ import type {
   RarimoQuerier,
 } from '@/types'
 
-export const makeRarimoQuerier = async (
+export const makeRarimoQuerier = (
   config: Pick<Config, 'apiUrl'>,
-): Promise<RarimoQuerier> => {
+): RarimoQuerier => {
   const api = new Fetcher({
     baseUrl: config.apiUrl,
     headers: {
