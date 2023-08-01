@@ -1,7 +1,7 @@
 import type { Token } from '@rarimo/bridge'
 import { Amount, type TransactionBundle } from '@rarimo/shared'
 
-import { CALLER_ADDRESS, THIS_ADDRESS } from '@/const'
+import { CALLER_ADDRESS, CONTRACT_BALANCE, THIS_ADDRESS } from '@/const'
 import { SwapCommands } from '@/enums'
 import type { CommandPayload, SwapOpts } from '@/types'
 
@@ -62,11 +62,11 @@ export const getSwapData = (
     data.push(...buildSwapData(from, to, amountIn, amountOut, args.path))
 
     // If to.isNative swap output token, we need to unwrap it for UniswapV3
-    if (isSameChainBundleExecution && to.isNative && to.isUniswapV3) {
+    if (to.isNative && to.isUniswapV3) {
       data.push(
         buildPayload(SwapCommands.UnwrapNative, [
           THIS_ADDRESS,
-          amountOut.value,
+          CONTRACT_BALANCE,
         ]),
       )
     }

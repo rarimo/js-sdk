@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.11] - 2023-08-01
+### Fixed
+- `@rarimo/nft-checkout` - Unwrap native without bundle if target token is native
+- `@rarimo/nft-checkout` - Transferring remaining tokens after the operation to the receiver if specified
+
 ## [2.0.0-rc.10] - 2023-08-01
 ### Added
 - `root` - `@rarimo/client` package
@@ -388,7 +393,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.10...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.11...HEAD
+[2.0.0-rc.11]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.10...2.0.0-rc.11
 [2.0.0-rc.10]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.9...2.0.0-rc.10
 [2.0.0-rc.9]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.8...2.0.0-rc.9
 [2.0.0-rc.8]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.7...2.0.0-rc.8
