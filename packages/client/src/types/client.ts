@@ -7,6 +7,8 @@ import type { Coin } from './bank'
 import type { RarimoBroadcaster } from './broadcaster'
 import type { Config } from './config'
 import type { GovParams, Proposal } from './gov'
+import type { MerkleProof, StateInfo } from './identity'
+import type { OperationProof } from './rarimocore'
 import type { DelegationResponse } from './staking'
 import type { NodeInfo } from './tendermint'
 
@@ -38,6 +40,11 @@ export type RarimoQuerier = {
   ): Promise<DelegationResponse>
   // distribution
   getDelegationRewards(delegator: string, validator: string): Promise<Coin[]>
+  // rarimocore/identity
+  getMerkleProof(id: string): Promise<MerkleProof>
+  getState(id: string): Promise<StateInfo>
+  // rarimocore/rarimocore
+  getOperationProof(index: string): Promise<OperationProof>
 }
 
 export type RarimoClient = {

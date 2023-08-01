@@ -2,9 +2,9 @@ import { ref, toRaw } from '@distributedlab/reactivity'
 
 import { stub } from '@/helpers'
 
-import { makeBroadcaster } from './broadcaster'
+import { makeRarimoBroadcaster } from './broadcaster'
 import { getChainInfo } from './helpers'
-import { makeQuerier } from './querier'
+import { makeRarimoQuerier } from './querier'
 import type {
   Config,
   RarimoBroadcaster,
@@ -22,7 +22,7 @@ export const makeRarimoClient = async (
   const tx = ref<RarimoBroadcaster>(stub('Broadcaster not initialized!'))
 
   const init = async () => {
-    query.value = await makeQuerier(config)
+    query.value = await makeRarimoQuerier(config)
   }
 
   await init()
@@ -37,7 +37,7 @@ export const makeRarimoClient = async (
     const _wallet = makeWallet()
     await _wallet.connect(chainInfo)
     wallet.value = _wallet
-    tx.value = await makeBroadcaster(config, _wallet)
+    tx.value = await makeRarimoBroadcaster(config, _wallet)
   }
 
   return toRaw({
