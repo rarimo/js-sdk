@@ -15,21 +15,20 @@ import type { PaymentToken, SwapEstimation } from './estimate'
 import type { OperationSubscriber } from './operation-event-bus'
 
 /**
- * The parameters for a transaction
- *
- * @param chainIdFrom - The ID of the source chain, from {@link getSupportedChains}
- * @param chainIdTo - The ID of the destination chain, from {@link getSupportedChains}
- * @param price - The amount of the transaction on the destination chain
- * @param recipient - The wallet address of the recipient of the result of the transaction
- * @param slippage - The slippage tolerance, as a percentage of the source token amount
- * @param isMultiplePayment - Whether the transaction accepts a single token as input (false) or multiple tokens (true)
+ * The parameters for a transaction.
  */
 export type CheckoutOperationParams = {
+  /** The ID of the destination chain, from {@link getSupportedChains} */
   chainIdTo: ChainId
+  /** The ID of the source chain, from {@link getSupportedChains} */
   chainIdFrom: ChainId
+  /** The amount of the transaction on the destination chain */
   price: Price
+  /** The wallet address of the recipient of the result of the transaction */
   recipient?: Address
+  /** The slippage tolerance, as a percentage of the source token amount */
   slippage?: number // 0.5, 1, 5, 10 etc
+  /** Whether the transaction accepts a single token as input (false) or multiple tokens (true) */
   isMultiplePayment?: boolean
 }
 
