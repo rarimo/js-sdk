@@ -1,3 +1,4 @@
+import type { Proof } from '@iden3/js-merkletree'
 import type { RawProvider } from '@rarimo/provider'
 
 export type IssuerData = {
@@ -49,19 +50,23 @@ export interface VerifiableCredentials<T extends QueryVariableNameAbstract> {
       issuanceDate: string
       issuer: string
       proof?: [
+        /**
+         * Used to generate sig proofs
+         */
         {
           coreClaim: string
           issuerData: IssuerData
           signature: string
           type: string
         },
+        /**
+         * Used to generate MTP proofs
+         */
         {
+          id: string // ?
           coreClaim: string
           issuerData: IssuerData
-          mtp: {
-            existence: boolean
-            siblings: string[]
-          }
+          mtp: Proof
           type: string
         },
       ]

@@ -1303,6 +1303,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iden3/js-crypto@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@iden3/js-crypto@npm:1.0.0"
+  dependencies:
+    blake-hash: ^2.0.0
+    ffjavascript: ^0.2.57
+  checksum: 60a68668e6b3d6769873baef25829fab6db92aaf27e454f770449c4cf9eec5ccf0d2b850b31f3adc4af7c3e8c281933fb8fe7b1aad9593a3301d060dd17bb683
+  languageName: node
+  linkType: hard
+
 "@iden3/js-crypto@npm:1.0.0-beta.0":
   version: 1.0.0-beta.0
   resolution: "@iden3/js-crypto@npm:1.0.0-beta.0"
@@ -1346,15 +1356,15 @@ __metadata:
   linkType: hard
 
 "@iden3/js-jsonld-merklization@npm:^1.0.0-beta.14":
-  version: 1.0.0-beta.15
-  resolution: "@iden3/js-jsonld-merklization@npm:1.0.0-beta.15"
+  version: 1.0.1
+  resolution: "@iden3/js-jsonld-merklization@npm:1.0.1"
   dependencies:
-    "@iden3/js-crypto": 1.0.0-beta.1
-    "@iden3/js-merkletree": 1.0.0-beta.2
+    "@iden3/js-crypto": 1.0.0
+    "@iden3/js-merkletree": 1.0.0
     "@js-temporal/polyfill": ^0.4.4
     jsonld: ^8.2.0
     n3: ^1.16.3
-  checksum: bce5faf7f13cb61199eed0fd7cf90b1bdf3b27f324f94167ae85046ec9463ac525be5148087fae5ea6fc113e95fcbbcbb76b028b203cba68faedb4f5be3fab79
+  checksum: f61ec44b66f5cdc8b485b541c168d162522b2f09178a8bb101c98808c1c7d5c7859fb120066cf544edffcb1d53d40120d52691d3426c844bb1b9b2d40184b4c0
   languageName: node
   linkType: hard
 
@@ -1374,22 +1384,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iden3/js-merkletree@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@iden3/js-merkletree@npm:1.0.0"
+  dependencies:
+    "@iden3/js-crypto": 1.0.0
+    idb-keyval: ^6.2.0
+  checksum: ef67a95fef50a8b6b3c7a37f2f63e8d6f990dfe7fdd177eaf8b5eb2e0d453cbe241a3f9dd1c52776daa7cc743f6bcecf444566751775b2418f09373724782cc0
+  languageName: node
+  linkType: hard
+
 "@iden3/js-merkletree@npm:1.0.0-beta.0":
   version: 1.0.0-beta.0
   resolution: "@iden3/js-merkletree@npm:1.0.0-beta.0"
   dependencies:
     "@iden3/js-crypto": 1.0.0-beta.0
   checksum: 9062ed7bf190df357f4e786415592182ef0d40ce39c92ad01784e57c5526487cd72386b1508ab0241278729c47e6b34dc488b428a9f036702757fa45ef404e3c
-  languageName: node
-  linkType: hard
-
-"@iden3/js-merkletree@npm:1.0.0-beta.2":
-  version: 1.0.0-beta.2
-  resolution: "@iden3/js-merkletree@npm:1.0.0-beta.2"
-  dependencies:
-    "@iden3/js-crypto": 1.0.0-beta.1
-    idb-keyval: ^6.2.0
-  checksum: 942b544a4c01f092f24434eb3344e36bfb50ba3428ff85b6d071daf8554bad15011ab87e88c3f280724e35e67b96857fb73561e02b8e2aa6fb93f3d166800515
   languageName: node
   linkType: hard
 
