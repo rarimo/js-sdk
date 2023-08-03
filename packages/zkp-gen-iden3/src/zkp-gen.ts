@@ -36,7 +36,6 @@ import { ensureArraySize, getNodeAuxValue } from '@/helpers'
 import type {
   ClaimStatus,
   Config,
-  IssuerState,
   QueryVariableNameAbstract,
   Schema,
   ZkpGenCreateOpts,
@@ -160,13 +159,13 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       userId: this.identity.idBigIntString,
     })
 
-    const userClaimNonRevMtp = await this.#requestClaimRevocationStatus(
+    // ==================== ISSUER SIDE ======================
+
+    const issuerClaimNonRevMtp = await this.#requestClaimRevocationStatus(
       this.verifiableCredentials.body.credential.credentialStatus.id,
     )
 
-    const issuerClaimNonRevMtpAux = getNodeAuxValue(userClaimNonRevMtp.mtp)
-
-    // ==================== ISSUER SIDE ======================
+    const issuerClaimNonRevMtpAux = getNodeAuxValue(issuerClaimNonRevMtp.mtp)
 
     const issuerID = DID.parse(this.verifiableCredentials.from).id
 
@@ -241,23 +240,23 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       /* issuerClaim non rev inputs */
       isRevocationChecked: '1',
       issuerClaimNonRevMtp: ensureArraySize(
-        userClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+        issuerClaimNonRevMtp.mtp.siblings.map(el => el.string()),
         40,
       ),
       issuerClaimNonRevMtpNoAux: issuerClaimNonRevMtpAux.noAux,
       issuerClaimNonRevMtpAuxHi: issuerClaimNonRevMtpAux.key,
       issuerClaimNonRevMtpAuxHv: issuerClaimNonRevMtpAux.value,
       issuerClaimNonRevClaimsTreeRoot: newHashFromHex(
-        String(userClaimNonRevMtp.issuer.claimsTreeRoot),
+        String(issuerClaimNonRevMtp.issuer.claimsTreeRoot),
       ).string(),
       issuerClaimNonRevRevTreeRoot: newHashFromHex(
-        String(userClaimNonRevMtp.issuer.revocationTreeRoot),
+        String(issuerClaimNonRevMtp.issuer.revocationTreeRoot),
       ).string(),
       issuerClaimNonRevRootsTreeRoot: newHashFromHex(
-        String(userClaimNonRevMtp.issuer.rootOfRoots),
+        String(issuerClaimNonRevMtp.issuer.rootOfRoots),
       ).string(),
       issuerClaimNonRevState: newHashFromHex(
-        String(userClaimNonRevMtp.issuer.state),
+        String(issuerClaimNonRevMtp.issuer.state),
       ).string(),
     }
 
@@ -268,11 +267,17 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         // FIXME
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        issuerClaimMtp: mtpProof.siblings,
-        issuerClaimClaimsTreeRoot: mtpProof.treeState.claimsTreeRoot.string(),
-        issuerClaimRevTreeRoot: mtpProof.treeState.revocationTreeRoot.string(),
-        issuerClaimRootsTreeRoot: mtpProof.treeState.rootOfRoots.string(),
-        issuerClaimIdenState: mtpProof.treeState.state.string(),
+        issuerClaimMtp: ensureArraySize(
+          mtpProof.issuerClaimIncMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerClaimClaimsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot.string(),
+        issuerClaimRevTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot.string(),
+        issuerClaimRootsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.rootOfRoots.string(),
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state.string(),
       },
       [CircuitId.AtomicQueryMTPV2OnChain]: {
         ...commonInputs,
@@ -322,11 +327,17 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         gistMtpAuxHv: gistInfo?.auxValue.toString(),
         gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
 
-        issuerClaimMtp: mtpProof.siblings,
-        issuerClaimClaimsTreeRoot: mtpProof.treeState.claimsTreeRoot.string(),
-        issuerClaimRevTreeRoot: mtpProof.treeState.revocationTreeRoot.string(),
-        issuerClaimRootsTreeRoot: mtpProof.treeState.rootOfRoots.string(),
-        issuerClaimIdenState: mtpProof.treeState.state.string(),
+        issuerClaimMtp: ensureArraySize(
+          mtpProof.issuerClaimIncMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerClaimClaimsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot.string(),
+        issuerClaimRevTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot.string(),
+        issuerClaimRootsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.rootOfRoots.string(),
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state.string(),
       },
       [CircuitId.AtomicQuerySigV2]: {
         ...commonInputs,
@@ -545,27 +556,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   async #parseMTPProof() {
     const [, mtpProof] = this.verifiableCredentials.body.credential.proof!
 
-    const data = await this.#requestClaimRevocationStatus(mtpProof.id)
-
-    const claimsTreeRoot = data.issuer.claimsTreeRoot
-    const revocationTreeRoot = data.issuer.revocationTreeRoot
-    const rootOfRoots = data.issuer.rootOfRoots
-    const state = data.issuer.state
-
-    const treeState: IssuerState = {
-      claimsTreeRoot,
-      revocationTreeRoot,
-      rootOfRoots,
-      state,
-    }
+    const issuerClaimIncMtp = await this.#requestClaimRevocationStatus(
+      mtpProof.id,
+    )
 
     return {
-      proof: data.mtp,
-      siblings: ensureArraySize(
-        data.mtp.siblings.map(el => el.string()),
-        40,
-      ),
-      treeState,
+      proof: issuerClaimIncMtp.mtp,
+
+      issuerClaimIncMtp,
     }
   }
 }
