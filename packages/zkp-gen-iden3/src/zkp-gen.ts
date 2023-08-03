@@ -91,7 +91,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     return globalConfig
   }
 
-  public static setConfig(config: Config) {
+  public static setConfig(config: Partial<Config>) {
     globalConfig = { ...globalConfig, ...config }
   }
 
@@ -160,9 +160,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       userId: this.identity.idBigIntString,
     })
 
-    const userClaimStatus = await this.#requestClaimRevocationStatus(
+    const userClaimNonRevMtp = await this.#requestClaimRevocationStatus(
       this.verifiableCredentials.body.credential.credentialStatus.id,
     )
+
+    const issuerClaimNonRevMtpAux = getNodeAuxValue(userClaimNonRevMtp.mtp)
 
     // ==================== ISSUER SIDE ======================
 
@@ -194,8 +196,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const authClaimNonRevMtpAux = getNodeAuxValue(
       this.identity.authClaimNonRevProof,
     )
-
-    const issuerAuthClaimNonRevMtpAux = getNodeAuxValue(sigProof.proof)
 
     const commonInputs = {
       /* we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request */
@@ -241,28 +241,23 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       /* issuerClaim non rev inputs */
       isRevocationChecked: '1',
       issuerClaimNonRevMtp: ensureArraySize(
-        userClaimStatus.mtp.siblings.map(el => el.string()),
+        userClaimNonRevMtp.mtp.siblings.map(el => el.string()),
         40,
       ),
-      // FIXME: use getNodeAuxValue
-      issuerClaimNonRevMtpNoAux:
-        !!userClaimStatus.mtp?.nodeAux?.key &&
-        !!userClaimStatus.mtp?.nodeAux?.value
-          ? 0
-          : 1,
-      issuerClaimNonRevMtpAuxHi: userClaimStatus.mtp?.nodeAux?.key ?? 0,
-      issuerClaimNonRevMtpAuxHv: userClaimStatus.mtp?.nodeAux?.value ?? 0,
+      issuerClaimNonRevMtpNoAux: issuerClaimNonRevMtpAux.noAux,
+      issuerClaimNonRevMtpAuxHi: issuerClaimNonRevMtpAux.key,
+      issuerClaimNonRevMtpAuxHv: issuerClaimNonRevMtpAux.value,
       issuerClaimNonRevClaimsTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.claimsTreeRoot),
+        String(userClaimNonRevMtp.issuer.claimsTreeRoot),
       ).string(),
       issuerClaimNonRevRevTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.revocationTreeRoot),
+        String(userClaimNonRevMtp.issuer.revocationTreeRoot),
       ).string(),
       issuerClaimNonRevRootsTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.rootOfRoots),
+        String(userClaimNonRevMtp.issuer.rootOfRoots),
       ).string(),
       issuerClaimNonRevState: newHashFromHex(
-        String(userClaimStatus.issuer.state),
+        String(userClaimNonRevMtp.issuer.state),
       ).string(),
     }
 
@@ -339,18 +334,29 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
-        issuerAuthClaimMtp: sigProof.siblings,
-        issuerAuthClaimsTreeRoot: sigProof.treeState.claimsTreeRoot.string(),
-        issuerAuthRevTreeRoot: sigProof.treeState.revocationTreeRoot.string(),
-        issuerAuthRootsTreeRoot: sigProof.treeState.rootOfRoots.string(),
+        issuerAuthClaimMtp: ensureArraySize(
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerAuthClaimsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot.string(),
+        issuerAuthRevTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot.string(),
+        issuerAuthRootsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots.string(),
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
-        issuerAuthClaimNonRevMtp: ensureArraySize(sigProof.siblings, 40),
-        issuerAuthClaimNonRevMtpNoAux: issuerAuthClaimNonRevMtpAux.noAux,
-        issuerAuthClaimNonRevMtpAuxHi: issuerAuthClaimNonRevMtpAux.key,
-        issuerAuthClaimNonRevMtpAuxHv: issuerAuthClaimNonRevMtpAux.value,
+        issuerAuthClaimNonRevMtp: ensureArraySize(
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerAuthClaimNonRevMtpNoAux:
+          sigProof.issuerAuthClaimNonRevMtpAux.noAux,
+        issuerAuthClaimNonRevMtpAuxHi: sigProof.issuerAuthClaimNonRevMtpAux.key,
+        issuerAuthClaimNonRevMtpAuxHv:
+          sigProof.issuerAuthClaimNonRevMtpAux.value,
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
@@ -409,18 +415,29 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
-        issuerAuthClaimMtp: sigProof.siblings,
-        issuerAuthClaimsTreeRoot: sigProof.treeState.claimsTreeRoot,
-        issuerAuthRevTreeRoot: sigProof.treeState.revocationTreeRoot,
-        issuerAuthRootsTreeRoot: sigProof.treeState.rootOfRoots,
+        issuerAuthClaimMtp: ensureArraySize(
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerAuthClaimsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot.string(),
+        issuerAuthRevTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot.string(),
+        issuerAuthRootsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots.string(),
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
-        issuerAuthClaimNonRevMtp: ensureArraySize(sigProof.siblings, 40),
-        issuerAuthClaimNonRevMtpNoAux: issuerAuthClaimNonRevMtpAux.noAux,
-        issuerAuthClaimNonRevMtpAuxHi: issuerAuthClaimNonRevMtpAux.key,
-        issuerAuthClaimNonRevMtpAuxHv: issuerAuthClaimNonRevMtpAux.value,
+        issuerAuthClaimNonRevMtp: ensureArraySize(
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+          40,
+        ),
+        issuerAuthClaimNonRevMtpNoAux:
+          sigProof.issuerAuthClaimNonRevMtpAux.noAux,
+        issuerAuthClaimNonRevMtpAuxHi: sigProof.issuerAuthClaimNonRevMtpAux.key,
+        issuerAuthClaimNonRevMtpAuxHv:
+          sigProof.issuerAuthClaimNonRevMtpAux.value,
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
@@ -493,32 +510,26 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const [credentialSigProof] =
       this.verifiableCredentials.body.credential.proof!
 
-    const data = await this.#requestClaimRevocationStatus(
-      credentialSigProof.issuerData.credentialStatus.id,
+    const issuerAuthClaimIncMtp = await this.#requestClaimRevocationStatus(
+      credentialSigProof.issuerProofUpdateUrl,
     )
 
-    const claimsTreeRoot = data.issuer.claimsTreeRoot
-    const revocationTreeRoot = data.issuer.revocationTreeRoot
-    const rootOfRoots = data.issuer.rootOfRoots
-    const state = data.issuer.state
-
-    const treeState: IssuerState = {
-      claimsTreeRoot,
-      revocationTreeRoot,
-      rootOfRoots,
-      state,
-    }
+    const issuerAuthClaimNonRevMtp = await this.#requestClaimRevocationStatus(
+      credentialSigProof.issuerData.credentialStatus.id,
+    )
 
     const decodedSignature = Hex.decodeString(credentialSigProof.signature)
     const signature = Signature.newFromCompressed(decodedSignature)
 
+    const issuerAuthClaimNonRevMtpAux = getNodeAuxValue(
+      issuerAuthClaimNonRevMtp.mtp,
+    )
+
     return {
-      proof: data.mtp,
-      siblings: ensureArraySize(
-        data.mtp.siblings.map(el => el.string()),
-        40,
-      ),
-      treeState,
+      proof: issuerAuthClaimNonRevMtp.mtp,
+
+      issuerAuthClaimNonRevMtp,
+      issuerAuthClaimIncMtp,
 
       signature: signature,
 
@@ -526,6 +537,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       issuerAuthClaim: unmarshalBinary(
         Hex.decodeString(credentialSigProof.issuerData.authCoreClaim),
       ),
+
+      issuerAuthClaimNonRevMtpAux,
     }
   }
 

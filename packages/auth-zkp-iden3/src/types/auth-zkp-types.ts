@@ -58,12 +58,13 @@ export interface VerifiableCredentials<T extends QueryVariableNameAbstract> {
           issuerData: IssuerData
           signature: string
           type: string
+          issuerProofUpdateUrl: string
         },
         /**
          * Used to generate MTP proofs
          */
         {
-          id: string // ?
+          id: string
           coreClaim: string
           issuerData: IssuerData
           mtp: Proof
