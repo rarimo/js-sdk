@@ -1,4 +1,6 @@
-import { Proof, ZERO_HASH } from '@iden3/js-merkletree'
+import { newHashFromHex, Proof, ZERO_HASH } from '@iden3/js-merkletree'
+
+import type { ClaimStatusMtp } from '@/types'
 
 export const ensureArraySize = (arr: string[], size: number): string[] => {
   if (arr.length < size) {
@@ -8,7 +10,7 @@ export const ensureArraySize = (arr: string[], size: number): string[] => {
   return arr
 }
 
-export const getNodeAuxValue = (p: Proof | undefined) => {
+export const getNodeAuxValue = (p: Proof | ClaimStatusMtp | undefined) => {
   // proof of inclusion
   if (p?.existence) {
     return {
@@ -21,8 +23,14 @@ export const getNodeAuxValue = (p: Proof | undefined) => {
   // proof of non-inclusion (NodeAux exists)
   if (p?.nodeAux?.value !== undefined && p?.nodeAux?.key !== undefined) {
     return {
-      key: p.nodeAux.key,
-      value: p.nodeAux.value,
+      key:
+        typeof p.nodeAux.key === 'string'
+          ? newHashFromHex(p.nodeAux.key)
+          : p.nodeAux.key,
+      value:
+        typeof p.nodeAux.value === 'string'
+          ? newHashFromHex(p.nodeAux.value)
+          : p.nodeAux.value,
       noAux: '0',
     }
   }

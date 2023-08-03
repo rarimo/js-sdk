@@ -1,4 +1,3 @@
-import type { Hash, Proof } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import type { Identity } from '@rarimo/identity-gen-iden3'
 import type { RawProvider } from '@rarimo/provider'
@@ -25,16 +24,27 @@ export type ZkpGenCreateOpts<T extends QueryVariableNameAbstract> = {
   query: ZkpGenQuery<T>
 }
 
-export type IssuerState = {
-  claimsTreeRoot: Hash
-  revocationTreeRoot: Hash
-  rootOfRoots: Hash
-  state: Hash
+export type ClaimStatusMtp = {
+  existence: boolean
+  depth: number
+  notEmpties: Uint8Array
+  siblings: string[]
+  nodeAux:
+    | {
+        key: string
+        value: string
+      }
+    | undefined
 }
 
 export type ClaimStatus = {
-  issuer: IssuerState
-  mtp: Proof
+  issuer: {
+    claimsTreeRoot: string
+    revocationTreeRoot: string
+    rootOfRoots: string
+    state: string
+  }
+  mtp: ClaimStatusMtp
 }
 
 export type ClaimNonRevStatus = ClaimStatus

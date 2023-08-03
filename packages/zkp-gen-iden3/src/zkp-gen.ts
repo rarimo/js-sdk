@@ -223,8 +223,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         32,
       ),
       claimPathMtpNoAux: claimPathMtpAux.noAux,
-      claimPathMtpAuxHi: claimPathMtpAux.key,
-      claimPathMtpAuxHv: claimPathMtpAux.value,
+      claimPathMtpAuxHi: claimPathMtpAux.key.string(),
+      claimPathMtpAuxHv: claimPathMtpAux.value.string(),
       claimPathKey: (await path.mtEntry()).toString(),
       claimPathValue: claimProof.value?.value,
 
@@ -240,12 +240,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       /* issuerClaim non rev inputs */
       isRevocationChecked: '1',
       issuerClaimNonRevMtp: ensureArraySize(
-        issuerClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+        issuerClaimNonRevMtp.mtp.siblings,
         40,
       ),
       issuerClaimNonRevMtpNoAux: issuerClaimNonRevMtpAux.noAux,
-      issuerClaimNonRevMtpAuxHi: issuerClaimNonRevMtpAux.key,
-      issuerClaimNonRevMtpAuxHv: issuerClaimNonRevMtpAux.value,
+      issuerClaimNonRevMtpAuxHi: issuerClaimNonRevMtpAux.key.string(),
+      issuerClaimNonRevMtpAuxHv: issuerClaimNonRevMtpAux.value.string(),
       issuerClaimNonRevClaimsTreeRoot: newHashFromHex(
         String(issuerClaimNonRevMtp.issuer.claimsTreeRoot),
       ).string(),
@@ -268,16 +268,15 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         issuerClaimMtp: ensureArraySize(
-          mtpProof.issuerClaimIncMtp.mtp.siblings.map(el => el.string()),
+          mtpProof.issuerClaimIncMtp.mtp.siblings,
           40,
         ),
         issuerClaimClaimsTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot.string(),
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot,
         issuerClaimRevTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot.string(),
-        issuerClaimRootsTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.rootOfRoots.string(),
-        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state.string(),
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot,
+        issuerClaimRootsTreeRoot: mtpProof.issuerClaimIncMtp.issuer.rootOfRoots,
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state,
       },
       [CircuitId.AtomicQueryMTPV2OnChain]: {
         ...commonInputs,
@@ -328,16 +327,15 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
 
         issuerClaimMtp: ensureArraySize(
-          mtpProof.issuerClaimIncMtp.mtp.siblings.map(el => el.string()),
+          mtpProof.issuerClaimIncMtp.mtp.siblings,
           40,
         ),
         issuerClaimClaimsTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot.string(),
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot,
         issuerClaimRevTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot.string(),
-        issuerClaimRootsTreeRoot:
-          mtpProof.issuerClaimIncMtp.issuer.rootOfRoots.string(),
-        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state.string(),
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot,
+        issuerClaimRootsTreeRoot: mtpProof.issuerClaimIncMtp.issuer.rootOfRoots,
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state,
       },
       [CircuitId.AtomicQuerySigV2]: {
         ...commonInputs,
@@ -346,28 +344,29 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
         issuerAuthClaimMtp: ensureArraySize(
-          sigProof.issuerAuthClaimIncMtp.mtp.siblings.map(el => el.string()),
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings,
           40,
         ),
         issuerAuthClaimsTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot,
         issuerAuthRevTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
         issuerAuthRootsTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
         issuerAuthClaimNonRevMtp: ensureArraySize(
-          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
           40,
         ),
         issuerAuthClaimNonRevMtpNoAux:
           sigProof.issuerAuthClaimNonRevMtpAux.noAux,
-        issuerAuthClaimNonRevMtpAuxHi: sigProof.issuerAuthClaimNonRevMtpAux.key,
+        issuerAuthClaimNonRevMtpAuxHi:
+          sigProof.issuerAuthClaimNonRevMtpAux.key.string(),
         issuerAuthClaimNonRevMtpAuxHv:
-          sigProof.issuerAuthClaimNonRevMtpAux.value,
+          sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
@@ -427,28 +426,29 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
         issuerAuthClaimMtp: ensureArraySize(
-          sigProof.issuerAuthClaimIncMtp.mtp.siblings.map(el => el.string()),
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings,
           40,
         ),
         issuerAuthClaimsTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot,
         issuerAuthRevTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
         issuerAuthRootsTreeRoot:
-          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots.string(),
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
         issuerAuthClaimNonRevMtp: ensureArraySize(
-          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings.map(el => el.string()),
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
           40,
         ),
         issuerAuthClaimNonRevMtpNoAux:
           sigProof.issuerAuthClaimNonRevMtpAux.noAux,
-        issuerAuthClaimNonRevMtpAuxHi: sigProof.issuerAuthClaimNonRevMtpAux.key,
+        issuerAuthClaimNonRevMtpAuxHi:
+          sigProof.issuerAuthClaimNonRevMtpAux.key.string(),
         issuerAuthClaimNonRevMtpAuxHv:
-          sigProof.issuerAuthClaimNonRevMtpAux.value,
+          sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
 
         // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
@@ -525,9 +525,52 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       credentialSigProof.issuerProofUpdateUrl,
     )
 
+    issuerAuthClaimIncMtp.issuer = {
+      claimsTreeRoot: (typeof issuerAuthClaimIncMtp.issuer.claimsTreeRoot ===
+      'string'
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.claimsTreeRoot)
+        : issuerAuthClaimIncMtp.issuer.claimsTreeRoot
+      ).string(),
+      revocationTreeRoot: (typeof issuerAuthClaimIncMtp.issuer
+        .revocationTreeRoot === 'string'
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.revocationTreeRoot)
+        : issuerAuthClaimIncMtp.issuer.revocationTreeRoot
+      ).string(),
+      rootOfRoots: (typeof issuerAuthClaimIncMtp.issuer.rootOfRoots === 'string'
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.rootOfRoots)
+        : issuerAuthClaimIncMtp.issuer.rootOfRoots
+      ).string(),
+      state: (typeof issuerAuthClaimIncMtp.issuer.state === 'string'
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.state)
+        : issuerAuthClaimIncMtp.issuer.state
+      ).string(),
+    }
+
     const issuerAuthClaimNonRevMtp = await this.#requestClaimRevocationStatus(
       credentialSigProof.issuerData.credentialStatus.id,
     )
+
+    issuerAuthClaimNonRevMtp.issuer = {
+      claimsTreeRoot: (typeof issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot ===
+      'string'
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot)
+        : issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot
+      ).string(),
+      revocationTreeRoot: (typeof issuerAuthClaimNonRevMtp.issuer
+        .revocationTreeRoot === 'string'
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot)
+        : issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot
+      ).string(),
+      rootOfRoots: (typeof issuerAuthClaimNonRevMtp.issuer.rootOfRoots ===
+      'string'
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.rootOfRoots)
+        : issuerAuthClaimNonRevMtp.issuer.rootOfRoots
+      ).string(),
+      state: (typeof issuerAuthClaimNonRevMtp.issuer.state === 'string'
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.state)
+        : issuerAuthClaimNonRevMtp.issuer.state
+      ).string(),
+    }
 
     const decodedSignature = Hex.decodeString(credentialSigProof.signature)
     const signature = Signature.newFromCompressed(decodedSignature)
@@ -559,6 +602,27 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const issuerClaimIncMtp = await this.#requestClaimRevocationStatus(
       mtpProof.id,
     )
+
+    issuerClaimIncMtp.issuer = {
+      claimsTreeRoot: (typeof issuerClaimIncMtp.issuer.claimsTreeRoot ===
+      'string'
+        ? newHashFromHex(issuerClaimIncMtp.issuer.claimsTreeRoot)
+        : issuerClaimIncMtp.issuer.claimsTreeRoot
+      ).string(),
+      revocationTreeRoot: (typeof issuerClaimIncMtp.issuer
+        .revocationTreeRoot === 'string'
+        ? newHashFromHex(issuerClaimIncMtp.issuer.revocationTreeRoot)
+        : issuerClaimIncMtp.issuer.revocationTreeRoot
+      ).string(),
+      rootOfRoots: (typeof issuerClaimIncMtp.issuer.rootOfRoots === 'string'
+        ? newHashFromHex(issuerClaimIncMtp.issuer.rootOfRoots)
+        : issuerClaimIncMtp.issuer.rootOfRoots
+      ).string(),
+      state: (typeof issuerClaimIncMtp.issuer.state === 'string'
+        ? newHashFromHex(issuerClaimIncMtp.issuer.state)
+        : issuerClaimIncMtp.issuer.state
+      ).string(),
+    }
 
     return {
       proof: issuerClaimIncMtp.mtp,
