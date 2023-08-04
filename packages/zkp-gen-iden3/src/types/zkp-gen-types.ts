@@ -63,8 +63,7 @@ export type Config = {
   RAW_PROVIDER?: RawProvider
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
-  CIRCUIT_WASM_URL: string
-  CIRCUIT_FINAL_KEY_URL: string
+
   CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL: string
   CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL: string
   CIRCUIT_SIG_V2_WASM_URL: string

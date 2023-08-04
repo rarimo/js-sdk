@@ -48,30 +48,26 @@ let globalConfig: Config = {
   RAW_PROVIDER: undefined,
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
-  CIRCUIT_WASM_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit.wasm',
-  CIRCUIT_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit_final.zkey',
 
   CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit.wasm',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit.wasm',
   CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit_final.zkey',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit_final.zkey',
 
   CIRCUIT_SIG_V2_WASM_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit.wasm',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit.wasm',
   CIRCUIT_SIG_V2_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit_final.zkey',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit_final.zkey',
 
   CIRCUIT_MTP_V2_WASM_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit.wasm',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit.wasm',
   CIRCUIT_MTP_V2_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit_final.zkey',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit_final.zkey',
 
   CIRCUIT_MTP_V2_ON_CHAIN_WASM_URL:
-    'https://raw.githubusercontent.com/Electr1Xx/circuits/main/credentialAtomicQueryMTPV2OnChain/circuit.wasm',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2OnChain/circuit.wasm',
   CIRCUIT_MTP_V2_ON_CHAIN_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/Electr1Xx/circuits/main/credentialAtomicQueryMTPV2OnChain/circuit_final.zkey',
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2OnChain/circuit_final.zkey',
 
   CLAIM_PROOF_SIBLINGS_COUNT: 32,
 }
