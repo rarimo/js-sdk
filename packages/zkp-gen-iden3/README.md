@@ -1,4 +1,5 @@
 # @rarimo/zkp-gen-iden3
+
 Tools that generate zero-knowledge proofs for the Iden3 protocol.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/zkp-gen-iden3)
@@ -17,9 +18,9 @@ yarn add @rarimo/zkp-gen-iden3
 ### Usage
 
 ```ts
-import {CircuitId, ZkpGen, ZkpOperators} from '@rarimo/zkp-gen-iden3'
-import {type Identity} from '@rarimo/identity-gen-iden3'
-import {type VerifiableCredentials} from '@rarimo/auth-zkp-iden3'
+import { CircuitId, ZkpGen, ZkpOperators } from '@rarimo/zkp-gen-iden3'
+import { type Identity } from '@rarimo/identity-gen-iden3'
+import { type VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 
 /**
  * define type with variable to proof,
@@ -89,6 +90,7 @@ const getZkProof = async (
 ```
 
 ## Known Issues
+
 [Read here](https://github.com/rarimo/js-sdk/blob/main/README.md#working-with-zkp-iden3-packages)
 
 ## License
