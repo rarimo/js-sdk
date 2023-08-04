@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/nft-checkout",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "Features of the Rarimo SDK that create cross-chain transactions based on the Rarimo protocol.",
   "repository": {
     "type": "git",
@@ -50,9 +50,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^1.0.0-rc.4",
-    "@distributedlab/reactivity": "^1.0.0-rc.4",
-    "@distributedlab/tools": "^1.0.0-rc.4",
+    "@distributedlab/fetcher": "^1.0.0-rc.6",
+    "@distributedlab/reactivity": "^1.0.0-rc.6",
+    "@distributedlab/tools": "^1.0.0-rc.6",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",

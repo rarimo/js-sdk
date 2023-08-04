@@ -679,40 +679,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@distributedlab/fetcher@npm:1.0.0-rc.4, @distributedlab/fetcher@npm:^1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "@distributedlab/fetcher@npm:1.0.0-rc.4"
+"@distributedlab/fetcher@npm:1.0.0-rc.6, @distributedlab/fetcher@npm:^1.0.0-rc.6":
+  version: 1.0.0-rc.6
+  resolution: "@distributedlab/fetcher@npm:1.0.0-rc.6"
   dependencies:
     uuid: ^9.0.0
-  checksum: 68dd01cc1db26bc5f15d86cdbc08bad24c580b514a124ecaf10cb6d98c994845cb8ce3512e908d45a62605c6bc301887fdb2a2b4da04de978d8ab94c429c8886
+  checksum: f70fdf9bca4fdcc780a1a22fbb9ad9c53a3ea8d134e39260092bad1b3747f3cd20c871df16fb87b80b5311971f6bf31450c5f44e8f8613681f718142e8dcdfcc
   languageName: node
   linkType: hard
 
-"@distributedlab/jac@npm:^1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "@distributedlab/jac@npm:1.0.0-rc.4"
+"@distributedlab/jac@npm:^1.0.0-rc.6":
+  version: 1.0.0-rc.6
+  resolution: "@distributedlab/jac@npm:1.0.0-rc.6"
   dependencies:
-    "@distributedlab/fetcher": 1.0.0-rc.4
+    "@distributedlab/fetcher": 1.0.0-rc.6
     lodash: ^4.17.21
-  checksum: 2725ac45fd1a689f6c81df7fc3ae09f54815427a5d474ce8388c3b2f199b781b330ea2f4c6d2bf8127278749f05fa2b3c1abe10c8cf7b38da88d0e90290fdd58
+  checksum: 7ddee40327bb6f7f884d9787c46606221de66b664bc34721b0b2fadc9048ff7382321a73fa333bd526718028eb553fcb1b0a241eab744bbfef768417c6c29bfd
   languageName: node
   linkType: hard
 
-"@distributedlab/reactivity@npm:^1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "@distributedlab/reactivity@npm:1.0.0-rc.4"
-  checksum: 0ab2eb6c3885ec572d44d02ddfb3bf23c21aaf136948f5e48e752eb1e2e9400079b1e727d466d7553b2b2c69d80e4e971505d99af73ea1623e351d8ce32cf874
+"@distributedlab/reactivity@npm:^1.0.0-rc.6":
+  version: 1.0.0-rc.6
+  resolution: "@distributedlab/reactivity@npm:1.0.0-rc.6"
+  checksum: 166f5a50610b6bcdce6665943ddc5a87a89c63bde7e54a3ebdb0624f3e2cd439e4fc7f3b0140418cfca15add7b594b97bec1be4d3e8766e820572c63b2b2b692
   languageName: node
   linkType: hard
 
-"@distributedlab/tools@npm:^1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "@distributedlab/tools@npm:1.0.0-rc.4"
+"@distributedlab/tools@npm:^1.0.0-rc.6":
+  version: 1.0.0-rc.6
+  resolution: "@distributedlab/tools@npm:1.0.0-rc.6"
   dependencies:
     bignumber.js: ^9.1.1
     dayjs: ^1.11.7
     tslib: ^2.5.0
-  checksum: 0d58629711585ae8811d1a54f05eec3e2aa74b4f18b7dfdc7c03fd7431cda9379450482545c1516dbc675d1b6a0ddd39f24509eb3e137b422a0acaa8db6731bb
+  checksum: f9a48e8defa095671979c2dfc36420421530738ed242f0580af9b21b7d5de3bf57ad93cfd3452a5ff60904580e95181a86ce61cddc9d0e1ab723ea63853bd698
   languageName: node
   linkType: hard
 
@@ -2402,7 +2402,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/auth-zkp-iden3@workspace:packages/auth-zkp-iden3"
   dependencies:
-    "@distributedlab/fetcher": ^1.0.0-rc.4
+    "@distributedlab/fetcher": ^1.0.0-rc.6
     "@iden3/js-crypto": ^1.0.0-beta.1
     "@iden3/js-iden3-core": ^1.0.0-beta.2
     "@iden3/js-jwz": ^1.0.0-beta.2
@@ -2429,8 +2429,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/bridge@workspace:packages/bridge"
   dependencies:
-    "@distributedlab/reactivity": ^1.0.0-rc.4
-    "@distributedlab/tools": ^1.0.0-rc.4
+    "@distributedlab/reactivity": ^1.0.0-rc.6
+    "@distributedlab/tools": ^1.0.0-rc.6
     "@rarimo/provider": "workspace:^"
     "@rarimo/shared": "workspace:^"
     "@swc/cli": ^0.1.62
@@ -2450,8 +2450,8 @@ __metadata:
     "@cosmjs/launchpad": ^0.27.1
     "@cosmjs/proto-signing": ^0.31.0
     "@cosmjs/stargate": ^0.31.0
-    "@distributedlab/fetcher": ^1.0.0-rc.4
-    "@distributedlab/reactivity": ^1.0.0-rc.4
+    "@distributedlab/fetcher": ^1.0.0-rc.6
+    "@distributedlab/reactivity": ^1.0.0-rc.6
     "@keplr-wallet/types": ^0.12.16
     "@rarimo/shared": "workspace:^"
     "@swc/cli": ^0.1.62
@@ -2488,9 +2488,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/nft-checkout@workspace:packages/nft-checkout"
   dependencies:
-    "@distributedlab/fetcher": ^1.0.0-rc.4
-    "@distributedlab/reactivity": ^1.0.0-rc.4
-    "@distributedlab/tools": ^1.0.0-rc.4
+    "@distributedlab/fetcher": ^1.0.0-rc.6
+    "@distributedlab/reactivity": ^1.0.0-rc.6
+    "@distributedlab/tools": ^1.0.0-rc.6
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@ethersproject/providers": ^5.7.2
@@ -2512,7 +2512,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/provider@workspace:packages/provider"
   dependencies:
-    "@distributedlab/tools": ^1.0.0-rc.4
+    "@distributedlab/tools": ^1.0.0-rc.6
     "@ethersproject/abstract-provider": ^5.7.0
     "@ethersproject/properties": ^5.7.0
     "@rarimo/shared": "workspace:^"
@@ -2649,7 +2649,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/shared-zkp-iden3@workspace:packages/shared-zkp-iden3"
   dependencies:
-    "@distributedlab/fetcher": ^1.0.0-rc.4
+    "@distributedlab/fetcher": ^1.0.0-rc.6
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
     "@swc/jest": ^0.2.26
@@ -2666,8 +2666,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/shared@workspace:packages/shared"
   dependencies:
-    "@distributedlab/jac": ^1.0.0-rc.4
-    "@distributedlab/tools": ^1.0.0-rc.4
+    "@distributedlab/jac": ^1.0.0-rc.6
+    "@distributedlab/tools": ^1.0.0-rc.6
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.53
     "@swc/jest": ^0.2.26
@@ -2681,7 +2681,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/swap@workspace:packages/swap"
   dependencies:
-    "@distributedlab/reactivity": ^1.0.0-rc.4
+    "@distributedlab/reactivity": ^1.0.0-rc.6
     "@rarimo/bridge": "workspace:^"
     "@rarimo/provider": "workspace:^"
     "@rarimo/shared": "workspace:^"
@@ -2698,7 +2698,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rarimo/zkp-gen-iden3@workspace:packages/zkp-gen-iden3"
   dependencies:
-    "@distributedlab/fetcher": ^1.0.0-rc.4
+    "@distributedlab/fetcher": ^1.0.0-rc.6
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@iden3/js-crypto": ^1.0.0-beta.1

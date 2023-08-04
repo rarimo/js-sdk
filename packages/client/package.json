@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/client",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "The Rarimo chain client",
   "repository": {
     "type": "git",
@@ -65,8 +65,8 @@
     "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/proto-signing": "^0.31.0",
     "@cosmjs/stargate": "^0.31.0",
-    "@distributedlab/fetcher": "^1.0.0-rc.4",
-    "@distributedlab/reactivity": "^1.0.0-rc.4",
+    "@distributedlab/fetcher": "^1.0.0-rc.6",
+    "@distributedlab/reactivity": "^1.0.0-rc.6",
     "@rarimo/shared": "workspace:^"
   },
   "typedocOptions": {

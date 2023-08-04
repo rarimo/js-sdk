@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/swap",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "Internal tools that other Rarimo packages use to swap tokens.",
   "repository": {
     "type": "git",
@@ -61,7 +61,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^1.0.0-rc.4",
+    "@distributedlab/reactivity": "^1.0.0-rc.6",
     "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^"
