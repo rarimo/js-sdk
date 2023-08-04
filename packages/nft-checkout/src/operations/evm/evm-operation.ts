@@ -321,17 +321,20 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   }
 
   return toRaw(
-    extend(bus, {
-      provider,
-      isInitialized,
-      status,
-      chainFrom,
-      init,
-      getSupportedChains,
-      getPaymentTokens,
-      getDestinationTx,
-      checkout: checkout as CheckoutOperation['checkout'],
-      estimatePrice: estimatePrice as CheckoutOperation['estimatePrice'],
-    }),
+    extend(
+      {
+        provider,
+        isInitialized,
+        status,
+        chainFrom,
+        init,
+        getSupportedChains,
+        getPaymentTokens,
+        getDestinationTx,
+        checkout: checkout as CheckoutOperation['checkout'],
+        estimatePrice: estimatePrice as CheckoutOperation['estimatePrice'],
+      },
+      bus,
+    ),
   )
 }

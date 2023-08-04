@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
-  "version": "2.0.0-rc.9",
+  "version": "2.0.0-rc.11",
   "description": "Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.",
   "repository": {
     "type": "git",
@@ -59,7 +59,7 @@
     "tsc-alias": "^1.8.2"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^1.0.0-rc.1",
+    "@distributedlab/fetcher": "^1.0.0-rc.4",
     "@rarimo/identity-gen-iden3": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared-zkp-iden3": "workspace:^",
