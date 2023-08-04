@@ -1,4 +1,5 @@
 import { newHashFromHex, Proof, ZERO_HASH } from '@iden3/js-merkletree'
+import { isString } from '@rarimo/shared'
 
 import type { ClaimStatusMtp } from '@/types'
 
@@ -23,14 +24,12 @@ export const getNodeAuxValue = (p: Proof | ClaimStatusMtp | undefined) => {
   // proof of non-inclusion (NodeAux exists)
   if (p?.nodeAux?.value !== undefined && p?.nodeAux?.key !== undefined) {
     return {
-      key:
-        typeof p.nodeAux.key === 'string'
-          ? newHashFromHex(p.nodeAux.key)
-          : p.nodeAux.key,
-      value:
-        typeof p.nodeAux.value === 'string'
-          ? newHashFromHex(p.nodeAux.value)
-          : p.nodeAux.value,
+      key: isString(p.nodeAux.key)
+        ? newHashFromHex(p.nodeAux.key)
+        : p.nodeAux.key,
+      value: isString(p.nodeAux.value)
+        ? newHashFromHex(p.nodeAux.value)
+        : p.nodeAux.value,
       noAux: '0',
     }
   }

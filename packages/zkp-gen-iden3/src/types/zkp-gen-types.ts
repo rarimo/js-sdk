@@ -29,12 +29,10 @@ export type ClaimStatusMtp = {
   depth: number
   notEmpties: Uint8Array
   siblings: string[]
-  nodeAux:
-    | {
-        key: string
-        value: string
-      }
-    | undefined
+  nodeAux?: {
+    key: string
+    value: string
+  }
 }
 
 export type ClaimStatus = {

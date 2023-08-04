@@ -17,12 +17,13 @@ import {
 import { proving, type ZKProof } from '@iden3/js-jwz'
 import {
   circomSiblingsFromSiblings,
+  type Hash,
   newHashFromHex,
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import { type Identity } from '@rarimo/identity-gen-iden3'
-import { omit } from '@rarimo/shared'
+import { isString, omit } from '@rarimo/shared'
 import {
   getBytesFile,
   getGISTProof,
@@ -508,23 +509,23 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
 
     issuerAuthClaimIncMtp.issuer = {
-      claimsTreeRoot: (typeof issuerAuthClaimIncMtp.issuer.claimsTreeRoot ===
-      'string'
+      claimsTreeRoot: (isString(issuerAuthClaimIncMtp.issuer.claimsTreeRoot)
         ? newHashFromHex(issuerAuthClaimIncMtp.issuer.claimsTreeRoot)
-        : issuerAuthClaimIncMtp.issuer.claimsTreeRoot
+        : (issuerAuthClaimIncMtp.issuer.claimsTreeRoot as unknown as Hash)
       ).string(),
-      revocationTreeRoot: (typeof issuerAuthClaimIncMtp.issuer
-        .revocationTreeRoot === 'string'
+      revocationTreeRoot: (isString(
+        issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
+      )
         ? newHashFromHex(issuerAuthClaimIncMtp.issuer.revocationTreeRoot)
-        : issuerAuthClaimIncMtp.issuer.revocationTreeRoot
+        : (issuerAuthClaimIncMtp.issuer.revocationTreeRoot as unknown as Hash)
       ).string(),
-      rootOfRoots: (typeof issuerAuthClaimIncMtp.issuer.rootOfRoots === 'string'
+      rootOfRoots: (isString(issuerAuthClaimIncMtp.issuer.rootOfRoots)
         ? newHashFromHex(issuerAuthClaimIncMtp.issuer.rootOfRoots)
-        : issuerAuthClaimIncMtp.issuer.rootOfRoots
+        : (issuerAuthClaimIncMtp.issuer.rootOfRoots as unknown as Hash)
       ).string(),
-      state: (typeof issuerAuthClaimIncMtp.issuer.state === 'string'
+      state: (isString(issuerAuthClaimIncMtp.issuer.state)
         ? newHashFromHex(issuerAuthClaimIncMtp.issuer.state)
-        : issuerAuthClaimIncMtp.issuer.state
+        : (issuerAuthClaimIncMtp.issuer.state as unknown as Hash)
       ).string(),
     }
 
@@ -533,24 +534,24 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
 
     issuerAuthClaimNonRevMtp.issuer = {
-      claimsTreeRoot: (typeof issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot ===
-      'string'
+      claimsTreeRoot: (isString(issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot)
         ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot)
-        : issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot
+        : (issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot as unknown as Hash)
       ).string(),
-      revocationTreeRoot: (typeof issuerAuthClaimNonRevMtp.issuer
-        .revocationTreeRoot === 'string'
+      revocationTreeRoot: (isString(
+        issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot,
+      )
         ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot)
-        : issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot
+        : (issuerAuthClaimNonRevMtp.issuer
+            .revocationTreeRoot as unknown as Hash)
       ).string(),
-      rootOfRoots: (typeof issuerAuthClaimNonRevMtp.issuer.rootOfRoots ===
-      'string'
+      rootOfRoots: (isString(issuerAuthClaimNonRevMtp.issuer.rootOfRoots)
         ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.rootOfRoots)
-        : issuerAuthClaimNonRevMtp.issuer.rootOfRoots
+        : (issuerAuthClaimNonRevMtp.issuer.rootOfRoots as unknown as Hash)
       ).string(),
-      state: (typeof issuerAuthClaimNonRevMtp.issuer.state === 'string'
+      state: (isString(issuerAuthClaimNonRevMtp.issuer.state)
         ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.state)
-        : issuerAuthClaimNonRevMtp.issuer.state
+        : (issuerAuthClaimNonRevMtp.issuer.state as unknown as Hash)
       ).string(),
     }
 
@@ -586,23 +587,21 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
 
     issuerClaimIncMtp.issuer = {
-      claimsTreeRoot: (typeof issuerClaimIncMtp.issuer.claimsTreeRoot ===
-      'string'
+      claimsTreeRoot: (isString(issuerClaimIncMtp.issuer.claimsTreeRoot)
         ? newHashFromHex(issuerClaimIncMtp.issuer.claimsTreeRoot)
-        : issuerClaimIncMtp.issuer.claimsTreeRoot
+        : (issuerClaimIncMtp.issuer.claimsTreeRoot as unknown as Hash)
       ).string(),
-      revocationTreeRoot: (typeof issuerClaimIncMtp.issuer
-        .revocationTreeRoot === 'string'
+      revocationTreeRoot: (isString(issuerClaimIncMtp.issuer.revocationTreeRoot)
         ? newHashFromHex(issuerClaimIncMtp.issuer.revocationTreeRoot)
-        : issuerClaimIncMtp.issuer.revocationTreeRoot
+        : (issuerClaimIncMtp.issuer.revocationTreeRoot as unknown as Hash)
       ).string(),
-      rootOfRoots: (typeof issuerClaimIncMtp.issuer.rootOfRoots === 'string'
+      rootOfRoots: (isString(issuerClaimIncMtp.issuer.rootOfRoots)
         ? newHashFromHex(issuerClaimIncMtp.issuer.rootOfRoots)
-        : issuerClaimIncMtp.issuer.rootOfRoots
+        : (issuerClaimIncMtp.issuer.rootOfRoots as unknown as Hash)
       ).string(),
-      state: (typeof issuerClaimIncMtp.issuer.state === 'string'
+      state: (isString(issuerClaimIncMtp.issuer.state)
         ? newHashFromHex(issuerClaimIncMtp.issuer.state)
-        : issuerClaimIncMtp.issuer.state
+        : (issuerClaimIncMtp.issuer.state as unknown as Hash)
       ).string(),
     }
 
