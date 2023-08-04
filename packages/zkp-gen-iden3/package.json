@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/zkp-gen-iden3",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "Tools that generate zero-knowledge proofs for the Iden3 protocol.",
   "repository": {
     "type": "git",
@@ -50,7 +50,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@iden3/js-crypto": "^1.0.0-beta.1",
-    "@iden3/js-iden3-core": "^1.0.0-beta.2",
+    "@iden3/js-iden3-core": "1.0.0-beta.2",
     "@iden3/js-jsonld-merklization": "^1.0.0-beta.14",
     "@iden3/js-jwz": "^1.0.0-beta.2",
     "@iden3/js-merkletree": "^1.0.0-beta.4",
@@ -71,7 +71,7 @@
   },
   "peerDependencies": {
     "@iden3/js-crypto": "^1.0.0-beta.1",
-    "@iden3/js-iden3-core": "^1.0.0-beta.2",
+    "@iden3/js-iden3-core": "1.0.0-beta.2",
     "@iden3/js-jsonld-merklization": "^1.0.0-beta.14",
     "@iden3/js-jwz": "^1.0.0-beta.2",
     "@iden3/js-merkletree": "^1.0.0-beta.4"

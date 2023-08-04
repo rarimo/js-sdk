@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.",
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@iden3/js-crypto": "^1.0.0-beta.1",
-    "@iden3/js-iden3-core": "^1.0.0-beta.2",
+    "@iden3/js-iden3-core": "1.0.0-beta.2",
     "@iden3/js-jwz": "^1.0.0-beta.2",
     "@iden3/js-merkletree": "^1.0.0-beta.4",
     "@swc/cli": "^0.1.62",
@@ -67,7 +67,7 @@
   },
   "peerDependencies": {
     "@iden3/js-crypto": "^1.0.0-beta.1",
-    "@iden3/js-iden3-core": "^1.0.0-beta.2",
+    "@iden3/js-iden3-core": "1.0.0-beta.2",
     "@iden3/js-jwz": "^1.0.0-beta.2",
     "@iden3/js-merkletree": "^1.0.0-beta.4"
   },
