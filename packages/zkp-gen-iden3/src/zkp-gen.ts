@@ -281,24 +281,20 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       [CircuitId.AtomicQueryMTPV2OnChain]: {
         ...commonInputs,
 
-        // TODO: onChain only?
         /* user state */
         userState: this.identity.treeState.state,
         userClaimsTreeRoot: this.identity.treeState.claimsRoot,
         userRevTreeRoot: this.identity.treeState.revocationRoot,
         userRootsTreeRoot: this.identity.treeState.rootOfRoots,
 
-        // TODO: onChain only?
         /* Auth claim */
         authClaim: [...this.identity.authClaimInput],
 
-        // TODO: onChain only?
         /* auth claim. merkle tree proof of inclusion to claim tree */
         authClaimIncMtp: [
           ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
         ],
 
-        // TODO: onChain only?
         /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
         authClaimNonRevMtp: [
           ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
@@ -307,14 +303,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         authClaimNonRevMtpAuxHi: authClaimNonRevMtpAux.key.string(),
         authClaimNonRevMtpAuxHv: authClaimNonRevMtpAux.value.string(),
 
-        // TODO: onChain only?
         /* challenge signature */
         challenge: challenge.toString(),
         challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
         challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
         challengeSignatureS: signatureChallenge!.S.toString(),
 
-        // TODO: onChain only?
         // global identity state tree on chain
         gistRoot: gistInfo?.root.toString(),
         /* proof of inclusion or exclusion of the user in the global state */
@@ -340,7 +334,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       [CircuitId.AtomicQuerySigV2]: {
         ...commonInputs,
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
         issuerAuthClaimMtp: ensureArraySize(
@@ -355,7 +348,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
           sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
         issuerAuthClaimNonRevMtp: ensureArraySize(
           sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
@@ -368,7 +360,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         issuerAuthClaimNonRevMtpAuxHv:
           sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
         issuerClaimSignatureR8x: sigProof.signature.R8[0].toString(),
         issuerClaimSignatureR8y: sigProof.signature.R8[1].toString(),
@@ -377,24 +368,20 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       [CircuitId.AtomicQuerySigV2OnChain]: {
         ...commonInputs,
 
-        // TODO: onChain only?
         /* user state */
         userState: this.identity.treeState.state,
         userClaimsTreeRoot: this.identity.treeState.claimsRoot,
         userRevTreeRoot: this.identity.treeState.revocationRoot,
         userRootsTreeRoot: this.identity.treeState.rootOfRoots,
 
-        // TODO: onChain only?
         /* Auth claim */
         authClaim: [...this.identity.authClaimInput],
 
-        // TODO: onChain only?
         /* auth claim. merkle tree proof of inclusion to claim tree */
         authClaimIncMtp: [
           ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
         ],
 
-        // TODO: onChain only?
         /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
         authClaimNonRevMtp: [
           ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
@@ -403,14 +390,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         authClaimNonRevMtpAuxHi: authClaimNonRevMtpAux.key.string(),
         authClaimNonRevMtpAuxHv: authClaimNonRevMtpAux.value.string(),
 
-        // TODO: onChain only?
         /* challenge signature */
         challenge: challenge.toString(),
         challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
         challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
         challengeSignatureS: signatureChallenge!.S.toString(),
 
-        // TODO: onChain only?
         // global identity state tree on chain
         gistRoot: gistInfo?.root.toString(),
         /* proof of inclusion or exclusion of the user in the global state */
@@ -422,7 +407,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         gistMtpAuxHv: gistInfo?.auxValue.toString(),
         gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth proof of existence */
         issuerAuthClaim: sigProof.issuerAuthClaim,
         issuerAuthClaimMtp: ensureArraySize(
@@ -437,7 +421,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
           sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
         // issuerAuthState: signatureProof.issuerState.state.string(),
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuer auth claim non rev proof */
         issuerAuthClaimNonRevMtp: ensureArraySize(
           sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
@@ -450,7 +433,6 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         issuerAuthClaimNonRevMtpAuxHv:
           sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
 
-        // TODO: AtomicQuerySigV2 & AtomicQuerySigV2OnChain only?
         /* issuerClaim signature */
         issuerClaimSignatureR8x: sigProof.signature.R8[0].toString(),
         issuerClaimSignatureR8y: sigProof.signature.R8[1].toString(),
