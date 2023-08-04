@@ -13,6 +13,7 @@ import {
   hashElems,
   InMemoryDB,
   Merkletree,
+  type Proof,
   type Siblings,
 } from '@iden3/js-merkletree'
 
@@ -41,6 +42,7 @@ export class Identity {
   public privateKeyHex = '' as string
   public id: Id = {} as Id
   public authClaimIncProofSiblings: Siblings = [] as Siblings
+  public authClaimNonRevProof?: Proof = {} as Proof
   public authClaimNonRevProofSiblings: Siblings = [] as Siblings
   public treeState: TreeState = {} as TreeState
   public coreAuthClaim: Claim = {} as Claim
@@ -129,6 +131,8 @@ export class Identity {
       this.coreAuthClaim.getRevocationNonce(),
       revocationsTreeRoot,
     )
+
+    this.authClaimNonRevProof = authClaimNonRevProof?.proof
 
     const authClaimNonRevProofSiblings = circomSiblingsFromSiblings(
       authClaimNonRevProof.proof.siblings,
