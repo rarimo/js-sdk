@@ -402,7 +402,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
 [Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.13...HEAD
-[2.0.0-rc.12]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.12...2.0.0-rc.13
+[2.0.0-rc.13]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.12...2.0.0-rc.13
 [2.0.0-rc.12]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.11...2.0.0-rc.12
 [2.0.0-rc.11]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.10...2.0.0-rc.11
 [2.0.0-rc.10]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.9...2.0.0-rc.10
