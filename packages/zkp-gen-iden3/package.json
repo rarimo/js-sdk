@@ -63,7 +63,9 @@
   },
   "dependencies": {
     "@distributedlab/fetcher": "^1.0.0-rc.6",
+    "@distributedlab/tools": "^1.0.0-rc.6",
     "@rarimo/auth-zkp-iden3": "workspace:^",
+    "@rarimo/client": "workspace:^",
     "@rarimo/identity-gen-iden3": "workspace:^",
     "@rarimo/shared": "workspace:^",
     "@rarimo/shared-zkp-iden3": "workspace:^",

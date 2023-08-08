@@ -1,4 +1,5 @@
 import { fetcher } from '@distributedlab/fetcher'
+import { Time } from '@distributedlab/tools'
 import { arrayify } from '@ethersproject/bytes'
 import { keccak256 } from '@ethersproject/keccak256'
 import { Hex, Signature } from '@iden3/js-crypto'
@@ -22,11 +23,14 @@ import {
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
+import type { OperationProof, RarimoQuerier } from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { isString, omit } from '@rarimo/shared'
 import {
   getBytesFile,
+  getCoreChainStateInfo,
   getGISTProof,
+  getGISTRootInfo,
   unmarshalBinary,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
@@ -44,7 +48,9 @@ import type {
 } from '@/types'
 
 let globalConfig: Config = {
-  RPC_URL: '',
+  TARGET_CHAIN_RPC_URL: '',
+  CORE_CHAIN_RPC_URL: '',
+
   RAW_PROVIDER: undefined,
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
@@ -82,6 +88,10 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public challenge = ''
 
   public subjectProof: ZKProof = {} as ZKProof
+
+  public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
+  public coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+  public operationProof?: OperationProof
 
   public static get config() {
     return globalConfig
@@ -149,8 +159,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const gistInfo = await getGISTProof({
       ...(ZkpGen.config.RAW_PROVIDER
         ? { rawProvider: ZkpGen.config.RAW_PROVIDER }
-        : ZkpGen.config.RPC_URL
-        ? { rpcUrl: ZkpGen.config.RPC_URL }
+        : ZkpGen.config.CORE_CHAIN_RPC_URL
+        ? { rpcUrl: ZkpGen.config.CORE_CHAIN_RPC_URL }
         : {}),
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
@@ -606,5 +616,31 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
       issuerClaimIncMtp,
     }
+  }
+
+  async loadStatesDetails(querier: RarimoQuerier) {
+    this.targetStateDetails = await getGISTRootInfo({
+      rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
+      contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
+    })
+
+    this.coreStateDetails = await getCoreChainStateInfo(
+      querier,
+      this.query.issuerId,
+    )
+
+    this.operationProof = await querier.getOperationProof(
+      this.coreStateDetails.lastUpdateOperationIndex,
+    )
+  }
+
+  async MerkleProof(querier: RarimoQuerier, issuerId: string) {
+    return querier.getMerkleProof(issuerId)
+  }
+
+  isStatesActual() {
+    return new Time(
+      this.targetStateDetails?.createdAtTimestamp?.toString(),
+    ).isSameOrAfter(new Time(this.coreStateDetails?.createdAtTimestamp))
   }
 }

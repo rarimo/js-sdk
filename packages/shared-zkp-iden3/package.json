@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@distributedlab/fetcher": "^1.0.0-rc.6",
+    "@rarimo/client": "workspace:^",
     "tslib": "^2.5.0"
   },
   "typedocOptions": {
