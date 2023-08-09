@@ -62,8 +62,8 @@ export const makeQuerier = async (config: Config): Promise<RarimoQuerier> => {
 
   const getProposal = async (proposalId: number) => {
     const endpoint = `/cosmos/gov/v1beta1/proposals/${proposalId}`
-    const { data } = await api.get(endpoint)
-    return data as Proposal
+    const { data } = await api.get<{ proposal: Proposal }>(endpoint)
+    return data?.proposal as Proposal
   }
 
   return {
