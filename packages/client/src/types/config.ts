@@ -2,6 +2,8 @@ export type Config = {
   rpcUrl: string
   apiUrl: string
   prefix: string
+  chainName: string
+  chainIconUrl: string
   currency: {
     denom: string
     minDenom: string
