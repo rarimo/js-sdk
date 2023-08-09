@@ -19,7 +19,8 @@ export const getChainInfo = async (
 
   return {
     chainId,
-    chainName: chainId?.toUpperCase() + ' Network',
+    chainName: config.chainName,
+    chainSymbolImageUrl: config.chainIconUrl,
     rpc: config.rpcUrl,
     rest: config.apiUrl,
     stakeCurrency: currency,
