@@ -56,6 +56,7 @@ let globalConfig: Config = {
   RAW_PROVIDER: undefined,
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
+  LIGHTWEIGHT_STATE_V2_ADDRESS: '',
 
   CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL:
     'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit.wasm',
@@ -624,7 +625,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   async loadStatesDetails(querier: RarimoQuerier) {
     this.targetStateDetails = await getGISTRootInfo({
       rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
-      contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
+      contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
     })
 
     this.coreStateDetails = await getCoreChainStateInfo(
