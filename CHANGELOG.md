@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0-rc.16] - 2023-08-09
 ### Added
 - `@rarimo/client` - Identity related query methods
+- `@rarimo/zkp-gen-iden3` - States manipulations
+- `@rarimo/shared-zkp-iden3` - State details helpers
 
 ## [2.0.0-rc.15] - 2023-08-09
 ### Fixed
@@ -415,7 +417,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.15...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.16...HEAD
+[2.0.0-rc.16]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.15...2.0.0-rc.16
 [2.0.0-rc.15]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.14...2.0.0-rc.15
 [2.0.0-rc.14]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.13...2.0.0-rc.14
 [2.0.0-rc.13]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.12...2.0.0-rc.13
