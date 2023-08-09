@@ -7,7 +7,12 @@ import type { Coin } from './bank'
 import type { RarimoBroadcaster } from './broadcaster'
 import type { Config } from './config'
 import type { GovParams, Proposal } from './gov'
-import type { IdentityNode, IdentityParams, MerkleProof, StateInfo } from './identity'
+import type {
+  IdentityNode,
+  IdentityParams,
+  MerkleProof,
+  StateInfo,
+} from './identity'
 import type { OperationProof } from './rarimocore'
 import type { DelegationResponse } from './staking'
 import type { NodeInfo } from './tendermint'

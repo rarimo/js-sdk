@@ -31,9 +31,9 @@ import {
   getCoreChainStateInfo,
   getGISTProof,
   getGISTRootInfo,
-  unmarshalBinary,
   getIdentityNode,
   getIdentityParams,
+  unmarshalBinary,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
 import { type BigNumber, utils } from 'ethers'
@@ -651,7 +651,10 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   async loadParamsForTransitState(querier: RarimoQuerier) {
     const identityParams = await getIdentityParams(querier)
 
-    const identityNode = await getIdentityNode(querier, identityParams.params.treapRootKey)
+    const identityNode = await getIdentityNode(
+      querier,
+      identityParams.params.treapRootKey,
+    )
 
     const newIdentitiesStatesRoot = identityNode.node.hash
     const gistData = {
@@ -659,8 +662,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
     }
     const proof = utils.defaultAbiCoder.encode(
-        ["bytes32[]", "bytes"],
-        [this.operationProof?.path, this.operationProof?.signature]
+      ['bytes32[]', 'bytes'],
+      [this.operationProof?.path, this.operationProof?.signature],
     )
 
     return {
