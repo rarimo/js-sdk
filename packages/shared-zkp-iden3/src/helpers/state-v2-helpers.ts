@@ -1,5 +1,5 @@
 import type { Provider } from '@ethersproject/providers'
-import type { RarimoQuerier, StateInfo } from '@rarimo/client'
+import type { IdentityParams, RarimoQuerier, StateInfo, IdentityNode } from '@rarimo/client'
 import type { RawProvider } from '@rarimo/provider'
 import { providers } from 'ethers'
 
@@ -47,4 +47,32 @@ export const getCoreChainStateInfo = async (
   id: string,
 ): Promise<StateInfo> => {
   return querier.getState(id)
+}
+
+export const getTransitStateTxBody = (
+  contractAddress: string,
+  newIdentitiesStatesRoot_: string,
+  gistData_: ILightweightState.GistRootDataStruct,
+  proof_: string,
+) => {
+  const contractInterface = LightweightStateV2__factory.createInterface()
+
+  const data = contractInterface.encodeFunctionData('signedTransitState', [
+      newIdentitiesStatesRoot_,
+      gistData_,
+      proof_,
+  ])
+
+  return {
+    to: contractAddress,
+    data,
+  }
+}
+
+export const getIdentityParams = async (querier: RarimoQuerier): Promise<IdentityParams> => {
+  return querier.getIdentityParams()
+}
+
+export const getIdentityNode = async (querier: RarimoQuerier, key: string): Promise<IdentityNode> => {
+  return querier.getIdentityNodeByKey(key)
 }

@@ -7,6 +7,8 @@ import type {
   DelegationResponse,
   GetStateInfoResponse,
   GovParams,
+  IdentityNode,
+  IdentityParams,
   MerkleProof,
   NodeInfo,
   OperationProof,
@@ -89,6 +91,20 @@ export const makeRarimoQuerier = (
     return data!
   }
 
+  const getIdentityParams = async () => {
+    const endpoint = '/rarimo/rarimo-core/identity/params'
+    const { data } = await api.get<IdentityParams>(endpoint)
+
+    return data!
+  }
+
+  const getIdentityNodeByKey = async (key: string) => {
+    const endpoint = `/rarimo/rarimo-core/identity/node/${key}`
+    const { data } = await api.get<IdentityNode>(endpoint)
+
+    return data!
+  }
+
   return {
     getNodeStatus,
     getAccount,
@@ -100,5 +116,7 @@ export const makeRarimoQuerier = (
     getMerkleProof,
     getState,
     getOperationProof,
+    getIdentityParams,
+    getIdentityNodeByKey,
   }
 }

@@ -23,7 +23,7 @@ import {
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
-import type { OperationProof, RarimoQuerier } from '@rarimo/client'
+import type { MerkleProof, OperationProof, RarimoQuerier } from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { isString, omit } from '@rarimo/shared'
 import {
@@ -32,9 +32,11 @@ import {
   getGISTProof,
   getGISTRootInfo,
   unmarshalBinary,
+  getIdentityNode,
+  getIdentityParams,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
-import type { BigNumber } from 'ethers'
+import { type BigNumber, utils } from 'ethers'
 
 import { CircuitId } from '@/enums'
 import { ensureArraySize, getNodeAuxValue } from '@/helpers'
@@ -92,6 +94,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
   public coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
   public operationProof?: OperationProof
+  public merkleProof?: MerkleProof
 
   public static get config() {
     return globalConfig
@@ -634,13 +637,35 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
   }
 
-  async MerkleProof(querier: RarimoQuerier, issuerId: string) {
-    return querier.getMerkleProof(issuerId)
+  async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
+    this.merkleProof = await querier.getMerkleProof(issuerId)
   }
 
   isStatesActual() {
     return new Time(
       this.targetStateDetails?.createdAtTimestamp?.toString(),
     ).isSameOrAfter(new Time(this.coreStateDetails?.createdAtTimestamp))
+  }
+
+  async loadParamsForTransitState(querier: RarimoQuerier) {
+    const identityParams = await getIdentityParams(querier)
+
+    const identityNode = await getIdentityNode(querier, identityParams.params.treapRootKey)
+
+    const newIdentitiesStatesRoot = identityNode.node.hash
+    const gistData = {
+      root: identityParams.params.GISTHash,
+      createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
+    }
+    const proof = utils.defaultAbiCoder.encode(
+        ["bytes32[]", "bytes"],
+        [this.operationProof?.path, this.operationProof?.signature]
+    )
+
+    return {
+      newIdentitiesStatesRoot,
+      gistData,
+      proof,
+    }
   }
 }
