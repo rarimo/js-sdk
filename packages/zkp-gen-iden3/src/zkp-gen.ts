@@ -645,9 +645,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   isStatesActual() {
-    return time(
-      this.targetStateDetails?.createdAtTimestamp?.toString(),
-    ).isSameOrAfter(time(this.coreStateDetails?.createdAtTimestamp))
+    return (
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() &&
+      time(
+        this.targetStateDetails?.createdAtTimestamp?.toNumber(),
+      ).isSameOrAfter(time(this.coreStateDetails?.createdAtTimestamp))
+    )
   }
 
   async loadParamsForTransitState(querier: RarimoQuerier) {
@@ -663,9 +666,21 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       root: identityParams.params.GISTHash,
       createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
     }
+
+    const decodedPath = this.operationProof?.path?.map((el: string) =>
+      utils.arrayify(el),
+    )
+    const decodedSignature = this.operationProof?.signature
+      ? utils.arrayify(this.operationProof?.signature)
+      : undefined
+
+    if (decodedSignature?.[64] !== undefined) {
+      decodedSignature[64] += 27
+    }
+
     const proof = utils.defaultAbiCoder.encode(
       ['bytes32[]', 'bytes'],
-      [this.operationProof?.path, this.operationProof?.signature],
+      [decodedPath, decodedSignature],
     )
 
     return {

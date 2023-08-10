@@ -86,7 +86,7 @@ export const makeRarimoQuerier = (
   }
 
   const getOperationProof = async (index: string) => {
-    const endpoint = `/rarimo/rarimo-core/rarimo-core/operation/${index}/proof`
+    const endpoint = `/rarimo/rarimo-core/rarimocore/operation/${index}/proof`
     const { data } = await api.get<OperationProof>(endpoint)
     return data!
   }
