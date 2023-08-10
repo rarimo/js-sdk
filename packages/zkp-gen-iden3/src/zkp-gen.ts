@@ -628,7 +628,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
         contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
       }),
-      await getCoreChainStateInfo(querier, this.query.issuerId),
+      getCoreChainStateInfo(querier, this.query.issuerId),
     ])
 
     this.targetStateDetails = targetStateDetails
