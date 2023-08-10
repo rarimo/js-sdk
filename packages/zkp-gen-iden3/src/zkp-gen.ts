@@ -1,5 +1,5 @@
 import { fetcher } from '@distributedlab/fetcher'
-import { Time } from '@distributedlab/tools'
+import { time } from '@distributedlab/tools'
 import { arrayify } from '@ethersproject/bytes'
 import { keccak256 } from '@ethersproject/keccak256'
 import { Hex, Signature } from '@iden3/js-crypto'
@@ -623,15 +623,17 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   async loadStatesDetails(querier: RarimoQuerier) {
-    this.targetStateDetails = await getGISTRootInfo({
-      rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
-      contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
-    })
+    const [targetStateDetails, coreStateDetails] = await Promise.all([
+      getGISTRootInfo({
+        rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
+        contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
+      }),
+      await getCoreChainStateInfo(querier, this.query.issuerId),
+    ])
 
-    this.coreStateDetails = await getCoreChainStateInfo(
-      querier,
-      this.query.issuerId,
-    )
+    this.targetStateDetails = targetStateDetails
+
+    this.coreStateDetails = coreStateDetails
 
     this.operationProof = await querier.getOperationProof(
       this.coreStateDetails.lastUpdateOperationIndex,
@@ -643,9 +645,9 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   isStatesActual() {
-    return new Time(
+    return time(
       this.targetStateDetails?.createdAtTimestamp?.toString(),
-    ).isSameOrAfter(new Time(this.coreStateDetails?.createdAtTimestamp))
+    ).isSameOrAfter(time(this.coreStateDetails?.createdAtTimestamp))
   }
 
   async loadParamsForTransitState(querier: RarimoQuerier) {

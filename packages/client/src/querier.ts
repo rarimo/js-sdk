@@ -69,8 +69,8 @@ export const makeRarimoQuerier = (
 
   const getProposal = async (proposalId: number) => {
     const endpoint = `/cosmos/gov/v1beta1/proposals/${proposalId}`
-    const { data } = await api.get<Proposal>(endpoint)
-    return data!
+    const { data } = await api.get<{ proposal: Proposal }>(endpoint)
+    return data!.proposal
   }
 
   const getMerkleProof = async (id: string) => {
