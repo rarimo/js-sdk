@@ -1,11 +1,11 @@
 import type { ChainInfo } from '@keplr-wallet/types'
 
-import { makeQuerier } from '@/querier'
+import { makeRarimoQuerier } from '@/querier'
 import type { Config } from '@/types'
 
 export const getChainInfo = async (
   config: Config,
-  querier: Awaited<ReturnType<typeof makeQuerier>>,
+  querier: Awaited<ReturnType<typeof makeRarimoQuerier>>,
 ): Promise<ChainInfo> => {
   const status = await querier.getNodeStatus()
   const chainId = status?.default_node_info?.network ?? ''

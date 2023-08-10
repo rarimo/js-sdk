@@ -12,6 +12,7 @@ export type ZkpGenQuery<T extends QueryVariableNameAbstract> = {
   variableName: keyof T
   operator: ZkpOperators
   value: string[]
+  issuerId: string
 }
 
 export type ZkpGenCreateOpts<T extends QueryVariableNameAbstract> = {
@@ -59,10 +60,14 @@ export type Schema = {
 }
 
 export type Config = {
-  RPC_URL?: string
+  TARGET_CHAIN_RPC_URL: string
+  CORE_CHAIN_RPC_URL: string
+
   RAW_PROVIDER?: RawProvider
   ISSUER_API_URL: string
+
   STATE_V2_ADDRESS: string
+  LIGHTWEIGHT_STATE_V2_ADDRESS: string
 
   CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL: string
   CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL: string

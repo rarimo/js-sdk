@@ -22,15 +22,20 @@ import {
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
+import type { MerkleProof, OperationProof, RarimoQuerier } from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { isString, omit } from '@rarimo/shared'
 import {
   getBytesFile,
+  getCoreChainStateInfo,
   getGISTProof,
+  getGISTRootInfo,
+  getIdentityNode,
+  getIdentityParams,
   unmarshalBinary,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
-import type { BigNumber } from 'ethers'
+import { type BigNumber, utils } from 'ethers'
 
 import { CircuitId } from '@/enums'
 import { ensureArraySize, getNodeAuxValue } from '@/helpers'
@@ -44,10 +49,13 @@ import type {
 } from '@/types'
 
 let globalConfig: Config = {
-  RPC_URL: '',
+  TARGET_CHAIN_RPC_URL: '',
+  CORE_CHAIN_RPC_URL: '',
+
   RAW_PROVIDER: undefined,
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
+  LIGHTWEIGHT_STATE_V2_ADDRESS: '',
 
   CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL:
     'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit.wasm',
@@ -82,6 +90,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public challenge = ''
 
   public subjectProof: ZKProof = {} as ZKProof
+
+  public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
+  public coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+  public operationProof?: OperationProof
+  public merkleProof?: MerkleProof
 
   public static get config() {
     return globalConfig
@@ -149,8 +162,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const gistInfo = await getGISTProof({
       ...(ZkpGen.config.RAW_PROVIDER
         ? { rawProvider: ZkpGen.config.RAW_PROVIDER }
-        : ZkpGen.config.RPC_URL
-        ? { rpcUrl: ZkpGen.config.RPC_URL }
+        : ZkpGen.config.CORE_CHAIN_RPC_URL
+        ? { rpcUrl: ZkpGen.config.CORE_CHAIN_RPC_URL }
         : {}),
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
@@ -605,6 +618,73 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       proof: issuerClaimIncMtp.mtp,
 
       issuerClaimIncMtp,
+    }
+  }
+
+  async loadStatesDetails(querier: RarimoQuerier) {
+    const [targetStateDetails, coreStateDetails] = await Promise.all([
+      getGISTRootInfo({
+        rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
+        contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
+      }),
+      getCoreChainStateInfo(querier, this.query.issuerId),
+    ])
+
+    this.targetStateDetails = targetStateDetails
+
+    this.coreStateDetails = coreStateDetails
+
+    this.operationProof = await querier.getOperationProof(
+      this.coreStateDetails.lastUpdateOperationIndex,
+    )
+  }
+
+  async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
+    this.merkleProof = await querier.getMerkleProof(issuerId)
+  }
+
+  isStatesActual() {
+    return (
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() &&
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() >=
+        Number(this.coreStateDetails?.createdAtTimestamp)
+    )
+  }
+
+  async loadParamsForTransitState(querier: RarimoQuerier) {
+    const identityParams = await getIdentityParams(querier)
+
+    const identityNode = await getIdentityNode(
+      querier,
+      identityParams.params.treapRootKey,
+    )
+
+    const newIdentitiesStatesRoot = identityNode.node.hash
+    const gistData = {
+      root: identityParams.params.GISTHash,
+      createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
+    }
+
+    const decodedPath = this.operationProof?.path?.map((el: string) =>
+      utils.arrayify(el),
+    )
+    const decodedSignature = this.operationProof?.signature
+      ? utils.arrayify(this.operationProof?.signature)
+      : undefined
+
+    if (decodedSignature?.[64] !== undefined) {
+      decodedSignature[64] += 27
+    }
+
+    const proof = utils.defaultAbiCoder.encode(
+      ['bytes32[]', 'bytes'],
+      [decodedPath, decodedSignature],
+    )
+
+    return {
+      newIdentitiesStatesRoot,
+      gistData,
+      proof,
     }
   }
 }

@@ -80,12 +80,44 @@ const getZkProof = async (
             value: ['1'],
 
             circuitId: CircuitId.AtomicQueryMTPV2OnChain,
+
+            issuerId: config.ISSUER_ID,
         },
     })
 
     await zkProof.generateProof()
 
     setIsNaturalProof(zkProof)
+}
+```
+
+### For more specific use cases, e.g. when we need to ensure of states actuality:
+```ts
+import { makeRarimoQuerier } from '@rarimo/client'
+import { getTransitStateTxBody } from '@rarimo/shared-zkp-iden3'
+import { config } from '@/config'
+
+const querier = makeRarimoQuerier({
+  apiUrl: config.RARIMO_CORE_RPC_API_URL,
+})
+
+await zkProof.loadStatesDetails(querier)
+await zkProof.loadMerkleProof(querier, config.ISSUER_ID)
+
+if (zkProof.isStatesActual()) {
+  const transitParams = await isNaturalZkp?.loadParamsForTransitState(
+    querier,
+  )
+
+  // use
+  const txBody = getTransitStateTxBody(
+    config.LIGHTWEIGHT_STATE_V2_CONTRACT_ADDRESS,
+    transitParams.newIdentitiesStatesRoot,
+    transitParams.gistData,
+    transitParams.proof,
+  )
+
+  // send tx with txBody ...
 }
 ```
 

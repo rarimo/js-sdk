@@ -28,6 +28,8 @@
     "build:bridge": "yarn workspace @rarimo/bridge build",
     "build:swap": "yarn workspace @rarimo/swap build",
     "build:nft-checkout": "yarn workspace @rarimo/nft-checkout build",
+    "build:react-nft-checkout": "yarn workspace @rarimo/react-nft-checkout build",
+    "build:react-provider": "yarn workspace @rarimo/react-provider build",
     "build:provider": "yarn workspace @rarimo/provider build",
     "build:providers-evm": "yarn workspace @rarimo/providers-evm build",
     "build:providers-solana": "yarn workspace @rarimo/providers-solana build",

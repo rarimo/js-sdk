@@ -10,7 +10,7 @@ import { VoteOption } from '@/enums'
 import { makeBroadcastMaker } from '@/helpers'
 import type { Config, RarimoBroadcaster, Wallet } from '@/types'
 
-export const makeBroadcaster = async (
+export const makeRarimoBroadcaster = async (
   config: Config,
   wallet: Wallet,
 ): Promise<RarimoBroadcaster> => {
