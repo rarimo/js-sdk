@@ -1,5 +1,4 @@
 import { fetcher } from '@distributedlab/fetcher'
-import { time } from '@distributedlab/tools'
 import { arrayify } from '@ethersproject/bytes'
 import { keccak256 } from '@ethersproject/keccak256'
 import { Hex, Signature } from '@iden3/js-crypto'
@@ -647,9 +646,8 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   isStatesActual() {
     return (
       this.targetStateDetails?.createdAtTimestamp?.toNumber() &&
-      time(
-        this.targetStateDetails?.createdAtTimestamp?.toNumber(),
-      ).isSameOrAfter(time(this.coreStateDetails?.createdAtTimestamp))
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() >=
+        Number(this.coreStateDetails?.createdAtTimestamp)
     )
   }
 
