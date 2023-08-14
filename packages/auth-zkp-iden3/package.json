@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
-  "version": "2.0.0-rc.16",
+  "version": "2.0.0-rc.17",
   "description": "Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.",
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "build:types": "tsc -p tsconfig.build.json --outDir ./dist/types --declaration --emitDeclarationOnly",
     "build:cjs": "npx swc src -d ./dist/cjs --config-file ../../.swcrc -C module.type=commonjs",
     "build:esm": "npx swc src -d ./dist/esm --config-file ../../.swcrc -C module.type=es6 isModule=true",
+    "lint:eslint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0",
     "clean": "rm -rf dist",
     "test": "yarn jest --verbose",
     "typecheck": "tsc --noEmit"

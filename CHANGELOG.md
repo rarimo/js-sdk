@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.17] - 2023-08-14
+### Fixed
+- `@rarimo/client` - `getAccount` return value
+
 ## [2.0.0-rc.16] - 2023-08-09
 ### Added
 - `@rarimo/client` - Identity related query methods
@@ -417,7 +421,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.16...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.17...HEAD
+[2.0.0-rc.17]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.16...2.0.0-rc.17
 [2.0.0-rc.16]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.15...2.0.0-rc.16
 [2.0.0-rc.15]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.14...2.0.0-rc.15
 [2.0.0-rc.14]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.13...2.0.0-rc.14

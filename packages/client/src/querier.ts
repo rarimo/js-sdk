@@ -34,10 +34,10 @@ export const makeRarimoQuerier = (
   }
 
   const getAccount = async (address: string) => {
-    const { data } = await api.get<Account>(
+    const { data } = await api.get<{ account: Account }>(
       `/cosmos/auth/v1beta1/accounts/${address}`,
     )
-    return data!
+    return data!.account
   }
 
   const getAllBalances = async (address: string) => {
