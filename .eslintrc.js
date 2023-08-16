@@ -5,11 +5,20 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  ignorePatterns: ['dist'],
+  ignorePatterns: [
+    'dist',
+    'assets',
+    'node_modules',
+    'vite.config.ts',
+    'abis',
+    'types/contracts',
+    '.wasm',
+    '.zkey',
+    'circuits'
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json', './packages/*/tsconfig.json'],
     ecmaVersion: 'latest',
     sourceType: 'module',
     ecmaFeatures: {

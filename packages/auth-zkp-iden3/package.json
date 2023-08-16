@@ -39,7 +39,7 @@
     "build:types": "tsc -p tsconfig.build.json --outDir ./dist/types --declaration --emitDeclarationOnly",
     "build:cjs": "npx swc src -d ./dist/cjs --config-file ../../.swcrc -C module.type=commonjs",
     "build:esm": "npx swc src -d ./dist/esm --config-file ../../.swcrc -C module.type=es6 isModule=true",
-    "lint:eslint": "eslint . --ext .ts,.tsx --fix --cache --max-warnings=0",
+    "lint": "node ./lint.js && yarn typecheck",
     "clean": "rm -rf dist",
     "test": "yarn jest --verbose",
     "typecheck": "tsc --noEmit"
