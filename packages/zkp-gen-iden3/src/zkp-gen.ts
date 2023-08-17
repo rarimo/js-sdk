@@ -96,31 +96,18 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public operationProof?: OperationProof
   public merkleProof?: MerkleProof
 
+  public circuitWasm?: Uint8Array
+  public circuitZkey?: Uint8Array
+
   public static get config() {
     return globalConfig
   }
 
-  public static setConfig(config: Partial<Config>) {
-    globalConfig = { ...globalConfig, ...config }
-  }
-
-  constructor(opts: ZkpGenCreateOpts<T>) {
-    this.requestId = opts.requestId
-    this.identity = opts.identity
-    this.verifiableCredentials = opts.verifiableCredentials
-
-    this.challenge = opts.challenge
-
-    this.query = opts.query
-  }
-
-  async generateProof() {
-    const inputs = await this.#prepareInputs()
-
-    const CIRCUIT_FILES_URLS_MAP: Record<
-      CircuitId,
-      { wasm: string; zkey: string }
-    > = {
+  public get circuitFilesUrlsMap(): Record<
+    CircuitId,
+    { wasm: string; zkey: string }
+  > {
+    return {
       [CircuitId.AtomicQueryMTPV2]: {
         wasm: ZkpGen.config.CIRCUIT_MTP_V2_WASM_URL,
         zkey: ZkpGen.config.CIRCUIT_MTP_V2_FINAL_KEY_URL,
@@ -138,16 +125,57 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         zkey: ZkpGen.config.CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL,
       },
     }
+  }
 
+  public static setConfig(config: Partial<Config>) {
+    globalConfig = { ...globalConfig, ...config }
+  }
+
+  constructor(opts: ZkpGenCreateOpts<T>) {
+    this.requestId = opts.requestId
+    this.identity = opts.identity
+    this.verifiableCredentials = opts.verifiableCredentials
+
+    this.challenge = opts.challenge
+
+    this.query = opts.query
+  }
+
+  public async preloadCircuits(): Promise<void> {
     const [wasm, provingKey] = await Promise.all([
       getBytesFile(
-        CIRCUIT_FILES_URLS_MAP[this.query.circuitId].wasm,
+        this.circuitFilesUrlsMap[this.query.circuitId].wasm,
         ZkpGen.config.CIRCUIT_LOADING_OPTS,
       ),
       getBytesFile(
-        CIRCUIT_FILES_URLS_MAP[this.query.circuitId].zkey,
+        this.circuitFilesUrlsMap[this.query.circuitId].zkey,
         ZkpGen.config.CIRCUIT_LOADING_OPTS,
       ),
+    ])
+
+    this.circuitWasm = wasm
+    this.circuitZkey = provingKey
+  }
+
+  public setCircuits(wasm: Uint8Array, zkey: Uint8Array) {
+    this.circuitWasm = wasm
+    this.circuitZkey = zkey
+  }
+
+  public async generateProof() {
+    const inputs = await this.#prepareInputs()
+
+    const [wasm, provingKey] = await Promise.all([
+      this.circuitWasm ||
+        getBytesFile(
+          this.circuitFilesUrlsMap[this.query.circuitId].wasm,
+          ZkpGen.config.CIRCUIT_LOADING_OPTS,
+        ),
+      this.circuitZkey ||
+        getBytesFile(
+          this.circuitFilesUrlsMap[this.query.circuitId].zkey,
+          ZkpGen.config.CIRCUIT_LOADING_OPTS,
+        ),
     ])
 
     this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
@@ -627,7 +655,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     }
   }
 
-  async loadStatesDetails(querier: RarimoQuerier) {
+  public async loadStatesDetails(querier: RarimoQuerier) {
     const [targetStateDetails, coreStateDetails] = await Promise.all([
       getGISTRootInfo({
         rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
@@ -645,11 +673,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
   }
 
-  async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
+  public async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
     this.merkleProof = await querier.getMerkleProof(issuerId)
   }
 
-  isStatesActual() {
+  public get isStatesActual() {
     return (
       this.targetStateDetails?.createdAtTimestamp?.toNumber() &&
       this.targetStateDetails?.createdAtTimestamp?.toNumber() >=
@@ -657,7 +685,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
   }
 
-  async loadParamsForTransitState(querier: RarimoQuerier) {
+  public async loadParamsForTransitState(querier: RarimoQuerier) {
     const identityParams = await getIdentityParams(querier)
 
     const identityNode = await getIdentityNode(
