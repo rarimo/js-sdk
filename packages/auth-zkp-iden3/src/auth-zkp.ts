@@ -77,8 +77,14 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     )
 
     const [wasm, provingKey] = await Promise.all([
-      getBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
-      getBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
+      getBytesFile(
+        AuthZkp.config.CIRCUIT_WASM_URL,
+        AuthZkp.config.CIRCUIT_LOADING_OPTS,
+      ),
+      getBytesFile(
+        AuthZkp.config.CIRCUIT_FINAL_KEY_URL,
+        AuthZkp.config.CIRCUIT_LOADING_OPTS,
+      ),
     ])
 
     const jwzTokenRaw = await authZkpToken.prove(provingKey, wasm)

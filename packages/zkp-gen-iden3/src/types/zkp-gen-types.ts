@@ -1,3 +1,4 @@
+import type { FetcherStandaloneConfig } from '@distributedlab/fetcher'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
 import type { Identity } from '@rarimo/identity-gen-iden3'
 import type { RawProvider } from '@rarimo/provider'
@@ -78,4 +79,6 @@ export type Config = {
   CIRCUIT_MTP_V2_ON_CHAIN_WASM_URL: string
   CIRCUIT_MTP_V2_ON_CHAIN_FINAL_KEY_URL: string
   CLAIM_PROOF_SIBLINGS_COUNT: number
+
+  CIRCUIT_LOADING_OPTS?: FetcherStandaloneConfig
 }

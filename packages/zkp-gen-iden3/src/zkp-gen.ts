@@ -140,8 +140,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     }
 
     const [wasm, provingKey] = await Promise.all([
-      getBytesFile(CIRCUIT_FILES_URLS_MAP[this.query.circuitId].wasm),
-      getBytesFile(CIRCUIT_FILES_URLS_MAP[this.query.circuitId].zkey),
+      getBytesFile(
+        CIRCUIT_FILES_URLS_MAP[this.query.circuitId].wasm,
+        ZkpGen.config.CIRCUIT_LOADING_OPTS,
+      ),
+      getBytesFile(
+        CIRCUIT_FILES_URLS_MAP[this.query.circuitId].zkey,
+        ZkpGen.config.CIRCUIT_LOADING_OPTS,
+      ),
     ])
 
     this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
