@@ -12,8 +12,8 @@ module.exports = {
     'vite.config.ts',
     'abis',
     'types/contracts',
-    '.wasm',
-    '.zkey',
+    '*.wasm',
+    '*.zkey',
     'circuits'
   ],
   parser: '@typescript-eslint/parser',
