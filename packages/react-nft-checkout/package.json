@@ -37,7 +37,6 @@
   "scripts": {
     "start": "cross-env VITE_APP_ENVIRONMENT=development vite",
     "build": "yarn clean && cross-env VITE_APP_ENVIRONMENT=production NODE_ENV=production vite build",
-    "lint": "node ./lint.js && yarn typecheck",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },

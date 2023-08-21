@@ -40,7 +40,7 @@
     "build:shared-zkp-iden3": "yarn workspace @rarimo/shared-zkp-iden3 build",
     "build:client": "yarn workspace @rarimo/client build",
     "docs": "typedoc --options typedoc.json",
-    "lint": "yarn workspaces foreach -pv --topological-dev run lint",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0 && yarn workspaces foreach -pv --no-private run typecheck",
     "publish-next": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish --tag next",
     "publish-latest": "yarn build && yarn workspaces foreach --no-private exec yarn npm publish",
     "rsc": "node scripts/release-sanity-check.js",
