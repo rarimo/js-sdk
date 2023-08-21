@@ -1,3 +1,4 @@
+import type { FetcherStandaloneConfig } from '@distributedlab/fetcher'
 import type { Proof } from '@iden3/js-merkletree'
 import type { RawProvider } from '@rarimo/provider'
 
@@ -104,6 +105,9 @@ export type Config = {
   RAW_PROVIDER?: RawProvider
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
+
   CIRCUIT_WASM_URL: string
   CIRCUIT_FINAL_KEY_URL: string
+
+  CIRCUIT_LOADING_OPTS?: FetcherStandaloneConfig
 }
