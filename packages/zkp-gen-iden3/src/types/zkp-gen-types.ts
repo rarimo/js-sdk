@@ -61,10 +61,9 @@ export type Schema = {
 }
 
 export type Config = {
-  TARGET_CHAIN_RPC_URL: string
-  CORE_CHAIN_RPC_URL: string
+  TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER: string | RawProvider
+  CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER: string | RawProvider
 
-  RAW_PROVIDER?: RawProvider
   ISSUER_API_URL: string
 
   STATE_V2_ADDRESS: string

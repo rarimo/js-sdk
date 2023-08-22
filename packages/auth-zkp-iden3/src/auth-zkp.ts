@@ -12,7 +12,7 @@ import type {
 } from '@/types'
 
 let globalConfig: Config = {
-  RPC_URL: '',
+  RPC_URL_OR_RAW_PROVIDER: '',
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
   CIRCUIT_WASM_URL:
@@ -137,11 +137,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
 
     const signature = this.identity.privateKey.signPoseidon(messageHashBigInt)
     const gistInfo = await getGISTProof({
-      ...(AuthZkp.config.RAW_PROVIDER
-        ? { rawProvider: AuthZkp.config.RAW_PROVIDER }
-        : AuthZkp.config.RPC_URL
-        ? { rpcUrl: AuthZkp.config.RPC_URL }
-        : {}),
+      rpcUrlOrRawProvider: AuthZkp.config.RPC_URL_OR_RAW_PROVIDER,
       contractAddress: AuthZkp.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
     })

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.19] - 2023-08-22
+### Changed
+- `@rarimo/auth-zkp-iden3` - config options
+- `@rarimo/zkp-gen-iden3` - decompose loading state details
+- `@rarimo/shared-zkp-iden3` - Gist helpers
+
 ## [2.0.0-rc.18] - 2023-08-17
 ### Fixed
 - `@rarimo/auth-zkp-iden3` - add options for circuits files loading, add abilities to preload and set circuits outside
@@ -426,7 +432,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.18...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.19...HEAD
+[2.0.0-rc.19]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.18...2.0.0-rc.19
 [2.0.0-rc.18]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.17...2.0.0-rc.18
 [2.0.0-rc.17]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.16...2.0.0-rc.17
 [2.0.0-rc.16]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.15...2.0.0-rc.16

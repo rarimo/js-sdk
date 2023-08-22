@@ -1,4 +1,3 @@
-import type { Provider } from '@ethersproject/providers'
 import type {
   IdentityNode,
   IdentityParams,
@@ -6,43 +5,67 @@ import type {
   StateInfo,
 } from '@rarimo/client'
 import type { RawProvider } from '@rarimo/provider'
+import { isString } from '@rarimo/shared'
 import { providers } from 'ethers'
 
-import { LightweightStateV2__factory, StateV2__factory } from '@/types'
+import {
+  type LightweightStateV2,
+  LightweightStateV2__factory,
+  type StateV2,
+  StateV2__factory,
+} from '@/types'
 import type { ILightweightState } from '@/types/contracts/LightweightStateV2'
 
 export const getGISTProof = async ({
-  rpcUrl,
-  rawProvider,
+  rpcUrlOrRawProvider,
   contractAddress,
   userId,
 }: {
-  rpcUrl?: string
-  rawProvider?: RawProvider
+  rpcUrlOrRawProvider: string | RawProvider
   contractAddress: string
   userId: string
 }) => {
-  const contractInstance = StateV2__factory.connect(
-    contractAddress,
-    (rawProvider || new providers.JsonRpcProvider(rpcUrl, 'any')) as Provider,
-  )
+  let contractInstance: StateV2
+
+  if (isString(rpcUrlOrRawProvider)) {
+    contractInstance = StateV2__factory.connect(
+      contractAddress,
+      new providers.JsonRpcProvider(rpcUrlOrRawProvider, 'any'),
+    )
+  } else {
+    contractInstance = StateV2__factory.connect(
+      contractAddress,
+      new providers.Web3Provider(
+        rpcUrlOrRawProvider as providers.ExternalProvider,
+      ),
+    )
+  }
 
   return contractInstance.getGISTProof(userId)
 }
 
 export const getGISTRootInfo = async ({
-  rpcUrl,
-  rawProvider,
+  rpcUrlOrRawProvider,
   contractAddress,
 }: {
-  rpcUrl?: string
-  rawProvider?: RawProvider
+  rpcUrlOrRawProvider: string | RawProvider
   contractAddress: string
 }): Promise<ILightweightState.GistRootDataStructOutput> => {
-  const contractInstance = LightweightStateV2__factory.connect(
-    contractAddress,
-    (rawProvider || new providers.JsonRpcProvider(rpcUrl, 'any')) as Provider,
-  )
+  let contractInstance: LightweightStateV2
+
+  if (isString(rpcUrlOrRawProvider)) {
+    contractInstance = LightweightStateV2__factory.connect(
+      contractAddress,
+      new providers.JsonRpcProvider(rpcUrlOrRawProvider, 'any'),
+    )
+  } else {
+    contractInstance = LightweightStateV2__factory.connect(
+      contractAddress,
+      new providers.Web3Provider(
+        rpcUrlOrRawProvider as providers.ExternalProvider,
+      ),
+    )
+  }
 
   return contractInstance.getCurrentGISTRootInfo()
 }
