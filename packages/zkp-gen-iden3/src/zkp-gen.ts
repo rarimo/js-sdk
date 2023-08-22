@@ -49,10 +49,9 @@ import type {
 } from '@/types'
 
 let globalConfig: Config = {
-  TARGET_CHAIN_RPC_URL: '',
-  CORE_CHAIN_RPC_URL: '',
+  TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER: '',
+  CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER: '',
 
-  RAW_PROVIDER: undefined,
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
   LIGHTWEIGHT_STATE_V2_ADDRESS: '',
@@ -194,11 +193,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     const signatureChallenge = this.identity.privateKey.signPoseidon(challenge)
 
     const gistInfo = await getGISTProof({
-      ...(ZkpGen.config.RAW_PROVIDER
-        ? { rawProvider: ZkpGen.config.RAW_PROVIDER }
-        : ZkpGen.config.CORE_CHAIN_RPC_URL
-        ? { rpcUrl: ZkpGen.config.CORE_CHAIN_RPC_URL }
-        : {}),
+      rpcUrlOrRawProvider: ZkpGen.config.CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER,
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
     })
@@ -655,10 +650,27 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     }
   }
 
+  public populateStateDetails({
+    targetStateDetails,
+    coreStateDetails,
+    operationProof,
+    merkleProof,
+  }: {
+    targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
+    coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+    operationProof?: OperationProof
+    merkleProof?: MerkleProof
+  }) {
+    this.targetStateDetails = targetStateDetails
+    this.coreStateDetails = coreStateDetails
+    this.operationProof = operationProof
+    this.merkleProof = merkleProof
+  }
+
   public async loadStatesDetails(querier: RarimoQuerier) {
     const [targetStateDetails, coreStateDetails] = await Promise.all([
       getGISTRootInfo({
-        rpcUrl: ZkpGen.config.TARGET_CHAIN_RPC_URL,
+        rpcUrlOrRawProvider: ZkpGen.config.TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER,
         contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
       }),
       getCoreChainStateInfo(querier, this.query.issuerId),
@@ -667,10 +679,13 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.targetStateDetails = targetStateDetails
 
     this.coreStateDetails = coreStateDetails
+  }
 
-    this.operationProof = await querier.getOperationProof(
-      this.coreStateDetails.lastUpdateOperationIndex,
-    )
+  public async loadOperationProof(
+    querier: RarimoQuerier,
+    operationIndex: string,
+  ) {
+    this.operationProof = await querier.getOperationProof(operationIndex)
   }
 
   public async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
@@ -685,7 +700,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
   }
 
-  public async loadParamsForTransitState(querier: RarimoQuerier) {
+  public async loadParamsForTransitState(
+    querier: RarimoQuerier,
+    opts?: {
+      operationProof?: OperationProof
+    },
+  ) {
+    const currOperationProof = opts?.operationProof || this.operationProof
+
     const identityParams = await getIdentityParams(querier)
 
     const identityNode = await getIdentityNode(
@@ -699,11 +721,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
     }
 
-    const decodedPath = this.operationProof?.path?.map((el: string) =>
+    const decodedPath = currOperationProof?.path?.map((el: string) =>
       utils.arrayify(el),
     )
-    const decodedSignature = this.operationProof?.signature
-      ? utils.arrayify(this.operationProof?.signature)
+    const decodedSignature = currOperationProof?.signature
+      ? utils.arrayify(currOperationProof?.signature)
       : undefined
 
     if (decodedSignature?.[64] !== undefined) {

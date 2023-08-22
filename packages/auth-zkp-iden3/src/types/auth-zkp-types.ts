@@ -101,8 +101,7 @@ export type ClaimOffer = {
 }
 
 export type Config = {
-  RPC_URL?: string
-  RAW_PROVIDER?: RawProvider
+  RPC_URL_OR_RAW_PROVIDER: string | RawProvider
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
 
