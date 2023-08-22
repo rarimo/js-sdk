@@ -14,12 +14,21 @@ import { CheckoutOperationStatus } from '@/enums'
 import type { PaymentToken, SwapEstimation } from './estimate'
 import type { OperationSubscriber } from './operation-event-bus'
 
+/**
+ * The parameters for a transaction.
+ */
 export type CheckoutOperationParams = {
+  /** The ID of the destination chain, from {@link getSupportedChains} */
   chainIdTo: ChainId
+  /** The ID of the source chain, from {@link getSupportedChains} */
   chainIdFrom: ChainId
+  /** The amount of the transaction on the destination chain */
   price: Price
+  /** The wallet address of the recipient of the result of the transaction */
   recipient?: Address
+  /** The slippage tolerance, as a percentage of the source token amount */
   slippage?: number // 0.5, 1, 5, 10 etc
+  /** Whether the transaction accepts a single token as input (false) or multiple tokens (true) */
   isMultiplePayment?: boolean
 }
 
@@ -52,7 +61,13 @@ export interface CheckoutOperation extends OperationSubscriber {
   /**
    * Get the estimated purchase price in the payment token or tokens,
    * including the cost to swap the tokens to the tokens that the seller accepts
-   * payment in
+   * payment in.
+   *
+   * If isMultiplePayment is set to true, the operation starts with the native token
+   * for the source chain. If the wallet does not have enough of this token,
+   * it continues adding tokens from the wallet until it has enough value to
+   * complete the transaction. After the native token, it uses other tokens
+   * ordered alphabetically by the address of the contract that manages the token.
    *
    * @param from The payment token or tokens to use for the transaction
    * @returns Information about the costs involved in the transaction,
