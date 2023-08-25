@@ -675,7 +675,10 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.merkleProof = merkleProof
   }
 
-  public async loadStatesDetails(querier: RarimoQuerier) {
+  public async loadStatesDetails(querier: RarimoQuerier): Promise<{
+    targetStateDetails: Awaited<ReturnType<typeof getGISTRootInfo>>
+    coreStateDetails: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+  }> {
     const [targetStateDetails, coreStateDetails] = await Promise.all([
       getGISTRootInfo({
         rpcUrlOrRawProvider: ZkpGen.config.TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER,
@@ -687,21 +690,44 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.targetStateDetails = targetStateDetails
 
     this.coreStateDetails = coreStateDetails
+
+    return {
+      targetStateDetails,
+      coreStateDetails,
+    }
   }
 
   public async loadOperationProof(
     querier: RarimoQuerier,
     operationIndex: string,
-  ) {
-    this.operationProof = await querier.getOperationProof(operationIndex)
+  ): Promise<OperationProof> {
+    const operationProof = await querier.getOperationProof(operationIndex)
+
+    this.operationProof = operationProof
+
+    return operationProof
   }
 
-  public async loadOperation(querier: RarimoQuerier, operationIndex: string) {
-    this.operation = await getOperation(querier, operationIndex)
+  public async loadOperation(
+    querier: RarimoQuerier,
+    operationIndex: string,
+  ): Promise<Operation> {
+    const operation = await getOperation(querier, operationIndex)
+
+    this.operation = operation
+
+    return operation
   }
 
-  public async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
-    this.merkleProof = await querier.getMerkleProof(issuerId)
+  public async loadMerkleProof(
+    querier: RarimoQuerier,
+    issuerId: string,
+  ): Promise<MerkleProof> {
+    const merkleProof = await querier.getMerkleProof(issuerId)
+
+    this.merkleProof = merkleProof
+
+    return merkleProof
   }
 
   public get isStatesActual() {
@@ -715,7 +741,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public async loadParamsForTransitState(opts?: {
     operationProof?: OperationProof
     operation?: Operation
-  }) {
+  }): Promise<{
+    newIdentitiesStatesRoot: string
+    gistData: {
+      root: string
+      createdAtTimestamp: number
+    }
+    proof: string
+  }> {
     const currOperationProof = opts?.operationProof || this.operationProof
 
     const currOperation = opts?.operation || this.operation
@@ -742,9 +775,20 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       [decodedPath, decodedSignature],
     )
 
+    if (!newIdentitiesStatesRoot)
+      throw new TypeError('newIdentitiesStatesRoot is not defined')
+
+    if (!gistData.root) throw new TypeError('gistData.root is not defined')
+
+    if (!gistData.createdAtTimestamp)
+      throw new TypeError('gistData.createdAtTimestamp is not defined')
+
     return {
       newIdentitiesStatesRoot,
-      gistData,
+      gistData: {
+        root: gistData.root,
+        createdAtTimestamp: Number(gistData.createdAtTimestamp),
+      },
       proof,
     }
   }
