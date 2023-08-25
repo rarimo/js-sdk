@@ -7,13 +7,8 @@ import type { Coin } from './bank'
 import type { RarimoBroadcaster } from './broadcaster'
 import type { Config } from './config'
 import type { GovParams, Proposal } from './gov'
-import type {
-  IdentityNode,
-  IdentityParams,
-  MerkleProof,
-  StateInfo,
-} from './identity'
-import type { OperationProof } from './rarimocore'
+import type { IdentityNode, MerkleProof, StateInfo } from './identity'
+import type { Operation, OperationProof } from './rarimocore'
 import type { DelegationResponse } from './staking'
 import type { NodeInfo } from './tendermint'
 
@@ -50,7 +45,7 @@ export type RarimoQuerier = {
   getState(id: string): Promise<StateInfo>
   // rarimocore/rarimocore
   getOperationProof(index: string): Promise<OperationProof>
-  getIdentityParams(): Promise<IdentityParams>
+  getOperation(index: string): Promise<Operation>
   getIdentityNodeByKey(key: string): Promise<IdentityNode>
 }
 
