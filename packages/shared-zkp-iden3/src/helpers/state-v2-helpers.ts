@@ -1,9 +1,4 @@
-import type {
-  IdentityNode,
-  IdentityParams,
-  RarimoQuerier,
-  StateInfo,
-} from '@rarimo/client'
+import type { Operation, RarimoQuerier, StateInfo } from '@rarimo/client'
 import type { RawProvider } from '@rarimo/provider'
 import { isString } from '@rarimo/shared'
 import { providers } from 'ethers'
@@ -97,15 +92,9 @@ export const getTransitStateTxBody = (
   }
 }
 
-export const getIdentityParams = async (
+export const getOperation = async (
   querier: RarimoQuerier,
-): Promise<IdentityParams> => {
-  return querier.getIdentityParams()
-}
-
-export const getIdentityNode = async (
-  querier: RarimoQuerier,
-  key: string,
-): Promise<IdentityNode> => {
-  return querier.getIdentityNodeByKey(key)
+  index: string,
+): Promise<Operation> => {
+  return querier.getOperation(index)
 }

@@ -22,7 +22,12 @@ import {
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
-import type { MerkleProof, OperationProof, RarimoQuerier } from '@rarimo/client'
+import type {
+  MerkleProof,
+  Operation,
+  OperationProof,
+  RarimoQuerier,
+} from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { isString, omit } from '@rarimo/shared'
 import {
@@ -30,8 +35,7 @@ import {
   getCoreChainStateInfo,
   getGISTProof,
   getGISTRootInfo,
-  getIdentityNode,
-  getIdentityParams,
+  getOperation,
   unmarshalBinary,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
@@ -93,6 +97,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
   public coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
   public operationProof?: OperationProof
+  public operation?: Operation
   public merkleProof?: MerkleProof
 
   public circuitWasm?: Uint8Array
@@ -654,20 +659,26 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     targetStateDetails,
     coreStateDetails,
     operationProof,
+    operation,
     merkleProof,
   }: {
     targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
     coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
     operationProof?: OperationProof
+    operation?: Operation
     merkleProof?: MerkleProof
   }) {
     this.targetStateDetails = targetStateDetails
     this.coreStateDetails = coreStateDetails
     this.operationProof = operationProof
+    this.operation = operation
     this.merkleProof = merkleProof
   }
 
-  public async loadStatesDetails(querier: RarimoQuerier) {
+  public async loadStatesDetails(querier: RarimoQuerier): Promise<{
+    targetStateDetails: Awaited<ReturnType<typeof getGISTRootInfo>>
+    coreStateDetails: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+  }> {
     const [targetStateDetails, coreStateDetails] = await Promise.all([
       getGISTRootInfo({
         rpcUrlOrRawProvider: ZkpGen.config.TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER,
@@ -679,17 +690,44 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.targetStateDetails = targetStateDetails
 
     this.coreStateDetails = coreStateDetails
+
+    return {
+      targetStateDetails,
+      coreStateDetails,
+    }
   }
 
   public async loadOperationProof(
     querier: RarimoQuerier,
     operationIndex: string,
-  ) {
-    this.operationProof = await querier.getOperationProof(operationIndex)
+  ): Promise<OperationProof> {
+    const operationProof = await querier.getOperationProof(operationIndex)
+
+    this.operationProof = operationProof
+
+    return operationProof
   }
 
-  public async loadMerkleProof(querier: RarimoQuerier, issuerId: string) {
-    this.merkleProof = await querier.getMerkleProof(issuerId)
+  public async loadOperation(
+    querier: RarimoQuerier,
+    operationIndex: string,
+  ): Promise<Operation> {
+    const operation = await getOperation(querier, operationIndex)
+
+    this.operation = operation
+
+    return operation
+  }
+
+  public async loadMerkleProof(
+    querier: RarimoQuerier,
+    issuerId: string,
+  ): Promise<MerkleProof> {
+    const merkleProof = await querier.getMerkleProof(issuerId)
+
+    this.merkleProof = merkleProof
+
+    return merkleProof
   }
 
   public get isStatesActual() {
@@ -700,25 +738,25 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     )
   }
 
-  public async loadParamsForTransitState(
-    querier: RarimoQuerier,
-    opts?: {
-      operationProof?: OperationProof
-    },
-  ) {
+  public async loadParamsForTransitState(opts?: {
+    operationProof?: OperationProof
+    operation?: Operation
+  }): Promise<{
+    newIdentitiesStatesRoot: string
+    gistData: {
+      root: string
+      createdAtTimestamp: number
+    }
+    proof: string
+  }> {
     const currOperationProof = opts?.operationProof || this.operationProof
 
-    const identityParams = await getIdentityParams(querier)
+    const currOperation = opts?.operation || this.operation
 
-    const identityNode = await getIdentityNode(
-      querier,
-      identityParams.params.treapRootKey,
-    )
-
-    const newIdentitiesStatesRoot = identityNode.node.hash
+    const newIdentitiesStatesRoot = currOperation?.details?.stateRootHash
     const gistData = {
-      root: identityParams.params.GISTHash,
-      createdAtTimestamp: identityParams.params.GISTUpdatedTimestamp,
+      root: currOperation?.details?.GISTHash,
+      createdAtTimestamp: currOperation?.details?.timestamp,
     }
 
     const decodedPath = currOperationProof?.path?.map((el: string) =>
@@ -737,9 +775,20 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       [decodedPath, decodedSignature],
     )
 
+    if (!newIdentitiesStatesRoot)
+      throw new TypeError('newIdentitiesStatesRoot is not defined')
+
+    if (!gistData.root) throw new TypeError('gistData.root is not defined')
+
+    if (!gistData.createdAtTimestamp)
+      throw new TypeError('gistData.createdAtTimestamp is not defined')
+
     return {
       newIdentitiesStatesRoot,
-      gistData,
+      gistData: {
+        root: gistData.root,
+        createdAtTimestamp: Number(gistData.createdAtTimestamp),
+      },
       proof,
     }
   }

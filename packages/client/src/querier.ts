@@ -8,9 +8,9 @@ import type {
   GetStateInfoResponse,
   GovParams,
   IdentityNode,
-  IdentityParams,
   MerkleProof,
   NodeInfo,
+  Operation,
   OperationProof,
   Proposal,
   RarimoQuerier,
@@ -91,11 +91,11 @@ export const makeRarimoQuerier = (
     return data!
   }
 
-  const getIdentityParams = async () => {
-    const endpoint = '/rarimo/rarimo-core/identity/params'
-    const { data } = await api.get<IdentityParams>(endpoint)
+  const getOperation = async (index: string) => {
+    const endpoint = `/rarimo/rarimo-core/rarimocore/operation/${index}`
+    const { data } = await api.get<{ operation: Operation }>(endpoint)
 
-    return data!
+    return data!.operation!
   }
 
   const getIdentityNodeByKey = async (key: string) => {
@@ -116,7 +116,7 @@ export const makeRarimoQuerier = (
     getMerkleProof,
     getState,
     getOperationProof,
-    getIdentityParams,
+    getOperation,
     getIdentityNodeByKey,
   }
 }
