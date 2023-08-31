@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/auth-zkp-iden3",
-  "version": "2.0.0-rc.20",
+  "version": "2.0.0-rc.21",
   "description": "Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.",
   "repository": {
     "type": "git",
