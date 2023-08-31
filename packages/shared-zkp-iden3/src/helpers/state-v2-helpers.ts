@@ -15,10 +15,12 @@ export const getGISTProof = async ({
   rpcUrlOrRawProvider,
   contractAddress,
   userId,
+  rootHash,
 }: {
   rpcUrlOrRawProvider: string | RawProvider
   contractAddress: string
   userId: string
+  rootHash?: string
 }) => {
   let contractInstance: StateV2
 
@@ -36,7 +38,9 @@ export const getGISTProof = async ({
     )
   }
 
-  return contractInstance.getGISTProof(userId)
+  return rootHash
+    ? contractInstance.getGISTProofByRoot(userId, rootHash)
+    : contractInstance.getGISTProof(userId)
 }
 
 export const getGISTRootInfo = async ({

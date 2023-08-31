@@ -92,17 +92,39 @@ const getZkProof = async (
 ```
 
 ### For more specific use cases, e.g. when we need to ensure of states actuality:
+
 ```ts
 import { makeRarimoQuerier } from '@rarimo/client'
 import { getTransitStateTxBody } from '@rarimo/shared-zkp-iden3'
+import { FetcherError, HTTP_STATUS_CODES } from "@distributedlab/jac";
+import { sleep } from '@rarimo/shared'
 import { config } from '@/config'
 
 const querier = makeRarimoQuerier({
   apiUrl: config.RARIMO_CORE_RPC_API_URL,
 })
 
-await zkProof.loadStatesDetails(querier)
-await zkProof.loadMerkleProof(querier, config.ISSUER_ID)
+await Promise.all([
+  zkProof.loadStatesDetails(querier),
+  zkProof.loadMerkleProof(querier, config.ISSUER_ID),
+])
+
+await zkProof.loadOperation(querier, zkProof.coreStateDetails.lastUpdateOperationIndex)
+
+do {
+  try {
+    await zkProof.loadOperationProof(querier, zkProof.coreStateDetails.lastUpdateOperationIndex)
+  } catch (error) {
+    if (
+      error instanceof FetcherError &&
+      error.response.status === HTTP_STATUS_CODES.BAD_REQUEST
+    ) {
+      await sleep(30 * 1000)
+    } else {
+      throw error
+    }
+  }
+} while (!zkProof.operationProof)
 
 if (zkProof.isStatesActual()) {
   const transitParams = await isNaturalZkp?.loadParamsForTransitState(

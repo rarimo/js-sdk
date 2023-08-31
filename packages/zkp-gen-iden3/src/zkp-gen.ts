@@ -131,6 +131,15 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     }
   }
 
+  public get endianSwappedCoreStateHashHex() {
+    return this.coreStateDetails?.hash
+      ? '0x' +
+          fromLittleEndian(
+            Hex.decodeString(this.coreStateDetails.hash.slice(2)),
+          ).toString(16)
+      : ''
+  }
+
   public static setConfig(config: Partial<Config>) {
     globalConfig = { ...globalConfig, ...config }
   }
@@ -166,7 +175,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.circuitZkey = zkey
   }
 
-  public async generateProof() {
+  public async generateProof(querier: RarimoQuerier) {
+    const [{ coreStateDetails }] = await Promise.all([
+      this.loadStatesDetails(querier),
+      this.loadMerkleProof(querier, this.query.issuerId),
+    ])
+
+    await this.loadOperation(querier, coreStateDetails.lastUpdateOperationIndex)
+
     const inputs = await this.#prepareInputs()
 
     const [wasm, provingKey] = await Promise.all([
@@ -192,6 +208,9 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   async #prepareInputs() {
+    if (!this.operation?.details.GISTHash)
+      throw new TypeError(`this.operation?.details.GISTHash is undefined`)
+
     // ==================== USER SIDE ======================
     const challenge = fromLittleEndian(Hex.decodeString(this.challenge))
 
@@ -201,12 +220,17 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       rpcUrlOrRawProvider: ZkpGen.config.CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER,
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
+      rootHash: this.operation?.details.GISTHash,
     })
 
     // ==================== ISSUER SIDE ======================
 
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
+
     const issuerClaimNonRevMtp = await this.#requestClaimRevocationStatus(
       this.verifiableCredentials.body.credential.credentialStatus.id,
+      this.endianSwappedCoreStateHashHex,
     )
 
     const issuerClaimNonRevMtpAux = getNodeAuxValue(issuerClaimNonRevMtp.mtp)
@@ -537,18 +561,26 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     return new SchemaHash(keccakString.subarray(keccakString.byteLength - 16))
   }
 
-  async #requestClaimRevocationStatus(url: string) {
-    const { data } = await fetcher.get(url)
+  async #requestClaimRevocationStatus(url: string, stateHash: string) {
+    const { data } = await fetcher.get(url, {
+      query: {
+        state: stateHash,
+      },
+    })
 
     return data as ClaimStatus
   }
 
   async #parseBJJSignatureProof() {
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
+
     const [credentialSigProof] =
       this.verifiableCredentials.body.credential.proof!
 
     const issuerAuthClaimIncMtp = await this.#requestClaimRevocationStatus(
       credentialSigProof.issuerProofUpdateUrl,
+      this.endianSwappedCoreStateHashHex,
     )
 
     issuerAuthClaimIncMtp.issuer = {
@@ -574,6 +606,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
     const issuerAuthClaimNonRevMtp = await this.#requestClaimRevocationStatus(
       credentialSigProof.issuerData.credentialStatus.id,
+      this.endianSwappedCoreStateHashHex,
     )
 
     issuerAuthClaimNonRevMtp.issuer = {
@@ -623,10 +656,14 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   async #parseMTPProof() {
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
+
     const [, mtpProof] = this.verifiableCredentials.body.credential.proof!
 
     const issuerClaimIncMtp = await this.#requestClaimRevocationStatus(
       mtpProof.id,
+      this.endianSwappedCoreStateHashHex,
     )
 
     issuerClaimIncMtp.issuer = {
