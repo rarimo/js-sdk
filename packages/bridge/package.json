@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/bridge",
-  "version": "2.0.0-rc.20",
+  "version": "2.0.0-rc.21",
   "description": "Internal tools that other Rarimo packages use to bridge tokens.",
   "repository": {
     "type": "git",
