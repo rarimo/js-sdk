@@ -28,7 +28,7 @@ export const getChainInfo = async (
     feeCurrencies: [
       {
         ...currency,
-        gasPriceStep: config.gasPriceSteps,
+        gasPriceStep: config.gasPrice.steps,
       },
     ],
     bip44: {

@@ -38,15 +38,6 @@ export const makeWallet = (): Wallet => {
     chainId.value = chainInfo.chainId
 
     await window.keplr.experimentalSuggestChain(chainInfo)
-
-    // TODO: does this needed ?
-    window.keplr.defaultOptions = {
-      sign: {
-        preferNoSetFee: true,
-        preferNoSetMemo: true,
-      },
-    }
-
     await window.keplr.enable(chainId.value)
     signer.value = window.keplr.getOfflineSigner(chainId.value)
     accounts.value = await signer.value.getAccounts()

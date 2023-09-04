@@ -8,6 +8,7 @@ import {
 import {
   type Account,
   type DeliverTxResponse,
+  GasPrice,
   SigningStargateClient,
 } from '@cosmjs/stargate'
 
@@ -28,11 +29,13 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
       wallet.signer,
       {
         registry: stargateRegistry as never,
+        gasPrice: GasPrice.fromString(
+          `${config.gasPrice.amount}${config.currency.minDenom}`,
+        ),
         accountParser: acc => {
           if (acc.typeUrl === '/cosmos.auth.v1beta1.BaseAccount') {
             return baseAccountToAccount(BaseAccount.decode(acc.value))
           }
-
           return baseAccountToAccount(EthAccount.decode(acc.value).baseAccount!)
         },
       },
@@ -52,7 +55,7 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
     const res = await stargate.signAndBroadcast(
       wallet.account.address,
       messages,
-      config.tx,
+      'auto',
     )
 
     if (!res || ('code' in res && res.code !== 0)) {

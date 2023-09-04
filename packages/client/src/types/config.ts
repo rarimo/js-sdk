@@ -9,13 +9,12 @@ export type Config = {
     minDenom: string
     decimals: number
   }
-  gasPriceSteps: {
-    low: number
-    average: number
-    high: number
-  }
-  tx: {
-    amount: [{ denom: string; amount: string }]
-    gas: string
+  gasPrice: {
+    amount: number
+    steps: {
+      low: number
+      average: number
+      high: number
+    }
   }
 }

@@ -14,10 +14,7 @@ import type {
 } from './types'
 import { makeWallet } from './wallet'
 
-// TODO: remove async
-export const makeRarimoClient = async (
-  config: Config,
-): Promise<RarimoClient> => {
+export const makeRarimoClient = (config: Config): RarimoClient => {
   const wallet = ref<Wallet>(stub('Wallet not initialized!'))
   const query = ref<RarimoQuerier>(makeRarimoQuerier(config))
   const tx = ref<RarimoBroadcaster>(stub('Broadcaster not initialized!'))
