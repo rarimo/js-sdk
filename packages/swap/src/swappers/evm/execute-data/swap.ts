@@ -1,5 +1,5 @@
 import type { Token } from '@rarimo/bridge'
-import { Amount, type TransactionBundle } from '@rarimo/shared'
+import { Amount, EVMDexType, type TransactionBundle } from '@rarimo/shared'
 
 import { CALLER_ADDRESS, CONTRACT_BALANCE, THIS_ADDRESS } from '@/const'
 import { SwapCommands } from '@/enums'
@@ -59,10 +59,14 @@ export const getSwapData = (
       throw new TypeError('path, amountOut args are required for swap')
     }
 
-    data.push(...buildSwapData(from, to, amountIn, amountOut, args.path))
+    const isV2Route = args.protocol === EVMDexType.UniswapV2
+
+    data.push(
+      ...buildSwapData(from, to, amountIn, amountOut, args.path, isV2Route),
+    )
 
     // If to.isNative swap output token, we need to unwrap it for UniswapV3
-    if (to.isNative && to.isUniswapV3) {
+    if (to.isNative && to.isUniswapV3 && !isV2Route) {
       data.push(
         buildPayload(SwapCommands.UnwrapNative, [
           THIS_ADDRESS,
@@ -81,7 +85,9 @@ export const buildSwapData = (
   amountIn: Amount,
   amountOut: Amount,
   path: string[],
+  isV2Route: boolean,
 ): CommandPayload[] => {
+  const isV2 = from.isUniswapV2 || isV2Route
   const data = []
 
   const swapValues = [
@@ -91,10 +97,10 @@ export const buildSwapData = (
     // path type is different for UniswapV2 and UniswapV3 routers,
     // for the V3 router it is `address[]`, for the V2 router it is `bytes`
     // (concatenated addresses)
-    from.isUniswapV2 ? path : path[0],
+    isV2 ? path : path[0],
   ]
 
-  if (from.isUniswapV2) {
+  if (isV2) {
     let command = from.isTraderJoe
       ? SwapCommands.SwapTokensForExactTokensTj
       : SwapCommands.SwapTokensForExactTokensV2
@@ -113,7 +119,7 @@ export const buildSwapData = (
     data.push(buildPayload(command, swapValues))
   }
 
-  if (from.isUniswapV3) {
+  if (from.isUniswapV3 && !isV2Route) {
     const command = SwapCommands.ExactOutput
     // from.isNative determines for the UniswapV3 router, does input token be
     // native or not

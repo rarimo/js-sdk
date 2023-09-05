@@ -167,9 +167,7 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
       ? estimations.some(i => !i.from.chain.contractAddress)
       : !estimations[0].from.chain.contractAddress
 
-    if (isChainNotSupported) {
-      throw new errors.OperationChainNotSupportedError()
-    }
+    if (isChainNotSupported) throw new errors.OperationChainNotSupportedError()
 
     _setStatus(CheckoutOperationStatus.CheckoutStarted)
 

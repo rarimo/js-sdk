@@ -1,5 +1,9 @@
 import type { Token } from '@rarimo/bridge'
-import type { Amount, ClassInstanceToPlainObject } from '@rarimo/shared'
+import type {
+  Amount,
+  ClassInstanceToPlainObject,
+  EVMDexType,
+} from '@rarimo/shared'
 import type { SwapOpts } from '@rarimo/swap'
 
 export type SwapEstimation = SwapOpts & SwapEstimationInfo
@@ -35,6 +39,7 @@ export type EstimateQueryParams = {
 
 export type EstimateResponse = SwapEstimationInfo & {
   path: string[]
+  protocol: EVMDexType
   amountIn: ClassInstanceToPlainObject<Amount>
   amountOut: ClassInstanceToPlainObject<Amount>
 }
