@@ -10,6 +10,7 @@ import type {
   HexString,
   TransactionBundle,
 } from '@rarimo/shared'
+import { EVMDexType } from '@rarimo/shared'
 
 export type SwapperCreateFn = (p: IProvider) => Swapper
 
@@ -97,6 +98,7 @@ export type SwapOpts = {
   amountOut: Amount
   // DEX swap a token path, required if swap is required
   path?: string[]
+  protocol: EVMDexType
 }
 
 export type IntermediateTokenOpts = SwapOpts

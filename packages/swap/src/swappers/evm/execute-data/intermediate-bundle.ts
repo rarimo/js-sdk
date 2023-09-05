@@ -2,6 +2,7 @@ import { BN } from '@distributedlab/tools'
 import {
   type BridgeChain,
   ERC20_ABI,
+  EVMDexType,
   type TransactionBundle,
 } from '@rarimo/shared'
 import { utils } from 'ethers'
@@ -22,17 +23,18 @@ export const buildIntermediateBundleData = (
   receiver: string,
   bundle?: TransactionBundle,
 ): string => {
-  const { from, to, amountIn, amountOut, path } = opts
+  const { from, to, amountIn, amountOut, path, protocol } = opts
 
   const swapDiamondContractAddress = chainTo.contractAddress
   const intermediateTokenAddress = from.address
+  const isV2Route = protocol === EVMDexType.UniswapV2
 
   const swapDiamondFunctionData = encodeCommandPayload([
     buildPayload(SwapCommands.TransferFromErc20, [
       intermediateTokenAddress,
       amountIn.value,
     ]),
-    ...buildSwapData(from, to, amountIn, amountOut, path!),
+    ...buildSwapData(from, to, amountIn, amountOut, path!, isV2Route),
     ...(to.isNative && to.isUniswapV3
       ? [
           buildPayload(SwapCommands.UnwrapNative, [

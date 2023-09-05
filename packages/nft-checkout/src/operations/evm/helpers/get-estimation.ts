@@ -61,6 +61,7 @@ export const getEstimation = async ({
 
   const {
     path,
+    protocol,
     impact,
     amountIn: _amountIn,
     amountOut: _amountOut,
@@ -72,6 +73,7 @@ export const getEstimation = async ({
     from,
     to,
     path,
+    protocol,
     impact,
     gasPrice,
     gasPriceInUSD,

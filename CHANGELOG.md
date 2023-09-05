@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.23] - 2023-09-05
+### Added
+- `@rarimo/swap` - Support for the Goerli and Ethereum Uniswap V2 swap routes
+
 ## [2.0.0-rc.22] - 2023-09-04
 ### Changed
 - `@rarimo/react-provider` - Updated vite react plugin version
 - `@rarimo/react-nft-checkout` - Updated vite react plugin version
-- `@rarimo/client` - Harcoded fee amount in the broadcaster for transaction to estimating gas
+- `@rarimo/client` - Hardcoded fee amount in the broadcaster for transaction to estimating gas
 
 ### Removed
 - `@rarimo/client` - Hardcoded fee amount from config
@@ -458,7 +462,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.22...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.23...HEAD
+[2.0.0-rc.23]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.22...2.0.0-rc.23
 [2.0.0-rc.22]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.21...2.0.0-rc.22
 [2.0.0-rc.21]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.20...2.0.0-rc.21
 [2.0.0-rc.20]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.19...2.0.0-rc.20

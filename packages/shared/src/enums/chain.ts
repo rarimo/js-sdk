@@ -20,6 +20,7 @@ export enum EVMDexType {
   QuickSwap = 'QuickSwap',
   PancakeSwap = 'PancakeSwap',
   UniswapV3 = 'UniswapV3',
+  UniswapV2 = 'UniswapV2',
 }
 
 export enum ChainTypes {
