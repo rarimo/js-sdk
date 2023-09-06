@@ -23,30 +23,66 @@ export interface Wallet {
   disconnect: () => void
 }
 
+export type CosmosRequestContext = {
+  blockHeight: string
+}
+
 export type RarimoQuerier = {
   // tendermint
-  getNodeStatus(): Promise<NodeInfo>
+  getNodeStatus(cosmosRequestContext?: CosmosRequestContext): Promise<NodeInfo>
   // auth
-  getAccount(address: string): Promise<Account>
+  getAccount(
+    address: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<Account>
   // bank
-  getAllBalances(address: string): Promise<Coin[]>
+  getAllBalances(
+    address: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<Coin[]>
   // gov
-  getGovParams(paramType: GovParamsType): Promise<GovParams>
-  getProposal(proposalId: number): Promise<Proposal>
+  getGovParams(
+    paramType: GovParamsType,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<GovParams>
+  getProposal(
+    proposalId: number,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<Proposal>
   // staking
   getDelegation(
     delegator: string,
     validator: string,
+    cosmosRequestContext?: CosmosRequestContext,
   ): Promise<DelegationResponse>
   // distribution
-  getDelegationRewards(delegator: string, validator: string): Promise<Coin[]>
+  getDelegationRewards(
+    delegator: string,
+    validator: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<Coin[]>
   // rarimocore/identity
-  getMerkleProof(id: string): Promise<MerkleProof>
-  getState(id: string): Promise<StateInfo>
+  getMerkleProof(
+    id: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<MerkleProof>
+  getState(
+    id: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<StateInfo>
   // rarimocore/rarimocore
-  getOperationProof(index: string): Promise<OperationProof>
-  getOperation(index: string): Promise<Operation>
-  getIdentityNodeByKey(key: string): Promise<IdentityNode>
+  getOperationProof(
+    index: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<OperationProof>
+  getOperation(
+    index: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<Operation>
+  getIdentityNodeByKey(
+    key: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<IdentityNode>
 }
 
 export type RarimoClient = {
