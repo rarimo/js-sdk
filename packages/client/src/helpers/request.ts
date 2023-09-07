@@ -1,3 +1,5 @@
+import type { FetcherRequestOpts } from '@distributedlab/fetcher'
+
 import type { CosmosRequestContext } from '@/types'
 
 export const parseCosmosRequest = (
@@ -9,5 +11,15 @@ export const parseCosmosRequest = (
     ...(context.blockHeight
       ? { [`x-cosmos-block-height`]: context.blockHeight }
       : {}),
+  }
+}
+
+export const buildRarimoQuerierOpts = (
+  context?: Partial<CosmosRequestContext>,
+): FetcherRequestOpts | undefined => {
+  if (!context) return
+
+  return {
+    headers: parseCosmosRequest(context),
   }
 }

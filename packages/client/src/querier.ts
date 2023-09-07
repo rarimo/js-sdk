@@ -1,6 +1,6 @@
 import { Fetcher } from '@distributedlab/fetcher'
 
-import { parseCosmosRequest } from '@/helpers'
+import { buildRarimoQuerierOpts } from '@/helpers'
 import type {
   Account,
   Coin,
@@ -31,11 +31,7 @@ export const makeRarimoQuerier = (
   const getNodeStatus = async (cosmosRequestContext?: CosmosRequestContext) => {
     const { data } = await api.get<NodeInfo>(
       '/cosmos/base/tendermint/v1beta1/node_info',
-      {
-        ...(cosmosRequestContext
-          ? { headers: parseCosmosRequest(cosmosRequestContext) }
-          : {}),
-      },
+      buildRarimoQuerierOpts(cosmosRequestContext),
     )
     return data!
   }
@@ -46,11 +42,7 @@ export const makeRarimoQuerier = (
   ) => {
     const { data } = await api.get<{ account: Account }>(
       `/cosmos/auth/v1beta1/accounts/${address}`,
-      {
-        ...(cosmosRequestContext
-          ? { headers: parseCosmosRequest(cosmosRequestContext) }
-          : {}),
-      },
+      buildRarimoQuerierOpts(cosmosRequestContext),
     )
     return data!.account
   }
@@ -61,11 +53,10 @@ export const makeRarimoQuerier = (
   ) => {
     const { data } = await api.get<{
       balances: Coin[]
-    }>(`/cosmos/bank/v1beta1/balances/${address}`, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    }>(
+      `/cosmos/bank/v1beta1/balances/${address}`,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data?.balances ?? []
   }
 
@@ -75,11 +66,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/cosmos/staking/v1beta1/validators/${validator}/delegations/${delegator}`
-    const { data } = await api.get<DelegationResponse>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<DelegationResponse>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!
   }
 
@@ -91,11 +81,7 @@ export const makeRarimoQuerier = (
     const endpoint = `/cosmos/distribution/v1beta1/delegators/${delegator}/rewards/${validator}`
     const { data } = await api.get<{
       rewards: Coin[]
-    }>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    }>(endpoint, buildRarimoQuerierOpts(cosmosRequestContext))
     return (data?.rewards ?? []) as Coin[]
   }
 
@@ -104,11 +90,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/cosmos/gov/v1beta1/params/${paramType}`
-    const { data } = await api.get<GovParams>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<GovParams>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!
   }
 
@@ -117,11 +102,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/cosmos/gov/v1beta1/proposals/${proposalId}`
-    const { data } = await api.get<{ proposal: Proposal }>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<{ proposal: Proposal }>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!.proposal
   }
 
@@ -130,11 +114,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/rarimo/rarimo-core/identity/state/${id}/proof`
-    const { data } = await api.get<MerkleProof>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<MerkleProof>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!
   }
 
@@ -143,11 +126,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/rarimo/rarimo-core/identity/state/${id}`
-    const { data } = await api.get<GetStateInfoResponse>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<GetStateInfoResponse>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!.state
   }
 
@@ -156,11 +138,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/rarimo/rarimo-core/rarimocore/operation/${index}/proof`
-    const { data } = await api.get<OperationProof>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<OperationProof>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
     return data!
   }
 
@@ -169,11 +150,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/rarimo/rarimo-core/rarimocore/operation/${index}`
-    const { data } = await api.get<{ operation: Operation }>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<{ operation: Operation }>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
 
     return data!.operation!
   }
@@ -183,11 +163,10 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/rarimo/rarimo-core/identity/node/${key}`
-    const { data } = await api.get<IdentityNode>(endpoint, {
-      ...(cosmosRequestContext
-        ? { headers: parseCosmosRequest(cosmosRequestContext) }
-        : {}),
-    })
+    const { data } = await api.get<IdentityNode>(
+      endpoint,
+      buildRarimoQuerierOpts(cosmosRequestContext),
+    )
 
     return data!
   }
