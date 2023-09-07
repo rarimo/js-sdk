@@ -27,6 +27,7 @@ import type {
   Operation,
   OperationProof,
   RarimoQuerier,
+  StateInfo,
 } from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
 import { isString, omit } from '@rarimo/shared'
@@ -95,7 +96,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public subjectProof: ZKProof = {} as ZKProof
 
   public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
-  public coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+  public coreStateDetails?: StateInfo
   public operationProof?: OperationProof
   public operation?: Operation
   public merkleProof?: MerkleProof
@@ -176,10 +177,12 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   public async generateProof(querier: RarimoQuerier) {
-    const [{ coreStateDetails }] = await Promise.all([
-      this.loadStatesDetails(querier),
-      this.loadMerkleProof(querier, this.query.issuerId),
-    ])
+    const { coreStateDetails } = await this.loadStatesDetails(querier)
+    await this.loadMerkleProof(
+      querier,
+      this.query.issuerId,
+      coreStateDetails.createdAtBlock,
+    )
 
     await this.loadOperation(querier, coreStateDetails.lastUpdateOperationIndex)
 
@@ -714,7 +717,7 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
   public async loadStatesDetails(querier: RarimoQuerier): Promise<{
     targetStateDetails: Awaited<ReturnType<typeof getGISTRootInfo>>
-    coreStateDetails: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+    coreStateDetails: StateInfo
   }> {
     const [targetStateDetails, coreStateDetails] = await Promise.all([
       getGISTRootInfo({
@@ -759,8 +762,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   public async loadMerkleProof(
     querier: RarimoQuerier,
     issuerId: string,
+    createdAtBlock: string,
   ): Promise<MerkleProof> {
-    const merkleProof = await querier.getMerkleProof(issuerId)
+    const merkleProof = await querier.getMerkleProof(issuerId, {
+      blockHeight: createdAtBlock,
+    })
 
     this.merkleProof = merkleProof
 
