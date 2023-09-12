@@ -133,12 +133,15 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   public get endianSwappedCoreStateHashHex() {
-    return this.coreStateDetails?.hash
-      ? '0x' +
-          fromLittleEndian(
-            Hex.decodeString(this.coreStateDetails.hash.slice(2)),
-          ).toString(16)
-      : ''
+    if (!this.coreStateDetails?.hash) return ''
+
+    const convertedStateHash = fromLittleEndian(
+      Hex.decodeString(this.coreStateDetails.hash.slice(2)),
+    ).toString(16)
+
+    return convertedStateHash?.length < 64
+      ? `0x0${convertedStateHash}`
+      : `0x${convertedStateHash}`
   }
 
   public static setConfig(config: Partial<Config>) {
