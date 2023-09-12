@@ -67,7 +67,7 @@
     "ts-jest": "^29.0.3",
     "tsc-alias": "^1.8.2",
     "typedoc": "^0.24.8",
-    "typescript": "^5.0.4",
+    "typescript": "5.0.4",
     "yorkie": "^2.0.0"
   },
   "packageManager": "yarn@3.4.1",
