@@ -7,6 +7,7 @@ import {
   type BridgeChain,
   ChainTypes,
   DestinationTransactionStatus,
+  type HexString,
   isString,
   type TransactionBundle,
 } from '@rarimo/shared'
@@ -15,8 +16,9 @@ import {
   createSwapper,
   type IntermediateTokenOpts,
 } from '@rarimo/swap'
-import type { providers } from 'ethers'
+import { type providers, utils } from 'ethers'
 
+import { checkoutApi } from '@/api'
 import { USDC_MAP } from '@/const'
 import { CheckoutOperationStatus, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
@@ -58,6 +60,8 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
 
   const isInitialized = ref(false)
   const status = ref(CheckoutOperationStatus.Created)
+
+  const EVM_RELAYER_ADDRESS = '0x1bbcc1c328e47805f050cb8c4bee9a6043997118'
 
   let params = {} as CheckoutOperationParams
   let isSameChain = false
@@ -172,6 +176,10 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     }
 
     _setStatus(CheckoutOperationStatus.CheckoutStarted)
+
+    if (bundle?.salt) {
+      bundle.salt = _getSalt(bundle.salt)
+    }
 
     const result = await _checkout({
       swapper,
@@ -320,6 +328,30 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     })
   }
 
+  const _getSalt = (salt: HexString): HexString => {
+    const sender = _getWithdrawTxSender()
+
+    return new utils.AbiCoder().encode(['bytes32', 'address'], [salt, sender])
+  }
+
+  const _getWithdrawTxSender = () => {
+    return isSameChain ? provider.address : EVM_RELAYER_ADDRESS
+  }
+
+  const getBundlerAddress = async (salt: HexString) => {
+    if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
+
+    if (!salt) throw new TypeError('Salt is required')
+
+    const _salt = _getSalt(salt)
+
+    return checkoutApi.get('/v1/bridge/get-bundler-address', {
+      query: {
+        salt: _salt,
+      },
+    })
+  }
+
   return toRaw(
     extend(
       {
@@ -331,6 +363,7 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
         getSupportedChains,
         getPaymentTokens,
         getDestinationTx,
+        getBundlerAddress,
         checkout: checkout as CheckoutOperation['checkout'],
         estimatePrice: estimatePrice as CheckoutOperation['estimatePrice'],
       },
