@@ -7,6 +7,7 @@ import type {
   DestinationTransaction,
   TransactionBundle,
 } from '@rarimo/shared'
+import { ChainTypes } from '@rarimo/shared'
 
 import { Price } from '@/entities'
 import { CheckoutOperationStatus } from '@/enums'
@@ -30,6 +31,12 @@ export type CheckoutOperationParams = {
   slippage?: number // 0.5, 1, 5, 10 etc
   /** Whether the transaction accepts a single token as input (false) or multiple tokens (true) */
   isMultiplePayment?: boolean
+  /** The address of the relayer to use for the transaction */
+  relayer?: {
+    [ChainTypes.EVM]: Address
+    [ChainTypes.Solana]: Address
+    [ChainTypes.Near]: Address
+  }
 }
 
 export type CheckoutOperationCreateFunction = (

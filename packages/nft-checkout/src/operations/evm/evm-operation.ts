@@ -61,8 +61,11 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   const isInitialized = ref(false)
   const status = ref(CheckoutOperationStatus.Created)
 
-  const EVM_RELAYER_ADDRESS = '0x1bbcc1c328e47805f050cb8c4bee9a6043997118'
-
+  const relayer = {
+    [ChainTypes.EVM]: '0x1bbcc1c328e47805f050cb8c4bee9a6043997118',
+    [ChainTypes.Solana]: '',
+    [ChainTypes.Near]: '',
+  }
   let params = {} as CheckoutOperationParams
   let isSameChain = false
   let isMultiplePayment = false
@@ -101,6 +104,15 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
 
     swapToToken = _getSwapToToken()
     swapAmountOut = await _getSwapAmountOut()
+
+    if (params?.relayer?.[ChainTypes.EVM])
+      relayer[ChainTypes.EVM] = params.relayer[ChainTypes.EVM]
+
+    if (params?.relayer?.[ChainTypes.Solana])
+      relayer[ChainTypes.Solana] = params.relayer[ChainTypes.Solana]
+
+    if (params?.relayer?.[ChainTypes.Near])
+      relayer[ChainTypes.Near] = params.relayer[ChainTypes.Near]
 
     _emitEvent(OperationEventBusEvents.Initiated)
     _setStatus(CheckoutOperationStatus.Initialized)
@@ -177,9 +189,7 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
 
     _setStatus(CheckoutOperationStatus.CheckoutStarted)
 
-    if (bundle?.salt) {
-      bundle.salt = _getSalt(bundle.salt)
-    }
+    if (bundle?.salt) bundle.salt = _getSalt(bundle.salt)
 
     const result = await _checkout({
       swapper,
@@ -335,19 +345,16 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   }
 
   const _getWithdrawTxSender = () => {
-    return isSameChain ? provider.address : EVM_RELAYER_ADDRESS
+    return isSameChain ? provider.address : relayer[ChainTypes.EVM]
   }
 
   const getBundlerAddress = async (salt: HexString) => {
     if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
-
     if (!salt) throw new TypeError('Salt is required')
 
-    const _salt = _getSalt(salt)
-
-    return checkoutApi.get('/v1/bridge/get-bundler-address', {
+    return checkoutApi.get('/v1/bridge/bundler-address', {
       query: {
-        salt: _salt,
+        salt: _getSalt(salt),
       },
     })
   }
