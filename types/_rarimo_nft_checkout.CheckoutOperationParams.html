@@ -16,7 +16,7 @@
 <li><a href="../modules/_rarimo_nft_checkout.html">@rarimo/nft-checkout</a></li>
 <li><a href="_rarimo_nft_checkout.CheckoutOperationParams.html">CheckoutOperationParams</a></li></ul>
 <h1>Type alias CheckoutOperationParams</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">Checkout<wbr/>Operation<wbr/>Params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">chainIdFrom</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ChainId</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">chainIdTo</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ChainId</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">isMultiplePayment</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">price</span><span class="tsd-signature-symbol">: </span><a href="../classes/_rarimo_nft_checkout.Price.html" class="tsd-signature-type tsd-kind-class">Price</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">recipient</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">slippage</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">Checkout<wbr/>Operation<wbr/>Params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">chainIdFrom</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ChainId</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">chainIdTo</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ChainId</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">isMultiplePayment</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">price</span><span class="tsd-signature-symbol">: </span><a href="../classes/_rarimo_nft_checkout.Price.html" class="tsd-signature-type tsd-kind-class">Price</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">recipient</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">relayer</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span><br/><span>        </span><span class="tsd-kind-property">0</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">1</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">2</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">slippage</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
 <div class="tsd-comment tsd-typography"><p>The parameters for a transaction.</p>
 </div>
 <div class="tsd-type-declaration">
@@ -48,13 +48,25 @@
 </div>
 <div class="tsd-comment tsd-typography"></div></li>
 <li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">relayer</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">0</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">1</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">2</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
+<div class="tsd-comment tsd-typography"><p>The address of the relayer to use for the transaction</p>
+</div>
+<div class="tsd-comment tsd-typography"></div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">0</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">1</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">2</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Address</span></h5></li></ul></li>
+<li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">slippage</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
 <div class="tsd-comment tsd-typography"><p>The slippage tolerance, as a percentage of the source token amount</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/4c53f28/packages/nft-checkout/src/types/operation.ts#L20">nft-checkout/src/types/operation.ts:20</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/c5ecce1/packages/nft-checkout/src/types/operation.ts#L21">nft-checkout/src/types/operation.ts:21</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
