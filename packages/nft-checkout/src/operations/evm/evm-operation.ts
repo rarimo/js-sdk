@@ -3,6 +3,7 @@ import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
+  type Address,
   Amount,
   type BridgeChain,
   ChainTypes,
@@ -348,15 +349,22 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     return isSameChain ? provider.address : relayer[ChainTypes.EVM]
   }
 
-  const getBundlerAddress = async (salt: HexString) => {
+  const getBundlerAddress = async (salt: HexString): Promise<Address> => {
     if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
     if (!salt) throw new TypeError('Salt is required')
 
-    return checkoutApi.get('/v1/bridge/bundler-address', {
-      query: {
-        salt: _getSalt(salt),
+    const { data } = await checkoutApi.get<Address>(
+      '/v1/bridge/bundler-address',
+      {
+        query: {
+          salt: _getSalt(salt),
+        },
       },
-    })
+    )
+
+    if (!data) throw new errors.OperationBundlerAddressNotFoundError()
+
+    return data
   }
 
   return toRaw(

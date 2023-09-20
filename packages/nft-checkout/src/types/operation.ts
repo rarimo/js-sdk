@@ -7,7 +7,7 @@ import type {
   DestinationTransaction,
   TransactionBundle,
 } from '@rarimo/shared'
-import { ChainTypes } from '@rarimo/shared'
+import { ChainTypes, type HexString } from '@rarimo/shared'
 
 import { Price } from '@/entities'
 import { CheckoutOperationStatus } from '@/enums'
@@ -102,4 +102,5 @@ export interface CheckoutOperation extends OperationSubscriber {
     sourceChain: BridgeChain,
     sourceTxHash: string,
   ): Promise<DestinationTransaction>
+  getBundlerAddress(salt: HexString): Promise<Address>
 }
