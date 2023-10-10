@@ -1,5 +1,4 @@
-<h1><p align="center"><img style="background: white;" alt="Rarimo JS SDK" src="https://scan.testnet.rarimo.com/android-chrome-512x512.png" width="256" /></p></h1>
-
+<h1><p align="center"><img style="background: white;" alt="Rarimo JS SDK" src="https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/ra-dark-logo.png" width="256" /></p></h1>
 <div align="center">
   <a href="https://github.com/rarimo/js-sdk/blob/main/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/rarimo/js-sdk.svg" />
