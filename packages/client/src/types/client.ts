@@ -2,6 +2,8 @@ import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { GovParamsType } from '@cosmjs/stargate'
 import type { AccountData, ChainInfo } from '@keplr-wallet/types'
 
+import type { GrantAuthorization } from '@/types/authz'
+
 import type { Account } from './auth'
 import type { Coin } from './bank'
 import type { RarimoBroadcaster } from './broadcaster'
@@ -35,6 +37,11 @@ export type RarimoQuerier = {
     address: string,
     cosmosRequestContext?: CosmosRequestContext,
   ): Promise<Account>
+  // authz
+  getGrantAuthorizationsByGrantee(
+    grantee: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ): Promise<GrantAuthorization[]>
   // bank
   getAllBalances(
     address: string,

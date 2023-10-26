@@ -1,4 +1,5 @@
 export * from './auth'
+export * from './authz'
 export * from './gov'
 export * from './operation'
 export * from './staking'

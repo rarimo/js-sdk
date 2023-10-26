@@ -8,18 +8,18 @@ export const parseCosmosRequest = (
   'x-cosmos-block-height': string
 }> => {
   return {
-    ...(context.blockHeight
-      ? { [`x-cosmos-block-height`]: context.blockHeight }
-      : {}),
+    ...(context.blockHeight && {
+      'x-cosmos-block-height': context.blockHeight,
+    }),
   }
 }
 
 export const buildRarimoQuerierOpts = (
   context?: Partial<CosmosRequestContext>,
+  list?: boolean,
 ): FetcherRequestOpts | undefined => {
-  if (!context) return
-
   return {
-    headers: parseCosmosRequest(context),
+    ...(context && { headers: parseCosmosRequest(context) }),
+    ...(list && { query: { 'pagination.limit': 100 } }),
   }
 }

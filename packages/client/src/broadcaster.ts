@@ -1,3 +1,4 @@
+import { MsgExec } from '@/codec/cosmos/authz/v1beta1/tx'
 import { Coin } from '@/codec/cosmos/base/v1beta1/coin'
 import {
   MsgWithdrawDelegatorReward,
@@ -6,6 +7,7 @@ import {
 import { VoteOption as EVoteOption } from '@/codec/cosmos/gov/v1beta1/gov'
 import { MsgVote } from '@/codec/cosmos/gov/v1beta1/tx'
 import { MsgDelegate, MsgUndelegate } from '@/codec/cosmos/staking/tx'
+import { Any } from '@/codec/google/protobuf/any'
 import { VoteOption } from '@/enums'
 import { makeBroadcastMaker } from '@/helpers'
 import type { Config, RarimoBroadcaster, Wallet } from '@/types'
@@ -17,8 +19,43 @@ export const makeRarimoBroadcaster = async (
   const api = await makeBroadcastMaker(config, wallet)
   const broadcaster = api.makeBroadcastCaller
 
+  const exec = (grantee: string, msgs: Any[]) => {
+    return broadcaster<MsgExec>(
+      '/cosmos.authz.v1beta1.MsgExec',
+      MsgExec,
+    )(
+      MsgExec.fromPartial({
+        grantee,
+        msgs,
+      }),
+    )
+  }
+
   return {
     disconnect: api.disconnect,
+
+    // authz
+    exec,
+
+    execDelegate: (
+      grantee: string,
+      delegatorAddress: string,
+      validatorAddress: string,
+      amount?: Coin,
+    ) => {
+      const delegateMsg = MsgDelegate.fromPartial({
+        delegatorAddress,
+        validatorAddress,
+        amount,
+      })
+
+      return exec(grantee, [
+        Any.fromPartial({
+          typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+          value: MsgDelegate.encode(delegateMsg).finish(),
+        }),
+      ])
+    },
 
     // gov
     voteProposal: (voter: string, proposalId: number, option: VoteOption) => {
@@ -61,7 +98,7 @@ export const makeRarimoBroadcaster = async (
     delegate: (
       delegatorAddress: string,
       validatorAddress: string,
-      amount: Coin | undefined,
+      amount?: Coin,
     ) => {
       return broadcaster<MsgDelegate>(
         '/cosmos.staking.v1beta1.MsgDelegate',

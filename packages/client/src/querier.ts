@@ -1,4 +1,4 @@
-import { Fetcher } from '@distributedlab/fetcher'
+import { Fetcher, type FetcherResponse } from '@distributedlab/fetcher'
 
 import { buildRarimoQuerierOpts } from '@/helpers'
 import type {
@@ -9,11 +9,13 @@ import type {
   DelegationResponse,
   GetStateInfoResponse,
   GovParams,
+  GrantAuthorization,
   IdentityNode,
   MerkleProof,
   NodeInfo,
   Operation,
   OperationProof,
+  PageResponse,
   Proposal,
   RarimoQuerier,
 } from '@/types'
@@ -27,6 +29,27 @@ export const makeRarimoQuerier = (
       'Content-Type': 'application/json',
     },
   })
+
+  const loadAllPagesData = async <T extends [], R extends object>(
+    response: FetcherResponse<PageResponse<R>>,
+    key: keyof R,
+  ): Promise<T> => {
+    if (!response?.data) return [] as unknown as T
+
+    const data = response?.data
+    const result = data[key] as unknown as T
+
+    while (response?.data?.pagination?.next_key) {
+      const url = new URL(response.url)
+      url.searchParams.set('pagination.key', data.pagination.next_key)
+      response = await api.get<PageResponse<R>>(
+        url.toString().replace(config.apiUrl, ''),
+      )
+      result.push(...((response?.data?.[key] as unknown as T) || []))
+    }
+
+    return result
+  }
 
   const getNodeStatus = async (cosmosRequestContext?: CosmosRequestContext) => {
     const { data } = await api.get<NodeInfo>(
@@ -51,13 +74,15 @@ export const makeRarimoQuerier = (
     address: string,
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
-    const { data } = await api.get<{
-      balances: Coin[]
-    }>(
+    const response = await api.get<
+      PageResponse<{
+        balances: Coin[]
+      }>
+    >(
       `/cosmos/bank/v1beta1/balances/${address}`,
-      buildRarimoQuerierOpts(cosmosRequestContext),
+      buildRarimoQuerierOpts(cosmosRequestContext, true),
     )
-    return data?.balances ?? []
+    return loadAllPagesData(response, 'balances')
   }
 
   const getDelegation = async (
@@ -79,10 +104,12 @@ export const makeRarimoQuerier = (
     cosmosRequestContext?: CosmosRequestContext,
   ) => {
     const endpoint = `/cosmos/distribution/v1beta1/delegators/${delegator}/rewards/${validator}`
-    const { data } = await api.get<{
-      rewards: Coin[]
-    }>(endpoint, buildRarimoQuerierOpts(cosmosRequestContext))
-    return (data?.rewards ?? []) as Coin[]
+    const response = await api.get<
+      PageResponse<{
+        rewards: Coin[]
+      }>
+    >(endpoint, buildRarimoQuerierOpts(cosmosRequestContext, true))
+    return loadAllPagesData(response, 'rewards')
   }
 
   const getGovParams = async (
@@ -171,6 +198,18 @@ export const makeRarimoQuerier = (
     return data!
   }
 
+  const getGrantAuthorizationsByGrantee = async (
+    grantee: string,
+    cosmosRequestContext?: CosmosRequestContext,
+  ) => {
+    const endpoint = `cosmos/authz/v1beta1/grants/grantee/${grantee}`
+    const response = await api.get<
+      PageResponse<{ grants: GrantAuthorization[] }>
+    >(endpoint, buildRarimoQuerierOpts(cosmosRequestContext, true))
+
+    return loadAllPagesData(response, 'grants')
+  }
+
   return {
     getNodeStatus,
     getAccount,
@@ -184,5 +223,6 @@ export const makeRarimoQuerier = (
     getOperationProof,
     getOperation,
     getIdentityNodeByKey,
+    getGrantAuthorizationsByGrantee,
   }
 }
