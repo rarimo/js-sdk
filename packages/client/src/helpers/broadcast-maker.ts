@@ -80,6 +80,7 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
   return {
     disconnect,
     makeBroadcastCaller,
+    stargateRegistry,
   }
 }
 

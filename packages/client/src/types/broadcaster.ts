@@ -17,6 +17,20 @@ export type RarimoBroadcaster = {
     amount?: Coin,
   ): Promise<DeliverTxResponse>
 
+  execUndelegate: (
+    grantee: string,
+    delegatorAddress: string,
+    validatorAddress: string,
+    amount?: Coin,
+  ) => Promise<DeliverTxResponse>
+
+  execVoteProposal: (
+    grantee: string,
+    voter: string,
+    proposalId: number,
+    option: VoteOption,
+  ) => Promise<DeliverTxResponse>
+
   // gov
   voteProposal(
     voter: string,
