@@ -1,5 +1,7 @@
 export * from './auth'
+export * from './authz'
 export * from './gov'
+export * from './msg-urls'
 export * from './operation'
 export * from './staking'
 export * from './tokenmanager'
