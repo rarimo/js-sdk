@@ -16,7 +16,7 @@
 <li><a href="../modules/_rarimo_client.html">@rarimo/client</a></li>
 <li><a href="_rarimo_client.RarimoBroadcaster.html">RarimoBroadcaster</a></li></ul>
 <h1>Type alias RarimoBroadcaster</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">Rarimo<wbr/>Broadcaster</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">disconnect</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">delegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">undelegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">voteProposal</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">voter</span>, <span class="tsd-kind-parameter">proposalId</span>, <span class="tsd-kind-parameter">option</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">withdrawDelegatorReward</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">withdrawValidatorCommission</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">validatorAddress</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">Rarimo<wbr/>Broadcaster</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">disconnect</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">execUndelegate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">execVoteProposal</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">voter</span>, <span class="tsd-kind-parameter">proposalId</span>, <span class="tsd-kind-parameter">option</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">delegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">exec</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">msgs</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">execDelegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">undelegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">voteProposal</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">voter</span>, <span class="tsd-kind-parameter">proposalId</span>, <span class="tsd-kind-parameter">option</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">withdrawDelegatorReward</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">withdrawValidatorCommission</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">validatorAddress</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
 <div class="tsd-type-declaration">
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
@@ -28,6 +28,44 @@
 <li class="tsd-signature" id="__type.disconnect.__type-1.__type-2"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">exec<wbr/>Undelegate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></h5>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures">
+<li class="tsd-signature" id="__type.execUndelegate.__type-3.__type-4"><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">grantee</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">delegatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">validatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">amount</span>: <span class="tsd-signature-type ">Coin</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">exec<wbr/>Vote<wbr/>Proposal</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">voter</span>, <span class="tsd-kind-parameter">proposalId</span>, <span class="tsd-kind-parameter">option</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></h5>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures">
+<li class="tsd-signature" id="__type.execVoteProposal.__type-5.__type-6"><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">voter</span>, <span class="tsd-kind-parameter">proposalId</span>, <span class="tsd-kind-parameter">option</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">grantee</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">voter</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">proposalId</span>: <span class="tsd-signature-type">number</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">option</span>: <a href="../enums/_rarimo_client.VoteOption.html" class="tsd-signature-type tsd-kind-enum">VoteOption</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-method">delegate</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
@@ -44,7 +82,41 @@
 <h5><span class="tsd-kind-parameter">amount</span>: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Coin</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L27">packages/client/src/types/broadcaster.ts:27</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L52">packages/client/src/types/broadcaster.ts:52</a></li></ul></aside></li></ul></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-method">exec</span><span class="tsd-signature-symbol">:</span>function</h5>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="__type.exec.exec-1"><span class="tsd-kind-call-signature">exec</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">msgs</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><a href="#__type.exec.exec-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">grantee</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">msgs</span>: <span class="tsd-signature-type ">Any</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L11">packages/client/src/types/broadcaster.ts:11</a></li></ul></aside></li></ul></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-method">exec<wbr/>Delegate</span><span class="tsd-signature-symbol">:</span>function</h5>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="__type.execDelegate.execDelegate-1"><span class="tsd-kind-call-signature">exec<wbr/>Delegate</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">grantee</span>, <span class="tsd-kind-parameter">delegatorAddress</span>, <span class="tsd-kind-parameter">validatorAddress</span>, <span class="tsd-kind-parameter">amount</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span><a href="#__type.execDelegate.execDelegate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">grantee</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">delegatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">validatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">amount</span>: <span class="tsd-signature-type ">Coin</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L13">packages/client/src/types/broadcaster.ts:13</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-method">undelegate</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
@@ -61,7 +133,7 @@
 <h5><span class="tsd-kind-parameter">amount</span>: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Coin</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L33">packages/client/src/types/broadcaster.ts:33</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L58">packages/client/src/types/broadcaster.ts:58</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-method">vote<wbr/>Proposal</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
@@ -78,7 +150,7 @@
 <h5><span class="tsd-kind-parameter">option</span>: <a href="../enums/_rarimo_client.VoteOption.html" class="tsd-signature-type tsd-kind-enum">VoteOption</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L10">packages/client/src/types/broadcaster.ts:10</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L35">packages/client/src/types/broadcaster.ts:35</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-method">withdraw<wbr/>Delegator<wbr/>Reward</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
@@ -93,7 +165,7 @@
 <h5><span class="tsd-kind-parameter">validatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L17">packages/client/src/types/broadcaster.ts:17</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L42">packages/client/src/types/broadcaster.ts:42</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-method">withdraw<wbr/>Validator<wbr/>Commission</span><span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures">
@@ -106,9 +178,9 @@
 <h5><span class="tsd-kind-parameter">validatorAddress</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">DeliverTxResponse</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L22">packages/client/src/types/broadcaster.ts:22</a></li></ul></aside></li></ul></li></ul></div><aside class="tsd-sources">
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L47">packages/client/src/types/broadcaster.ts:47</a></li></ul></aside></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/2cf9067/packages/client/src/types/broadcaster.ts#L6">packages/client/src/types/broadcaster.ts:6</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/rarimo/js-sdk/blob/24dafb9/packages/client/src/types/broadcaster.ts#L7">packages/client/src/types/broadcaster.ts:7</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -134,14 +206,17 @@
 <div class="tsd-accordion-details">
 <ul class="tsd-nested-navigation">
 <li><a href="../enums/_rarimo_client.AccountType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-8"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-enum)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.45 16V7.24H14.49V8.224H10.518V10.936H14.07V11.908H10.518V15.016H14.49V16H9.45Z" fill="var(--color-text)"></path></g></svg><span>Account<wbr/>Type</span></a></li>
+<li><a href="../enums/_rarimo_client.AuthorizationTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Authorization<wbr/>Types</span></a></li>
 <li><a href="../enums/_rarimo_client.BondStatus.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Bond<wbr/>Status</span></a></li>
 <li><a href="../enums/_rarimo_client.DelegateTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Delegate<wbr/>Types</span></a></li>
+<li><a href="../enums/_rarimo_client.MessageTypeUrls.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Message<wbr/>Type<wbr/>Urls</span></a></li>
 <li><a href="../enums/_rarimo_client.NetworkParamType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Network<wbr/>Param<wbr/>Type</span></a></li>
 <li><a href="../enums/_rarimo_client.NetworkType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Network<wbr/>Type</span></a></li>
 <li><a href="../enums/_rarimo_client.OperationStatus.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Operation<wbr/>Status</span></a></li>
 <li><a href="../enums/_rarimo_client.ProposalStatus.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Proposal<wbr/>Status</span></a></li>
 <li><a href="../enums/_rarimo_client.ProposalType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Proposal<wbr/>Type</span></a></li>
 <li><a href="../enums/_rarimo_client.PublicKeyType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Public<wbr/>Key<wbr/>Type</span></a></li>
+<li><a href="../enums/_rarimo_client.StakingAuthorizationTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Staking<wbr/>Authorization<wbr/>Types</span></a></li>
 <li><a href="../enums/_rarimo_client.TokenType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Token<wbr/>Type</span></a></li>
 <li><a href="../enums/_rarimo_client.UpgradeType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Upgrade<wbr/>Type</span></a></li>
 <li><a href="../enums/_rarimo_client.VoteOption.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Vote<wbr/>Option</span></a></li>
@@ -159,18 +234,24 @@
 <li><a href="_rarimo_client.DelegationResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Delegation<wbr/>Response</span></a></li>
 <li><a href="_rarimo_client.DepositParams.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Deposit<wbr/>Params</span></a></li>
 <li><a href="_rarimo_client.FinalTallyResult.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Final<wbr/>Tally<wbr/>Result</span></a></li>
+<li><a href="_rarimo_client.GenericAuthorization.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Generic<wbr/>Authorization</span></a></li>
 <li><a href="_rarimo_client.GetStateInfoResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Get<wbr/>State<wbr/>Info<wbr/>Response</span></a></li>
 <li><a href="_rarimo_client.GovParams.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Gov<wbr/>Params</span></a></li>
+<li><a href="_rarimo_client.GrantAuthorization.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Grant<wbr/>Authorization</span></a></li>
 <li><a href="_rarimo_client.IdentityNode.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Identity<wbr/>Node</span></a></li>
 <li><a href="_rarimo_client.MerkleProof.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Merkle<wbr/>Proof</span></a></li>
 <li><a href="_rarimo_client.NodeInfo.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Node<wbr/>Info</span></a></li>
 <li><a href="_rarimo_client.Operation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Operation</span></a></li>
 <li><a href="_rarimo_client.OperationProof.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Operation<wbr/>Proof</span></a></li>
+<li><a href="_rarimo_client.PageResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Page<wbr/>Response</span></a></li>
 <li><a href="_rarimo_client.Proposal.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Proposal</span></a></li>
 <li><a href="_rarimo_client.PublicKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Public<wbr/>Key</span></a></li>
 <li><a href="_rarimo_client.RarimoBroadcaster.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Rarimo<wbr/>Broadcaster</span></a></li>
 <li><a href="_rarimo_client.RarimoClient.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Rarimo<wbr/>Client</span></a></li>
 <li><a href="_rarimo_client.RarimoQuerier.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Rarimo<wbr/>Querier</span></a></li>
+<li><a href="_rarimo_client.SendAuthorization.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Send<wbr/>Authorization</span></a></li>
+<li><a href="_rarimo_client.StakeAuthorization.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Stake<wbr/>Authorization</span></a></li>
+<li><a href="_rarimo_client.StakeAuthorizationValidators.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Stake<wbr/>Authorization<wbr/>Validators</span></a></li>
 <li><a href="_rarimo_client.StateInfo.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>State<wbr/>Info</span></a></li>
 <li><a href="_rarimo_client.TallyParams.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Tally<wbr/>Params</span></a></li>
 <li><a href="_rarimo_client.VotingParams.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Voting<wbr/>Params</span></a></li>
