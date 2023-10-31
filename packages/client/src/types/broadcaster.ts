@@ -31,6 +31,12 @@ export type RarimoBroadcaster = {
     option: VoteOption,
   ) => Promise<DeliverTxResponse>
 
+  execWithdrawDelegatorReward: (
+    grantee: string,
+    delegatorAddress: string,
+    validatorAddress: string,
+  ) => Promise<DeliverTxResponse>
+
   // gov
   voteProposal(
     voter: string,

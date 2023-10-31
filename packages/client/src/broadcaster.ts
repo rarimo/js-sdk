@@ -100,6 +100,25 @@ export const makeRarimoBroadcaster = async (
       ])
     },
 
+    execWithdrawDelegatorReward: (
+      grantee: string,
+      delegatorAddress: string,
+      validatorAddress: string,
+    ) => {
+      const mgs = MsgWithdrawDelegatorReward.fromPartial({
+        delegatorAddress,
+        validatorAddress,
+      })
+
+      return exec(grantee, [
+        encodeAsAny(
+          MessageTypeUrls.WithdrawDelegatorReward,
+          MsgWithdrawDelegatorReward,
+          mgs,
+        ),
+      ])
+    },
+
     // gov
     voteProposal: (voter: string, proposalId: number, option: VoteOption) => {
       return broadcaster<MsgVote>(
