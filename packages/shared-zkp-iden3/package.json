@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared-zkp-iden3",
-  "version": "2.0.0-rc.28",
+  "version": "2.0.0-rc.29",
   "description": "Internal tools that other Rarimo packages use for identity functionality.",
   "repository": {
     "type": "git",
