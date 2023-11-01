@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.29] - 2023-11-01
+### Changed
+- `@rarimo/shared` - Dex pairs oracle service api base URL
+- `@rarimo/nft-checkout` - Checkout service api base URL
+
 ## [2.0.0-rc.28] - 2023-10-31
 ### Added
 - `@rarimo/client` - Send withdraw delegator's rewards via MsgExec
@@ -488,7 +493,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.28...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.29...HEAD
+[2.0.0-rc.29]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.28...2.0.0-rc.29
 [2.0.0-rc.28]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.27...2.0.0-rc.28
 [2.0.0-rc.27]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.26...2.0.0-rc.27
 [2.0.0-rc.26]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.25...2.0.0-rc.26
