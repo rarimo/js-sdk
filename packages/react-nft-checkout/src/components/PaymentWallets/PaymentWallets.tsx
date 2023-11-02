@@ -19,12 +19,12 @@ const PROVIDERS_DATA = [
   {
     proxy: MetamaskProvider,
     name: 'MetaMask',
-    icon: 'https://img.icons8.com/color/48/null/metamask-logo.png',
+    icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/metamask.png',
   },
   {
     proxy: CoinbaseProvider,
     name: 'Coinbase',
-    icon: 'https://cdnfree.freelogovectors.net/wp-content/uploads/2023/01/coinbase-logo-freelogovectors.net_-400x225.png',
+    icon: 'https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/coinbase.png',
   },
 ]
 

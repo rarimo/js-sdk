@@ -23,7 +23,7 @@ const TransactionSummary = ({
   txHash,
   estimatedPrice,
 }: Props) => {
-  const { params, checkoutOperation, provider } = useDappContext()
+  const { params, provider, selectedPaymentToken } = useDappContext()
 
   return (
     <>
@@ -56,7 +56,7 @@ const TransactionSummary = ({
             <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">Spent:</Typography>
               <Typography variant="subtitle1">
-                {`${params.price} ${checkoutOperation?.chainFrom?.token.symbol} = ${estimatedPrice.amountIn} ${estimatedPrice.from.symbol}`}
+                {`${params.price} ${selectedPaymentToken?.symbol} = ${estimatedPrice.amountIn} ${estimatedPrice.from.symbol}`}
               </Typography>
             </Card>
           </Box>
