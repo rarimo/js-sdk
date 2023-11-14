@@ -1,5 +1,4 @@
-<h1><p align="center"><img style="background: white;" alt="Rarimo JS SDK" src="https://scan.testnet.rarimo.com/android-chrome-512x512.png" width="256" /></p></h1>
-
+<h1><p align="center"><img style="background: white;" alt="Rarimo JS SDK" src="https://raw.githubusercontent.com/rarimo/js-sdk/main/assets/logos/ra-dark-logo.png" width="256" /></p></h1>
 <div align="center">
   <a href="https://github.com/rarimo/js-sdk/blob/main/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/rarimo/js-sdk.svg" />
@@ -49,12 +48,18 @@ The Rarimo SDK is a library that consists of many smaller NPM packages within th
 
 ### Identity packages
 
-| Package                                                                                                | Description                                                                                                                                       | Latest                                                                                                                                  |
-|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/identity-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html) | Tools that generate distributed identities for the Iden3 protocol.                                                                                | [![npm version](https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/identity-gen-iden3) |
-| [@rarimo/auth-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html)         | Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.                                                        | [![npm version](https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/auth-zkp-iden3)         |
-| [@rarimo/zkp-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html)           | Tools that generate zero-knowledge proofs for the Iden3 protocol.                                                                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/zkp-gen-iden3)           |
-| [@rarimo/shared-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_shared_zkp_iden_3.html)     | Utility functions, types, and constants that other Rarimo packages use for identity functionality.                                                | [![npm version](https://img.shields.io/npm/v/@rarimo/shared-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/shared-zkp-iden3)     |
+| Package                                                                                                | Description                                                                                        | Latest                                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| [@rarimo/identity-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html) | Tools that generate distributed identities for the Iden3 protocol.                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/identity-gen-iden3) |
+| [@rarimo/auth-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html)         | Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.         | [![npm version](https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/auth-zkp-iden3)         |
+| [@rarimo/zkp-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html)           | Tools that generate zero-knowledge proofs for the Iden3 protocol.                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/zkp-gen-iden3)           |
+| [@rarimo/shared-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_shared_zkp_iden_3.html)     | Utility functions, types and constants that other Rarimo packages use for identity functionality. | [![npm version](https://img.shields.io/npm/v/@rarimo/shared-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/shared-zkp-iden3)     |
+
+### Other packages
+
+| Package                                                                       | Description            | Latest                                                                                                          |
+|-------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [@rarimo/client](https://rarimo.github.io/js-sdk/modules/_rarimo_client.html) | The Rarimo Core client | [![npm version](https://img.shields.io/npm/v/@rarimo/client.svg)](https://www.npmjs.com/package/@rarimo/client) |
 
 ## Known issues
 

@@ -3,10 +3,12 @@ import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
+  type Address,
   Amount,
   type BridgeChain,
   ChainTypes,
   DestinationTransactionStatus,
+  type HexString,
   isString,
   type TransactionBundle,
 } from '@rarimo/shared'
@@ -15,8 +17,9 @@ import {
   createSwapper,
   type IntermediateTokenOpts,
 } from '@rarimo/swap'
-import type { providers } from 'ethers'
+import { type providers, utils } from 'ethers'
 
+import { checkoutApi } from '@/api'
 import { USDC_MAP } from '@/const'
 import { CheckoutOperationStatus, OperationEventBusEvents } from '@/enums'
 import { errors } from '@/errors'
@@ -59,6 +62,11 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   const isInitialized = ref(false)
   const status = ref(CheckoutOperationStatus.Created)
 
+  const relayer = {
+    [ChainTypes.EVM]: '0x1bbcc1c328e47805f050cb8c4bee9a6043997118',
+    [ChainTypes.Solana]: '',
+    [ChainTypes.Near]: '',
+  }
   let params = {} as CheckoutOperationParams
   let isSameChain = false
   let isMultiplePayment = false
@@ -97,6 +105,15 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
 
     swapToToken = _getSwapToToken()
     swapAmountOut = await _getSwapAmountOut()
+
+    if (params?.relayer?.[ChainTypes.EVM])
+      relayer[ChainTypes.EVM] = params.relayer[ChainTypes.EVM]
+
+    if (params?.relayer?.[ChainTypes.Solana])
+      relayer[ChainTypes.Solana] = params.relayer[ChainTypes.Solana]
+
+    if (params?.relayer?.[ChainTypes.Near])
+      relayer[ChainTypes.Near] = params.relayer[ChainTypes.Near]
 
     _emitEvent(OperationEventBusEvents.Initiated)
     _setStatus(CheckoutOperationStatus.Initialized)
@@ -172,6 +189,8 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     }
 
     _setStatus(CheckoutOperationStatus.CheckoutStarted)
+
+    if (bundle?.salt) bundle.salt = _getSalt(bundle.salt)
 
     const result = await _checkout({
       swapper,
@@ -320,18 +339,50 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     })
   }
 
+  const _getSalt = (salt: HexString): HexString => {
+    const sender = _getWithdrawTxSender()
+
+    return new utils.AbiCoder().encode(['bytes32', 'address'], [salt, sender])
+  }
+
+  const _getWithdrawTxSender = () => {
+    return isSameChain ? provider.address : relayer[ChainTypes.EVM]
+  }
+
+  const getBundlerAddress = async (salt: HexString): Promise<Address> => {
+    if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
+    if (!salt) throw new TypeError('Salt is required')
+
+    const { data } = await checkoutApi.get<Address>(
+      '/v1/bridge/bundler-address',
+      {
+        query: {
+          salt: _getSalt(salt),
+        },
+      },
+    )
+
+    if (!data) throw new errors.OperationBundlerAddressNotFoundError()
+
+    return data
+  }
+
   return toRaw(
-    extend(bus, {
-      provider,
-      isInitialized,
-      status,
-      chainFrom,
-      init,
-      getSupportedChains,
-      getPaymentTokens,
-      getDestinationTx,
-      checkout: checkout as CheckoutOperation['checkout'],
-      estimatePrice: estimatePrice as CheckoutOperation['estimatePrice'],
-    }),
+    extend(
+      {
+        provider,
+        isInitialized,
+        status,
+        chainFrom,
+        init,
+        getSupportedChains,
+        getPaymentTokens,
+        getDestinationTx,
+        getBundlerAddress,
+        checkout: checkout as CheckoutOperation['checkout'],
+        estimatePrice: estimatePrice as CheckoutOperation['estimatePrice'],
+      },
+      bus,
+    ),
   )
 }

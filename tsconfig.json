@@ -25,6 +25,7 @@
     "sourceMap": true,
     "newLine": "lf",
     "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": false
   }
 }

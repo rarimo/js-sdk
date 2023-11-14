@@ -1,3 +1,5 @@
+import type { FetcherStandaloneConfig } from '@distributedlab/fetcher'
+import type { Proof } from '@iden3/js-merkletree'
 import type { RawProvider } from '@rarimo/provider'
 
 export type IssuerData = {
@@ -49,19 +51,24 @@ export interface VerifiableCredentials<T extends QueryVariableNameAbstract> {
       issuanceDate: string
       issuer: string
       proof?: [
+        /**
+         * Used to generate sig proofs
+         */
         {
           coreClaim: string
           issuerData: IssuerData
           signature: string
           type: string
+          issuerProofUpdateUrl: string
         },
+        /**
+         * Used to generate MTP proofs
+         */
         {
+          id: string
           coreClaim: string
           issuerData: IssuerData
-          mtp: {
-            existence: boolean
-            siblings: string[]
-          }
+          mtp: Proof
           type: string
         },
       ]
@@ -94,10 +101,12 @@ export type ClaimOffer = {
 }
 
 export type Config = {
-  RPC_URL?: string
-  RAW_PROVIDER?: RawProvider
+  RPC_URL_OR_RAW_PROVIDER: string | RawProvider
   ISSUER_API_URL: string
   STATE_V2_ADDRESS: string
+
   CIRCUIT_WASM_URL: string
   CIRCUIT_FINAL_KEY_URL: string
+
+  CIRCUIT_LOADING_OPTS?: FetcherStandaloneConfig
 }

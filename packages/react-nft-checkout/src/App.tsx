@@ -9,8 +9,8 @@ const CONTRACT_ADDRESS = '0x77fedfb705c8bac2e03aad2ad8a8fe83e3e20fa1'
 
 export const App = () => {
   const params = useRef({
-    chainIdTo: 11155111, // Source chain id (Sepolia in our case)
-    chainIdFrom: 0,
+    chainIdTo: 97, // Source chain id (Sepolia in our case)
+    chainIdFrom: 5,
     recipient: '0x0000000000000000000000000000000000000000', // Recipient wallet address
     // The amount of token to swap the payment token to
     price: Price.fromRaw('0.01', 18, 'ETH'),

@@ -17,48 +17,70 @@ import {
 import { proving, type ZKProof } from '@iden3/js-jwz'
 import {
   circomSiblingsFromSiblings,
-  hashElems,
+  type Hash,
   newHashFromHex,
   Proof,
 } from '@iden3/js-merkletree'
 import type { VerifiableCredentials } from '@rarimo/auth-zkp-iden3'
+import type {
+  MerkleProof,
+  Operation,
+  OperationProof,
+  RarimoQuerier,
+  StateInfo,
+} from '@rarimo/client'
 import { type Identity } from '@rarimo/identity-gen-iden3'
-import { omit } from '@rarimo/shared'
+import { isString, omit } from '@rarimo/shared'
 import {
   getBytesFile,
+  getCoreChainStateInfo,
   getGISTProof,
+  getGISTRootInfo,
+  getOperation,
   unmarshalBinary,
 } from '@rarimo/shared-zkp-iden3'
 import { Buffer } from 'buffer'
-import type { BigNumber } from 'ethers'
+import { type BigNumber, utils } from 'ethers'
 
+import { CircuitId } from '@/enums'
+import { ensureArraySize, getNodeAuxValue } from '@/helpers'
 import type {
   ClaimStatus,
   Config,
-  IssuerState,
   QueryVariableNameAbstract,
   Schema,
   ZkpGenCreateOpts,
   ZkpGenQuery,
 } from '@/types'
 
-const ensureArraySize = (arr: string[], size: number): string[] => {
-  if (arr.length < size) {
-    const newArr = new Array(size - arr.length).fill('0')
-    return arr.concat(newArr)
-  }
-  return arr
-}
-
 let globalConfig: Config = {
-  RPC_URL: '',
-  RAW_PROVIDER: undefined,
+  TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER: '',
+  CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER: '',
+
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
-  CIRCUIT_WASM_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit.wasm',
-  CIRCUIT_FINAL_KEY_URL:
-    'https://raw.githubusercontent.com/rarimo/js-sdk/feature/zk-proof-flow/packages/zkp-gen-iden3/assets/credentials/circuit_final.zkey',
+  LIGHTWEIGHT_STATE_V2_ADDRESS: '',
+
+  CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit.wasm',
+  CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2OnChain/circuit_final.zkey',
+
+  CIRCUIT_SIG_V2_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit.wasm',
+  CIRCUIT_SIG_V2_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQuerySigV2/circuit_final.zkey',
+
+  CIRCUIT_MTP_V2_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit.wasm',
+  CIRCUIT_MTP_V2_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2/circuit_final.zkey',
+
+  CIRCUIT_MTP_V2_ON_CHAIN_WASM_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2OnChain/circuit.wasm',
+  CIRCUIT_MTP_V2_ON_CHAIN_FINAL_KEY_URL:
+    'https://raw.githubusercontent.com/rarimo/js-sdk/main/packages/zkp-gen-iden3/assets/credentialAtomicQueryMTPV2OnChain/circuit_final.zkey',
+
   CLAIM_PROOF_SIBLINGS_COUNT: 32,
 }
 
@@ -73,11 +95,56 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
 
   public subjectProof: ZKProof = {} as ZKProof
 
+  public targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
+  public coreStateDetails?: StateInfo
+  public operationProof?: OperationProof
+  public operation?: Operation
+  public merkleProof?: MerkleProof
+
+  public circuitWasm?: Uint8Array
+  public circuitZkey?: Uint8Array
+
   public static get config() {
     return globalConfig
   }
 
-  public static setConfig(config: Config) {
+  public get circuitFilesUrlsMap(): Record<
+    CircuitId,
+    { wasm: string; zkey: string }
+  > {
+    return {
+      [CircuitId.AtomicQueryMTPV2]: {
+        wasm: ZkpGen.config.CIRCUIT_MTP_V2_WASM_URL,
+        zkey: ZkpGen.config.CIRCUIT_MTP_V2_FINAL_KEY_URL,
+      },
+      [CircuitId.AtomicQueryMTPV2OnChain]: {
+        wasm: ZkpGen.config.CIRCUIT_MTP_V2_ON_CHAIN_WASM_URL,
+        zkey: ZkpGen.config.CIRCUIT_MTP_V2_ON_CHAIN_FINAL_KEY_URL,
+      },
+      [CircuitId.AtomicQuerySigV2]: {
+        wasm: ZkpGen.config.CIRCUIT_SIG_V2_WASM_URL,
+        zkey: ZkpGen.config.CIRCUIT_SIG_V2_FINAL_KEY_URL,
+      },
+      [CircuitId.AtomicQuerySigV2OnChain]: {
+        wasm: ZkpGen.config.CIRCUIT_SIG_V2_ON_CHAIN_WASM_URL,
+        zkey: ZkpGen.config.CIRCUIT_SIG_V2_ON_CHAIN_FINAL_KEY_URL,
+      },
+    }
+  }
+
+  public get endianSwappedCoreStateHashHex() {
+    if (!this.coreStateDetails?.hash) return ''
+
+    const convertedStateHash = fromLittleEndian(
+      Hex.decodeString(this.coreStateDetails.hash.slice(2)),
+    ).toString(16)
+
+    return convertedStateHash?.length < 64
+      ? `0x0${convertedStateHash}`
+      : `0x${convertedStateHash}`
+  }
+
+  public static setConfig(config: Partial<Config>) {
     globalConfig = { ...globalConfig, ...config }
   }
 
@@ -91,12 +158,50 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     this.query = opts.query
   }
 
-  async generateProof() {
+  public async preloadCircuits(): Promise<void> {
+    const [wasm, provingKey] = await Promise.all([
+      getBytesFile(
+        this.circuitFilesUrlsMap[this.query.circuitId].wasm,
+        ZkpGen.config.CIRCUIT_LOADING_OPTS,
+      ),
+      getBytesFile(
+        this.circuitFilesUrlsMap[this.query.circuitId].zkey,
+        ZkpGen.config.CIRCUIT_LOADING_OPTS,
+      ),
+    ])
+
+    this.circuitWasm = wasm
+    this.circuitZkey = provingKey
+  }
+
+  public setCircuits(wasm: Uint8Array, zkey: Uint8Array) {
+    this.circuitWasm = wasm
+    this.circuitZkey = zkey
+  }
+
+  public async generateProof(querier: RarimoQuerier) {
+    const { coreStateDetails } = await this.loadStatesDetails(querier)
+    await this.loadMerkleProof(
+      querier,
+      this.query.issuerId,
+      coreStateDetails.createdAtBlock,
+    )
+
+    await this.loadOperation(querier, coreStateDetails.lastUpdateOperationIndex)
+
     const inputs = await this.#prepareInputs()
 
     const [wasm, provingKey] = await Promise.all([
-      getBytesFile(ZkpGen.config.CIRCUIT_WASM_URL),
-      getBytesFile(ZkpGen.config.CIRCUIT_FINAL_KEY_URL),
+      this.circuitWasm ||
+        getBytesFile(
+          this.circuitFilesUrlsMap[this.query.circuitId].wasm,
+          ZkpGen.config.CIRCUIT_LOADING_OPTS,
+        ),
+      this.circuitZkey ||
+        getBytesFile(
+          this.circuitFilesUrlsMap[this.query.circuitId].zkey,
+          ZkpGen.config.CIRCUIT_LOADING_OPTS,
+        ),
     ])
 
     this.subjectProof = await proving.provingMethodGroth16AuthV2Instance.prove(
@@ -109,42 +214,37 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
   }
 
   async #prepareInputs() {
+    if (!this.operation?.details.GISTHash)
+      throw new TypeError(`this.operation?.details.GISTHash is undefined`)
+
     // ==================== USER SIDE ======================
     const challenge = fromLittleEndian(Hex.decodeString(this.challenge))
 
     const signatureChallenge = this.identity.privateKey.signPoseidon(challenge)
 
     const gistInfo = await getGISTProof({
-      ...(ZkpGen.config.RAW_PROVIDER
-        ? { rawProvider: ZkpGen.config.RAW_PROVIDER }
-        : ZkpGen.config.RPC_URL
-        ? { rpcUrl: ZkpGen.config.RPC_URL }
-        : {}),
+      rpcUrlOrRawProvider: ZkpGen.config.CORE_CHAIN_RPC_URL_OR_RAW_PROVIDER,
       contractAddress: ZkpGen.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
+      rootHash: this.operation?.details.GISTHash,
     })
-
-    const userClaimStatus = await this.#requestClaimRevocationStatus(
-      this.verifiableCredentials.body.credential.credentialStatus
-        .revocationNonce,
-    )
 
     // ==================== ISSUER SIDE ======================
 
-    const [credentialSigProof] =
-      this.verifiableCredentials.body.credential.proof!
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
 
-    const issuerAuthCoreClaim = new Claim()
-    issuerAuthCoreClaim.fromHex(credentialSigProof.coreClaim)
-
-    const issuerRevNonce = issuerAuthCoreClaim.getRevocationNonce()
-
-    const issuerAuthClaimStatus = await this.#requestClaimRevocationStatus(
-      Number(issuerRevNonce),
+    const issuerClaimNonRevMtp = await this.#requestClaimRevocationStatus(
+      this.verifiableCredentials.body.credential.credentialStatus.id,
+      this.endianSwappedCoreStateHashHex,
     )
 
+    const issuerClaimNonRevMtpAux = getNodeAuxValue(issuerClaimNonRevMtp.mtp)
+
     const issuerID = DID.parse(this.verifiableCredentials.from).id
-    const signatureProof = this.#parseBJJSignatureProof()
+
+    const sigProof = await this.#parseBJJSignatureProof()
+    const mtpProof = await this.#parseMTPProof()
 
     const {
       path,
@@ -152,18 +252,25 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       claimProof,
     } = await this.#createCoreClaimFromIssuer()
 
+    const claimPathMtpAux = getNodeAuxValue(claimProof.proof)
+
     // ==================== SETUP SIDE ======================
 
     const timestamp = Math.floor(Date.now() / 1000)
 
     const value = new Array(64)
     value.fill('0')
-    value[0] =
+    value[0] = Number(
       this.verifiableCredentials.body.credential.credentialSubject?.[
         this.query.variableName
-      ].toString()
+      ],
+    ).toString()
 
-    return JSON.stringify({
+    const authClaimNonRevMtpAux = getNodeAuxValue(
+      this.identity.authClaimNonRevProof,
+    )
+
+    const commonInputs = {
       /* we have no constraints for "requestID" in this circuit, it is used as a unique identifier for the request */
       /* and verifier can use it to identify the request, and verify the proof of specific request in case of multiple query requests */
       requestID: this.requestId,
@@ -172,103 +279,11 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
       userGenesisID: this.identity.idBigIntString,
       profileNonce: '0',
 
-      /* user state */
-      userState: this.identity.treeState.state,
-      userClaimsTreeRoot: this.identity.treeState.claimsRoot,
-      userRevTreeRoot: this.identity.treeState.revocationRoot,
-      userRootsTreeRoot: this.identity.treeState.rootOfRoots,
-
-      /* Auth claim */
-      authClaim: [...this.identity.authClaimInput],
-
-      /* auth claim. merkle tree proof of inclusion to claim tree */
-      authClaimIncMtp: [
-        ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
-      ],
-
-      /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
-      authClaimNonRevMtp: [
-        ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
-      ],
-      authClaimNonRevMtpNoAux: '1',
-      authClaimNonRevMtpAuxHi: '0',
-      authClaimNonRevMtpAuxHv: '0',
-
-      /* challenge signature */
-      challenge: challenge.toString(),
-      challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
-      challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
-      challengeSignatureS: signatureChallenge!.S.toString(),
-
-      // global identity state tree on chain
-      gistRoot: gistInfo?.root.toString(),
-      /* proof of inclusion or exclusion of the user in the global state */
-      gistMtp: ensureArraySize(
-        gistInfo?.siblings.map((el: BigNumber) => el.toString()),
-        64,
-      ),
-      gistMtpAuxHi: gistInfo?.auxIndex.toString(),
-      gistMtpAuxHv: gistInfo?.auxValue.toString(),
-      gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
-
       /* issuerClaim signals */
       claimSubjectProfileNonce: '0',
 
       /* issuer ID */
       issuerID: issuerID.bigInt().toString(),
-
-      /* issuer auth proof of existence */
-      issuerAuthClaim: signatureProof.issuerAuthClaim,
-      issuerAuthClaimMtp: signatureProof.issuerAuthClaimIncProof,
-      issuerAuthClaimsTreeRoot: signatureProof.claimsTreeRoot.string(),
-      issuerAuthRevTreeRoot: signatureProof.revocationTreeRoot.string(),
-      issuerAuthRootsTreeRoot: signatureProof.rootOfRoots.string(),
-      // issuerAuthState: signatureProof.issuerState.state.string(),
-
-      /* issuer auth claim non rev proof */
-      issuerAuthClaimNonRevMtp: ensureArraySize(
-        issuerAuthClaimStatus.mtp.siblings.map(el => el.string()),
-        40,
-      ),
-      issuerAuthClaimNonRevMtpNoAux: '1',
-      issuerAuthClaimNonRevMtpAuxHi: '0',
-      issuerAuthClaimNonRevMtpAuxHv: '0',
-
-      /* claim issued by issuer to the user */
-      issuerClaim: [
-        ...coreClaimFromIssuer.index.map(el => el.toBigInt().toString()),
-        ...coreClaimFromIssuer.value.map(el => el.toBigInt().toString()),
-      ],
-      /* issuerClaim non rev inputs */
-      isRevocationChecked: '1',
-      issuerClaimNonRevMtp: ensureArraySize(
-        userClaimStatus.mtp.siblings.map(el => el.string()),
-        40,
-      ),
-      issuerClaimNonRevMtpNoAux:
-        !!userClaimStatus.mtp?.nodeAux?.key &&
-        !!userClaimStatus.mtp?.nodeAux?.value
-          ? 0
-          : 1,
-      issuerClaimNonRevMtpAuxHi: userClaimStatus.mtp?.nodeAux?.key ?? 0,
-      issuerClaimNonRevMtpAuxHv: userClaimStatus.mtp?.nodeAux?.value ?? 0,
-      issuerClaimNonRevClaimsTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.claimsTreeRoot),
-      ).string(),
-      issuerClaimNonRevRevTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.revocationTreeRoot),
-      ).string(),
-      issuerClaimNonRevRootsTreeRoot: newHashFromHex(
-        String(userClaimStatus.issuer.rootOfRoots),
-      ).string(),
-      issuerClaimNonRevState: newHashFromHex(
-        String(userClaimStatus.issuer.state),
-      ).string(),
-
-      /* issuerClaim signature */
-      issuerClaimSignatureR8x: signatureProof.signature.R8[0].toString(),
-      issuerClaimSignatureR8y: signatureProof.signature.R8[1].toString(),
-      issuerClaimSignatureS: signatureProof.signature.S.toString(),
 
       /* current time */
       timestamp,
@@ -281,16 +296,225 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
         claimProof.proof.siblings.map(el => el.string()),
         32,
       ),
-      claimPathMtpNoAux: '0',
-      claimPathMtpAuxHi: '0',
-      claimPathMtpAuxHv: '0',
+      claimPathMtpNoAux: claimPathMtpAux.noAux,
+      claimPathMtpAuxHi: claimPathMtpAux.key.string(),
+      claimPathMtpAuxHv: claimPathMtpAux.value.string(),
       claimPathKey: (await path.mtEntry()).toString(),
       claimPathValue: claimProof.value?.value,
 
       slotIndex: '0',
       operator: this.query.operator,
       value: value,
-    })
+
+      /* claim issued by issuer to the user */
+      issuerClaim: [
+        ...coreClaimFromIssuer.index.map(el => el.toBigInt().toString()),
+        ...coreClaimFromIssuer.value.map(el => el.toBigInt().toString()),
+      ],
+      /* issuerClaim non rev inputs */
+      isRevocationChecked: '1',
+      issuerClaimNonRevMtp: ensureArraySize(
+        issuerClaimNonRevMtp.mtp.siblings,
+        40,
+      ),
+      issuerClaimNonRevMtpNoAux: issuerClaimNonRevMtpAux.noAux,
+      issuerClaimNonRevMtpAuxHi: issuerClaimNonRevMtpAux.key.string(),
+      issuerClaimNonRevMtpAuxHv: issuerClaimNonRevMtpAux.value.string(),
+      issuerClaimNonRevClaimsTreeRoot: newHashFromHex(
+        String(issuerClaimNonRevMtp.issuer.claimsTreeRoot),
+      ).string(),
+      issuerClaimNonRevRevTreeRoot: newHashFromHex(
+        String(issuerClaimNonRevMtp.issuer.revocationTreeRoot),
+      ).string(),
+      issuerClaimNonRevRootsTreeRoot: newHashFromHex(
+        String(issuerClaimNonRevMtp.issuer.rootOfRoots),
+      ).string(),
+      issuerClaimNonRevState: newHashFromHex(
+        String(issuerClaimNonRevMtp.issuer.state),
+      ).string(),
+    }
+
+    const preparedInputs: Record<CircuitId, Record<string, unknown>> = {
+      [CircuitId.AtomicQueryMTPV2]: {
+        ...commonInputs,
+
+        // FIXME
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        issuerClaimMtp: ensureArraySize(
+          mtpProof.issuerClaimIncMtp.mtp.siblings,
+          40,
+        ),
+        issuerClaimClaimsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot,
+        issuerClaimRevTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot,
+        issuerClaimRootsTreeRoot: mtpProof.issuerClaimIncMtp.issuer.rootOfRoots,
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state,
+      },
+      [CircuitId.AtomicQueryMTPV2OnChain]: {
+        ...commonInputs,
+
+        /* user state */
+        userState: this.identity.treeState.state,
+        userClaimsTreeRoot: this.identity.treeState.claimsRoot,
+        userRevTreeRoot: this.identity.treeState.revocationRoot,
+        userRootsTreeRoot: this.identity.treeState.rootOfRoots,
+
+        /* Auth claim */
+        authClaim: [...this.identity.authClaimInput],
+
+        /* auth claim. merkle tree proof of inclusion to claim tree */
+        authClaimIncMtp: [
+          ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
+        ],
+
+        /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
+        authClaimNonRevMtp: [
+          ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
+        ],
+        authClaimNonRevMtpNoAux: authClaimNonRevMtpAux.noAux,
+        authClaimNonRevMtpAuxHi: authClaimNonRevMtpAux.key.string(),
+        authClaimNonRevMtpAuxHv: authClaimNonRevMtpAux.value.string(),
+
+        /* challenge signature */
+        challenge: challenge.toString(),
+        challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
+        challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
+        challengeSignatureS: signatureChallenge!.S.toString(),
+
+        // global identity state tree on chain
+        gistRoot: gistInfo?.root.toString(),
+        /* proof of inclusion or exclusion of the user in the global state */
+        gistMtp: ensureArraySize(
+          gistInfo?.siblings.map((el: BigNumber) => el.toString()),
+          64,
+        ),
+        gistMtpAuxHi: gistInfo?.auxIndex.toString(),
+        gistMtpAuxHv: gistInfo?.auxValue.toString(),
+        gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
+
+        issuerClaimMtp: ensureArraySize(
+          mtpProof.issuerClaimIncMtp.mtp.siblings,
+          40,
+        ),
+        issuerClaimClaimsTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.claimsTreeRoot,
+        issuerClaimRevTreeRoot:
+          mtpProof.issuerClaimIncMtp.issuer.revocationTreeRoot,
+        issuerClaimRootsTreeRoot: mtpProof.issuerClaimIncMtp.issuer.rootOfRoots,
+        issuerClaimIdenState: mtpProof.issuerClaimIncMtp.issuer.state,
+      },
+      [CircuitId.AtomicQuerySigV2]: {
+        ...commonInputs,
+
+        /* issuer auth proof of existence */
+        issuerAuthClaim: sigProof.issuerAuthClaim,
+        issuerAuthClaimMtp: ensureArraySize(
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings,
+          40,
+        ),
+        issuerAuthClaimsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot,
+        issuerAuthRevTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
+        issuerAuthRootsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
+        // issuerAuthState: signatureProof.issuerState.state.string(),
+
+        /* issuer auth claim non rev proof */
+        issuerAuthClaimNonRevMtp: ensureArraySize(
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
+          40,
+        ),
+        issuerAuthClaimNonRevMtpNoAux:
+          sigProof.issuerAuthClaimNonRevMtpAux.noAux,
+        issuerAuthClaimNonRevMtpAuxHi:
+          sigProof.issuerAuthClaimNonRevMtpAux.key.string(),
+        issuerAuthClaimNonRevMtpAuxHv:
+          sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
+
+        /* issuerClaim signature */
+        issuerClaimSignatureR8x: sigProof.signature.R8[0].toString(),
+        issuerClaimSignatureR8y: sigProof.signature.R8[1].toString(),
+        issuerClaimSignatureS: sigProof.signature.S.toString(),
+      },
+      [CircuitId.AtomicQuerySigV2OnChain]: {
+        ...commonInputs,
+
+        /* user state */
+        userState: this.identity.treeState.state,
+        userClaimsTreeRoot: this.identity.treeState.claimsRoot,
+        userRevTreeRoot: this.identity.treeState.revocationRoot,
+        userRootsTreeRoot: this.identity.treeState.rootOfRoots,
+
+        /* Auth claim */
+        authClaim: [...this.identity.authClaimInput],
+
+        /* auth claim. merkle tree proof of inclusion to claim tree */
+        authClaimIncMtp: [
+          ...this.identity.authClaimIncProofSiblings.map(el => el.string()),
+        ],
+
+        /* auth claim - rev nonce. merkle tree proof of non-inclusion to rev tree */
+        authClaimNonRevMtp: [
+          ...this.identity.authClaimNonRevProofSiblings.map(el => el.string()),
+        ],
+        authClaimNonRevMtpNoAux: authClaimNonRevMtpAux.noAux,
+        authClaimNonRevMtpAuxHi: authClaimNonRevMtpAux.key.string(),
+        authClaimNonRevMtpAuxHv: authClaimNonRevMtpAux.value.string(),
+
+        /* challenge signature */
+        challenge: challenge.toString(),
+        challengeSignatureR8x: signatureChallenge!.R8[0].toString(),
+        challengeSignatureR8y: signatureChallenge!.R8[1].toString(),
+        challengeSignatureS: signatureChallenge!.S.toString(),
+
+        // global identity state tree on chain
+        gistRoot: gistInfo?.root.toString(),
+        /* proof of inclusion or exclusion of the user in the global state */
+        gistMtp: ensureArraySize(
+          gistInfo?.siblings.map((el: BigNumber) => el.toString()),
+          64,
+        ),
+        gistMtpAuxHi: gistInfo?.auxIndex.toString(),
+        gistMtpAuxHv: gistInfo?.auxValue.toString(),
+        gistMtpNoAux: gistInfo?.auxExistence ? '0' : '1',
+
+        /* issuer auth proof of existence */
+        issuerAuthClaim: sigProof.issuerAuthClaim,
+        issuerAuthClaimMtp: ensureArraySize(
+          sigProof.issuerAuthClaimIncMtp.mtp.siblings,
+          40,
+        ),
+        issuerAuthClaimsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.claimsTreeRoot,
+        issuerAuthRevTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
+        issuerAuthRootsTreeRoot:
+          sigProof.issuerAuthClaimIncMtp.issuer.rootOfRoots,
+        // issuerAuthState: signatureProof.issuerState.state.string(),
+
+        /* issuer auth claim non rev proof */
+        issuerAuthClaimNonRevMtp: ensureArraySize(
+          sigProof.issuerAuthClaimNonRevMtp.mtp.siblings,
+          40,
+        ),
+        issuerAuthClaimNonRevMtpNoAux:
+          sigProof.issuerAuthClaimNonRevMtpAux.noAux,
+        issuerAuthClaimNonRevMtpAuxHi:
+          sigProof.issuerAuthClaimNonRevMtpAux.key.string(),
+        issuerAuthClaimNonRevMtpAuxHv:
+          sigProof.issuerAuthClaimNonRevMtpAux.value.string(),
+
+        /* issuerClaim signature */
+        issuerClaimSignatureR8x: sigProof.signature.R8[0].toString(),
+        issuerClaimSignatureR8y: sigProof.signature.R8[1].toString(),
+        issuerClaimSignatureS: sigProof.signature.S.toString(),
+      },
+    }[this.query.circuitId]
+
+    return JSON.stringify(preparedInputs)
   }
 
   async #createCoreClaimFromIssuer(): Promise<{
@@ -343,58 +567,275 @@ export class ZkpGen<T extends QueryVariableNameAbstract> {
     return new SchemaHash(keccakString.subarray(keccakString.byteLength - 16))
   }
 
-  async #requestClaimRevocationStatus(revNonce: number) {
-    const { data } = await fetcher.get(
-      `${ZkpGen.config.ISSUER_API_URL}/integrations/issuer/v1/public/claims/revocations/check/${revNonce}`,
-    )
+  async #requestClaimRevocationStatus(url: string, stateHash: string) {
+    const { data } = await fetcher.get(url, {
+      query: {
+        state: stateHash,
+      },
+    })
 
     return data as ClaimStatus
   }
 
-  #parseBJJSignatureProof() {
+  async #parseBJJSignatureProof() {
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
+
     const [credentialSigProof] =
       this.verifiableCredentials.body.credential.proof!
 
-    const issuerData = credentialSigProof.issuerData.state
-
-    const claimsTreeRoot = newHashFromHex(String(issuerData.claimsTreeRoot))
-    const revocationTreeRoot = newHashFromHex(
-      String(issuerData.revocationTreeRoot),
+    const issuerAuthClaimIncMtp = await this.#requestClaimRevocationStatus(
+      credentialSigProof.issuerProofUpdateUrl,
+      this.endianSwappedCoreStateHashHex,
     )
-    const rootOfRoots = newHashFromHex(String(issuerData.rootOfRoots))
 
-    const state = hashElems([
-      claimsTreeRoot.bigInt(),
-      revocationTreeRoot.bigInt(),
-      rootOfRoots.bigInt(),
-    ])
-
-    const issuerState: IssuerState = {
-      claimsTreeRoot,
-      revocationTreeRoot,
-      rootOfRoots,
-      state,
+    issuerAuthClaimIncMtp.issuer = {
+      claimsTreeRoot: (isString(issuerAuthClaimIncMtp.issuer.claimsTreeRoot)
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.claimsTreeRoot)
+        : (issuerAuthClaimIncMtp.issuer.claimsTreeRoot as unknown as Hash)
+      ).string(),
+      revocationTreeRoot: (isString(
+        issuerAuthClaimIncMtp.issuer.revocationTreeRoot,
+      )
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.revocationTreeRoot)
+        : (issuerAuthClaimIncMtp.issuer.revocationTreeRoot as unknown as Hash)
+      ).string(),
+      rootOfRoots: (isString(issuerAuthClaimIncMtp.issuer.rootOfRoots)
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.rootOfRoots)
+        : (issuerAuthClaimIncMtp.issuer.rootOfRoots as unknown as Hash)
+      ).string(),
+      state: (isString(issuerAuthClaimIncMtp.issuer.state)
+        ? newHashFromHex(issuerAuthClaimIncMtp.issuer.state)
+        : (issuerAuthClaimIncMtp.issuer.state as unknown as Hash)
+      ).string(),
     }
+
+    const issuerAuthClaimNonRevMtp = await this.#requestClaimRevocationStatus(
+      credentialSigProof.issuerData.credentialStatus.id,
+      this.endianSwappedCoreStateHashHex,
+    )
+
+    issuerAuthClaimNonRevMtp.issuer = {
+      claimsTreeRoot: (isString(issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot)
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot)
+        : (issuerAuthClaimNonRevMtp.issuer.claimsTreeRoot as unknown as Hash)
+      ).string(),
+      revocationTreeRoot: (isString(
+        issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot,
+      )
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.revocationTreeRoot)
+        : (issuerAuthClaimNonRevMtp.issuer
+            .revocationTreeRoot as unknown as Hash)
+      ).string(),
+      rootOfRoots: (isString(issuerAuthClaimNonRevMtp.issuer.rootOfRoots)
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.rootOfRoots)
+        : (issuerAuthClaimNonRevMtp.issuer.rootOfRoots as unknown as Hash)
+      ).string(),
+      state: (isString(issuerAuthClaimNonRevMtp.issuer.state)
+        ? newHashFromHex(issuerAuthClaimNonRevMtp.issuer.state)
+        : (issuerAuthClaimNonRevMtp.issuer.state as unknown as Hash)
+      ).string(),
+    }
+
     const decodedSignature = Hex.decodeString(credentialSigProof.signature)
     const signature = Signature.newFromCompressed(decodedSignature)
 
-    const issuerAuthClaimIncProof = ensureArraySize(
-      [...credentialSigProof.issuerData.mtp.siblings],
-      40,
+    const issuerAuthClaimNonRevMtpAux = getNodeAuxValue(
+      issuerAuthClaimNonRevMtp.mtp,
     )
 
     return {
-      claimsTreeRoot,
-      revocationTreeRoot,
-      rootOfRoots,
-      issuerState,
+      proof: issuerAuthClaimNonRevMtp.mtp,
+
+      issuerAuthClaimNonRevMtp,
+      issuerAuthClaimIncMtp,
 
       signature: signature,
 
+      // FIXME: remove
       issuerAuthClaim: unmarshalBinary(
         Hex.decodeString(credentialSigProof.issuerData.authCoreClaim),
       ),
-      issuerAuthClaimIncProof,
+
+      issuerAuthClaimNonRevMtpAux,
+    }
+  }
+
+  async #parseMTPProof() {
+    if (!this.coreStateDetails?.hash)
+      throw new TypeError(`this.coreStateDetails?.hash is undefined`)
+
+    const [, mtpProof] = this.verifiableCredentials.body.credential.proof!
+
+    const issuerClaimIncMtp = await this.#requestClaimRevocationStatus(
+      mtpProof.id,
+      this.endianSwappedCoreStateHashHex,
+    )
+
+    issuerClaimIncMtp.issuer = {
+      claimsTreeRoot: (isString(issuerClaimIncMtp.issuer.claimsTreeRoot)
+        ? newHashFromHex(issuerClaimIncMtp.issuer.claimsTreeRoot)
+        : (issuerClaimIncMtp.issuer.claimsTreeRoot as unknown as Hash)
+      ).string(),
+      revocationTreeRoot: (isString(issuerClaimIncMtp.issuer.revocationTreeRoot)
+        ? newHashFromHex(issuerClaimIncMtp.issuer.revocationTreeRoot)
+        : (issuerClaimIncMtp.issuer.revocationTreeRoot as unknown as Hash)
+      ).string(),
+      rootOfRoots: (isString(issuerClaimIncMtp.issuer.rootOfRoots)
+        ? newHashFromHex(issuerClaimIncMtp.issuer.rootOfRoots)
+        : (issuerClaimIncMtp.issuer.rootOfRoots as unknown as Hash)
+      ).string(),
+      state: (isString(issuerClaimIncMtp.issuer.state)
+        ? newHashFromHex(issuerClaimIncMtp.issuer.state)
+        : (issuerClaimIncMtp.issuer.state as unknown as Hash)
+      ).string(),
+    }
+
+    return {
+      proof: issuerClaimIncMtp.mtp,
+
+      issuerClaimIncMtp,
+    }
+  }
+
+  public populateStateDetails({
+    targetStateDetails,
+    coreStateDetails,
+    operationProof,
+    operation,
+    merkleProof,
+  }: {
+    targetStateDetails?: Awaited<ReturnType<typeof getGISTRootInfo>>
+    coreStateDetails?: Awaited<ReturnType<typeof getCoreChainStateInfo>>
+    operationProof?: OperationProof
+    operation?: Operation
+    merkleProof?: MerkleProof
+  }) {
+    this.targetStateDetails = targetStateDetails
+    this.coreStateDetails = coreStateDetails
+    this.operationProof = operationProof
+    this.operation = operation
+    this.merkleProof = merkleProof
+  }
+
+  public async loadStatesDetails(querier: RarimoQuerier): Promise<{
+    targetStateDetails: Awaited<ReturnType<typeof getGISTRootInfo>>
+    coreStateDetails: StateInfo
+  }> {
+    const [targetStateDetails, coreStateDetails] = await Promise.all([
+      getGISTRootInfo({
+        rpcUrlOrRawProvider: ZkpGen.config.TARGET_CHAIN_RPC_URL_OR_RAW_PROVIDER,
+        contractAddress: ZkpGen.config.LIGHTWEIGHT_STATE_V2_ADDRESS,
+      }),
+      getCoreChainStateInfo(querier, this.query.issuerId),
+    ])
+
+    this.targetStateDetails = targetStateDetails
+
+    this.coreStateDetails = coreStateDetails
+
+    return {
+      targetStateDetails,
+      coreStateDetails,
+    }
+  }
+
+  public async loadOperationProof(
+    querier: RarimoQuerier,
+    operationIndex: string,
+  ): Promise<OperationProof> {
+    const operationProof = await querier.getOperationProof(operationIndex)
+
+    this.operationProof = operationProof
+
+    return operationProof
+  }
+
+  public async loadOperation(
+    querier: RarimoQuerier,
+    operationIndex: string,
+  ): Promise<Operation> {
+    const operation = await getOperation(querier, operationIndex)
+
+    this.operation = operation
+
+    return operation
+  }
+
+  public async loadMerkleProof(
+    querier: RarimoQuerier,
+    issuerId: string,
+    createdAtBlock: string,
+  ): Promise<MerkleProof> {
+    const merkleProof = await querier.getMerkleProof(issuerId, {
+      blockHeight: createdAtBlock,
+    })
+
+    this.merkleProof = merkleProof
+
+    return merkleProof
+  }
+
+  public get isStatesActual() {
+    return (
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() &&
+      this.targetStateDetails?.createdAtTimestamp?.toNumber() >=
+        Number(this.coreStateDetails?.createdAtTimestamp)
+    )
+  }
+
+  public async loadParamsForTransitState(opts?: {
+    operationProof?: OperationProof
+    operation?: Operation
+  }): Promise<{
+    newIdentitiesStatesRoot: string
+    gistData: {
+      root: string
+      createdAtTimestamp: number
+    }
+    proof: string
+  }> {
+    const currOperationProof = opts?.operationProof || this.operationProof
+
+    const currOperation = opts?.operation || this.operation
+
+    const newIdentitiesStatesRoot = currOperation?.details?.stateRootHash
+    const gistData = {
+      root: currOperation?.details?.GISTHash,
+      createdAtTimestamp: currOperation?.details?.timestamp,
+    }
+
+    const decodedPath = currOperationProof?.path?.map((el: string) =>
+      utils.arrayify(el),
+    )
+    const decodedSignature = currOperationProof?.signature
+      ? utils.arrayify(currOperationProof?.signature)
+      : undefined
+
+    if (decodedSignature?.[64] !== undefined) {
+      decodedSignature[64] += 27
+    }
+
+    const proof = utils.defaultAbiCoder.encode(
+      ['bytes32[]', 'bytes'],
+      [decodedPath, decodedSignature],
+    )
+
+    if (!newIdentitiesStatesRoot)
+      throw new TypeError('newIdentitiesStatesRoot is not defined')
+
+    if (!gistData.root) throw new TypeError('gistData.root is not defined')
+
+    if (!gistData.createdAtTimestamp)
+      throw new TypeError('gistData.createdAtTimestamp is not defined')
+
+    return {
+      newIdentitiesStatesRoot,
+      gistData: {
+        root: gistData.root,
+        createdAtTimestamp: Number(gistData.createdAtTimestamp),
+      },
+      proof,
     }
   }
 }

@@ -49,8 +49,8 @@ const getExecuteDataMultiple = ({
       isWrapped,
     ),
     ...getSameChainBundleData(isBridgingRequired, bundle),
-    ...swapOpts.map(i => getTransferData(i.from)).flat(),
-    ...getTransferData(to),
+    ...swapOpts.map(i => getTransferData(i.from, receiver)).flat(),
+    ...getTransferData(to, receiver),
   ]
 
   return encodeCommandPayload(data)
@@ -94,7 +94,7 @@ const getExecuteDataSingle = ({
       isWrapped,
     ),
     ...getSameChainBundleData(isBridgingRequired, bundle),
-    ...getTransferData(from),
-    ...getTransferData(to),
+    ...getTransferData(from, receiver),
+    ...getTransferData(to, receiver),
   ])
 }

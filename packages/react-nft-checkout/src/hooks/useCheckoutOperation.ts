@@ -70,6 +70,7 @@ export const useCheckoutOperation = ({
       await checkoutOperation.init({
         ...params,
         chainIdFrom: selectedChain.id,
+        recipient: provider?.address,
         price: Price.fromBigInt(
           params.price.value,
           params.price.decimals,

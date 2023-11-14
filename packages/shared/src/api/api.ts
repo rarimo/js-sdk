@@ -6,7 +6,7 @@ import {
 
 export const CONFIG = {
   CORE_API_BASE_URL: 'https://api.rarify.tokend.io',
-  DEX_API_BASE_URL: 'https://api.testnet.rarimo.com/dexoracle',
+  DEX_API_BASE_URL: 'https://api.rarimo.com/dexoracle',
   MAX_PAGE_LIMIT: 500,
 }
 

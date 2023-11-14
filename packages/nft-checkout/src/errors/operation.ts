@@ -89,3 +89,10 @@ export class OperationSameChainDestinationTxError extends RuntimeError {
     super(message)
   }
 }
+
+export class OperationBundlerAddressNotFoundError extends RuntimeError {
+  public name = 'OperationBundlerAddressNotFoundError'
+  constructor(message = 'Failed to find bundler address') {
+    super(message)
+  }
+}

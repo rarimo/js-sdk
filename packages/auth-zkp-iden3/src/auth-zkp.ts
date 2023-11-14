@@ -12,7 +12,7 @@ import type {
 } from '@/types'
 
 let globalConfig: Config = {
-  RPC_URL: '',
+  RPC_URL_OR_RAW_PROVIDER: '',
   ISSUER_API_URL: '',
   STATE_V2_ADDRESS: '',
   CIRCUIT_WASM_URL:
@@ -25,6 +25,9 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
   public identity: Identity = {} as Identity
   public verifiableCredentials: VerifiableCredentials<T> =
     {} as VerifiableCredentials<T>
+
+  public circuitWasm?: Uint8Array
+  public circuitZkey?: Uint8Array
 
   #api: JsonApiClient
 
@@ -51,8 +54,31 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     })
   }
 
-  async getVerifiableCredentials(): Promise<VerifiableCredentials<T>> {
-    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.idString}/NaturalPerson`
+  public async preloadCircuits(): Promise<void> {
+    const [wasm, zkey] = await Promise.all([
+      getBytesFile(
+        AuthZkp.config.CIRCUIT_WASM_URL,
+        AuthZkp.config.CIRCUIT_LOADING_OPTS,
+      ),
+      getBytesFile(
+        AuthZkp.config.CIRCUIT_FINAL_KEY_URL,
+        AuthZkp.config.CIRCUIT_LOADING_OPTS,
+      ),
+    ])
+
+    this.circuitWasm = wasm
+    this.circuitZkey = zkey
+  }
+
+  public setCircuits(wasm: Uint8Array, zkey: Uint8Array) {
+    this.circuitWasm = wasm
+    this.circuitZkey = zkey
+  }
+
+  public async getVerifiableCredentials(
+    claimSchemaType: string,
+  ): Promise<VerifiableCredentials<T>> {
+    const claimEndpoint = `/integrations/issuer/v1/public/claims/offers/${this.identity.idString}/${claimSchemaType}`
 
     const { data: offerData } = await this.#api.get<ClaimOffer>(claimEndpoint)
 
@@ -75,8 +101,16 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
     )
 
     const [wasm, provingKey] = await Promise.all([
-      getBytesFile(AuthZkp.config.CIRCUIT_WASM_URL),
-      getBytesFile(AuthZkp.config.CIRCUIT_FINAL_KEY_URL),
+      this.circuitWasm ||
+        getBytesFile(
+          AuthZkp.config.CIRCUIT_WASM_URL,
+          AuthZkp.config.CIRCUIT_LOADING_OPTS,
+        ),
+      this.circuitZkey ||
+        getBytesFile(
+          AuthZkp.config.CIRCUIT_FINAL_KEY_URL,
+          AuthZkp.config.CIRCUIT_LOADING_OPTS,
+        ),
     ])
 
     const jwzTokenRaw = await authZkpToken.prove(provingKey, wasm)
@@ -103,11 +137,7 @@ export class AuthZkp<T extends QueryVariableNameAbstract> {
 
     const signature = this.identity.privateKey.signPoseidon(messageHashBigInt)
     const gistInfo = await getGISTProof({
-      ...(AuthZkp.config.RAW_PROVIDER
-        ? { rawProvider: AuthZkp.config.RAW_PROVIDER }
-        : AuthZkp.config.RPC_URL
-        ? { rpcUrl: AuthZkp.config.RPC_URL }
-        : {}),
+      rpcUrlOrRawProvider: AuthZkp.config.RPC_URL_OR_RAW_PROVIDER,
       contractAddress: AuthZkp.config.STATE_V2_ADDRESS,
       userId: this.identity.idBigIntString,
     })
