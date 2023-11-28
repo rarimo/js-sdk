@@ -65,4 +65,6 @@ export enum MessageTypeUrls {
   OracleVote = '/rarimo.rarimocore.oraclemanager.MsgVote',
   OracleUnjail = '/rarimo.rarimocore.oraclemanager.MsgUnjail',
   CreateIdentityDefaultTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp',
+  CreateIdentityGISTTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityGISTTransferOp',
+  CreateIdentityStateTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityStateTransferOp',
 }
