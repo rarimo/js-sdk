@@ -1,5 +1,5 @@
 # @rarimo/shared-zkp-iden3
-Internal tools that other Rarimo packages use for identity functionality.
+Utility functions, types, and constants that other Rarimo packages use for identity functionality.
 
 ![version (scoped package)](https://badgen.net/npm/v/@rarimo/shared-zkp-iden3)
 ![types](https://badgen.net/npm/types/@rarimo/shared-zkp-iden3)
