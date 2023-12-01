@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.31] - 2023-12-01
+### Added
+- `@rarimo/client` - Core types
+
 ## [2.0.0-rc.30] - 2023-11-02
 ### Fixed
 - `@rarimo/react-nft-checkout` - Internal errors
@@ -497,7 +501,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.30...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.31...HEAD
+[2.0.0-rc.31]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.30...2.0.0-rc.31
 [2.0.0-rc.30]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.29...2.0.0-rc.30
 [2.0.0-rc.29]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.28...2.0.0-rc.29
 [2.0.0-rc.28]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.27...2.0.0-rc.28

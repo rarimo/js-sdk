@@ -3,12 +3,15 @@ import {
   voteOptionFromJSON as _voteOptionFromJSON,
 } from '@/codec/cosmos/gov/v1beta1/gov'
 import {
+  NetworkParamType,
+  NetworkType,
   OpStatus,
   OpType,
   OpVoteType,
   OracleStatus,
   PartyStatus,
   ProposalStatus,
+  TokenType,
   VoteOption,
 } from '@/enums'
 
@@ -133,5 +136,82 @@ export function opVoteTypeFromJSON(object: string | number): OpVoteType {
     case 'UNRECOGNIZED':
     default:
       return OpVoteType.Unrecognized
+  }
+}
+
+export function networkTypeFromJSON(object: string | number): NetworkType {
+  switch (object) {
+    case 0:
+    case 'EVM':
+      return NetworkType.EVM
+    case 1:
+    case 'Solana':
+      return NetworkType.Solana
+    case 2:
+    case 'Near':
+      return NetworkType.Near
+    case 3:
+    case 'Other':
+      return NetworkType.Other
+    case 4:
+    case 'Rarimo':
+      return NetworkType.Rarimo
+    case -1:
+    case 'UNRECOGNIZED':
+    default:
+      return NetworkType.Unrecognized
+  }
+}
+
+export function networkParamTypeFromJSON(
+  object: string | number,
+): NetworkParamType {
+  switch (object) {
+    case 0:
+    case 'BRIDGE':
+      return NetworkParamType.Bridge
+    case 1:
+    case 'FEE':
+      return NetworkParamType.Fee
+    case 2:
+    case 'IDENTITY':
+      return NetworkParamType.Identity
+    case -1:
+    case 'UNRECOGNIZED':
+    default:
+      return NetworkParamType.Unrecognized
+  }
+}
+
+export function typeFromJSON(object: string | number): TokenType {
+  switch (object) {
+    case 0:
+    case 'NATIVE':
+      return TokenType.Native
+    case 1:
+    case 'ERC20':
+      return TokenType.Erc20
+    case 2:
+    case 'ERC721':
+      return TokenType.Erc721
+    case 3:
+    case 'ERC1155':
+      return TokenType.Erc1155
+    case 4:
+    case 'METAPLEX_NFT':
+      return TokenType.MetaplexNft
+    case 5:
+    case 'METAPLEX_FT':
+      return TokenType.MetaplexFt
+    case 6:
+    case 'NEAR_FT':
+      return TokenType.NearFt
+    case 7:
+    case 'NEAR_NFT':
+      return TokenType.NearNft
+    case -1:
+    case 'UNRECOGNIZED':
+    default:
+      return TokenType.Unrecognized
   }
 }

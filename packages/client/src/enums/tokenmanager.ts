@@ -15,6 +15,7 @@ export enum NetworkType {
   Solana = 1,
   Near = 2,
   Other = 3,
+  Rarimo = 4,
   Unrecognized = -1,
 }
 
