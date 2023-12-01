@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/client",
-  "version": "2.0.0-rc.31",
+  "version": "2.0.0-rc.32",
   "description": "The Rarimo chain client",
   "repository": {
     "type": "git",
