@@ -67,4 +67,5 @@ export enum MessageTypeUrls {
   CreateIdentityDefaultTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp',
   CreateIdentityGISTTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityGISTTransferOp',
   CreateIdentityStateTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateIdentityStateTransferOp',
+  CreateWorldCoinIdentityTransferOp = '/rarimo.rarimocore.oraclemanager.MsgCreateWorldCoinIdentityTransferOp'
 }
