@@ -58,7 +58,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/reactivity": "^1.0.0-rc.6",
+    "@distributedlab/reactivity": "^1.0.0-rc.13",
     "@rarimo/bridge": "workspace:^",
     "@rarimo/provider": "workspace:^",
     "@rarimo/shared": "workspace:^"

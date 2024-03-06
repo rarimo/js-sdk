@@ -58,8 +58,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/jac": "^1.0.0-rc.6",
-    "@distributedlab/tools": "^1.0.0-rc.6"
+    "@distributedlab/jac": "^1.0.0-rc.13",
+    "@distributedlab/tools": "^1.0.0-rc.13"
   },
   "typedocOptions": {
     "entryPoints": [

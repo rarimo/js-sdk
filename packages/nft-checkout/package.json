@@ -50,9 +50,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@distributedlab/fetcher": "^1.0.0-rc.6",
-    "@distributedlab/reactivity": "^1.0.0-rc.6",
-    "@distributedlab/tools": "^1.0.0-rc.6",
+    "@distributedlab/fetcher": "^1.0.0-rc.13",
+    "@distributedlab/reactivity": "^1.0.0-rc.13",
+    "@distributedlab/tools": "^1.0.0-rc.13",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/properties": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",

@@ -24,11 +24,13 @@ export const makeRarimoClient = (config: Config): RarimoClient => {
     wallet.value.disconnect()
   }
 
-  const connect = async () => {
+  const connect = async (injectedWallet?: Wallet) => {
     const chainInfo = await getChainInfo(config, query.value)
-    const _wallet = makeWallet()
+    const _wallet = injectedWallet || makeWallet()
+
     await _wallet.connect(chainInfo)
     wallet.value = _wallet
+
     tx.value = await makeRarimoBroadcaster(config, _wallet)
   }
 
