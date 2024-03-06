@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2024-03-06
+### Added
+- `@rarimo/client` - Wallet injection
+
+### Removed
+- `@rarimo/zkp-gen-iden3`
+- `@rarimo/auth-zkp-iden3`
+- `@rarimo/identity-gen-iden3`
+- `@rarimo/shared-zkp-iden3`
+
 ## [2.0.0-rc.34] - 2024-03-05
 ### Added
 - `@rarimo/client` - WorldId message type
@@ -513,7 +523,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Under the hood changes
 - Initiated repo with `@rarimo/provider` and `@rarimo/nft-checkout` packages
 
-[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.33...HEAD
+[Unreleased]: https://github.com/rarimo/js-sdk/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.34...2.0.0
+[2.0.0-rc.34]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.33...2.0.0-rc.34
 [2.0.0-rc.33]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.32...2.0.0-rc.33
 [2.0.0-rc.32]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.31...2.0.0-rc.32
 [2.0.0-rc.31]: https://github.com/rarimo/js-sdk/compare/2.0.0-rc.30...2.0.0-rc.31
