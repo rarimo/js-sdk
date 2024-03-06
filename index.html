@@ -88,35 +88,6 @@ from the latest release.</p>
 <td><a href="https://www.npmjs.com/package/@rarimo/react-nft-checkout"><img src="https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg" alt="npm version"></a></td>
 </tr>
 </tbody></table>
-<a id="md:identity-packages" class="tsd-anchor"></a><h3><a href="#md:identity-packages">Identity packages</a></h3><table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Description</th>
-<th>Latest</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html">@rarimo/identity-gen-iden3</a></td>
-<td>Tools that generate distributed identities for the Iden3 protocol.</td>
-<td><a href="https://www.npmjs.com/package/@rarimo/identity-gen-iden3"><img src="https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg" alt="npm version"></a></td>
-</tr>
-<tr>
-<td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html">@rarimo/auth-zkp-iden3</a></td>
-<td>Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.</td>
-<td><a href="https://www.npmjs.com/package/@rarimo/auth-zkp-iden3"><img src="https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg" alt="npm version"></a></td>
-</tr>
-<tr>
-<td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html">@rarimo/zkp-gen-iden3</a></td>
-<td>Tools that generate zero-knowledge proofs for the Iden3 protocol.</td>
-<td><a href="https://www.npmjs.com/package/@rarimo/zkp-gen-iden3"><img src="https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg" alt="npm version"></a></td>
-</tr>
-<tr>
-<td><a href="https://rarimo.github.io/js-sdk/modules/_rarimo_shared_zkp_iden_3.html">@rarimo/shared-zkp-iden3</a></td>
-<td>Utility functions, types and constants that other Rarimo packages use for identity functionality.</td>
-<td><a href="https://www.npmjs.com/package/@rarimo/shared-zkp-iden3"><img src="https://img.shields.io/npm/v/@rarimo/shared-zkp-iden3.svg" alt="npm version"></a></td>
-</tr>
-</tbody></table>
 <a id="md:other-packages" class="tsd-anchor"></a><h3><a href="#md:other-packages">Other packages</a></h3><table>
 <thead>
 <tr>
@@ -140,13 +111,6 @@ from the latest release.</p>
 <p>This config disables the breaking change that causes <a href="https://stackoverflow.com/questions/70964723/webpack-5-in-ceate-react-app-cant-resolve-not-fully-specified-routes">this error</a>.</p>
 <p>Then change the <code>start</code>/<code>build</code>/<code>test</code> commands in <code>package.json</code> replacing react-scripts to <code>craco</code>:</p>
 <pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;scripts&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;start&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco start&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;build&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco build&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;test&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;craco test&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
-</code><button>Copy</button></pre>
-<a id="md:working-with-zkp-iden3-packages" class="tsd-anchor"></a><h3><a href="#md:working-with-zkp-iden3-packages">Working with ZKP iden3 packages</a></h3><p>Just because <code>iden3</code> libraries is developed for node, you need to follow next steps in your client:</p>
-<p>First thing first, add the following packages to your project, because it marked as <code>peerDependencies</code>:</p>
-<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">ethers</span><span class="hl-1"> </span><span class="hl-2">util</span><span class="hl-1"> </span><span class="hl-2">ejc</span><span class="hl-1"> </span><span class="hl-2">snarkjs</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-iden3-core</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-jwz</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-crypto</span><span class="hl-1"> </span><span class="hl-2">@iden3/js-jsonld-merklization</span>
-</code><button>Copy</button></pre>
-<p>Then, ddd this aliases to your client app build config, especially if you are using ViteJs</p>
-<pre><code class="language-ts"><span class="hl-1">[</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;ethers&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/ethers/dist/ethers.esm.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;util&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/util/util.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;ejc&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/ejs/ejs.min.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;snarkjs&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&#39;../../node_modules/snarkjs/build/snarkjs.min.js&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-iden3-core&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-jwz&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-crypto&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  { </span><span class="hl-5">find:</span><span class="hl-1"> </span><span class="hl-2">&#39;@iden3/js-jsonld-merklization&#39;</span><span class="hl-1">, </span><span class="hl-5">replacement:</span><span class="hl-1"> </span><span class="hl-2">&quot;../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js&quot;</span><span class="hl-1"> }</span><br/><span class="hl-1">]</span>
 </code><button>Copy</button></pre>
 <a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><a id="md:editors" class="tsd-anchor"></a><h3><a href="#md:editors">Editors</a></h3><a id="md:vscode" class="tsd-anchor"></a><h4><a href="#md:vscode">VSCode</a></h4><p>To get ESLint and Prettier working in VSCode, install <a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint extension</a> and add the following to your settings.json:</p>
 <pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;editor.codeActionsOnSave&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;source.fixAll.eslint&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;editor.formatOnSave&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.validate&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;javascript&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;typescript&quot;</span><br/><span class="hl-1">  ],</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.alwaysShowStatus&quot;</span><span class="hl-1">: </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.packageManager&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;yarn&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;eslint.workingDirectories&quot;</span><span class="hl-1">: [{ </span><span class="hl-10">&quot;mode&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;auto&quot;</span><span class="hl-1"> }]</span><br/><span class="hl-1">}</span>
@@ -240,13 +204,11 @@ from the latest release.</p>
 <li>
 <ul>
 <li><a href="#md:token-swapping-bridging-and-checkout-packages"><span>Token swapping, bridging, and checkout packages</span></a></li>
-<li><a href="#md:identity-packages"><span>Identity packages</span></a></li>
 <li><a href="#md:other-packages"><span>Other packages</span></a></li></ul></li>
 <li><a href="#md:known-issues"><span>Known issues</span></a></li>
 <li>
 <ul>
-<li><a href="#md:react"><span>React</span></a></li>
-<li><a href="#md:working-with-zkp-iden3-packages"><span>Working with ZKP iden3 packages</span></a></li></ul></li>
+<li><a href="#md:react"><span>React</span></a></li></ul></li>
 <li><a href="#md:development"><span>Development</span></a></li>
 <li>
 <ul>
@@ -272,10 +234,8 @@ from the latest release.</p>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>Rarimo <wbr/>Java<wbr/>Script/<wbr/>Typescript SDK</span></a>
 <ul class="tsd-small-nested-navigation">
-<li><a href="modules/_rarimo_auth_zkp_iden3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/auth-<wbr/>zkp-<wbr/>iden3</span></a></li>
 <li><a href="modules/_rarimo_bridge.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/bridge</span></a></li>
 <li><a href="modules/_rarimo_client.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/client</span></a></li>
-<li><a href="modules/_rarimo_identity_gen_iden3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/identity-<wbr/>gen-<wbr/>iden3</span></a></li>
 <li><a href="modules/_rarimo_nft_checkout.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/nft-<wbr/>checkout</span></a></li>
 <li><a href="modules/_rarimo_provider.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/provider</span></a></li>
 <li><a href="modules/_rarimo_providers_evm.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/providers-<wbr/>evm</span></a></li>
@@ -284,9 +244,7 @@ from the latest release.</p>
 <li><a href="modules/_rarimo_react_nft_checkout.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/react-<wbr/>nft-<wbr/>checkout</span></a></li>
 <li><a href="modules/_rarimo_react_provider.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/react-<wbr/>provider</span></a></li>
 <li><a href="modules/_rarimo_shared.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/shared</span></a></li>
-<li><a href="modules/_rarimo_shared_zkp_iden3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/shared-<wbr/>zkp-<wbr/>iden3</span></a></li>
-<li><a href="modules/_rarimo_swap.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/swap</span></a></li>
-<li><a href="modules/_rarimo_zkp_gen_iden3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/zkp-<wbr/>gen-<wbr/>iden3</span></a></li></ul></nav></div></div></div>
+<li><a href="modules/_rarimo_swap.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>@rarimo/swap</span></a></li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div></body></html>
