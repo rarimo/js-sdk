@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/providers-evm",
-  "version": "2.0.0-rc.34",
+  "version": "2.0.0",
   "description": "Features of the Rarimo SDK that provide access to wallets and the ability to interact with them on EVM-compatible blockchains.",
   "repository": {
     "type": "git",

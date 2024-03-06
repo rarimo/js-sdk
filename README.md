@@ -46,15 +46,6 @@ The Rarimo SDK is a library that consists of many smaller NPM packages within th
 | [@rarimo/react-provider](https://rarimo.github.io/js-sdk/modules/_rarimo_react_provider.html)          | Tools to connect to wallets in React applications through the Rarimo SDK.                                                                         | [![npm version](https://img.shields.io/npm/v/@rarimo/react-provider.svg)](https://www.npmjs.com/package/@rarimo/react-provider)         |
 | [@rarimo/react-nft-checkout](https://rarimo.github.io/js-sdk/modules/_rarimo_react_nft_checkout.html)  | Features of the Rarimo SDK that provide React components to manage cross-train transactions with the Rarimo protocol.                             | [![npm version](https://img.shields.io/npm/v/@rarimo/react-nft-checkout.svg)](https://www.npmjs.com/package/@rarimo/react-nft-checkout) |
 
-### Identity packages
-
-| Package                                                                                                | Description                                                                                        | Latest                                                                                                                                  |
-|--------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| [@rarimo/identity-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_identity_gen_iden_3.html) | Tools that generate distributed identities for the Iden3 protocol.                                 | [![npm version](https://img.shields.io/npm/v/@rarimo/identity-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/identity-gen-iden3) |
-| [@rarimo/auth-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_auth_zkp_iden_3.html)         | Tools that authenticate a zero-knowledge proof and provide verifiable credentials from it.         | [![npm version](https://img.shields.io/npm/v/@rarimo/auth-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/auth-zkp-iden3)         |
-| [@rarimo/zkp-gen-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_zkp_gen_iden_3.html)           | Tools that generate zero-knowledge proofs for the Iden3 protocol.                                  | [![npm version](https://img.shields.io/npm/v/@rarimo/zkp-gen-iden3.svg)](https://www.npmjs.com/package/@rarimo/zkp-gen-iden3)           |
-| [@rarimo/shared-zkp-iden3](https://rarimo.github.io/js-sdk/modules/_rarimo_shared_zkp_iden_3.html)     | Utility functions, types and constants that other Rarimo packages use for identity functionality. | [![npm version](https://img.shields.io/npm/v/@rarimo/shared-zkp-iden3.svg)](https://www.npmjs.com/package/@rarimo/shared-zkp-iden3)     |
-
 ### Other packages
 
 | Package                                                                       | Description            | Latest                                                                                                          |
@@ -103,29 +94,6 @@ Then change the `start`/`build`/`test` commands in `package.json` replacing reac
     "test": "craco test"
   }
 }
-```
-
-### Working with ZKP iden3 packages
-Just because `iden3` libraries is developed for node, you need to follow next steps in your client:
-
-First thing first, add the following packages to your project, because it marked as `peerDependencies`:
-
-```bash
-yarn add ethers util ejc snarkjs @iden3/js-iden3-core @iden3/js-jwz @iden3/js-crypto @iden3/js-jsonld-merklization
-```
-
-Then, ddd this aliases to your client app build config, especially if you are using ViteJs
-```ts
-[
-  { find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js' },
-  { find: 'util', replacement: '../../node_modules/util/util.js' },
-  { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
-  { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
-  { find: '@iden3/js-iden3-core', replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-jwz', replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-crypto', replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-jsonld-merklization', replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
-]
 ```
 
 ## Development

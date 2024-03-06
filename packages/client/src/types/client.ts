@@ -97,6 +97,6 @@ export type RarimoClient = {
   wallet: Wallet
   query: RarimoQuerier
   tx: RarimoBroadcaster
-  connect: () => Promise<void>
+  connect: (injectedWallet?: Wallet) => Promise<void>
   disconnect: () => void
 }

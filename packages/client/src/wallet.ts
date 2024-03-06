@@ -17,8 +17,8 @@ declare global {
 
 const initStub = stub('Wallet not initialized!')
 
-export const makeWallet = (): Wallet => {
-  const signer = ref<OfflineSigner>(initStub)
+export const makeWallet = (injectedSigner?: OfflineSigner): Wallet => {
+  const signer = ref<OfflineSigner>(injectedSigner || initStub)
   const accounts = ref<readonly AccountData[]>(initStub)
   const chainId = ref('')
 
@@ -30,10 +30,17 @@ export const makeWallet = (): Wallet => {
   })
 
   const address = computed(() => {
-    return account.value.address
+    return account.value?.address ?? ''
   })
 
   const connect = async (chainInfo: ChainInfo) => {
+    if (injectedSigner) {
+      chainId.value = chainInfo.chainId
+      accounts.value = await signer.value.getAccounts()
+
+      return
+    }
+
     if (window.keplr === undefined) throw new WalletExtensionNotInstalledError()
     chainId.value = chainInfo.chainId
 

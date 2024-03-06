@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/shared",
-  "version": "2.0.0-rc.34",
+  "version": "2.0.0",
   "description": "Utility functions, types and constants shared across Rarimo packages.",
   "repository": {
     "type": "git",
@@ -58,8 +58,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@distributedlab/jac": "^1.0.0-rc.6",
-    "@distributedlab/tools": "^1.0.0-rc.6"
+    "@distributedlab/jac": "^1.0.0-rc.13",
+    "@distributedlab/tools": "^1.0.0-rc.13"
   },
   "typedocOptions": {
     "entryPoints": [
