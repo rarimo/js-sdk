@@ -96,29 +96,6 @@ Then change the `start`/`build`/`test` commands in `package.json` replacing reac
 }
 ```
 
-### Working with ZKP iden3 packages
-Just because `iden3` libraries is developed for node, you need to follow next steps in your client:
-
-First thing first, add the following packages to your project, because it marked as `peerDependencies`:
-
-```bash
-yarn add ethers util ejc snarkjs @iden3/js-iden3-core @iden3/js-jwz @iden3/js-crypto @iden3/js-jsonld-merklization
-```
-
-Then, ddd this aliases to your client app build config, especially if you are using ViteJs
-```ts
-[
-  { find: 'ethers', replacement: '../../node_modules/ethers/dist/ethers.esm.js' },
-  { find: 'util', replacement: '../../node_modules/util/util.js' },
-  { find: 'ejc', replacement: '../../node_modules/ejs/ejs.min.js' },
-  { find: 'snarkjs', replacement: '../../node_modules/snarkjs/build/snarkjs.min.js' },
-  { find: '@iden3/js-iden3-core', replacement: "../../node_modules/@iden3/js-iden3-core/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-jwz', replacement: "../../node_modules/@iden3/js-jwz/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-crypto', replacement: "../../node_modules/@iden3/js-crypto/dist/esm_esbuild/index.js" },
-  { find: '@iden3/js-jsonld-merklization', replacement: "../../node_modules/@iden3/js-jsonld-merklization/dist/esm_esbuild/index.js" }
-]
-```
-
 ## Development
 
 ### Editors
