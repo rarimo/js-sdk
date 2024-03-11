@@ -1,6 +1,7 @@
 import type { GeneratedType } from '@cosmjs/proto-signing'
 
 import { MsgExec } from '@/codec/cosmos/authz/v1beta1/tx'
+import { MsgSend } from '@/codec/cosmos/bank/v1beta1/tx'
 import { Coin } from '@/codec/cosmos/base/v1beta1/coin'
 import {
   MsgWithdrawDelegatorReward,
@@ -117,6 +118,14 @@ export const makeRarimoBroadcaster = async (
           mgs,
         ),
       ])
+    },
+
+    // bank
+    send: (fromAddress: string, toAddress: string, amount: Coin[]) => {
+      return broadcaster<MsgSend>(
+        MessageTypeUrls.Send,
+        MsgSend,
+      )(MsgSend.fromPartial({ fromAddress, toAddress, amount }))
     },
 
     // gov
