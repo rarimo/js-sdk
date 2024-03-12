@@ -37,6 +37,13 @@ export type RarimoBroadcaster = {
     validatorAddress: string,
   ) => Promise<DeliverTxResponse>
 
+  // bank
+  send: (
+    fromAddress: string,
+    toAddress: string,
+    amount: Coin[],
+  ) => Promise<DeliverTxResponse>
+
   // gov
   voteProposal(
     voter: string,
