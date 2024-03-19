@@ -70,4 +70,7 @@ export enum ProposalType {
   CommunityPoolSpend = 'CommunityPoolSpendProposal',
   // bank
   MintTokens = 'MintTokensProposal',
+
+  // Text
+  Text = 'TextProposal',
 }
