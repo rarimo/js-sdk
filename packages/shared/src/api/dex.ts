@@ -32,6 +32,7 @@ export const getSupportedChains = async ({
     icon: chain.icon,
     isTestnet: chain.kind.name === ChainKind.Testnet,
     contractAddress: chain.swap_contract_address,
+    bridgeFacadeAddress: chain.bridge_facade_address,
     dexType: chain.swap_contract_version,
     token: {
       ...chain.native_token,

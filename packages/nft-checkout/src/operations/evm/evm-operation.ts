@@ -1,5 +1,4 @@
 import { extend, ref, toRaw } from '@distributedlab/reactivity'
-import { BN } from '@distributedlab/tools'
 import type { Token } from '@rarimo/bridge'
 import type { IProvider } from '@rarimo/provider'
 import {
@@ -43,8 +42,6 @@ import {
   handleCorrectProviderChain,
   isSameChainOperation,
 } from './helpers'
-
-const RARIMO_BRIDGE_FEE = 2.5
 
 /**
  * An operation on an EVM chain.
@@ -97,6 +94,7 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
       throw new errors.OperationInvalidChainPairError()
     }
 
+    await handleCorrectProviderChain(provider, chainFrom)
     await _loadTokens()
 
     isSameChain = isSameChainOperation(params)
@@ -135,8 +133,6 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
     if (!isInitialized.value) throw new errors.OperatorNotInitializedError()
 
     _setStatus(CheckoutOperationStatus.PaymentTokensLoading)
-
-    await handleCorrectProviderChain(provider, chainFrom)
 
     const withPairs = await getPaymentTokensWithPairs({
       provider,
@@ -262,53 +258,44 @@ export const EVMOperation = (provider: IProvider): CheckoutOperation => {
   const _getChainToUSDCSwapAmountIn = async () => {
     const { chainIdTo, slippage, price } = params
 
+    const chainFromUSDC = getTokenByAddress(
+      chainFromTokens,
+      USDC_MAP[chainFrom.name]!,
+    )!
+
     const usdcAddress = USDC_MAP[chainTo.name]!
     const getTokenArgs: [BridgeChain, Token[]] = [chainTo, chainToTokens]
     const from = getSameChainSwapToToken(...getTokenArgs, usdcAddress)!
     const to = getSameChainSwapToToken(...getTokenArgs, price.address)!
+    const fee = await swapper.getCommission(chainFrom, chainFromUSDC)
 
     const estimateArgs = {
       chainIdFrom: chainIdTo,
       chainIdTo,
       from,
       to,
-      amountOut: Amount.fromBN(
-        bnFromAmountLike(price).addPercent(RARIMO_BRIDGE_FEE),
-      ),
+      amountOut: price,
       slippage,
     }
 
     // estimate USDC -> Target Token on the destination chain to determine
-    // how much USDC is required to bridge with and without bridge % fee
-    const estimationWithFee = await getEstimation(estimateArgs)
+    // how much USDC is required to bridge
+    const estimation = await getEstimation(estimateArgs)
 
     // USDC could have different decimals on different chains, thus we need to
     // convert it to the same decimals as the chain from token.
     // If this method called - "swapToToken" always is USDC
     const chainFromUSDCAmountOut = bnFromAmountLike(
-      estimationWithFee.amountIn,
+      estimation.amountIn,
     ).toDecimals(swapToToken.decimals)
 
-    // Amount from which percent will be subtracted on the backend side has
-    // precision chainFromUSDCAmountOut.decimals, thus we need to cut off
-    // the extra precision from the chainFromUSDCAmountOut.raw, so we will create
-    // a new BN instance from the chainFromUSDCAmountOut.value
-    const amountIn = Amount.fromBN(
-      BN.fromBigInt(
-        chainFromUSDCAmountOut.value,
-        chainFromUSDCAmountOut.decimals,
-      )
-        .subPercent(RARIMO_BRIDGE_FEE)
-        .toDecimals(estimationWithFee.amountIn.decimals),
-    )
-
     intermediateOpts = {
-      ...estimationWithFee,
-      amountIn,
+      ...estimation,
+      amountIn: estimation.amountIn,
       amountOut: price,
     }
 
-    return Amount.fromBN(chainFromUSDCAmountOut)
+    return Amount.fromBN(chainFromUSDCAmountOut.add(fee.bn))
   }
 
   const _loadTokens = async () => {
