@@ -1,3 +1,4 @@
+import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { ChainInfo, Window as KeplrWindow } from '@keplr-wallet/types'
 
 import { WalletExtensionNotInstalledError } from '@/errors'
@@ -7,29 +8,29 @@ declare global {
   interface Window extends KeplrWindow {}
 }
 
-export const getKeplrDirectSigner = async (chainInfo: ChainInfo) => {
-  if (window.keplr === undefined) throw new WalletExtensionNotInstalledError()
+const enableKeplr = async (chain: ChainInfo) => {
+  if (!window.keplr) throw new WalletExtensionNotInstalledError()
 
-  await window.keplr.experimentalSuggestChain(chainInfo)
-  await window.keplr.enable(chainInfo.chainId)
-
-  return window.keplr.getOfflineSigner(chainInfo.chainId)
+  await window.keplr.experimentalSuggestChain(chain)
+  await window.keplr.enable(chain.chainId)
 }
 
-export const getKeplrAminoSigner = async (chainInfo: ChainInfo) => {
-  if (window.keplr === undefined) throw new WalletExtensionNotInstalledError()
+export const getKeplrDirectSigner = async (chain: ChainInfo) => {
+  await enableKeplr(chain)
 
-  await window.keplr.experimentalSuggestChain(chainInfo)
-  await window.keplr.enable(chainInfo.chainId)
-
-  return window.keplr.getOfflineSignerOnlyAmino(chainInfo.chainId)
+  return window.keplr!.getOfflineSigner(chain.chainId)
 }
 
-export const getKeplrSigner = async (chainInfo: ChainInfo) => {
-  if (window.keplr === undefined) throw new WalletExtensionNotInstalledError()
+export const getKeplrAminoSigner = async (chain: ChainInfo) => {
+  await enableKeplr(chain)
 
-  await window.keplr.experimentalSuggestChain(chainInfo)
-  await window.keplr.enable(chainInfo.chainId)
+  return window.keplr!.getOfflineSignerOnlyAmino(chain.chainId)
+}
 
-  return window.keplr.getOfflineSignerAuto(chainInfo.chainId)
+export const getKeplrSigner = async (chain: ChainInfo) => {
+  await enableKeplr(chain)
+
+  return (await window.keplr!.getOfflineSignerAuto(
+    chain.chainId,
+  )) as OfflineSigner
 }

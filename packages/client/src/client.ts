@@ -1,6 +1,6 @@
 import { ref, toRaw } from '@distributedlab/reactivity'
 
-import { getChainInfo as getChainInfoHelper, stub } from '@/helpers'
+import { getChainInfo as _getChainInfo, stub } from '@/helpers'
 
 import { makeRarimoBroadcaster } from './broadcaster'
 import { makeRarimoQuerier } from './querier'
@@ -24,7 +24,7 @@ export const makeRarimoClient = (config: Config): RarimoClient => {
   }
 
   const getChainInfo = async () => {
-    return getChainInfoHelper(config, query.value)
+    return _getChainInfo(config, query.value)
   }
 
   const connect = async (injectedWallet?: Wallet) => {

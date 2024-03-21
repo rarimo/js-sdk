@@ -3,7 +3,7 @@ import { computed, ref, toRaw } from '@distributedlab/reactivity'
 import type { AccountData, ChainInfo } from '@keplr-wallet/types'
 
 import { WalletIsEmptyError } from '@/errors'
-import { getKeplrDirectSigner, stub } from '@/helpers'
+import { getKeplrSigner, stub } from '@/helpers'
 import type { Wallet } from '@/types'
 
 const initStub = stub('Wallet not initialized!')
@@ -25,7 +25,7 @@ export const makeWallet = (injectedSigner?: OfflineSigner): Wallet => {
   })
 
   const connect = async (chainInfo: ChainInfo) => {
-    signer.value = injectedSigner || (await getKeplrDirectSigner(chainInfo))
+    signer.value = injectedSigner || (await getKeplrSigner(chainInfo))
 
     chainId.value = chainInfo.chainId
     accounts.value = await signer.value.getAccounts()
