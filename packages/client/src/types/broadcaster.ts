@@ -45,6 +45,13 @@ export type RarimoBroadcaster = {
   ) => Promise<DeliverTxResponse>
 
   // gov
+  submitTextProposal(
+    proposer: string,
+    initialDeposit: Coin[],
+    title: string,
+    description: string,
+  ): Promise<DeliverTxResponse>
+
   voteProposal(
     voter: string,
     proposalId: number,

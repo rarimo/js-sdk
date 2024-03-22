@@ -7,8 +7,11 @@ import {
   MsgWithdrawDelegatorReward,
   MsgWithdrawValidatorCommission,
 } from '@/codec/cosmos/distribution/v1beta1/tx'
-import { VoteOption as EVoteOption } from '@/codec/cosmos/gov/v1beta1/gov'
-import { MsgVote } from '@/codec/cosmos/gov/v1beta1/tx'
+import {
+  TextProposal,
+  VoteOption as EVoteOption,
+} from '@/codec/cosmos/gov/v1beta1/gov'
+import { MsgSubmitProposal, MsgVote } from '@/codec/cosmos/gov/v1beta1/tx'
 import { MsgDelegate, MsgUndelegate } from '@/codec/cosmos/staking/tx'
 import { Any } from '@/codec/google/protobuf/any'
 import { MessageTypeUrls, VoteOption } from '@/enums'
@@ -129,6 +132,31 @@ export const makeRarimoBroadcaster = async (
     },
 
     // gov
+    submitTextProposal: (
+      proposer: string,
+      initialDeposit: Coin[],
+      title: string,
+      description: string,
+    ) => {
+      return broadcaster<MsgSubmitProposal>(
+        MessageTypeUrls.SubmitProposal,
+        MsgSubmitProposal,
+      )(
+        MsgSubmitProposal.fromPartial({
+          proposer,
+          initialDeposit,
+          content: encodeAsAny(
+            MessageTypeUrls.TextProposal,
+            TextProposal,
+            TextProposal.fromPartial({
+              title,
+              description,
+            }),
+          ),
+        }),
+      )
+    },
+
     voteProposal: (voter: string, proposalId: number, option: VoteOption) => {
       return broadcaster<MsgVote>(
         MessageTypeUrls.Vote,
