@@ -1,4 +1,5 @@
 import type { AminoMsg } from '@cosmjs/amino'
+import { Registry } from '@cosmjs/proto-signing/build/registry'
 import {
   type AminoConverter,
   AminoTypes,
@@ -13,14 +14,33 @@ export function createAuthzAminoConverters(): Record<string, AminoConverter> {
   const aminoTypes = new AminoTypes({
     ...createDefaultAminoConverters(),
   })
+  const stargateRegistry = new Registry()
 
   return {
     [MessageTypeUrls.Exec]: {
       aminoType: 'cosmos-sdk/MsgExec',
-      toAmino: ({ msgs, grantee }: MsgExec) => ({
-        msgs: msgs.map(msg => aminoTypes.toAmino(msg)),
+      toAmino: ({
+        msgs,
         grantee,
-      }),
+      }: MsgExec): {
+        grantee: string
+        msgs: AminoMsg[]
+      } => {
+        return {
+          msgs: msgs.map(msg => {
+            stargateRegistry.register(msg.typeUrl, MsgExec)
+
+            return aminoTypes.toAmino({
+              typeUrl: msg.typeUrl,
+              value: stargateRegistry.decode({
+                typeUrl: msg.typeUrl,
+                value: msg.value,
+              }),
+            })
+          }),
+          grantee,
+        }
+      },
       /* eslint-disable camelcase */
       fromAmino: ({
         msgs,
