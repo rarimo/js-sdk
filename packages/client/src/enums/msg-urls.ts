@@ -22,6 +22,7 @@ export enum MessageTypeUrls {
   Deposit = '/cosmos.gov.v1beta1.MsgDeposit',
   VoteWeighted = '/cosmos.gov.v1beta1.MsgVoteWeighted',
   SubmitProposal = '/cosmos.gov.v1beta1.MsgSubmitProposal',
+  TextProposal = '/cosmos.gov.v1beta1.TextProposal',
 
   Unjail = '/cosmos.slashing.v1beta1.MsgUnjail',
 
