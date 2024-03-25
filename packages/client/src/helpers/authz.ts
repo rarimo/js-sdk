@@ -10,11 +10,12 @@ import { MsgExec } from '@/codec/cosmos/authz/v1beta1/tx'
 import { MessageTypeUrls } from '@/enums'
 
 // TODO: https://github.com/likecoin/iscn-js/blob/1ac7fb6f3b568e0d35e598442769a283c669c34b/src/messages/authz.ts#L98
-export function createAuthzAminoConverters(): Record<string, AminoConverter> {
+export function createAuthzAminoConverters(
+  stargateRegistry: Registry,
+): Record<string, AminoConverter> {
   const aminoTypes = new AminoTypes({
     ...createDefaultAminoConverters(),
   })
-  const stargateRegistry = new Registry()
 
   return {
     [MessageTypeUrls.Exec]: {
@@ -28,8 +29,6 @@ export function createAuthzAminoConverters(): Record<string, AminoConverter> {
       } => {
         return {
           msgs: msgs.map(msg => {
-            stargateRegistry.register(msg.typeUrl, MsgExec)
-
             return aminoTypes.toAmino({
               typeUrl: msg.typeUrl,
               value: stargateRegistry.decode({
@@ -50,7 +49,17 @@ export function createAuthzAminoConverters(): Record<string, AminoConverter> {
         msgs: AminoMsg[]
       }): MsgExec =>
         MsgExec.fromPartial({
-          msgs: msgs.map(msg => aminoTypes.fromAmino(msg)),
+          msgs: msgs.map(msg => {
+            const res = aminoTypes.fromAmino(msg)
+
+            return {
+              typeUrl: res.typeUrl,
+              value: stargateRegistry.encode({
+                typeUrl: res.typeUrl,
+                value: res.value,
+              }),
+            }
+          }),
           grantee,
         }),
     },

@@ -43,7 +43,7 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
         },
         aminoTypes: new AminoTypes({
           ...createDefaultAminoConverters(),
-          ...createAuthzAminoConverters(),
+          ...createAuthzAminoConverters(stargateRegistry),
         }),
       },
     )
