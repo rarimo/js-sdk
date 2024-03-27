@@ -1,24 +1,15 @@
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import { computed, ref, toRaw } from '@distributedlab/reactivity'
-import type {
-  AccountData,
-  ChainInfo,
-  Window as KeplrWindow,
-} from '@keplr-wallet/types'
+import type { AccountData, ChainInfo } from '@keplr-wallet/types'
 
-import { WalletExtensionNotInstalledError, WalletIsEmptyError } from '@/errors'
-import { stub } from '@/helpers'
+import { WalletIsEmptyError } from '@/errors'
+import { getKeplrSigner, stub } from '@/helpers'
 import type { Wallet } from '@/types'
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface Window extends KeplrWindow {}
-}
 
 const initStub = stub('Wallet not initialized!')
 
 export const makeWallet = (injectedSigner?: OfflineSigner): Wallet => {
-  const signer = ref<OfflineSigner>(injectedSigner || initStub)
+  const signer = ref<OfflineSigner>(initStub)
   const accounts = ref<readonly AccountData[]>(initStub)
   const chainId = ref('')
 
@@ -34,19 +25,9 @@ export const makeWallet = (injectedSigner?: OfflineSigner): Wallet => {
   })
 
   const connect = async (chainInfo: ChainInfo) => {
-    if (injectedSigner) {
-      chainId.value = chainInfo.chainId
-      accounts.value = await signer.value.getAccounts()
+    signer.value = injectedSigner || (await getKeplrSigner(chainInfo))
 
-      return
-    }
-
-    if (window.keplr === undefined) throw new WalletExtensionNotInstalledError()
     chainId.value = chainInfo.chainId
-
-    await window.keplr.experimentalSuggestChain(chainInfo)
-    await window.keplr.enable(chainId.value)
-    signer.value = window.keplr.getOfflineSigner(chainId.value)
     accounts.value = await signer.value.getAccounts()
   }
 

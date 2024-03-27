@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/swap",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Internal tools that other Rarimo packages use to swap tokens.",
   "repository": {
     "type": "git",

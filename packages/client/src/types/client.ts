@@ -99,4 +99,5 @@ export type RarimoClient = {
   tx: RarimoBroadcaster
   connect: (injectedWallet?: Wallet) => Promise<void>
   disconnect: () => void
+  getChainInfo: () => Promise<ChainInfo>
 }

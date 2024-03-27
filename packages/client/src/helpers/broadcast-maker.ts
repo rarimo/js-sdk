@@ -7,6 +7,8 @@ import {
 } from '@cosmjs/proto-signing/build/registry'
 import {
   type Account,
+  AminoTypes,
+  createDefaultAminoConverters,
   type DeliverTxResponse,
   GasPrice,
   SigningStargateClient,
@@ -15,6 +17,7 @@ import {
 import { BaseAccount } from '@/codec/cosmos/auth/auth'
 import { EthAccount } from '@/codec/ethermint/account'
 import { WalletBroadcastError } from '@/errors'
+import { createAuthzAminoConverters } from '@/helpers'
 import type { Config, Wallet } from '@/types'
 
 import { stub } from './stub'
@@ -38,6 +41,10 @@ export const makeBroadcastMaker = async (config: Config, wallet: Wallet) => {
           }
           return baseAccountToAccount(EthAccount.decode(acc.value).baseAccount!)
         },
+        aminoTypes: new AminoTypes({
+          ...createDefaultAminoConverters(),
+          ...createAuthzAminoConverters(stargateRegistry),
+        }),
       },
     )
 
