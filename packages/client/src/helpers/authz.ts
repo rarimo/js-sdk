@@ -1,5 +1,5 @@
 import type { AminoMsg } from '@cosmjs/amino'
-import { Registry } from '@cosmjs/proto-signing/build/registry'
+import type { Registry } from '@cosmjs/proto-signing/build/registry'
 import {
   type AminoConverter,
   AminoTypes,
@@ -28,13 +28,10 @@ export function createAuthzAminoConverters(
         msgs: AminoMsg[]
       } => {
         return {
-          msgs: msgs.map(msg => {
+          msgs: msgs.map(({ typeUrl, value }) => {
             return aminoTypes.toAmino({
-              typeUrl: msg.typeUrl,
-              value: stargateRegistry.decode({
-                typeUrl: msg.typeUrl,
-                value: msg.value,
-              }),
+              typeUrl: typeUrl,
+              value: stargateRegistry.decode({ typeUrl, value }),
             })
           }),
           grantee,
@@ -50,14 +47,11 @@ export function createAuthzAminoConverters(
       }): MsgExec =>
         MsgExec.fromPartial({
           msgs: msgs.map(msg => {
-            const res = aminoTypes.fromAmino(msg)
+            const aminoMsg = aminoTypes.fromAmino(msg)
 
             return {
-              typeUrl: res.typeUrl,
-              value: stargateRegistry.encode({
-                typeUrl: res.typeUrl,
-                value: res.value,
-              }),
+              typeUrl: aminoMsg.typeUrl,
+              value: stargateRegistry.encode(aminoMsg),
             }
           }),
           grantee,

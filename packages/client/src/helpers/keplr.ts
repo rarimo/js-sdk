@@ -30,7 +30,7 @@ export const getKeplrAminoSigner = async (chain: ChainInfo) => {
 export const getKeplrSigner = async (chain: ChainInfo) => {
   await enableKeplr(chain)
 
-  return (await window.keplr!.getOfflineSignerAuto(
+  return window.keplr!.getOfflineSignerAuto(
     chain.chainId,
-  )) as OfflineSigner
+  ) as Promise<OfflineSigner>
 }

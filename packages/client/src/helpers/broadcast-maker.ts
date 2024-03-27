@@ -17,7 +17,7 @@ import {
 import { BaseAccount } from '@/codec/cosmos/auth/auth'
 import { EthAccount } from '@/codec/ethermint/account'
 import { WalletBroadcastError } from '@/errors'
-import { createAuthzAminoConverters } from '@/helpers/authz'
+import { createAuthzAminoConverters } from '@/helpers'
 import type { Config, Wallet } from '@/types'
 
 import { stub } from './stub'
