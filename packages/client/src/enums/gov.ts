@@ -73,4 +73,8 @@ export enum ProposalType {
 
   // Text
   Text = 'TextProposal',
+
+  // CSCAList
+  EditCSCAListProposal = 'EditCSCAListProposal',
+  ReplaceCSCAListProposal = 'ReplaceCSCAListProposal',
 }
