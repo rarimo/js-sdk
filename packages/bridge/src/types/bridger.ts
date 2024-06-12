@@ -1,6 +1,7 @@
 import type { Computed, Raw, Ref } from '@distributedlab/reactivity'
 import type { IProvider, TransactionResponse } from '@rarimo/provider'
 import type {
+  Address,
   Amount,
   BridgeChain,
   ChainId,
@@ -30,7 +31,7 @@ export type Bridger = Raw<{
   /**
    * Get the chain that are supported for the bridging by ID
    *
-   * @returns Supported chain and information about it or void
+   * @returns A supported chain and information about it or void
    */
   getChainById(id: ChainId): BridgeChain | void
 
@@ -41,7 +42,7 @@ export type Bridger = Raw<{
    */
   getDestinationTx(
     sourceChain: BridgeChain,
-    sourceTxHash: string,
+    sourceTxHash: HexString,
   ): Promise<DestinationTransaction>
 
   /**
@@ -51,7 +52,7 @@ export type Bridger = Raw<{
    */
   isApproveRequired(
     token: Token,
-    operator: HexString,
+    operator: Address,
     amount?: Amount,
   ): Promise<boolean>
 
@@ -60,22 +61,24 @@ export type Bridger = Raw<{
    *
    * @returns A Transaction Response or undefined if input token is native
    */
-  approve(
-    token: Token,
-    operator: HexString,
-  ): Promise<TransactionResponse | void>
+  approve(token: Token, operator: Address): Promise<TransactionResponse | void>
 
   /**
    * Sets allowance for the provided operator address to spend the token if
-   * allowance amount is less than provided one
+   * allowance amount is less than the provided one
    *
    * @returns A Transaction Response or undefined if input token is native or allowance is enough
    */
   approveIfNeeded(
     token: Token,
-    operator: HexString,
+    operator: Address,
     amount?: Amount,
   ): Promise<TransactionResponse | void>
+
+  /**
+   * @returns A fee amount for the bridging for the provided chain and token
+   */
+  getCommission(chain: BridgeChain, token: Token): Promise<Amount>
 }>
 
 export type BridgerCreateFn = (p: IProvider) => Bridger

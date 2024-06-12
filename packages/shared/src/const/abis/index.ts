@@ -1,5 +1,6 @@
-export * from './bridge-router'
+export * from './bridge-facade'
 export * from './erc-20'
+export * from './fee-manager'
 export * from './master-router'
 export * from './multicall'
 export * from './swap-diamond'
