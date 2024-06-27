@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/nft-checkout",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Features of the Rarimo SDK that create cross-chain transactions based on the Rarimo protocol.",
   "repository": {
     "type": "git",

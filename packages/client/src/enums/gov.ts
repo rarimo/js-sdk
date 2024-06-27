@@ -12,6 +12,7 @@ export enum ProposalStatus {
   Rejected = 4,
   //Defines a proposal status of a proposal that has failed.
   Failed = 5,
+  Invalid = 6,
   Unrecognized = -1,
 }
 
@@ -77,4 +78,6 @@ export enum ProposalType {
   // CSCAList
   EditCSCAListProposal = 'EditCSCAListProposal',
   ReplaceCSCAListProposal = 'ReplaceCSCAListProposal',
+
+  ArbitrarySigningProposal = 'ArbitrarySigningProposal',
 }

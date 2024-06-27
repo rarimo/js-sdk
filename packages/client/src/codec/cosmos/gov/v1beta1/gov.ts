@@ -92,6 +92,11 @@ export enum ProposalStatus {
    * failed.
    */
   PROPOSAL_STATUS_FAILED = 5,
+  /**
+   * PROPOSAL_STATUS_INVALID - PROPOSAL_STATUS_INVALID defines a proposal status of a proposal that has
+   * been deposited not enough.
+   */
+  PROPOSAL_STATUS_INVALID = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -115,6 +120,9 @@ export function proposalStatusFromJSON(object: any): ProposalStatus {
     case 5:
     case "PROPOSAL_STATUS_FAILED":
       return ProposalStatus.PROPOSAL_STATUS_FAILED;
+    case 6:
+    case "PROPOSAL_STATUS_INVALID":
+      return ProposalStatus.PROPOSAL_STATUS_INVALID;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -136,6 +144,8 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
       return "PROPOSAL_STATUS_REJECTED";
     case ProposalStatus.PROPOSAL_STATUS_FAILED:
       return "PROPOSAL_STATUS_FAILED";
+    case ProposalStatus.PROPOSAL_STATUS_INVALID:
+      return "PROPOSAL_STATUS_INVALID";
     case ProposalStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
