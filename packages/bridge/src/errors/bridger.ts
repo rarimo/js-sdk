@@ -7,9 +7,9 @@ export class BridgerInvalidChainTypeError extends RuntimeError {
   }
 }
 
-export class BridgerChainNotSupportedError extends RuntimeError {
-  public name = 'BridgerChainNotSupportedError'
-  constructor(message = 'This chain is not supported yet') {
+export class BridgerZeroCommissionError extends RuntimeError {
+  public name = 'BridgerZeroCommissionError'
+  constructor(message = 'Commission cannot be zero') {
     super(message)
   }
 }

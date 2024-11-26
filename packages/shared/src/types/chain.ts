@@ -21,6 +21,7 @@ export type Chain = {
 }
 
 export type BridgeChain = Chain & {
+  bridgeFacadeAddress: Address
   contractAddress: Address
   dexType: EVMDexType
 }

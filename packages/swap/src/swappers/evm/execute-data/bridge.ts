@@ -4,6 +4,7 @@ import {
   type BridgeChain,
   BUNDLE_SALT_BYTES,
   isUndefined,
+  NATIVE_TOKEN_ADDRESS,
   type TransactionBundle,
 } from '@rarimo/shared'
 import { utils } from 'ethers'
@@ -21,7 +22,7 @@ export const getBridgeData = (
   to: Token,
   amountOut: Amount,
   receiver: string,
-  bundle?: TransactionBundle,
+  _bundle?: TransactionBundle,
   isWrapped?: boolean,
 ): CommandPayload[] => {
   if (!isBridgingRequired) return []
@@ -32,21 +33,28 @@ export const getBridgeData = (
     )
   }
 
-  const bundleTuple = [
-    bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
-    buildIntermediateBundleData(intermediateOpts, chainTo, receiver, bundle),
-  ]
+  const bundle = {
+    salt: _bundle?.salt || utils.hexlify(utils.randomBytes(BUNDLE_SALT_BYTES)),
+    bundle: buildIntermediateBundleData(
+      intermediateOpts,
+      chainTo,
+      receiver,
+      _bundle,
+    ),
+  }
 
   return [
     buildPayload(
       to.isNative ? SwapCommands.BridgeNative : SwapCommands.BridgeErc20,
       [
-        ...(to.isNative ? [] : [to.address]),
-        amountOut.value,
-        bundleTuple,
-        chainTo.name,
-        receiver,
-        ...(to.isNative ? [] : [isWrapped]),
+        { feeToken: to.isNative ? NATIVE_TOKEN_ADDRESS : to.address },
+        {
+          ...(!to.isNative && { token: to.address, isWrapped }),
+          amount: amountOut.value,
+          bundle,
+          network: chainTo.name,
+          receiver,
+        },
       ],
     ),
   ]
